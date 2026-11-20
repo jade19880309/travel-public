@@ -3,7 +3,7 @@
   "short_name": "首爾春節",
   "lang": "zh-Hant",
   "id": "./index.html",
-  "start_url": "./index.html",
+  "start_url": "./?t=seoul-2027",
   "scope": "./",
   "display": "standalone",
   "orientation": "any",

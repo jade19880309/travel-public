@@ -2,7 +2,7 @@
 
 公開的旅程行程網站（GitHub Pages）。
 
-- 首爾：`https://jade19880309.github.io/travel-public/`（`index.html`，也可加 `?t=seoul-2027`）
+- 首爾：`https://jade19880309.github.io/travel-public/?t=seoul-2027`（`index.html`；分享與連結一律用這個網址，不加參數也能開）
 - 全部旅程總覽：`https://jade19880309.github.io/travel-public/home.html`（`home.html`，依 `trips/index.json` 自動列出每趟旅程，主色寫在頁內 `ACC`）
 - 港珠澳：`https://jade19880309.github.io/travel-public/hk.html`（分享到 LINE 請用這個網址，縮圖才會是港珠澳）
 - `index.html`、`hk.html`：各旅程的入口頁（名稱、圖示、主題寫死在網頁開頭，才能正確「加入主畫面」）
@@ -36,7 +36,7 @@
 
 ## 加入主畫面
 
-一定要從該旅程自己的入口頁網址加入（首爾 `/`、港珠澳 `/hk.html`）。舊網址 `index.html?t=hk-2027` 會自動轉到 `hk.html`。
+一定要從該旅程自己的入口頁網址加入（首爾 `/?t=seoul-2027`、港珠澳 `/hk.html`）。舊網址 `index.html?t=hk-2027` 會自動轉到 `hk.html`。
 若以前從舊網址加入過，請刪掉主畫面上的圖示，再從 `hk.html` 重新加入一次。
 
 ## 更換封面圖
