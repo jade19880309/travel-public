@@ -7,12 +7,12 @@
     "store": "seoul27"
   },
   "weather": [{"name":"首爾","lat":37.5665,"lon":126.978}],
-  "nav": [["fx","換算"],["flight","航班"],["hotel","住宿"],["plan","行程"],["price","價格"],["todo","待辦"],["tips","注意"],["food","美食"],["phr","韓語"],["apps","App"]],
+  "nav": [["flight","航班"],["plan","行程"],["hotel","住宿"],["fx","換算"],["phr","韓語"],["food","美食"],["price","價格"],["tips","注意"],["todo","待辦"],["apps","App"]],
   "titles": {"fx":"💱 韓元換算","tips":"🧣 旅遊與入境注意事項","phr":"🗣 常用韓語","apps":"📱 韓國常用 App"},
   "hero": {
-    "img": "images/seoul-2027/hero.jpg",
-    "alt": "雪中的北村韓屋與南山首爾塔",
-    "seal": "春節<br>快樂",
+    "img": "images/seoul-2027/hero-snow.jpg",
+    "bare": true,
+    "alt": "首爾封面：雪中的北村韓屋、南山首爾塔、紅梅與燈籠",
     "eyebrow": "SEOUL ・ LUNAR NEW YEAR 2027",
     "title": "2027 首爾春節自由行",
     "sub": ["2/3（三）～2/8（一）","6 天 5 夜","6 大 3 小・共 9 人"],

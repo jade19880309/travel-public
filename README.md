@@ -38,7 +38,7 @@
 
 入口頁可以指定主題：在 `<html>` 加上 `class="th-<代號>"`，並在 `style.css` 之後載入 `theme-<代號>.css`
 （港珠澳是 `hk.html` 的 `th-bay` 與 `theme-bay.css`；東京是 `tokyo.html` 的 `th-fuji` 與 `theme-fuji.css`，結構沿用 bay 主題、只換主色）。主題只覆寫顏色與少數元件，
-`index.html`（首爾）沒指定主題，維持預設的紅金配色。
+`index.html`（首爾）是 `th-han` 與 `theme-han.css`（雪夜紅梅，結構同樣沿用 bay 主題）。
 
 ## 加入主畫面
 

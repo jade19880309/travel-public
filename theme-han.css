@@ -1,0 +1,121 @@
+/* 首爾專用：雪夜韓屋・紅梅（配合封面）
+   深緋紅、梅花紅、香檳金，雪白底；區塊標題前一朵紅梅，卡片上緣金色細線。
+   由 index.html 的 <html class="th-han"> 套用，港珠澳、東京不受影響。
+   結構沿用 theme-bay.css；改版面時兩個主題檔要一起改。 */
+
+html.th-han{
+ --bg:#fbf6f2;--card:#fffdfb;--ink:#2c1e22;--sub:#6f6064;--line:#ecdcd6;--soft:#f6ece8;
+ --red:#8c1c2b;--red2:#b8475a;--gold:#b88d45;--goldl:#f5e8d0;
+ --seal:#c22f3f;
+ --pink:#fbecee;--mint:#ecf1ea;--green:#3f6f57;
+ --r:14px;--sh:0 1px 2px rgba(40,32,20,.05),0 10px 26px -12px rgba(40,32,20,.16);
+ --serif:"Noto Serif TC","Songti TC","PMingLiU",serif
+}
+/* 宣紙底：米白＋極淡紙紋＋上方淡淡的墨暈 */
+.th-han body{
+ background:
+  radial-gradient(900px 420px at 50% -120px,rgba(140,28,43,.07),transparent 70%) no-repeat,
+  url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .45 0 0 0 0 .38 0 0 0 0 .28 0 0 0 .05 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"),
+  var(--bg)}
+.th-han header{background:rgba(246,241,231,.93);border-bottom-color:var(--line)}
+.th-han .net{background:var(--red)}
+
+/* 功能列：未選為紙色，選中為墨藍＋金色細底線；7 個兩字按鈕排成一排 */
+.th-han header nav{grid-template-columns:none;grid-auto-flow:column;grid-auto-columns:1fr;gap:5px}
+.th-han header nav a{padding:0 2px;background:var(--card);border-color:var(--line);color:var(--ink);font-family:var(--serif);font-weight:600}
+.th-han header nav a.on{background:var(--red);border-color:var(--red);color:#f6efe0;box-shadow:inset 0 -2px 0 var(--gold)}
+@media (min-width:760px){.th-han header nav{max-width:760px}}
+
+/* 區塊標題：明體、墨色筆觸短條、金色細線 */
+.th-han h2{font-family:var(--serif);font-weight:700;font-size:22px;letter-spacing:.08em;color:var(--ink)}
+.th-han h2::before{content:"";flex:none;width:5px;height:1.1em;border-radius:2px 3px 3px 2px;background:linear-gradient(180deg,var(--red),rgba(140,28,43,.55));transform:skewY(-6deg)}
+.th-han h2::after{background:linear-gradient(90deg,var(--gold),rgba(168,130,63,0));opacity:.55;height:1px}
+.th-han .card{background:var(--card);border-color:var(--line);box-shadow:var(--sh)}
+
+/* 封面：圖片完整顯示，下方延續宣紙底色，像畫軸往下展開 */
+.th-han .hero{background:var(--bg);border-radius:0 0 28px 28px}
+.th-han .hero::after{background:none}
+.th-han .hero.bare{min-height:0;padding:0 0 26px;background:linear-gradient(180deg,#f3ecdf,var(--bg));color:var(--ink);justify-content:flex-start;border-bottom:1px solid var(--line);box-shadow:0 18px 30px -24px rgba(40,32,20,.35)}
+.th-han .hero.bare::after{display:none}
+.th-han .hero.bare .hero-bg{position:static;display:block;width:100%;height:auto;object-fit:initial;object-position:initial;
+ -webkit-mask-image:linear-gradient(180deg,#000 88%,transparent);mask-image:linear-gradient(180deg,#000 88%,transparent)}
+.th-han .hero.bare>p:first-of-type{margin-top:6px;padding:0 14px;color:var(--ink);text-shadow:none;font-family:var(--serif);font-weight:600;letter-spacing:.06em}
+.th-han .hero.bare p span{color:var(--ink)}
+.th-han .hero.bare .cd{margin-top:16px}
+.th-han .hero.bare .cd div{background:rgba(255,252,246,.85);border:1px solid rgba(168,130,63,.45);border-radius:12px;-webkit-backdrop-filter:none;backdrop-filter:none;box-shadow:0 6px 14px -10px rgba(40,32,20,.35)}
+.th-han .hero.bare .cd b{color:var(--red);font-family:var(--serif)}
+.th-han .hero.bare .cd span{color:var(--gold);letter-spacing:.1em}
+.th-han .hero.bare #cdnote{margin-top:10px;color:var(--sub);text-shadow:none;font-size:14px;letter-spacing:.06em}
+.th-han .hero .go{background:var(--red);color:#f6efe0;font-family:var(--serif);letter-spacing:.12em;box-shadow:inset 0 -2px 0 var(--gold),0 8px 18px -10px rgba(140,28,43,.6)}
+@media (min-width:760px){.th-han .hero.bare{border-radius:0 0 28px 28px}}
+
+/* 按鈕 */
+.th-han .b.bt.dk{background:var(--red)}
+.th-han .b.bt.gd{background:var(--gold)}
+
+/* 每日行程 */
+.th-han .dy{background:var(--card);border-color:var(--line);box-shadow:0 1px 2px rgba(40,32,20,.04)}
+.th-han .dy.on{box-shadow:var(--sh)}
+.th-han .dr b{font-family:var(--serif)}
+.th-han .tl::before{border-left:1.5px dashed #d2c6b0}
+.th-han .tl .tm{background:var(--soft);color:var(--red);border:1px solid var(--line);font-family:var(--serif)}
+.th-han .ab button.on{background:var(--red);border-color:var(--red)}
+.th-han .ab button{border-color:var(--line)}
+.th-han .dp h3{font-family:var(--serif);font-size:19px;color:var(--red);letter-spacing:.04em}
+
+/* 提醒框：紙色＋金色左線 */
+.th-han .note{background:#f8f2e6;color:#4a4335;border-radius:10px;border-left:3px solid var(--gold)}
+
+/* 小標籤 */
+.th-han .pill{background:#f4e4e1;color:var(--seal)}
+.th-han .pill.tw{background:var(--mint);color:var(--green)}
+.th-han .est{background:var(--goldl);color:#7d5a1c}
+
+/* 滑動區、全螢幕放大、底部選單 */
+.th-han .dots .sa{color:var(--red)}
+.th-han #big{background:#17202a}
+.th-han #big small{color:#e8dcc4}
+.th-han #sheet .sx{background:var(--soft)}
+
+/* 底部日期列與字體鈕 */
+.th-han .dock{background:rgba(255,252,246,.96);border-top-color:var(--line)}
+.th-han .dock button{font-family:var(--serif)}
+.th-han .dock button.on{background:var(--red);box-shadow:inset 0 -2px 0 var(--gold)}
+.th-han .dock button.on small{color:#e8dcc4}
+.th-han #fs{background:var(--card);border-color:var(--line);color:var(--red)}
+.th-han footer{color:var(--sub)}
+
+/* 地圖圖示改墨藍，不用搶眼的 Google 藍 */
+.th-han .mi.g,.th-han .b.g{background:var(--red2)}
+.th-han .mi.g svg circle{fill:var(--red2)}
+
+/* 平板、電腦：封面圖限制寬度置中，下面的內容不會被擠到太下面 */
+@media (min-width:760px){
+ .th-han .hero.bare .hero-bg{max-width:820px;margin:0 auto}
+ .th-han .hero.bare>p:first-of-type{margin-top:10px}
+}
+
+/* 高德地圖按鈕：用香檳金，和墨藍的 Google 地圖一眼分得出來 */
+.th-han .mi.a,.th-han .b.am{background:var(--gold)}
+
+
+/* ===== 首爾加強 ===== */
+/* 上方功能列 10 個按鈕：排兩列、每列 5 個 */
+.th-han header nav{grid-template-columns:repeat(5,1fr);grid-auto-flow:row;gap:6px}
+.th-han header{background:rgba(251,246,242,.95);border-bottom:1px solid var(--line);box-shadow:0 1px 0 rgba(184,141,69,.35)}
+/* 雪夜的淡粉底 */
+.th-han body{background:radial-gradient(900px 420px at 50% -120px,rgba(194,47,63,.08),transparent 70%) no-repeat,var(--bg)}
+/* 區塊標題：首爾標題本身已有圖示，前面改成一小段梅紅色短條 */
+.th-han h2::before{width:4px;height:1.05em;border-radius:3px;transform:none;background:linear-gradient(180deg,var(--seal),var(--gold))}
+/* 卡片上緣金色細線 */
+.th-han .card,.th-han .dy{border-top:2px solid rgba(184,141,69,.45)}
+/* 封面：圖片完整顯示，下方淡粉到雪白 */
+.th-han .hero.bare{background:linear-gradient(180deg,#f5e6e3,var(--bg))}
+.th-han .hero.bare .cd b{color:var(--red)}
+.th-han .hero.bare .cd span{color:var(--gold)}
+.th-han .hero.bare .cd div{border-color:rgba(184,141,69,.5)}
+.th-han .hero .go{background:var(--red);box-shadow:inset 0 -2px 0 var(--gold),0 8px 18px -10px rgba(140,28,43,.6)}
+.th-han .note{border-left-color:var(--seal);background:#fbf1ef}
+.th-han .pill{background:#fbe6e8;color:var(--seal)}
+.th-han .tabs button.on{background:var(--red);border-color:var(--red);color:#fff}
+.th-han #big{background:#2a1418}
