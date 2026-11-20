@@ -2,14 +2,16 @@
 const {kop:KOP,tags:T,days:D,dayImages:DI,foods:F,sights:S,ko:KO,regions:REG,todo:TODO,phrases:PH,sheets:SH}=window.TRIP;
 const $=s=>document.querySelector(s);
 const enc=encodeURIComponent;
-const mp=n=>`<span class="maps"><a class="b g" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=${enc(KOP[n]||n)}">Google 地圖</a><a class="b" target="_blank" rel="noopener" href="https://map.naver.com/p/search/${enc(KOP[n]||n)}">Naver 地圖</a></span>`;
+// 行程裡的地圖連結：小圖示（藍色＝Google 地圖、綠色 N＝Naver 地圖）
+const PIN='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5a6.5 6.5 0 0 0-6.5 6.5c0 4.6 6.5 12.5 6.5 12.5S18.5 13.6 18.5 9A6.5 6.5 0 0 0 12 2.5z" fill="#fff"/><circle cx="12" cy="9" r="2.6" fill="#1a73e8"/></svg>';
+const mp=n=>`<span class="maps"><a class="mi g" target="_blank" rel="noopener" aria-label="用 Google 地圖開啟" title="Google 地圖" href="https://www.google.com/maps/search/?api=1&query=${enc(KOP[n]||n)}">${PIN}</a><a class="mi n" target="_blank" rel="noopener" aria-label="用 Naver 地圖開啟" title="Naver 地圖" href="https://map.naver.com/p/search/${enc(KOP[n]||n)}">N</a></span>`;
 // s=大綱說明、g=春節標籤［韓國,台灣］
 let day=0,ab='A';
 const dbox=$('#days');
 dbox.innerHTML=D.map((d,k)=>{const p=d.t.split(' ');return `<div class="dy" id="dy${k}"><button class="dr" data-k="${k}"><b>${p[0]} ${p[1]}</b><span class="ds">${d.s}</span>${d.g?`<span class="tg"><span class="pill">${d.g[0]}</span><span class="pill tw">${d.g[1]}</span></span>`:''}</button><div class="dp" hidden></div></div>`}).join('');
 function panel(k){
  const d=D[k],items=d.ab?d[ab]:d.i,im=DI[d.ab?k+ab:k];
- const tl=items.map(x=>{const g=x[2]?`<span class="tag" style="background:${T[x[2]][1]}">${T[x[2]][0]}</span>`:'';return `<li><span class="tm">${x[0]}</span><div class="tc">${x[1]}${g}${x[3]&&KOP[x[3]]?'<small class="kp">'+KOP[x[3]]+'</small>':''}${x[3]?mp(x[3]):''}</div></li>`}).join('');
+ const tl=items.map(x=>{const g=x[2]?`<span class="tag" style="background:${T[x[2]][1]}">${T[x[2]][0]}</span>`:'';return `<li><span class="tm">${x[0]}</span><div class="tc">${x[1]}${g}${x[3]?mp(x[3]):''}${x[3]&&KOP[x[3]]?'<small class="kp">'+KOP[x[3]]+'</small>':''}</div></li>`}).join('');
  return `<h3>${d.h}</h3>`
   +(d.ab?`<div class="ab"><button data-v="A" class="${ab==='A'?'on':''}">A 洪川玩雪</button><button data-v="B" class="${ab==='B'?'on':''}">B 龍山＋東大門</button></div><p class="rate" style="margin:0 0 8px">依天氣、路況與租車狀況二選一。</p>`:'')
   +(im?`<div class="btns" style="margin:0 0 10px"><button class="b bt gd mapbtn" data-img="${im}">🖼 當日行程圖</button></div>`:'')
