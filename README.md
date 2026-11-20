@@ -3,7 +3,7 @@
 公開的旅程行程網站（GitHub Pages）。
 
 - 首爾：`https://jade19880309.github.io/travel-public/`（`index.html`，也可加 `?t=seoul-2027`）
-- 港珠澳：`https://jade19880309.github.io/travel-public/hk.html`
+- 港珠澳：`https://jade19880309.github.io/travel-public/hk.html`（分享到 LINE 請用這個網址，縮圖才會是港珠澳）
 - `index.html`、`hk.html`：各旅程的入口頁（名稱、圖示、主題寫死在網頁開頭，才能正確「加入主畫面」）
 - `style.css`：共用樣式；`app.js`：依旅程資料畫出所有區塊
 - `trips/<旅程代號>.json`：一個旅程的全部內容（封面、換算幣別、航班、住宿、每日行程、美食、待辦、語句、注意事項）
@@ -47,3 +47,9 @@
 
 私人資料（訂單編號、PNR、票號、護照、生日、英文姓名、金額、付款狀態、訂單截圖）不放這裡。
 只用：航班號、日期、時間、機場、飯店名稱與地址、入住退房日、人數、房型。
+
+## 分享縮圖（LINE／FB 預覽）
+
+LINE 不會執行 JavaScript，只讀入口頁開頭寫死的 `og:title`、`og:description`、`og:image`，
+所以 `?t=...` 參數不會改變縮圖。每個入口頁都要有自己的 `og:` 標籤，縮圖放 `images/<代號>/og.jpg`（1200×675）。
+分享時請用該旅程自己的入口頁網址。
