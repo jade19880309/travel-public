@@ -67,3 +67,7 @@ html.th-bay{
 
 /* 底部日期列 */
 .th-bay .dock button.on small{color:#d6f1f4}
+
+/* 港珠澳功能列只有 7 個兩字按鈕：排成一排，少佔畫面 */
+.th-bay header nav{grid-template-columns:none;grid-auto-flow:column;grid-auto-columns:1fr;gap:5px}
+.th-bay header nav a{padding:0 2px}
