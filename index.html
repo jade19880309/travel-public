@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex,nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#d7373f"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="首爾春節"><link rel="apple-touch-icon" href="icon-180.png">
+<title>2027 首爾春節自由行</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Huninn&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#fff8ef;--card:#fff;--red:#d7373f;--gold:#e8a93a;--pink:#ffe3e0;--mint:#dff3e8;--ink:#3b2a2a;--sub:#8a7468;--line:#f0dfcf;--r:18px}
+*{box-sizing:border-box;margin:0}
+html{scroll-behavior:smooth;scroll-padding-top:64px}
+body{font-family:"Huninn","Apple SD Gothic Neo","Malgun Gothic","Noto Sans KR","Noto Sans TC",sans-serif;background:var(--bg);color:var(--ink);line-height:1.7;font-size:16px;padding-bottom:calc(env(safe-area-inset-bottom,0px) + 110px)}
+a{color:inherit}
+header{position:fixed;top:0;left:0;right:0;z-index:50;background:rgba(255,248,239,.95);backdrop-filter:blur(8px);border-bottom:2px dashed var(--line);padding-top:env(safe-area-inset-top,0px)}
+nav{display:flex;gap:6px;overflow-x:auto;padding:8px 12px;max-width:1000px;margin:auto;scrollbar-width:none}
+nav::-webkit-scrollbar,.daybar div::-webkit-scrollbar,.tabs::-webkit-scrollbar{display:none}
+nav a{flex:none;text-decoration:none;font-size:14px;padding:4px 12px;border-radius:99px;background:#fff;border:1.5px solid var(--line)}
+nav a{transition:background .2s,color .2s,border-color .2s}nav a.on{background:var(--red);color:#fff;border-color:var(--red)}
+main{max-width:1000px;margin:auto;padding:calc(56px + env(safe-area-inset-top,0px)) 14px 0}
+section{margin-top:34px}
+h2{font-size:22px;color:var(--red);margin-bottom:12px}
+.hero{background:linear-gradient(#ffd9d2,#fff1de);border-radius:0 0 28px 28px;margin:0 -14px;padding:10px 14px 18px;text-align:center;overflow:hidden}
+.hero svg{width:100%;max-width:560px;height:auto}
+.hero h1{font-size:26px;color:var(--red)}
+.hero p{color:var(--sub);font-size:14px}
+.cd{display:flex;justify-content:center;gap:8px;margin-top:10px}
+.cd div{background:#fff;border:2px solid var(--gold);border-radius:14px;min-width:62px;padding:4px 6px}
+.cd b{display:block;font-size:24px;color:var(--red)}.cd span{font-size:12px;color:var(--sub)}
+.card{background:var(--card);border:1.5px solid var(--line);border-radius:var(--r);padding:14px;box-shadow:0 3px 0 var(--line)}
+.grid{display:grid;gap:12px;grid-template-columns:1fr}
+.map iframe{width:100%;height:300px;border:0;border-radius:var(--r)}
+.btns{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.b{display:inline-block;font-size:13px;text-decoration:none;padding:3px 10px;border-radius:99px;color:#fff;background:#03c75a}
+.b.g{background:#4285f4}
+.fl{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.fl big{font-size:26px;color:var(--red)}
+.pill{font-size:12px;background:var(--pink);color:var(--red);border-radius:99px;padding:1px 10px}
+.tabs,.daybar div{display:flex;gap:8px;overflow-x:auto;scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.tabs{margin-bottom:12px}
+.tabs button,.daybar button{flex:none;scroll-snap-align:center;font-family:inherit;font-size:14px;border:2px solid var(--line);background:#fff;color:var(--ink);border-radius:99px;padding:5px 14px;cursor:pointer}
+.tabs button.on,.daybar button.on{background:var(--red);border-color:var(--red);color:#fff}
+.ab{margin:8px 0}.ab button{font-family:inherit;border:2px solid var(--gold);background:#fff;border-radius:12px;padding:4px 14px;cursor:pointer;margin-right:6px}
+.ab button.on{background:var(--gold);color:#fff}
+.tl{position:relative;padding-left:20px;border-left:3px dotted var(--gold);margin-left:6px}
+.tl li{list-style:none;position:relative;margin-bottom:12px;background:#fff;border:1.5px solid var(--line);border-radius:14px;padding:8px 12px}
+.tl li::before{content:"";position:absolute;left:-29px;top:14px;width:12px;height:12px;border-radius:50%;background:var(--red);border:3px solid var(--bg)}
+.tm{color:var(--red);font-size:15px;margin-right:6px}
+.tag{font-size:12px;color:#fff;border-radius:99px;padding:0 8px;margin-left:4px;white-space:nowrap}
+.note{background:var(--pink);border-radius:12px;padding:8px 12px;font-size:14px;margin:8px 0}
+.item{display:flex;flex-direction:column;gap:2px}
+.item small{color:var(--sub)}
+.todo label{display:flex;gap:8px;align-items:flex-start;padding:5px 0;border-bottom:1px dashed var(--line);cursor:pointer}
+.todo input{width:20px;height:20px;accent-color:var(--red);flex:none;margin-top:3px}
+.todo input:checked+span{text-decoration:line-through;color:var(--sub)}
+.info li{margin:0 0 6px 18px}
+footer{text-align:center;color:var(--sub);font-size:13px;margin-top:30px}
+/* 日期列：固定在左側由上到下排列（遠離右下角 Netlify 標示） */
+.daybar{position:fixed;left:calc(env(safe-area-inset-left,0px) + 6px);top:50%;transform:translateY(-50%);z-index:40;transition:transform .25s}
+.daybar div{flex-direction:column;overflow-x:hidden;overflow-y:auto;max-height:calc(100vh - 200px);background:rgba(255,255,255,.96);border:2px solid var(--gold);border-radius:20px;padding:8px 6px;box-shadow:0 4px 14px rgba(120,60,40,.18);scroll-snap-type:y proximity}
+.daybar button{padding:5px 8px;line-height:1.25;text-align:center;font-size:13px;min-width:46px}
+.daybar button small{display:block;font-size:11px;opacity:.85}
+main{padding-left:calc(env(safe-area-inset-left,0px) + 60px)}.hero{margin:0 -14px 0 calc(-60px - env(safe-area-inset-left,0px));padding-left:calc(env(safe-area-inset-left,0px) + 60px)}
+#lb{position:fixed;inset:0;z-index:99;background:rgba(0,0,0,.92);overflow:hidden;display:none;touch-action:none;overscroll-behavior:contain;user-select:none;-webkit-user-select:none}
+#lb img{position:absolute;left:0;top:0;max-width:none;transform-origin:0 0;will-change:transform;-webkit-user-drag:none;pointer-events:none}
+#lb .lbc{position:absolute;right:calc(env(safe-area-inset-right,0px) + 12px);top:calc(env(safe-area-inset-top,0px) + 12px);display:flex;gap:8px;z-index:2}
+#lb .lbc button{width:44px;height:44px;border-radius:50%;border:0;background:rgba(255,255,255,.92);color:#3b2a2a;font-size:22px;line-height:1;cursor:pointer;touch-action:manipulation}
+#lb .lbh{position:absolute;left:0;right:0;bottom:calc(env(safe-area-inset-bottom,0px) + 14px);text-align:center;color:#fff;font-size:13px;opacity:.8;pointer-events:none}
+#lb.on{display:block}
+@media (min-width:700px){.grid{grid-template-columns:1fr 1fr}}
+@media (min-width:1100px){main{padding-left:14px}.hero{margin:0 -14px;padding-left:14px}}
+/* 封面：雪景照片＋春節點綴 */
+.hero{position:relative;min-height:min(78vh,560px);display:flex;flex-direction:column;justify-content:flex-end;color:#fff;padding-top:80px;padding-bottom:24px;background:#2b2a44;border-radius:0 0 32px 32px}
+.hero-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:72% 50%;z-index:0}
+.hero::after{content:"";position:absolute;inset:0;z-index:0;background:linear-gradient(to top,rgba(50,12,18,.82),rgba(50,12,18,.25) 52%,rgba(50,12,18,0) 75%)}
+.hero>*:not(.hero-bg){position:relative;z-index:1}
+.hero::after{pointer-events:none}
+.hero .ln{position:absolute;top:0;left:calc(env(safe-area-inset-left,0px) + 64px);width:min(180px,45%);height:auto;z-index:1;pointer-events:none}
+.hero .seal{position:absolute;top:16px;right:16px;width:58px;height:58px;display:flex;align-items:center;justify-content:center;text-align:center;font-size:15px;line-height:1.15;color:#ffe08a;background:#d7373f;border:2px solid #ffe08a;border-radius:12px;transform:rotate(8deg);box-shadow:0 3px 10px rgba(0,0,0,.35)}
+.hero .eyebrow{font-size:12px;letter-spacing:2px;color:#ffe9d6;margin-bottom:2px}
+.hero h1{color:#fff;font-size:clamp(20px,5.8vw,32px);line-height:1.3;text-wrap:balance;text-shadow:0 2px 12px rgba(0,0,0,.45)}
+.hero p{color:#ffe9d6;text-shadow:0 1px 6px rgba(0,0,0,.4)}
+.hero .cd div{background:rgba(255,255,255,.18);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);border:1.5px solid rgba(255,255,255,.6)}
+.hero .cd b{color:#fff}.hero .cd span{color:#ffe9d6}
+/* 春節日曆／交通／韓語 */
+.swipe{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding-bottom:6px}
+.swipe::-webkit-scrollbar{display:none}
+.slide{flex:none;width:min(88%,420px);scroll-snap-align:start}
+.ph{display:block;width:100%;text-align:left;font-family:inherit;background:#fff8ef;border:1.5px solid var(--line);border-radius:12px;padding:8px 12px;margin-top:8px;cursor:pointer;color:var(--ink)}
+.ph b{display:block;font-size:17px}.ph small{color:var(--sub);font-size:13px}
+#big{position:fixed;inset:0;z-index:99;background:#3b2a2a;color:#fff;display:none;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px}
+#big.on{display:flex}#big b{font-size:clamp(30px,9vw,64px);line-height:1.3;word-break:keep-all}#big small{margin-top:16px;color:#ffe9d6;font-size:16px}
+/* 手機：選單改兩排（6欄），不再橫向拉很長 */
+@media (max-width:699px){
+nav{display:grid;grid-template-columns:repeat(6,1fr);gap:5px;overflow:visible;padding:6px 8px}
+nav a{text-align:center;white-space:nowrap;font-size:clamp(11px,3.1vw,14px);padding:4px 0;border-radius:12px}
+html{scroll-padding-top:92px}
+main{padding-top:calc(84px + env(safe-area-inset-top,0px))}
+}
+/* 封面：文字上移到天空區，露出下方韓屋，倒數縮小置底 */
+.hero{justify-content:flex-start;padding-top:66px;padding-bottom:14px}
+.hero::after{background:linear-gradient(to bottom,rgba(50,12,18,.5),rgba(50,12,18,.12) 30%,rgba(50,12,18,0) 45%,rgba(50,12,18,0) 74%,rgba(50,12,18,.5))}
+.hero .eyebrow{font-size:11px;margin-bottom:0}
+.hero h1{font-size:clamp(20px,5.6vw,30px)}
+.hero p{font-size:13px}
+.hero .seal{top:12px;right:12px;width:48px;height:48px;font-size:12px}
+.hero .cd{margin-top:auto;gap:6px}
+.hero .cd div{min-width:52px;padding:2px 4px}
+.hero .cd b{font-size:19px;line-height:1.35}.hero .cd span{font-size:11px}
+.hero #cdnote{margin-top:4px;font-size:12px}
+/* 倒數放大 */
+.hero .cd{gap:8px}
+.hero .cd div{min-width:68px;padding:4px 6px;border-radius:16px}
+.hero .cd b{font-size:28px;line-height:1.3}.hero .cd span{font-size:13px}
+.hero #cdnote{font-size:14px;margin-top:6px}
+@media (max-width:360px){.hero .cd div{min-width:58px}.hero .cd b{font-size:24px}}
+/* 常用 App：手機版左右滑動 */
+/* 價格參考 */
+.ptb{width:100%;border-collapse:collapse;margin:8px 0}
+.ptb td{padding:5px 8px;border-bottom:1px dashed var(--line)}
+.ptb td:first-child{vertical-align:top;padding-right:10px}
+.ptb td:last-child{text-align:right;color:var(--red);font-weight:bold;white-space:normal;word-break:keep-all}
+.ptb tr.hl td{background:var(--pink)}
+.big-p{font-size:24px;color:var(--red)}
+.ptb small{display:block;color:var(--sub);font-weight:normal;font-size:12px}
+.ptb tr.grp td{background:var(--pink);color:var(--ink);text-align:left;font-weight:bold;font-size:13px;padding:3px 8px}
+.pill.sea{background:#dff1f7;color:#16708a;margin-left:4px;white-space:nowrap}
+.dayimg[hidden]{display:none}.dayimg{display:block;position:relative;margin-bottom:12px}.dayimg img{display:block;width:100%;border-radius:var(--r);border:1.5px solid var(--line);box-shadow:0 3px 0 var(--line)}.dayimg small{position:absolute;right:8px;bottom:8px;background:rgba(59,42,42,.72);color:#fff;border-radius:99px;padding:0 10px;font-size:12px}
+/* 韓元換算 */
+.fx .fxrow{display:flex;align-items:flex-end;gap:8px}
+.fx label{flex:1;font-size:13px;color:var(--sub);min-width:0}
+.fx input{display:block;width:100%;margin-top:2px;font-family:inherit;font-size:22px;color:var(--red);border:2px solid var(--line);border-radius:14px;padding:6px 10px;background:#fffdf9;outline:none}
+.fx input:focus{border-color:var(--gold)}
+.fxeq{font-size:20px;color:var(--sub);padding-bottom:10px}
+.fxrate{font-size:13px;color:var(--sub);margin:8px 0 6px}
+.fxq{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.fxq button{font-family:inherit;font-size:13px;line-height:1.3;border:1.5px solid var(--line);background:#fff8ef;border-radius:12px;padding:5px 2px;color:var(--ink);cursor:pointer}
+.fxq button small{display:block;color:var(--red);font-size:12px}
+.seg{display:flex;gap:8px;margin-bottom:12px}.seg button{flex:1;font-family:inherit;font-size:16px;border:2px solid var(--gold);background:#fff;color:var(--ink);border-radius:14px;padding:8px 10px;cursor:pointer;touch-action:manipulation}.seg button.on{background:var(--gold);color:#fff}
+.pl{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.pi{font-family:inherit;font-size:15px;text-align:left;background:#fff;border:1.5px solid var(--line);border-radius:14px;padding:10px 12px;color:var(--ink);cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:6px;min-height:46px;line-height:1.35;touch-action:manipulation}
+.pi::after{content:"›";color:var(--gold);font-size:22px;line-height:1}
+.pi:active{background:var(--pink)}
+@media (min-width:700px){.pl{grid-template-columns:repeat(3,1fr)}}
+#sheet{position:fixed;inset:0;z-index:90;display:none}#sheet.on{display:block}
+#sheet .sbd{position:absolute;inset:0;background:rgba(0,0,0,.45)}
+#sheet .sp{position:absolute;left:0;right:0;bottom:0;max-width:640px;margin:auto;background:#fff;border-radius:22px 22px 0 0;padding:20px 18px calc(env(safe-area-inset-bottom,0px) + 22px);max-height:78vh;overflow:auto;animation:sup .2s ease-out;box-shadow:0 -6px 24px rgba(0,0,0,.2)}
+@keyframes sup{from{transform:translateY(28px);opacity:0}}
+#sheet .sx{position:absolute;right:12px;top:10px;width:38px;height:38px;border-radius:50%;border:0;background:var(--pink);color:var(--red);font-size:18px;cursor:pointer}
+#sheet h3{font-size:20px;color:var(--red);padding-right:44px;line-height:1.35}
+#sheet .ko{color:var(--sub);font-size:14px;margin-bottom:4px}
+#sheet .sr{display:flex;gap:10px;margin:10px 0;line-height:1.6}#sheet .sr>span{flex:none;font-size:18px}#sheet .sr small{display:block;color:var(--sub);font-size:12px}
+#sheet .sbt{display:flex;gap:8px;margin-top:14px}#sheet .sbt .b{font-size:15px;padding:8px 18px}
+.pi span small{display:block;font-size:12px;color:var(--sub);line-height:1.3;margin-top:1px}
+/* 導覽列：兩排、全部功能一次看清楚 */
+header nav{display:grid;grid-template-columns:repeat(6,1fr);gap:5px;overflow:visible;padding:6px 8px;-webkit-mask-image:none;mask-image:none}
+header nav a{display:block;text-align:center;white-space:nowrap;font-size:clamp(11px,3.3vw,14px);line-height:1.3;padding:5px 0;border-radius:12px}
+html{scroll-padding-top:92px}
+main{padding-top:calc(88px + env(safe-area-inset-top,0px))}
+@media (min-width:700px){header nav{grid-template-columns:repeat(12,1fr)}html{scroll-padding-top:64px}main{padding-top:calc(56px + env(safe-area-inset-top,0px))}}
+
+/* ===== 版面優化 v2 ===== */
+html{scroll-padding-top:calc(60px + env(safe-area-inset-top,0px))}
+main{padding-top:calc(56px + env(safe-area-inset-top,0px))}
+section{margin-top:40px}
+h2{display:flex;align-items:center;gap:10px;font-size:23px;margin-bottom:14px}
+h2::after{content:"";flex:1;height:2px;background:repeating-linear-gradient(90deg,var(--gold) 0 6px,transparent 6px 12px);opacity:.55}
+/* 導覽列：單排橫滑 */
+header nav{display:flex;gap:6px;overflow-x:auto;padding:7px 12px}
+header nav a{flex:none;font-size:14px;padding:5px 14px;border-radius:99px;white-space:nowrap}
+/* 每日行程：日期列改成區塊內的黏頂橫列 */
+/* 時間軸：左側時間標籤＋右側內容 */
+.tl{border-left:0;padding-left:0;margin-left:0}
+.tl::before{content:"";position:absolute;left:39px;top:10px;bottom:10px;border-left:2px dotted var(--gold)}
+.tl li{display:grid;grid-template-columns:54px 1fr;gap:12px;align-items:start;padding:10px 12px;margin-bottom:8px}
+.tl li::before{display:none}
+.tl .tm{color:#fff;background:var(--red);border-radius:10px;text-align:center;font-size:14px;margin:0;padding:1px 0;line-height:1.6}
+.tl .tc{min-width:0}
+.note{background:#fff1ee;border-left:4px solid var(--red);border-radius:4px 12px 12px 4px}
+/* 航班：登機證風格 */
+.fl{align-items:flex-start;margin:8px 0 4px}
+.fl big{font-size:30px;line-height:1.2}
+.fl>div:nth-child(2){flex:1;align-self:center;text-align:center;color:var(--sub);font-size:13px;border-top:2px dashed var(--gold);padding-top:2px;margin:0 4px}
+/* 大綱：日期＋說明＋標籤分行 */
+.card{border-radius:20px;padding:16px}
+.btns .b{padding:4px 12px}
+main{zoom:var(--z,1)}
+#fs{position:fixed;left:calc(env(safe-area-inset-left,0px) + 8px);bottom:calc(env(safe-area-inset-bottom,0px) + 14px);z-index:45;width:46px;height:46px;border-radius:50%;border:2px solid var(--gold);background:#fff;color:var(--red);font-family:inherit;font-size:17px;box-shadow:0 3px 10px rgba(120,60,40,.2);cursor:pointer;touch-action:manipulation}
+.kp{display:block;color:var(--sub);font-size:13px}
+/* ===== v3 重新排版 ===== */
+.hn{display:flex;flex-direction:column;gap:0;margin-bottom:10px}.hn .ko{font-size:21px;line-height:1.35;color:var(--ink)}.hn span{font-size:14px;color:var(--sub)}.hn.ha .ko{font-size:17px}
+.kv{display:grid;grid-template-columns:64px 1fr;gap:8px;padding:8px 0;border-top:1px dashed var(--line);font-size:14px;line-height:1.6}.kv small{color:var(--sub);font-size:13px}.kv a{color:var(--red)}
+details.card{padding:0}details.card>summary,.td>summary{cursor:pointer;list-style:none;font-weight:bold;font-size:17px;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;gap:8px}
+details>summary::-webkit-details-marker{display:none}details>summary::after{content:"＋";color:var(--gold);font-size:18px}details[open]>summary::after{content:"－"}
+details.card>.info,details.card>p{padding:0 16px 14px}details.card>.info{margin-top:0}
+.fold{margin-top:12px}#tips .grid{display:block}#tips details.card{margin-bottom:8px}
+.card.todo{padding:6px 10px}.td{border-bottom:1px dashed var(--line)}.td:last-child{border:0}.td>summary{padding:10px 4px;font-size:16px;color:var(--ink)}.td>summary small{color:var(--sub);font-weight:normal;margin-left:4px;flex:1}.td label{padding-left:4px}.td[open]{padding-bottom:6px}
+
+/* ===== v4 重新排版 ===== */
+.rate{font-size:13px;color:var(--sub);margin:-4px 0 10px}
+section{margin-top:34px}
+.ko{font-weight:bold}
+/* 航班 */
+.bp .bph{display:flex;align-items:center;gap:8px;font-size:15px}.bp .al{margin-left:auto;color:var(--sub);font-size:13px}
+.bp .fl{align-items:center;margin:10px 0 6px}.bp .fl>div:first-child,.bp .fl>div.r{display:flex;flex-direction:column;line-height:1.35;min-width:84px}.bp .fl>div.r{text-align:right;align-items:flex-end}
+.bp .fl big{font-size:28px;line-height:1.1}.bp .fl span{font-size:12px;color:var(--sub)}.bp .fl b{font-size:22px;color:var(--ink)}
+.bp .fl .mid{flex:1;text-align:center;color:var(--sub);font-size:12px;border-top:2px dashed var(--gold);padding-top:2px;margin:0 4px}
+.bp small{color:var(--sub);font-size:12.5px}
+.bag{margin-top:12px}.bag>b{font-size:17px}
+.bagt td:first-child{white-space:nowrap}.bagt td:last-child{text-align:left;color:var(--ink);font-weight:normal;font-size:14px}.bagt small{color:var(--sub);font-size:12px}
+/* 飯店／租車 折疊卡 */
+details.hotel>summary{padding:14px 16px;font-weight:normal}
+details.hotel .hn{margin:0}details.hotel .hn .ko{font-size:21px}
+.hbody{padding:0 16px 16px}
+.blk{padding:10px 0;border-top:1px dashed var(--line);font-size:14px;line-height:1.7}
+.blk .lb{font-size:12.5px;color:var(--sub);margin-bottom:2px}
+.blk .tel{font-size:19px;text-decoration:none;font-weight:bold}
+.blk small{color:var(--sub);font-size:12.5px}
+.blk .hn.ha .ko{font-size:17px}
+.bt{border:0;font-family:inherit;cursor:pointer}.bt.dk{background:#3b2a2a}.bt.gd{background:#e8a93a}
+/* 行程（大綱＋每日合一） */
+#days{display:grid;gap:8px;margin-top:8px}
+.dy{background:#fff;border:1.5px solid var(--line);border-radius:16px;overflow:hidden}
+.dy.on{border-color:var(--red);box-shadow:0 3px 0 var(--line)}
+.dr{display:flex;align-items:center;gap:8px;width:100%;text-align:left;font-family:inherit;color:var(--ink);background:none;border:0;padding:10px 12px;cursor:pointer;touch-action:manipulation}
+.dr b{flex:none;min-width:50px;color:var(--red);font-size:15px}
+.dr .ds{flex:1;min-width:0;font-size:14px;line-height:1.45}
+.dr .tg{display:flex;flex-direction:column;align-items:flex-end;gap:2px}
+.dr .pill{white-space:nowrap;font-size:11px;line-height:1.5;padding:0 8px}.dr .pill.tw{background:var(--mint);color:#2c7a54}
+.dr::after{content:"＋";color:var(--gold);font-size:18px;flex:none}
+.dy.on .dr{background:linear-gradient(135deg,#d7373f,#e5663f);color:#fff}
+.dy.on .dr b,.dy.on .dr::after{color:#fff}.dy.on .dr::after{content:"－"}
+.dy.on .dr .pill{background:#fff;color:var(--red)}.dy.on .dr .pill.tw{color:#2c7a54}
+.dp{padding:12px}.dp[hidden]{display:none}
+.dp h3{font-size:16px;color:var(--red);margin-bottom:8px}
+.dn{display:flex;gap:8px;margin-top:10px}.dn button{flex:1;font-family:inherit;font-size:14px;border:2px solid var(--line);background:#fff8ef;color:var(--ink);border-radius:12px;padding:6px;cursor:pointer}
+.dn button:only-child{flex:none;min-width:50%;margin-left:auto}
+.ab{margin:0 0 6px}.ab button{margin-bottom:4px}
+.tl{margin:0;padding:0}.tl::before{left:39px}
+/* 價格 */
+#price .card{font-size:12.5px}
+#price .pt{font-size:21px;line-height:1.35;font-weight:bold;display:block;margin-bottom:2px}
+#price .ps{display:block;color:var(--sub);font-size:12px;line-height:1.5}
+#price .big-p{font-size:17px;line-height:1.6}
+#price .card small{font-size:11.5px}
+#price .info{margin-top:6px}#price .info li{font-size:12.5px;margin-bottom:3px;line-height:1.6}
+#price .ptb td{font-size:12.5px;padding:4px 6px}
+#price .grid{margin-top:10px}
+#fx.card,.fxc{margin-bottom:4px}
+/* 微調 */
+.info{padding:0}
+.blk a:not(.b){color:var(--red)}
+.dr{flex-wrap:wrap}.dr::after{order:2}
+.dr .tg{order:3;flex-basis:100%;flex-direction:row;justify-content:flex-start;gap:4px;padding-left:58px;margin-top:-2px}
+.tl .btns{margin:0 0 0 4px}.tl .btns .b{font-size:12px;padding:0 9px}
+/* 導覽列兩排 */
+header nav{display:grid;grid-template-columns:repeat(6,1fr);gap:5px;overflow:visible;padding:6px 8px}
+header nav a{display:block;text-align:center;white-space:nowrap;font-size:clamp(11px,3.1vw,14px);line-height:1.4;padding:4px 0;border-radius:12px}
+html{scroll-padding-top:calc(88px + env(safe-area-inset-top,0px))}
+main{padding-top:calc(88px + env(safe-area-inset-top,0px))}
+/* 名稱層級：韓文最大、中文次之、英文最小 */
+.hn .zh{font-size:16px;color:var(--ink)}.hn .en{font-size:12px;color:var(--sub)}.hn.ha .zh{font-size:15px}
+.pi span small{font-size:13px}
+section{margin-top:30px}
+/* App */
+#apps .card{padding:12px}#apps .card span{font-size:12.5px;line-height:1.5;color:var(--sub)}
+/* 左右滑動區（價格、App） */
+.swipe{margin:0 -14px;padding:2px 14px 8px;scroll-padding-left:14px;overscroll-behavior-x:contain}
+.swipe .slide{width:min(86%,400px);scroll-snap-stop:always}
+#apps .swipe .slide{width:min(72%,270px)}
+#price .swipe{margin-top:6px}
+.swipe .card{margin-bottom:0}
+.hint{font-size:12.5px;color:var(--sub);text-align:center;margin:8px 0 2px}
+.dots{display:flex;justify-content:center;gap:6px;margin:2px 0 4px}
+.dots{align-items:center}.dots .sa{border:1.5px solid var(--line);background:#fff;color:var(--red);width:30px;height:30px;border-radius:50%;font-size:20px;line-height:1;cursor:pointer;font-family:inherit;padding:0 0 3px;touch-action:manipulation}
+.dots i{cursor:pointer;width:7px;height:7px;border-radius:50%;background:var(--line);transition:background .2s,transform .2s}
+.dots i.on{background:var(--red);transform:scale(1.25)}
+.mapbtn{font-size:15px;padding:7px 18px}
+.hn .hph{font-size:12px;color:var(--red);text-decoration:none;margin-top:2px;align-self:flex-start}
+/* 窄手機（320px）導覽列文字縮小，不擠邊 */
+@media (max-width:359px){header nav{gap:4px;padding:6px 6px}header nav a{font-size:10px;letter-spacing:-.3px}}
+/* 橫放手機：導覽列不固定，讓出畫面高度 */
+@media (max-height:500px) and (orientation:landscape){header{position:absolute}}
+</style>
+</head>
+<body>
+<header><nav>
+<a href="#fx">換算</a><a href="#flight">航班</a><a href="#hotel">住宿</a><a href="#plan">行程</a><a href="#price">價格</a><a href="#todo">待辦</a><a href="#tips">注意</a><a href="#food">美食景點</a><a href="#phr">韓語</a><a href="#apps">App</a>
+</nav></header>
+<main>
+<div class="hero">
+<img class="hero-bg" src="images/seoul-2027/hero.jpg" alt="雪中的北村韓屋與南山首爾塔"><svg class="ln" viewBox="0 0 300 120" aria-hidden="true"><g stroke="#e8a93a" stroke-width="2"><path d="M30 0v26M270 0v40"/></g><g><ellipse cx="30" cy="48" rx="17" ry="21" fill="#d7373f"/><rect x="21" y="67" width="18" height="5" rx="2" fill="#e8a93a"/><path d="M30 72v22" stroke="#e8a93a" stroke-width="2"/><ellipse cx="270" cy="62" rx="17" ry="21" fill="#d7373f"/><rect x="261" y="81" width="18" height="5" rx="2" fill="#e8a93a"/><path d="M270 86v22" stroke="#e8a93a" stroke-width="2"/></g></svg><div class="seal">春節<br>快樂</div><div class="eyebrow">SEOUL ・ LUNAR NEW YEAR 2027</div>
+<h1>🧧 2027 首爾春節自由行</h1>
+<p>2/3（三）～2/8（一）｜6天5夜｜6大3小・共9人</p>
+<div class="cd" id="cd"></div>
+<p id="cdnote" style="margin-top:6px"></p>
+</div>
+
+<section id="fx"><h2>💱 韓元快速換算</h2>
+<div class="card fx">
+<div class="fxrow"><label>₩ 韓元<input id="fxk" type="text" inputmode="decimal" placeholder="0" autocomplete="off"></label><span class="fxeq">⇄</span><label>NT$ 台幣<input id="fxt" type="text" inputmode="decimal" placeholder="0" autocomplete="off"></label></div>
+<p class="fxrate" id="fxrate">匯率載入中…</p>
+<div class="fxq" id="fxq"></div>
+</div></section>
+
+
+<section id="flight"><h2>✈️ 航班與行李</h2>
+<div class="grid">
+<div class="card bp"><div class="bph"><span class="pill">去程</span>2/3（三）<span class="al">大韓航空 KE2032</span></div>
+<div class="fl"><div><big>RMQ</big><span>臺中 T2</span><b>17:50</b></div><div class="mid">2 小時 40 分</div><div class="r"><big>ICN</big><span>仁川 T2</span><b>21:30</b></div></div>
+<small>空中巴士 A220-300（中型）｜經濟艙｜含餐點</small></div>
+<div class="card bp"><div class="bph"><span class="pill">回程</span>2/8（一）<span class="al">大韓航空 KE2031</span></div>
+<div class="fl"><div><big>ICN</big><span>仁川 T2</span><b>14:15</b></div><div class="mid">3 小時 10 分</div><div class="r"><big>RMQ</big><span>臺中 T2</span><b>16:25</b></div></div>
+<small>空中巴士 A220-300（中型）｜經濟艙｜含餐點</small></div>
+</div>
+<p class="rate" style="margin:8px 0 0">🕒 時間皆為當地時間，韓國比台灣快 1 小時。</p>
+<div class="btns" style="margin-top:10px"><button class="b bt gd" data-sh="bag">🧳 行李規定</button></div>
+</section>
+
+<section id="hotel"><h2>🏨 住宿</h2>
+<details class="card hotel"><summary><div class="hn"><b class="ko">트래블로지 명동 남산 호텔</b><span class="zh">首爾明洞南山彩鴻酒店</span><span class="en">Travelodge Myeongdong Namsan</span><a class="hph" href="tel:+82264705000" onclick="event.stopPropagation()">📞 +82 2 6470 5000</a><div class="btns" style="margin-top:6px"><a class="b g" target="_blank" rel="noopener" onclick="event.stopPropagation()" href="https://www.google.com/maps/search/?api=1&query=%ED%8A%B8%EB%9E%98%EB%B8%94%EB%A1%9C%EC%A7%80%20%EB%AA%85%EB%8F%99%20%EB%82%A8%EC%82%B0%20%ED%98%B8%ED%85%94">Google Map</a><a class="b" target="_blank" rel="noopener" onclick="event.stopPropagation()" href="https://map.naver.com/p/search/%ED%8A%B8%EB%9E%98%EB%B8%94%EB%A1%9C%EC%A7%80%20%EB%AA%85%EB%8F%99%20%EB%82%A8%EC%82%B0%20%ED%98%B8%ED%85%94">Naver Map</a></div></div></summary>
+<div class="hbody">
+<div class="blk"><div class="hn ha"><b class="ko">서울특별시 중구 수표로 16</b><span class="zh">中區水標路 16 號</span><span class="en">16, Supyo-ro, Jung-gu, Seoul, South Korea</span></div>
+<div class="btns"><button class="b bt dk" id="hbig">放大給人看</button></div></div>
+<div class="blk"><div class="lb">📞 飯店電話</div><a class="tel" href="tel:+82264705000">+82 2 6470 5000</a></div>
+<div class="blk"><div class="lb">🕒 入住時間</div>入住 14:00　退房 12:00<br><small>2/3 班機 21:30 抵達，預計 2/4 凌晨 00:00～01:00 入住；已確認 24 小時櫃檯、2/3 晚房間保留。</small></div>
+<div class="blk"><div class="lb">🛏 本次住宿</div>2/3（三）入住 → 2/8（一）退房，5 晚，Trip.com 預訂<br><small>3 間房：四人房 ×2、高級雙床房 ×1（全部已確認），房價不含早餐。</small></div>
+<div class="btns" style="margin-top:6px"><button class="b bt gd" data-sh="bk">🍳 飯店早餐</button><button class="b bt gd" data-sh="map">🗺 周邊地圖</button></div>
+</div></details></section>
+
+
+<section id="plan"><h2>🗓 行程</h2>
+<div class="btns" style="margin:0 0 10px"><button class="b bt gd mapbtn" data-sh="seoul">🗺 首爾地圖</button></div>
+<p class="rate">點任一天，直接看當天行程</p>
+<div id="days"></div></section>
+
+<section id="price"><h2>💰 價格參考</h2>
+<p class="rate" style="margin:10px 0 0">下列價格的台幣以臺灣銀行 11/18 現鈔賣出價 ₩1 ≈ NT$0.0269 概算。</p>
+<p class="hint">← 左右滑動看更多 →</p>
+<div class="swipe" data-dots>
+<div class="card slide"><span class="pt">🚐 去程接機｜2/3</span><span class="ps">仁川機場 → 明洞飯店，12 人座包車</span><span class="big-p">約 ₩176,000 <small>≈ NT$4,734</small></span>
+<ul class="info"><li>12 人座可載 12 人、16 件大行李，9 人 9 件夠放。</li><li>21:30 落地、約 22:00 集合，包車不受地鐵收班影響。</li><li>價格依平台與日期變動，22:00 後是否加價請預訂時確認。</li></ul></div>
+<div class="card slide"><span class="pt">🚆 回程｜2/8</span><span class="ps">明洞 → 仁川機場 T2，大眾交通（14:15 起飛，白天搭乘）</span><span class="big-p">約 ₩55,000～60,000 <small>≈ NT$1,480～1,610（9 人）</small></span>
+<ul class="info"><li>AREX 普通列車約 ₩4,450～5,050／人，加地鐵段約 ₩1,500～1,600／人；首爾站到 T2 約 51 分鐘，兒童可能更便宜。</li><li>預約直達列車每人約 ₩9,000～13,000。</li><li>普通列車沒有行李架，9 件大行李人多時會擠；春節隔天請預留較多時間。</li></ul></div>
+<div class="card slide"><span class="pt">🚗 租車｜2/5 Plan A</span><span class="ps">樂天租車首爾車站店，九人座</span><span class="big-p">約 ₩250,000 <small>／12 小時 ≈ NT$6,720</small></span>
+<ul class="info"><li>不含油錢、過路費、停車費。</li></ul></div>
+<div class="card slide"><span class="pt">🚇 氣候同行卡</span><span class="ps">기후동행카드｜首爾地鐵＋市區公車，期間內無限搭乘</span>
+<table class="ptb"><tr><td>1 日券</td><td>₩5,000<small>≈ NT$134</small></td></tr><tr><td>2 日券</td><td>₩8,000<small>≈ NT$215</small></td></tr><tr><td>3 日券</td><td>₩10,000<small>≈ NT$269</small></td></tr><tr class="hl"><td>5 日券（建議）</td><td>₩15,000<small>≈ NT$403</small></td></tr></table>
+<ul class="info"><li>實體卡另有卡片費約 ₩3,000（≈ NT$81），以現場為準。</li><li>充值當天起算，<b>無法預先充值</b>。</li><li>可用海外信用卡／行動支付在地鐵站機台購買，加收約 <b>3.7%</b> 服務費。</li></ul></div>
+<div class="card slide"><span class="pt">💳 T-money 交通卡</span><span class="ps">全國地鐵、公車、計程車通用</span>
+<table class="ptb"><tr><td>卡片費（不退）</td><td>₩3,000～5,000<small>≈ NT$81～134</small></td></tr><tr><td>退餘額手續費</td><td>₩500<small>≈ NT$13</small></td></tr></table>
+<ul class="info"><li>便利商店（GS25、CU、7-Eleven）、機場、地鐵站買得到，₩1,000 起儲值。</li><li>iPhone 可用 MobileTmoney App 加入 Apple Wallet；註冊偶有不順，建議先測試並備一張實體卡。</li><li>餘額可退：便利商店約 ₩20,000 以下，超過到地鐵服務中心。</li><li>6～12 歲需用登記的兒童卡才算兒童票，請現場確認。</li></ul></div>
+<div class="card slide"><span class="pt">💳 WOWPASS</span><span class="ps">外國旅客預付卡｜換匯＋付款＋可轉入 T-money</span>
+<table class="ptb"><tr><td>首次發卡費</td><td>₩5,000<small>≈ NT$134</small></td></tr><tr><td>餘額提領手續費</td><td>₩1,000／次<small>≈ NT$27，每次最多 ₩100,000</small></td></tr></table>
+<ul class="info"><li>機場、明洞、地鐵站有機台可換匯（含新台幣）；也能用 App 以 Mastercard／JCB 儲值（每次上限 ₩200,000）。</li><li>可在接受韓國本地卡的店家刷卡，不另收服務費；仍建議帶少量現金給只收現金的攤販。</li><li>⚠️ <b>餘額不能直接刷地鐵</b>，需先在機台或 App 轉入 T-money（單向）。</li><li>匯率不一定比其他方式便宜，出發前可比價；遺失可在 App 暫停卡片。</li></ul></div>
+</div></section>
+
+<section id="todo"><h2>✅ 待辦清單</h2><div class="card todo" id="todolist"></div></section>
+
+<section id="tips"><h2>🧣 旅遊與入境注意事項</h2>
+<div class="grid">
+<details class="card fold"><summary>🛂 入境與證件</summary><ul class="info"><li>護照效期建議 6 個月以上，全員確認。</li><li>出發前至官方網站確認 K-ETA、Q-CODE 與電子入境卡等最新規定。</li><li>肉製品、蔬果等禁止攜帶入境，海關申報須誠實。</li></ul></details>
+<details class="card fold"><summary>❄️ 冬季穿著與安全</summary><ul class="info"><li>2 月首爾約 -8～3°C，洋蔥式穿搭、暖暖包、手套、帽子。</li><li>準備防滑鞋，清溪川與韓屋區地面易結冰。</li><li>室內暖氣強，可脫式外套較方便；護唇膏與保濕必備。</li><li>玩雪備防水外套、防水手套、替換襪子。</li></ul></details>
+<details class="card fold"><summary>🔌 電壓與插頭</summary><ul class="info"><li>韓國 220V／60Hz，台灣 110V；插頭為圓兩孔（C/F 型），需轉接頭。</li><li>手機、相機充電器多半支援 100–240V；吹風機、電棒等不支援者勿直接使用。</li></ul></details>
+<details class="card fold"><summary>💸 退稅說明</summary><ul class="info"><li>資格：外國旅客（在韓國停留未滿 6 個月），在有「TAX FREE」標示的店家，單筆含稅消費滿 ₩15,000，購買後 3 個月內帶出境，商品出境前不可拆封或使用。</li><li>結帳時出示護照，向店家索取<b>退稅單</b>（不是一般收據）；多數店家需人工結帳，部分品牌只有部分分店可退稅。</li><li>實際可退金額約為含稅價的 5～8%，不是完整的 10%。</li><li>有些店結帳時直接扣稅（即時退稅）；其餘先付含稅價，再到市區退稅櫃台、機場或指定 App 辦理。</li><li>事後退稅：依 Creatrip 整理，單筆可退稅額未滿 ₩75,000 可用市區或機場退稅機台自行辦理；超過要在機場海關確認商品後才能領退稅。需檢查的商品建議託運前先辦，並提早抵達機場，以機場現場公告為準。</li><li>醫美：據 Creatrip 說明，2026 年起醫美服務不再列入退稅，2/4 的醫美請先向診所確認。</li><li>免稅店（Duty Free）的標價已扣稅，不需要再退稅。</li></ul></details>
+<details class="card fold"><summary>💾 離線使用</summary><ul class="info"><li>出發前用 Safari／Chrome 開啟網址一次，網站會自動存在手機；iPhone 可「分享 → 加入主畫面」。</li><li>地圖圖片、行程、待辦可離線看；字體、Google／Naver 地圖與 App Store 連結仍需網路。</li><li>用「檔案」App 或 LINE 內建瀏覽器開啟時無法離線快取，請改用 Safari／Chrome。</li><li>備案：自行截圖行程，或把頁面存成 PDF。</li></ul></details>
+</div></section>
+
+<section id="food"><h2>🍜 美食與景點</h2>
+<div class="seg" id="seg"><button class="on" data-p="f">🍜 首爾美食</button><button data-p="s">🏯 備用景點</button></div>
+<div id="pf"><div class="tabs" id="ftabs"></div><div class="grid" id="flist"></div>
+</div>
+<div id="ps" hidden><div class="tabs" id="stabs"></div><div class="grid" id="slist"></div>
+<p class="note">以上為備案。「全天」僅指戶外公共空間可通行，不代表附屬設施營業。</p></div></section>
+<section id="phr"><h2>🗣 常用韓語</h2><div class="tabs" id="ptabs"></div><div class="pl" id="plist"></div><p class="note">點任一句會放大全螢幕，直接給司機或店員看。</p></section>
+<div id="sheet"><div class="sbd"></div><div class="sp"><button class="sx" aria-label="關閉">✕</button><div id="sbody"></div></div></div>
+<div id="big"><b></b><small></small></div>
+<section id="apps"><h2>📱 韓國常用 App</h2><p class="hint">← 左右滑動看更多 →</p><div class="swipe" data-dots><div class="card item slide"><b>Naver Map</b><span>韓國最準的地圖，步行、大眾運輸、店家資訊首選（有中文）</span><div class="btns"><a class="b" style="background:#3b2a2a" target="_blank" rel="noopener" href="https://apps.apple.com/tw/app/id311867728"> iOS 下載</a></div></div><div class="card item slide"><b>KakaoMap</b><span>地鐵與公車即時到站、路線規劃，與 Naver 互補</span><div class="btns"><a class="b" style="background:#3b2a2a" target="_blank" rel="noopener" href="https://apps.apple.com/tw/app/id304608425"> iOS 下載</a></div></div><div class="card item slide"><b>Kakao T</b><span>叫計程車（機場、9人分車可用），可綁海外信用卡</span><div class="btns"><a class="b" style="background:#3b2a2a" target="_blank" rel="noopener" href="https://apps.apple.com/tw/app/id981110422"> iOS 下載</a></div></div><div class="card item slide"><b>Papago</b><span>Naver 翻譯，支援繁中、相機翻譯菜單</span><div class="btns"><a class="b" style="background:#3b2a2a" target="_blank" rel="noopener" href="https://apps.apple.com/tw/app/id1147874819"> iOS 下載</a></div></div><div class="card item slide"><b>Google 翻譯</b><span>離線翻譯與相機即時翻譯，可當備案</span><div class="btns"><a class="b" style="background:#3b2a2a" target="_blank" rel="noopener" href="https://apps.apple.com/tw/app/id414706506"> iOS 下載</a></div></div><div class="card item slide"><b>Google 地圖</b><span>查營業時間與評論，韓國路線導航較不準，建議搭配 Naver</span><div class="btns"><a class="b" style="background:#3b2a2a" target="_blank" rel="noopener" href="https://apps.apple.com/tw/app/id585027354"> iOS 下載</a></div></div></div><p class="note">連結為 iOS App Store。部分 App 需先註冊，建議出發前安裝並登入。</p></section>
+<footer>🧧 新年快樂 새해 복 많이 받으세요 🧧</footer>
+</main>
+
+<div class="daybar" id="daybar"><div id="dbtn"></div></div>
+<button id="fs" aria-label="調整字體大小">Aa</button>
+<div id="lb"><img alt="放大圖片"><div class="lbc"><button id="lbz1" aria-label="縮小">−</button><button id="lbz2" aria-label="放大">+</button><button id="lbx" aria-label="關閉">✕</button></div><div class="lbh">雙指縮放・拖曳移動・連點兩下放大</div></div>
+<script>
+(function(){
+ var id=new URLSearchParams(location.search).get('t')||'seoul-2027';
+ if(!/^[\w-]+$/.test(id))id='seoul-2027';
+ function fail(m){document.body.insertAdjacentHTML('afterbegin','<p style="padding:16px;font:16px sans-serif">'+m+'</p>')}
+ fetch('trips/'+id+'.json',{cache:'no-cache'}).then(function(r){if(!r.ok)throw 0;return r.json()}).then(function(d){
+  window.TRIP=d;var s=document.createElement('script');s.src='app.js';s.onerror=function(){fail('程式載入失敗，請重新整理。')};document.body.appendChild(s)
+ }).catch(function(){fail('行程資料載入失敗，請確認網路後重新整理。（直接開本機檔案無法讀取資料，請用網址開啟）')});
+})();
+</script>
+</body>
+</html>
