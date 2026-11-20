@@ -232,3 +232,32 @@ html.th-fuji{
 .th-fuji .hero.bare .hero-bg{order:4;border-top:2px solid var(--ink);border-bottom:2px solid var(--ink)}
 .th-fuji .hero.bare .seal{order:0}
 .th-fuji .hero.bare .go{order:5;margin-top:16px}
+
+
+/* ===== 機票區塊：可愛登機證（只影響東京）===== */
+.th-fuji #flight .bp{position:relative;overflow:hidden;padding:0 0 14px;border-radius:20px}
+/* 上方彩色票頭：去程天藍、回程珊瑚 */
+.th-fuji #flight .bp .bph{position:relative;padding:12px 16px 12px;background:var(--sky);color:#fff;border-bottom:2px dashed var(--ink);font-weight:700}
+.th-fuji #flight .grid>.bp:nth-child(2) .bph{background:var(--seal)}
+.th-fuji #flight .bp .bph .pill{background:#fff;color:var(--ink);border:1.5px solid var(--ink)}
+.th-fuji #flight .bp .bph .al{color:#fff;font-weight:500;opacity:.95}
+.th-fuji #flight .bp .bph::after{content:"";position:absolute;right:-6px;top:-10px;width:70px;height:35px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 40'%3E%3Cg fill='%23fff' stroke='%2324324a' stroke-width='3'%3E%3Ccircle cx='24' cy='26' r='12'/%3E%3Ccircle cx='40' cy='18' r='15'/%3E%3Ccircle cx='57' cy='26' r='11'/%3E%3C/g%3E%3Cg fill='%23fff'%3E%3Ccircle cx='24' cy='26' r='12'/%3E%3Ccircle cx='40' cy='18' r='15'/%3E%3Ccircle cx='57' cy='26' r='11'/%3E%3C/g%3E%3C/svg%3E") center/contain no-repeat;opacity:.95;pointer-events:none}
+.th-fuji #flight .bp .bph .al{position:relative;z-index:1;margin-right:34px}
+/* 機場代號：圓圓的貼紙 */
+.th-fuji #flight .fl{margin:16px 16px 10px}
+.th-fuji #flight .fl big{font-family:var(--sans);font-weight:700;font-size:clamp(22px,7vw,28px);letter-spacing:.06em;color:var(--ink);background:var(--goldl);border:2px solid var(--ink);border-radius:12px;padding:2px 10px;box-shadow:var(--pop2);margin-bottom:4px}
+.th-fuji #flight .fl>div.r big{background:#dff2fd}
+.th-fuji #flight .fl b{font-family:var(--sans);font-weight:700;color:var(--ink)}
+.th-fuji #flight .fl span{font-size:13px}
+/* 中間：飛機沿著虛線飛 */
+.th-fuji #flight .fl .mid{position:relative;border-top:0;padding-top:30px;font-size:12.5px;color:var(--sub)}
+.th-fuji #flight .fl .mid::before{content:"";position:absolute;left:4px;right:4px;top:16px;border-top:2.5px dotted #9ccfee}
+.th-fuji #flight .fl .mid::after{content:"";position:absolute;left:50%;top:2px;width:44px;height:28px;margin-left:-22px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 40'%3E%3Cg stroke='%2324324a' stroke-width='2.6' stroke-linejoin='round'%3E%3Cpath d='M6,20 Q30,13 58,20 Q30,27 6,20Z' fill='%23ffffff'/%3E%3Cpath d='M28,18 L20,3 L28,3 L40,18Z M28,22 L20,37 L28,37 L40,22Z' fill='%23ff6b57'/%3E%3Cpath d='M8,20 L4,11 L11,11 L15,19Z' fill='%23ff6b57'/%3E%3C/g%3E%3Ccircle cx='46' cy='19' r='2.2' fill='%234fb3ea'/%3E%3Ccircle cx='39' cy='19' r='2.2' fill='%234fb3ea'/%3E%3C/svg%3E") center/contain no-repeat;animation:fly 3.2s ease-in-out infinite}
+@keyframes fly{0%,100%{transform:translate(-6px,1px) rotate(-3deg)}50%{transform:translate(6px,-3px) rotate(3deg)}}
+/* 票根：左右兩個半圓缺口＋虛線 */
+.th-fuji #flight .bp small{position:relative;margin:0 16px;padding-top:10px;border-top:2px dashed #e3d9bf;font-size:13.5px}
+.th-fuji #flight .bp small::before,.th-fuji #flight .bp small::after{content:"";position:absolute;top:-11px;width:20px;height:20px;border-radius:50%;background:var(--bg);border:2px solid var(--ink)}
+.th-fuji #flight .bp small::before{left:-28px}
+.th-fuji #flight .bp small::after{right:-28px}
+.th-fuji #flight>.rate{background:#fff;border:2px solid var(--ink);border-radius:999px;padding:6px 14px;box-shadow:var(--pop2);font-size:14px;display:inline-block}
+@media (prefers-reduced-motion:reduce){.th-fuji #flight .fl .mid::after{animation:none}}
