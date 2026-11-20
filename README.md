@@ -36,7 +36,7 @@
 
 ## 加入主畫面
 
-一定要從該旅程自己的入口頁網址加入（首爾 `/?t=seoul-2027`、港珠澳 `/hk.html`）。舊網址 `index.html?t=hk-2027` 會自動轉到 `hk.html`。
+一定要從該旅程自己的入口頁網址加入（首爾 `/?t=seoul-2027`、港珠澳 `/hk.html`、總覽 `/home.html`，總覽圖示是 `icon-home-*.png` 與 `manifest-home.webmanifest`）。舊網址 `index.html?t=hk-2027` 會自動轉到 `hk.html`。
 若以前從舊網址加入過，請刪掉主畫面上的圖示，再從 `hk.html` 重新加入一次。
 
 ## 更換封面圖
