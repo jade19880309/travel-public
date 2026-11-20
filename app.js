@@ -49,7 +49,8 @@ function listDraw(sel,arr,sea,kind){const box=$(sel);box.className='pl';LD[kind]
  box.innerHTML=arr.map((x,i)=>{const k=kn(kind,x);return `<button class="pi" data-i="${i}"><span>${kind==='f'&&R[x[0]]?'✅ ':''}${k||x[0]}${sea?' 🦐':''}${k&&k!==x[0]?`<small>${x[0]}</small>`:''}${sea&&REG[x[0]]?`<small>📍 ${REG[x[0]]}</small>`:''}</span></button>`}).join('');
  box.onclick=e=>{const b=e.target.closest('.pi');if(b)openSheet(kind,arr[b.dataset.i])}}
 function openSheet(kind,x){
- const f=kind==='f',name=x[0],ko=kn(kind,x),q=/[가-힣]/.test(ko)?ko:name,hg=/[가-힣]/.test(ko);
+ // 美食第 6 欄（可省略）＝指定分店的定位搜尋字，讓地圖直接開到正確分店
+ const f=kind==='f',name=x[0],ko=kn(kind,x),q=(f&&x[5])||(/[가-힣]/.test(ko)?ko:name),hg=/[가-힣]/.test(ko);
  const rows=f?[['🍴','特色',x[2]],['🕒','營業時間',x[3]],['📍','地址',x[4]]]:[['🕒','開放時間',x[1]],['📝','備註',x[2]]];
  if(REG[name])rows.unshift(['📍','區域',REG[name]]);
  $('#sbody').innerHTML='<h3>'+(ko||name)+'</h3>'+(ko&&ko!==name?'<p class="ko">'+name+'</p>':'')

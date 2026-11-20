@@ -1,5 +1,5 @@
 // 2027 首爾春節自由行：離線快取。更新網頁後請把 VERSION 數字加 1，手機才會換成新版。
-const VERSION='v32';
+const VERSION='v33';
 const CACHE='seoul27-'+VERSION;
 const CORE=['./','./index.html','./app.js','./trips/index.json','./trips/seoul-2027.json','./manifest.webmanifest','./icon-180.png','./icon-192.png','./icon-512.png','./icon-maskable-512.png','./images/seoul-2027/day-0.jpg','./images/seoul-2027/day-1.jpg','./images/seoul-2027/day-2a.jpg','./images/seoul-2027/day-2b.jpg','./images/seoul-2027/day-3.jpg','./images/seoul-2027/day-4.jpg','./images/seoul-2027/day-5.jpg','./images/seoul-2027/hero.jpg','./images/seoul-2027/map-hotel.jpg','./images/seoul-2027/map-seoul.jpg'];
 self.addEventListener('install',e=>{
