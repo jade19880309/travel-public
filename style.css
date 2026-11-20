@@ -323,3 +323,7 @@ details[open].card>summary::after{transform:rotate(-135deg);top:31px}
 .wxg.n1 .wxr{font-size:13.5px}
 @media (max-width:380px){.wx{padding:12px 10px}.wxg.n3{gap:7px}.wxg.n3 .wxc{padding:9px 8px 10px}.wxg.n3 .wxt i{font-size:21px}.wxg.n3 .wxt b{font-size:25px}.wxg.n3 .wxr{font-size:11px}.wxg.n3 .wxk{font-size:10.5px;padding:0 6px}}
 @media (min-width:760px){.wx{max-width:820px;margin-left:auto;margin-right:auto}}
+
+/* 高德地圖（大陸地點）：藍色「高」小圖示與按鈕 */
+.mi.a{background:#1e7dff;font:700 13px/1 "PingFang TC","Noto Sans TC",sans-serif}
+.b.am{background:#1e7dff;color:#fff}

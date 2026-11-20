@@ -93,3 +93,6 @@ html.th-bay{
  .th-bay .hero.bare .hero-bg{max-width:820px;margin:0 auto}
  .th-bay .hero.bare>p:first-of-type{margin-top:10px}
 }
+
+/* 高德地圖按鈕：用香檳金，和墨藍的 Google 地圖一眼分得出來 */
+.th-bay .mi.a,.th-bay .b.am{background:var(--gold)}
