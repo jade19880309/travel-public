@@ -74,6 +74,14 @@ footer{text-align:center;color:var(--sub);font-size:15px;margin-top:44px;font-fa
 #cdnote{margin-top:8px;font-size:15px}
 .hero .go{margin:14px auto 0;background:rgba(255,255,255,.95);color:var(--red);font-weight:700}
 @media (max-width:360px){.cd div{min-width:58px}.cd b{font-size:25px}}
+/* 一般封面（首爾）：倒數移到標題下方的天空，縮小成一排，不擋住下方韓屋街景；「看每日行程」留在最下方 */
+.hero:not(.bare) #cdnote{order:1;margin-top:14px;font-size:13px;letter-spacing:.08em;opacity:.95}
+.hero:not(.bare) .cd{order:2;margin-top:6px;gap:6px}
+.hero:not(.bare) .cd div{min-width:52px;padding:4px 4px 3px;border-radius:12px;background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.4)}
+.hero:not(.bare) .cd b{font-size:21px;line-height:1.15}
+.hero:not(.bare) .cd span{font-size:11px}
+.hero:not(.bare) .go{order:3;margin-top:auto}
+
 
 /* ===== 韓元換算 ===== */
 .fx .fxrow{display:flex;align-items:flex-end;gap:10px}
