@@ -7,8 +7,8 @@
   "scope": "./tokyo.html",
   "display": "standalone",
   "orientation": "any",
-  "background_color": "#f7f3e6",
-  "theme_color": "#4e7d4a",
+  "background_color": "#fdf9ee",
+  "theme_color": "#2f9e5b",
   "icons": [
     {
       "src": "icon-tokyo-192.png",

@@ -1,20 +1,21 @@
-/* 東京專用：吉卜力風格的田園配色（不使用任何角色或作品圖像）
-   草原綠、晴空藍、陽光黃土色、罌粟紅點綴；暖白畫紙底，圓潤柔和。
+/* 東京專用：活潑的動漫插畫風（原創插圖，不使用任何既有角色或作品）
+   草地綠、晴空藍、陽光黃、珊瑚紅；深藍粗描邊＋錯位陰影，像貼紙和漫畫格。
+   插圖在 images/tokyo-2027/（富士山、輕井澤橫幅與每日小貼紙）。
    由 tokyo.html 的 <html class="th-fuji"> 套用，首爾、港珠澳不受影響。
    結構沿用 theme-bay.css；改版面時兩個主題檔要一起改。 */
 
 html.th-fuji{
- --bg:#f7f3e6;--card:#fffdf6;--ink:#2e3a2b;--sub:#6b6d5e;--line:#e3dcc6;--soft:#f0ecdc;
- --red:#4e7d4a;--red2:#6d9a5f;--gold:#c9973f;--goldl:#f6ead0;
- --seal:#d0573f;--sky:#7fb3d5;--skyl:#e4f0f7;
- --pink:#fbe9e2;--mint:#ecf1ea;--green:#3f6f57;
- --r:16px;--sh:0 1px 2px rgba(40,32,20,.05),0 10px 26px -12px rgba(40,32,20,.16);
+ --bg:#fdf9ee;--card:#ffffff;--ink:#24324a;--sub:#5f6b7a;--line:#e8e0cb;--soft:#f6f1e2;
+ --red:#2f9e5b;--red2:#48b872;--gold:#f2b630;--goldl:#fff1c9;
+ --seal:#ff6b57;--sky:#4fb3ea;--skyl:#e3f4fd;--line2:#24324a;
+ --pink:#ffe8e3;--mint:#ecf1ea;--green:#3f6f57;
+ --r:18px;--sh:0 1px 2px rgba(40,32,20,.05),0 10px 26px -12px rgba(40,32,20,.16);
  --serif:"Noto Serif TC","Songti TC","PMingLiU",serif
 }
 /* 宣紙底：米白＋極淡紙紋＋上方淡淡的墨暈 */
 .th-fuji body{
  background:
-  radial-gradient(900px 420px at 50% -120px,rgba(78,125,74,.07),transparent 70%) no-repeat,
+  radial-gradient(900px 420px at 50% -120px,rgba(47,158,91,.07),transparent 70%) no-repeat,
   url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .45 0 0 0 0 .38 0 0 0 0 .28 0 0 0 .05 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"),
   var(--bg)}
 .th-fuji header{background:rgba(246,241,231,.93);border-bottom-color:var(--line)}
@@ -28,7 +29,7 @@ html.th-fuji{
 
 /* 區塊標題：明體、墨色筆觸短條、金色細線 */
 .th-fuji h2{font-family:var(--serif);font-weight:700;font-size:22px;letter-spacing:.08em;color:var(--ink)}
-.th-fuji h2::before{content:"";flex:none;width:5px;height:1.1em;border-radius:2px 3px 3px 2px;background:linear-gradient(180deg,var(--red),rgba(78,125,74,.55));transform:skewY(-6deg)}
+.th-fuji h2::before{content:"";flex:none;width:5px;height:1.1em;border-radius:2px 3px 3px 2px;background:linear-gradient(180deg,var(--red),rgba(47,158,91,.55));transform:skewY(-6deg)}
 .th-fuji h2::after{background:linear-gradient(90deg,var(--gold),rgba(168,130,63,0));opacity:.55;height:1px}
 .th-fuji .card{background:var(--card);border-color:var(--line);box-shadow:var(--sh)}
 
@@ -46,7 +47,7 @@ html.th-fuji{
 .th-fuji .hero.bare .cd b{color:var(--red);font-family:var(--serif)}
 .th-fuji .hero.bare .cd span{color:var(--gold);letter-spacing:.1em}
 .th-fuji .hero.bare #cdnote{margin-top:10px;color:var(--sub);text-shadow:none;font-size:14px;letter-spacing:.06em}
-.th-fuji .hero .go{background:var(--red);color:#f6efe0;font-family:var(--serif);letter-spacing:.12em;box-shadow:inset 0 -2px 0 var(--gold),0 8px 18px -10px rgba(78,125,74,.6)}
+.th-fuji .hero .go{background:var(--red);color:#f6efe0;font-family:var(--serif);letter-spacing:.12em;box-shadow:inset 0 -2px 0 var(--gold),0 8px 18px -10px rgba(47,158,91,.6)}
 @media (min-width:760px){.th-fuji .hero.bare{border-radius:0 0 28px 28px}}
 
 /* 按鈕 */
@@ -99,54 +100,86 @@ html.th-fuji{
 .th-fuji .mi.a,.th-fuji .b.am{background:var(--gold)}
 
 
-/* ===== 田園風・簡潔版（只影響東京）===== */
-/* 畫紙底，上方一片淡淡的晴空 */
-.th-fuji body{background:linear-gradient(180deg,var(--skyl),rgba(228,240,247,0) 420px) no-repeat,var(--bg)}
-/* 上方功能列：晴空漸層＋幾朵雲，選中＝草原綠 */
-.th-fuji header{background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='60' viewBox='0 0 220 60'%3E%3Cg fill='%23ffffff' fill-opacity='.75'%3E%3Cellipse cx='40' cy='38' rx='30' ry='14'/%3E%3Cellipse cx='62' cy='30' rx='22' ry='16'/%3E%3Cellipse cx='160' cy='26' rx='26' ry='11'/%3E%3Cellipse cx='178' cy='20' rx='16' ry='11'/%3E%3C/g%3E%3C/svg%3E") right 8px top 2px/220px 60px no-repeat,linear-gradient(180deg,#eaf4fa,rgba(247,243,230,.96));border-bottom:1px solid var(--line)}
-.th-fuji header nav a{border-radius:999px;border-color:var(--line);background:rgba(255,253,246,.92);font-family:var(--serif)}
-.th-fuji header nav a.on{background:var(--red);border-color:var(--red);color:#fffdf2;box-shadow:0 4px 10px -6px rgba(78,125,74,.8)}
-/* 區塊標題：一片葉子＋明體 */
-.th-fuji h2{color:var(--red);letter-spacing:.08em}
-.th-fuji h2::before{width:1em;height:1em;border-radius:0;transform:none;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M4 20C4 10 10 4 21 3c-1 11-7 17-17 17z' fill='%236d9a5f'/%3E%3Cpath d='M4 20 15 9' stroke='%23fffdf6' stroke-width='1.6' stroke-linecap='round'/%3E%3C/svg%3E") center/contain no-repeat;box-shadow:none}
-.th-fuji h2::after{height:1px;background:linear-gradient(90deg,var(--gold),rgba(201,151,63,0));opacity:.55}
-/* 卡片：圓潤、柔和陰影 */
-.th-fuji .card,.th-fuji .dy{border-radius:16px;border:1px solid var(--line);box-shadow:0 1px 2px rgba(60,70,40,.04),0 10px 24px -18px rgba(60,70,40,.35)}
-.th-fuji .dy.on .dr{background:var(--red);color:#fffdf2}
-/* 封面下方：晴空到畫紙的漸層 */
-.th-fuji .hero.bare{background:linear-gradient(180deg,#e9f3f8,var(--bg));border-bottom:1px solid var(--line)}
-.th-fuji .hero .go{border-radius:999px;background:var(--red);box-shadow:0 8px 18px -10px rgba(78,125,74,.7)}
-.th-fuji .hero.bare .cd div{border-radius:14px;border-color:rgba(201,151,63,.45);background:rgba(255,253,246,.9)}
-.th-fuji .hero.bare .cd b{color:var(--red)}
-.th-fuji .hero.bare .cd span{color:var(--gold)}
-/* 方案切換 */
-.th-fuji .plb button{border-radius:14px;border-color:var(--line);background:var(--card)}
-.th-fuji .plb button.on{background:var(--red);border-color:var(--red);box-shadow:0 6px 14px -8px rgba(78,125,74,.8)}
-.th-fuji .plh{font-family:var(--serif);color:var(--sub)}
-.th-fuji .pld{padding-top:10px;border-top:1px dashed var(--line)}
-/* 每日行程：時間用草原綠粗字、當天標題前一個小太陽 */
-.th-fuji .tl::before{display:none}
-.th-fuji .tl .tm{background:none;border:0;color:var(--red);font-weight:700;text-align:left;font-family:var(--serif);font-size:16px}
-.th-fuji .tl li{border-bottom-color:#eee8d6}
-.th-fuji .dp h3{color:var(--red)}
-.th-fuji .dp h3::before{content:"";display:inline-block;width:.5em;height:.5em;margin:0 .45em .1em 0;border-radius:50%;background:var(--gold);box-shadow:0 0 0 3px rgba(201,151,63,.25);vertical-align:middle}
-.th-fuji .note{border-left:3px solid var(--sky);border-radius:4px 12px 12px 4px;background:var(--skyl);color:#33495a}
-.th-fuji .pill{background:#fbe9e2;color:#b2452f}
-.th-fuji .b{border-radius:999px}
+/* ===== 動漫插畫風（只影響東京）===== */
+.th-fuji{--pop:3px 3px 0 var(--ink);--pop2:2px 2px 0 var(--ink)}
+.th-fuji body{background:linear-gradient(180deg,#d9f0fd,rgba(217,240,253,0) 380px) no-repeat,url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='22' height='22'%3E%3Ccircle cx='3' cy='3' r='1.6' fill='%234fb3ea' fill-opacity='.18'/%3E%3C/svg%3E"),var(--bg);background-size:auto,22px 22px,auto}
+/* 標題、按鈕改用黑體粗字，比較活潑 */
+.th-fuji h2,.th-fuji header nav a,.th-fuji .dr b,.th-fuji .dp h3,.th-fuji .tl .tm,.th-fuji .dock button,.th-fuji .hero.bare>p:first-of-type,.th-fuji .hero.bare .cd b,.th-fuji .hero .go,.th-fuji .tabs button,.th-fuji .plh,.th-fuji .pi span small{font-family:var(--sans)}
+/* 上方功能列：藍天漸層 */
+.th-fuji header{background:linear-gradient(180deg,#bfe6fb,#e9f7fe);border-bottom:3px solid var(--ink)}
+.th-fuji header nav a{border-radius:999px;border:2px solid var(--ink);background:#fff;color:var(--ink);font-weight:700;box-shadow:var(--pop2);transition:transform .15s,box-shadow .15s}
+.th-fuji header nav a.on{background:var(--red);border-color:var(--ink);color:#fff;box-shadow:var(--pop2)}
+.th-fuji header nav a:active{transform:translate(2px,2px);box-shadow:none}
+/* 區塊標題：富士山小貼紙＋粗黑體＋虛線 */
+.th-fuji h2{color:var(--ink);font-weight:900;letter-spacing:.06em}
+.th-fuji h2::before{width:1.35em;height:1.35em;border-radius:0;transform:none;background:url(images/tokyo-2027/ic-fuji.svg) center/contain no-repeat;box-shadow:none}
+.th-fuji #hotel h2::before{background-image:url(images/tokyo-2027/ic-forest.svg)}
+.th-fuji #flight h2::before{background-image:url(images/tokyo-2027/ic-plane.svg)}
+.th-fuji #phr h2::before,.th-fuji #fx h2::before{background-image:url(images/tokyo-2027/ic-city.svg)}
+.th-fuji #tips h2::before,.th-fuji #todo h2::before{background-image:url(images/tokyo-2027/ic-van.svg)}
+.th-fuji h2::after{height:0;background:none;border-top:3px dashed rgba(36,50,74,.18);opacity:1}
+/* 卡片：粗描邊＋錯位陰影 */
+.th-fuji .card,.th-fuji .dy{border-radius:18px;border:2.5px solid var(--ink);box-shadow:var(--pop);background:#fff}
+/* 插圖橫幅 */
+.th-fuji .bnr{position:relative;margin:0 0 16px;border:2.5px solid var(--ink);border-radius:20px;overflow:hidden;box-shadow:var(--pop);background:#cdeefe}
+.th-fuji .bnr img{display:block;width:100%;height:auto}
+.th-fuji .bnr figcaption{position:absolute;left:12px;bottom:12px;display:flex;align-items:center;gap:8px;background:#fff;border:2px solid var(--ink);border-radius:999px;padding:4px 14px 4px 6px;box-shadow:var(--pop2);font-size:13.5px;color:var(--sub)}
+.th-fuji .bnr figcaption b{background:var(--seal);color:#fff;border-radius:999px;padding:1px 10px;font-size:14px;letter-spacing:.06em}
+.th-fuji #hotel .bnr figcaption b{background:var(--red)}
+/* 封面下方：藍天漸層 */
+.th-fuji .hero.bare{background:linear-gradient(180deg,#e5f5fe,var(--bg));border-bottom:3px solid var(--ink)}
+.th-fuji .hero.bare .hero-bg{border-bottom:3px solid var(--ink);-webkit-mask-image:none;mask-image:none}
+.th-fuji .hero .go{border-radius:999px;background:var(--seal);color:#fff;border:2.5px solid var(--ink);box-shadow:var(--pop);font-weight:900;letter-spacing:.1em}
+.th-fuji .hero .go:active{transform:translate(3px,3px);box-shadow:none}
+.th-fuji .hero.bare .cd div{border-radius:14px;border:2.5px solid var(--ink);background:#fff;box-shadow:var(--pop2)}
+.th-fuji .hero.bare .cd div:nth-child(1) b{color:var(--seal)}
+.th-fuji .hero.bare .cd div:nth-child(2) b{color:var(--red)}
+.th-fuji .hero.bare .cd div:nth-child(3) b{color:var(--sky)}
+.th-fuji .hero.bare .cd div:nth-child(4) b{color:#e0a114}
+.th-fuji .hero.bare .cd span{color:var(--sub)}
+/* 方案切換：貼紙按鈕 */
+.th-fuji .plb button{border-radius:16px;border:2.5px solid var(--ink);background:#fff;box-shadow:var(--pop2);transition:transform .15s,box-shadow .15s}
+.th-fuji .plb button:active{transform:translate(2px,2px);box-shadow:none}
+.th-fuji .plb button.on{background:var(--red);border-color:var(--ink);box-shadow:var(--pop)}
+.th-fuji .plb button:nth-child(1).on{background:#ff8a3d}
+.th-fuji .plb button:nth-child(4).on{background:var(--sky)}
+.th-fuji .plh{color:var(--sub);font-weight:700}
+.th-fuji .pld{padding-top:10px;border-top:2px dashed var(--line)}
+/* 每日行程：左邊插圖貼紙、展開時整列換色 */
+.th-fuji .dr{display:grid;grid-template-columns:46px auto 1fr;column-gap:10px;row-gap:4px;align-items:center;padding:12px 44px 12px 12px}
+.th-fuji .dr .dic{grid-row:1/span 2;width:46px;height:46px;transition:transform .3s cubic-bezier(.3,1.6,.5,1)}
+.th-fuji .dr b{color:var(--ink);font-weight:900}
+.th-fuji .dr .tg{grid-column:2/4;padding-left:0}
+.th-fuji .dy.on .dr{background:var(--sky);color:#fff;border-bottom:2.5px solid var(--ink)}
+.th-fuji .dy.on .dr b{color:#fff}
+.th-fuji .dy.on .dic{transform:rotate(-10deg) scale(1.08)}
+.th-fuji .dp h3{color:var(--ink);font-weight:900}
+.th-fuji .tl::before{border-left:2.5px dashed #bfe0f2}
+.th-fuji .tl .tm{background:var(--goldl);color:var(--ink);border:2px solid var(--ink);border-radius:10px;font-weight:700}
+.th-fuji .tl li{border-bottom:2px dotted #eee6d2}
+.th-fuji .note{position:relative;border:2.5px solid var(--ink);border-radius:16px;background:#fff8dc;color:var(--ink);box-shadow:var(--pop2)}
+.th-fuji .pill{background:#fff;color:var(--seal);border:2px solid var(--ink);font-weight:700}
+.th-fuji .pill.tw{color:var(--red)}
+.th-fuji .tag{border:1.5px solid var(--ink)}
+.th-fuji .b{border-radius:999px;border:2px solid var(--ink);box-shadow:var(--pop2)}
 .th-fuji .b.bt.dk,.th-fuji .b.bt.gd{background:var(--red)}
-/* 常用日語：手機上單欄，中文大字、日文在下；全螢幕日文可以正常換行 */
-.th-fuji .tabs button{border-radius:999px;background:var(--card);border-color:var(--line);font-family:var(--serif)}
-.th-fuji .tabs button.on{background:var(--red);border-color:var(--red);color:#fffdf2}
+.th-fuji .mi{border:2px solid var(--ink)}
+/* 常用日語 */
+.th-fuji .tabs button{border-radius:999px;background:#fff;border:2px solid var(--ink);font-weight:700;box-shadow:var(--pop2)}
+.th-fuji .tabs button.on{background:var(--seal);color:#fff}
 .th-fuji .pl{grid-template-columns:1fr}
 @media (min-width:760px){.th-fuji .pl{grid-template-columns:1fr 1fr}}
-.th-fuji .pi{border-radius:14px;background:var(--card);border-color:var(--line);min-height:0;padding:12px 14px 12px 16px}
-.th-fuji .pi::after{color:var(--gold)}
-.th-fuji .pi span{font-size:16.5px;font-weight:500}
-.th-fuji .pi span small{font-family:var(--serif);font-size:15px;color:var(--red);margin-top:4px}
-.th-fuji #big{background:#26352a;padding:24px 20px}
-.th-fuji #big b{font-family:var(--serif);font-size:clamp(26px,8.4vw,54px);line-height:1.45;letter-spacing:.03em;word-break:normal;line-break:strict;overflow-wrap:anywhere;max-width:100%}
-.th-fuji #big small{color:#e9f1d8}
+.th-fuji .pi{border-radius:16px;background:#fff;border:2.5px solid var(--ink);box-shadow:var(--pop2);min-height:0;padding:12px 14px 12px 16px;transition:transform .15s,box-shadow .15s}
+.th-fuji .pi:active{transform:translate(2px,2px);box-shadow:none;background:var(--skyl)}
+.th-fuji .pi::after{color:var(--seal);font-weight:700}
+.th-fuji .pi span{font-size:16.5px;font-weight:700}
+.th-fuji .pi span small{font-size:15px;font-weight:500;color:var(--red);margin-top:4px}
+.th-fuji #big{background:#24324a;padding:24px 20px}
+.th-fuji #big b{font-family:var(--sans);font-weight:900;font-size:clamp(26px,8.4vw,54px);line-height:1.45;letter-spacing:.03em;word-break:normal;line-break:strict;overflow-wrap:anywhere;max-width:100%}
+.th-fuji #big small{color:#ffe08a}
 /* 底部日期列 */
-.th-fuji .dock{background:rgba(255,253,246,.97);border-top:1px solid var(--line)}
-.th-fuji .dock button{border-radius:12px}
-.th-fuji .dock button.on{background:var(--red);box-shadow:none}
+.th-fuji .dock{background:#fff;border-top:3px solid var(--ink)}
+.th-fuji .dock button{border-radius:12px;font-weight:700}
+.th-fuji .dock button.on{background:var(--seal);color:#fff;box-shadow:none;border:2px solid var(--ink)}
+.th-fuji #fs{border:2.5px solid var(--ink);box-shadow:var(--pop2)}
+@media (prefers-reduced-motion:reduce){.th-fuji .dic{transition:none}}

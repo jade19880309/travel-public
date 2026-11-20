@@ -66,6 +66,8 @@ const AMI='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5a6.5 6.5 
  if(!Object.keys(S).length&&$('#seg'))$('#seg').remove();
  if(TRIP.phrNote)set('#phr .rate',TRIP.phrNote);
  set('footer',TRIP.footer||'');
+ // 插圖橫幅（可省略）：TRIP.banners={區塊id: HTML}，放在該區塊標題正下方
+ const BN=TRIP.banners||{};Object.keys(BN).forEach(id=>{const h2=$('#'+id+' h2');if(h2)h2.insertAdjacentHTML('afterend',BN[id])});
  // 其他旅程
  fetch('trips/index.json',{cache:'no-cache'}).then(r=>r.json()).then(L=>{const o=L.filter(t=>t.id!==M.id);if(o.length)$('footer').insertAdjacentHTML('beforeend',`<div class="trips">其他旅程：${o.map(t=>`<a href="${t.url||'?t='+t.id}">${t.title}</a>`).join('')}<a href="home.html">全部旅程總覽</a></div>`)}).catch(()=>{});
 })();
@@ -109,7 +111,7 @@ const tagH=x=>String(x||'').split(',').filter(k=>T[k]).map(k=>`<span class="tag"
 // ===== 每日行程 =====
 let day=-1,ab='A'; // 預設全部折疊；旅程期間打開網頁時，下面會自動展開「今天」
 const dbox=$('#days');
-dbox.innerHTML=D.map((d,k)=>{const p=d.t.split(' ');return `<div class="dy" id="dy${k}"><button class="dr" data-k="${k}"><b>${p[0]} ${p[1]}</b><span class="ds">${d.s}</span>${d.g?`<span class="tg"><span class="pill">${d.g[0]}</span>${d.g[1]?`<span class="pill tw">${d.g[1]}</span>`:''}</span>`:''}</button><div class="dp" hidden></div></div>`}).join('');
+dbox.innerHTML=D.map((d,k)=>{const p=d.t.split(' ');return `<div class="dy" id="dy${k}"><button class="dr" data-k="${k}">${d.ic?`<img class="dic" src="${TRIP.icBase||''}${d.ic}.svg" alt="">`:''}<b>${p[0]} ${p[1]}</b><span class="ds">${d.s}</span>${d.g?`<span class="tg"><span class="pill">${d.g[0]}</span>${d.g[1]?`<span class="pill tw">${d.g[1]}</span>`:''}</span>`:''}</button><div class="dp" hidden></div></div>`}).join('');
 function panel(k){
  const d=D[k],items=d.ab?d[ab]:d.i,im=DI[d.ab?k+ab:k],abL=d.abL||['A 方案','B 方案'];
  const tl=items.map(x=>`<li><span class="tm">${x[0]}</span><div class="tc">${x[1]}${tagH(x[2])}${x[3]?mp(x[3]):''}${x[3]&&KOP[x[3]]&&M.kop!==false?'<small class="kp">'+KOP[x[3]]+'</small>':''}</div></li>`).join('');
