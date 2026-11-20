@@ -1885,7 +1885,7 @@
  ],
  "banners": {
   "plan": "<figure class='bnr'><img src='images/tokyo-2027/banner-fuji.svg' alt='富士山、湖與露營車的插圖' width='800' height='300'><figcaption><b>富士山</b><span>山中湖・河口湖・本栖湖</span></figcaption></figure>",
-  "hotel": "<figure class='bnr'><img src='images/tokyo-2027/banner-karuizawa.svg' alt='輕井澤森林小屋與池塘的插圖' width='800' height='300' loading='lazy'><figcaption><b>輕井澤</b><span>森林・雲場池・避暑小鎮</span></figcaption></figure>"
+  "hotel": "<figure class='bnr'><img src='images/tokyo-2027/banner-kaminarimon.svg' alt='淺草雷門大燈籠與晴空塔的插圖' width='800' height='300' loading='lazy'><figcaption><b>淺草</b><span>雷門・每個方案都住這一帶</span></figcaption></figure>"
  },
  "icBase": "images/tokyo-2027/ic-",
  "planHead": "選擇方案（只記在這支手機）",

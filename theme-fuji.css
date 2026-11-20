@@ -113,7 +113,7 @@ html.th-fuji{
 /* 區塊標題：富士山小貼紙＋粗黑體＋虛線 */
 .th-fuji h2{color:var(--ink);font-weight:900;letter-spacing:.06em}
 .th-fuji h2::before{width:1.35em;height:1.35em;border-radius:0;transform:none;background:url(images/tokyo-2027/ic-fuji.svg) center/contain no-repeat;box-shadow:none}
-.th-fuji #hotel h2::before{background-image:url(images/tokyo-2027/ic-forest.svg)}
+.th-fuji #hotel h2::before{background-image:url(images/tokyo-2027/ic-city.svg)}
 .th-fuji #flight h2::before{background-image:url(images/tokyo-2027/ic-plane.svg)}
 .th-fuji #phr h2::before,.th-fuji #fx h2::before{background-image:url(images/tokyo-2027/ic-city.svg)}
 .th-fuji #tips h2::before,.th-fuji #todo h2::before{background-image:url(images/tokyo-2027/ic-van.svg)}
@@ -125,7 +125,7 @@ html.th-fuji{
 .th-fuji .bnr img{display:block;width:100%;height:auto}
 .th-fuji .bnr figcaption{position:absolute;left:12px;bottom:12px;display:flex;align-items:center;gap:8px;background:#fff;border:2px solid var(--ink);border-radius:999px;padding:4px 14px 4px 6px;box-shadow:var(--pop2);font-size:13.5px;color:var(--sub)}
 .th-fuji .bnr figcaption b{background:var(--seal);color:#fff;border-radius:999px;padding:1px 10px;font-size:14px;letter-spacing:.06em}
-.th-fuji #hotel .bnr figcaption b{background:var(--red)}
+.th-fuji #hotel .bnr figcaption b{background:#d8352f}
 /* 封面下方：藍天漸層 */
 .th-fuji .hero.bare{background:linear-gradient(180deg,#e5f5fe,var(--bg));border-bottom:3px solid var(--ink)}
 .th-fuji .hero.bare .hero-bg{border-bottom:3px solid var(--ink);-webkit-mask-image:none;mask-image:none}
@@ -299,3 +299,4 @@ html.th-fuji{
 .th-fuji .plb button:nth-child(1)::after{content:"首選";margin-top:auto;font-size:10.5px;font-weight:700;color:#fff;background:var(--seal);border:1.5px solid var(--ink);border-radius:999px;padding:0 7px;line-height:1.6}
 .th-fuji .plb button:nth-child(1).on::after{background:#fff;color:var(--seal)}
 @media (max-width:360px){.th-fuji .plb{gap:5px}.th-fuji .plb button span{font-size:13.5px}.th-fuji .plb button .pic{width:34px;height:34px}}
+.th-fuji #hotel .bnr figcaption{top:10px;bottom:auto}
