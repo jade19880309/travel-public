@@ -1,8 +1,8 @@
 // 旅程網站離線快取（所有旅程共用）。更新網頁後請把 VERSION 數字加 1，手機才會換成新版。
 // 新增旅程時，把 trips/<代號>.json、圖示與圖片加進 CORE。
-const VERSION='v36';
+const VERSION='v37';
 const CACHE='trip-'+VERSION;
-const CORE=['./','./index.html','./app.js','./theme-bay.css','./trips/index.json','./trips/seoul-2027.json','./trips/hk-2027.json','./manifest.webmanifest','./manifest-hk-2027.webmanifest','./icon-180.png','./icon-192.png','./icon-512.png','./icon-maskable-512.png','./icon-hk-180.png','./icon-hk-192.png','./icon-hk-512.png','./icon-hk-maskable-512.png','./images/hk-2027/hero.svg','./images/seoul-2027/day-0.jpg','./images/seoul-2027/day-1.jpg','./images/seoul-2027/day-2a.jpg','./images/seoul-2027/day-2b.jpg','./images/seoul-2027/day-3.jpg','./images/seoul-2027/day-4.jpg','./images/seoul-2027/day-5.jpg','./images/seoul-2027/hero.jpg','./images/seoul-2027/map-hotel.jpg','./images/seoul-2027/map-seoul.jpg'];
+const CORE=['./','./index.html','./app.js','./theme-bay.css','./trips/index.json','./trips/seoul-2027.json','./trips/hk-2027.json','./manifest.webmanifest','./manifest-hk-2027.webmanifest','./icon-180.png','./icon-192.png','./icon-512.png','./icon-maskable-512.png','./icon-hk-180.png','./icon-hk-192.png','./icon-hk-512.png','./icon-hk-maskable-512.png','./images/hk-2027/hero.jpg','./images/seoul-2027/day-0.jpg','./images/seoul-2027/day-1.jpg','./images/seoul-2027/day-2a.jpg','./images/seoul-2027/day-2b.jpg','./images/seoul-2027/day-3.jpg','./images/seoul-2027/day-4.jpg','./images/seoul-2027/day-5.jpg','./images/seoul-2027/hero.jpg','./images/seoul-2027/map-hotel.jpg','./images/seoul-2027/map-seoul.jpg'];
 self.addEventListener('install',e=>{
   e.waitUntil(caches.open(CACHE).then(c=>Promise.all(CORE.map(u=>c.add(new Request(u,{cache:'reload'})).catch(()=>{})))).then(()=>self.skipWaiting()));
 });

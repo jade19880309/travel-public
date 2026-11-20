@@ -17,7 +17,9 @@ const btns=(list,extra='')=>(list||[]).map(([k,l])=>`<button class="b bt gd${ext
  (TRIP.nav||[]).forEach(n=>{const s=document.getElementById(n[0]);if(s&&s.tagName==='SECTION')$('footer').before(s)});
  // 封面
  const h=TRIP.hero||{};
- $('#hero').innerHTML=`<img class="hero-bg" src="${h.img}" alt="${h.alt||''}">${h.seal?`<div class="seal">${h.seal}</div>`:''}<div class="eyebrow">${h.eyebrow||''}</div><h1>${h.title||M.title}</h1><p>${(h.sub||[]).map(x=>`<span>${x}</span>`).join('｜')}</p><div class="cd" id="cd"></div><p id="cdnote"></p><a class="b go" href="#plan" id="gotoday">看每日行程</a>`;
+ // hero.bare＝封面圖本身已含標題：圖片完整顯示，不再疊上標題文字
+ $('#hero').classList.toggle('bare',!!h.bare);
+ $('#hero').innerHTML=`<img class="hero-bg" src="${h.img}" alt="${h.alt||''}">${h.seal?`<div class="seal">${h.seal}</div>`:''}${h.bare?'':`<div class="eyebrow">${h.eyebrow||''}</div><h1>${h.title||M.title}</h1>`}<p>${(h.sub||[]).map(x=>`<span>${x}</span>`).join('｜')}</p><div class="cd" id="cd"></div><p id="cdnote"></p><a class="b go" href="#plan" id="gotoday">看每日行程</a>`;
  // 標題文字
  const set=(sel,v)=>{const e=$(sel);if(e&&v!=null)e.innerHTML=v};
  const TT=TRIP.titles||{};

@@ -29,6 +29,15 @@ html.th-bay{
 .th-bay .cd span{color:#e3f6f6}
 .th-bay .hero .go{color:var(--red)}
 
+/* 封面圖本身含標題（hero.bare）：圖片完整顯示在上方，日期與倒數放在下方的藍綠色區塊 */
+.th-bay .hero.bare{min-height:0;padding:0 0 22px;background:linear-gradient(180deg,#0f4d6b,#0a6c85);border-radius:0 0 28px 28px;justify-content:flex-start}
+.th-bay .hero.bare::after{display:none}
+.th-bay .hero.bare .hero-bg{position:static;display:block;width:100%;height:auto;object-fit:initial;object-position:initial}
+.th-bay .hero.bare>p:first-of-type{margin-top:14px;padding:0 14px}
+.th-bay .hero.bare .cd{margin-top:14px}
+.th-bay .hero.bare #cdnote{margin-top:8px}
+@media (min-width:760px){.th-bay .hero.bare{border-radius:0 0 28px 28px}}
+
 /* 按鈕 */
 .th-bay .b.bt.dk{background:#17333f}
 .th-bay .b.bt.gd{background:var(--red)}
