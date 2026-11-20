@@ -55,7 +55,7 @@ const mp=n=>`<span class="maps"><a class="mi g" target="_blank" rel="noopener" a
 const tagH=x=>String(x||'').split(',').filter(k=>T[k]).map(k=>`<span class="tag" style="background:${T[k][1]}">${T[k][0]}</span>`).join('');
 
 // ===== 每日行程 =====
-let day=0,ab='A';
+let day=-1,ab='A'; // 預設全部折疊；旅程期間打開網頁時，下面會自動展開「今天」
 const dbox=$('#days');
 dbox.innerHTML=D.map((d,k)=>{const p=d.t.split(' ');return `<div class="dy" id="dy${k}"><button class="dr" data-k="${k}"><b>${p[0]} ${p[1]}</b><span class="ds">${d.s}</span>${d.g?`<span class="tg"><span class="pill">${d.g[0]}</span>${d.g[1]?`<span class="pill tw">${d.g[1]}</span>`:''}</span>`:''}</button><div class="dp" hidden></div></div>`}).join('');
 function panel(k){
