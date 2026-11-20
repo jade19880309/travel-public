@@ -121,14 +121,19 @@ if(k===cur)return;cur=k;
 links.forEach((a,i)=>a.classList.toggle('on',i===k));
 const nv=links[k].parentElement;if(nv.scrollWidth>nv.clientWidth){const a=links[k];nv.scrollTo({left:a.offsetLeft-nv.clientWidth/2+a.offsetWidth/2,behavior:'smooth'})}}
 addEventListener('scroll',()=>requestAnimationFrame(spy),{passive:true});addEventListener('resize',spy);spy();})();
-// 韓元換算：抓當日匯率（兩個來源），失敗用上次快取或頁面內的參考值
+// 韓元換算：即時國際中價 × 臺銀現鈔賣出加碼 = 估算現鈔價；抓不到時用上次取得的值或頁面內的參考值
 (function(){
 const ft=$('#fxt'),fk=$('#fxk'),info=$('#fxrate'),q=$('#fxq');
-let r=1/0.0269,note='離線參考匯率（臺灣銀行 11/18 現鈔賣出價 ₩1≈NT$0.0269）';
-try{const c=JSON.parse(localStorage.getItem('fxbot')||'null');if(c&&c.r>0){r=c.r;note='上次取得的臺灣銀行匯率（'+c.d+'）'}}catch(e){}
+// 臺銀韓元現鈔賣出價約比國際中價貴 9%（實測 2026/11/18 為 8.7%、2026/7/15 為 10%）
+const MK=1.09;
+let r=1/0.0269,note='離線參考值：臺灣銀行 11/18 現鈔賣出價 ₩1≈NT$0.0269';
+const md=t=>{const d=new Date(t);return (d.getMonth()+1)+'/'+d.getDate()};
+const est=(m,t,old)=>{r=m/MK;note=(old?'上次取得的':'')+'估算現鈔價＝國際中價 NT$1≈₩'+m.toFixed(2)+'（'+md(t)+' 更新）÷ 臺銀現鈔加碼約 9%'};
+let last=0;
+try{const c=JSON.parse(localStorage.getItem('fxmid')||'null');if(c&&c.m>0){est(c.m,c.t,true);last=c.at||0}}catch(e){}
 const fmt=(n,d)=>isFinite(n)?(+n.toFixed(d)).toLocaleString('en-US'):'';
 const num=v=>parseFloat(String(v).replace(/,/g,''));
-function show(){info.innerHTML='NT$1 ≈ ₩'+r.toFixed(2)+'　<small>₩1,000 ≈ NT$'+(1000/r).toFixed(1)+'</small><br>'+note+'。牌告僅供參考，實際換匯／刷卡匯率略有差異。'}
+function show(){info.innerHTML='NT$1 ≈ ₩'+r.toFixed(2)+'　<small>₩1,000 ≈ NT$'+(1000/r).toFixed(1)+'</small><br>'+note+'。僅供參考，實際以銀行牌告或刷卡匯率為準。'}
 function fromT(){const v=num(ft.value);fk.value=v>=0?fmt(v*r,0):''}
 function fromK(){const v=num(fk.value);ft.value=v>=0?fmt(v/r,1):''}
 ft.oninput=fromT;fk.oninput=fromK;
@@ -137,13 +142,23 @@ q.innerHTML=[1000,5000,10000,30000,50000,100000].map(k=>`<button data-k="${k}">�
 q.onclick=e=>{const b=e.target.closest('button');if(!b)return;fk.value=(+b.dataset.k).toLocaleString('en-US');fromK()};
 function quick(){q.querySelectorAll('button').forEach(b=>b.lastChild.textContent='≈ NT$'+fmt(b.dataset.k/r,0))}
 show();quick();fk.value='10,000';fromK();
-async function get(u,pick){const x=await fetch(u,{cache:'no-store'});if(!x.ok)throw 0;const j=await x.json(),v=pick(j);if(!(v>0))throw 0;return v}
-(async()=>{let v=0;
-const parse=t=>{const l=t.split(/\r?\n/).find(x=>/^\s*KRW/.test(x));if(!l)return 0;const c=l.split(',').map(x=>x.trim());for(const i of [11,12]){const n=parseFloat(c[i]);if(n>0.005&&n<0.1)return n}return 0};
-for(const u of ['/botrate','https://rate.bot.com.tw/xrt/flcsv/0/day']){try{const x=await fetch(u,{cache:'no-store'});if(!x.ok)continue;const n=parse(await x.text());if(n>0){v=1/n;break}}catch(e){}}
-if(v>0){r=v;const d=new Date(),ds=(d.getMonth()+1)+'/'+d.getDate();note='臺灣銀行今日牌告現鈔賣出價（'+ds+' 取得）₩1≈NT$'+(1/v).toFixed(4);try{localStorage.setItem('fxbot',JSON.stringify({r:v,d:ds}))}catch(e){}
-show();quick();if(document.activeElement===ft)fromT();else fromK()}
-})();
+// 中價來源（都允許網頁直接讀取）：open.er-api.com 為主，jsDelivr 上的 currency-api 備援
+const SRC=[
+ ['https://open.er-api.com/v6/latest/TWD',j=>[j.rates&&j.rates.KRW,j.time_last_update_unix*1000]],
+ ['https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/twd.json',j=>[j.twd&&j.twd.krw,Date.parse(j.date)]]
+];
+async function refresh(){
+ for(const [u,pick] of SRC){try{
+  const x=await fetch(u,{cache:'no-store'});if(!x.ok)continue;
+  const [m,t]=pick(await x.json());if(!(m>20&&m<80))continue; // 合理範圍檢查（NT$1≈₩20～80）
+  last=Date.now();est(m,t||last,false);
+  try{localStorage.setItem('fxmid',JSON.stringify({m,t:t||last,at:last}))}catch(e){}
+  show();quick();if(document.activeElement===ft)fromT();else fromK();return;
+ }catch(e){}}
+}
+refresh();
+// 回到網頁時，距離上次超過 1 小時就重抓
+document.addEventListener('visibilitychange',()=>{if(!document.hidden&&Date.now()-last>36e5)refresh()});
 })();
 document.querySelectorAll('[data-sh]').forEach(b=>b.onclick=()=>{$('#sbody').innerHTML=SH[b.dataset.sh];$('#sheet').classList.add('on');$('#sheet .sp').scrollTop=0});
 const showBig=(a,b)=>{const z=$('#big');z.querySelector('b').textContent=a;z.querySelector('small').textContent=b;z.classList.add('on')};
