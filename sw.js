@@ -1,12 +1,13 @@
-// 2027 首爾春節自由行：離線快取。更新網頁後請把 VERSION 數字加 1，手機才會換成新版。
-const VERSION='v34';
-const CACHE='seoul27-'+VERSION;
-const CORE=['./','./index.html','./app.js','./trips/index.json','./trips/seoul-2027.json','./manifest.webmanifest','./icon-180.png','./icon-192.png','./icon-512.png','./icon-maskable-512.png','./images/seoul-2027/day-0.jpg','./images/seoul-2027/day-1.jpg','./images/seoul-2027/day-2a.jpg','./images/seoul-2027/day-2b.jpg','./images/seoul-2027/day-3.jpg','./images/seoul-2027/day-4.jpg','./images/seoul-2027/day-5.jpg','./images/seoul-2027/hero.jpg','./images/seoul-2027/map-hotel.jpg','./images/seoul-2027/map-seoul.jpg'];
+// 旅程網站離線快取（所有旅程共用）。更新網頁後請把 VERSION 數字加 1，手機才會換成新版。
+// 新增旅程時，把 trips/<代號>.json、圖示與圖片加進 CORE。
+const VERSION='v35';
+const CACHE='trip-'+VERSION;
+const CORE=['./','./index.html','./app.js','./trips/index.json','./trips/seoul-2027.json','./trips/hk-2027.json','./manifest.webmanifest','./manifest-hk-2027.webmanifest','./icon-180.png','./icon-192.png','./icon-512.png','./icon-maskable-512.png','./icon-hk-180.png','./icon-hk-192.png','./icon-hk-512.png','./icon-hk-maskable-512.png','./images/hk-2027/hero.svg','./images/seoul-2027/day-0.jpg','./images/seoul-2027/day-1.jpg','./images/seoul-2027/day-2a.jpg','./images/seoul-2027/day-2b.jpg','./images/seoul-2027/day-3.jpg','./images/seoul-2027/day-4.jpg','./images/seoul-2027/day-5.jpg','./images/seoul-2027/hero.jpg','./images/seoul-2027/map-hotel.jpg','./images/seoul-2027/map-seoul.jpg'];
 self.addEventListener('install',e=>{
   e.waitUntil(caches.open(CACHE).then(c=>Promise.all(CORE.map(u=>c.add(new Request(u,{cache:'reload'})).catch(()=>{})))).then(()=>self.skipWaiting()));
 });
 self.addEventListener('activate',e=>{
-  e.waitUntil(caches.keys().then(ks=>Promise.all(ks.filter(k=>k.startsWith('seoul27-')&&k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim()));
+  e.waitUntil(caches.keys().then(ks=>Promise.all(ks.filter(k=>(k.startsWith('trip-')||k.startsWith('seoul27-'))&&k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim()));
 });
 self.addEventListener('fetch',e=>{
   const r=e.request;

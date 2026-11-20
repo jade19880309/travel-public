@@ -3,7 +3,45 @@
     "id": "seoul-2027",
     "title": "2027 首爾春節自由行",
     "start": "2027-02-03",
-    "end": "2027-02-08"
+    "end": "2027-02-08",
+    "store": "seoul27"
+  },
+  "nav": [["fx","換算"],["flight","航班"],["hotel","住宿"],["plan","行程"],["price","價格"],["todo","待辦"],["tips","注意"],["food","美食"],["phr","韓語"],["apps","App"]],
+  "titles": {"fx":"💱 韓元換算","tips":"🧣 旅遊與入境注意事項","phr":"🗣 常用韓語","apps":"📱 韓國常用 App"},
+  "hero": {
+    "img": "images/seoul-2027/hero.jpg",
+    "alt": "雪中的北村韓屋與南山首爾塔",
+    "seal": "春節<br>快樂",
+    "eyebrow": "SEOUL ・ LUNAR NEW YEAR 2027",
+    "title": "2027 首爾春節自由行",
+    "sub": ["2/3（三）～2/8（一）","6 天 5 夜","6 大 3 小・共 9 人"],
+    "cd": {"start":"2027-02-03T17:50:00+08:00","end":"2027-02-08T16:25:00+08:00","label":"台中起飛"}
+  },
+  "fx": [
+    {"code":"KRW","name":"韓元","sym":"₩","mk":1.09,"ref":0.0269,"refNote":"臺灣銀行 11/18 現鈔賣出價 ₩1≈NT$0.0269","quick":[1000,5000,10000,30000,50000,100000],"unit":1000,"dec":0,"mid":2,"lo":20,"hi":80}
+  ],
+  "flights": {
+    "list": [
+      {"dir":"去程","date":"2/3（三）","al":"大韓航空 KE2032","from":["RMQ","臺中 T2","17:50"],"to":["ICN","仁川 T2","21:30"],"dur":"2 小時 40 分","note":"空中巴士 A220-300（中型）｜經濟艙｜含餐點"},
+      {"dir":"回程","date":"2/8（一）","al":"大韓航空 KE2031","from":["ICN","仁川 T2","14:15"],"to":["RMQ","臺中 T2","16:25"],"dur":"3 小時 10 分","note":"空中巴士 A220-300（中型）｜經濟艙｜含餐點"}
+    ],
+    "note": "🕒 時間皆為當地時間，韓國比台灣快 1 小時。",
+    "sheets": [["bag","🧳 行李規定"]]
+  },
+  "hotels": [
+    {"ko":"트래블로지 명동 남산 호텔","zh":"首爾明洞南山彩鴻酒店","en":"Travelodge Myeongdong Namsan","tel":"+82264705000","telShow":"+82 2 6470 5000","mapQ":"트래블로지 명동 남산 호텔",
+     "addr":["서울특별시 중구 수표로 16","中區水標路 16 號","16, Supyo-ro, Jung-gu, Seoul, South Korea"],
+     "big":["트래블로지 명동 남산 호텔","Travelodge Myeongdong Namsan｜首爾明洞南山彩鴻酒店｜서울특별시 중구 수표로 16"],
+     "blocks":[["🕒 入住時間","入住 14:00　退房 12:00<small>2/3 班機 21:30 抵達，預計 2/4 凌晨 00:00～01:00 入住；已確認 24 小時櫃檯、2/3 晚房間保留。</small>"],["🛏 本次住宿","2/3（三）入住 → 2/8（一）退房，5 晚，Trip.com 預訂<small>3 間房：四人房 ×2、高級雙床房 ×1（全部已確認），房價不含早餐。</small>"]],
+     "sheets":[["bk","🍳 飯店早餐"],["map","🗺 周邊地圖"]]}
+  ],
+  "plan": {"sheets": [["seoul","🗺 首爾地圖"]]},
+  "food": {"seg":["🍜 首爾美食","🏯 備用景點"],"sightNote":"以上為備案。「全天」僅指戶外公共空間可通行，不代表附屬設施營業。"},
+  "footer": "新年快樂　새해 복 많이 받으세요",
+  "html": {
+    "price": "<p class='rate' style='margin:0'>下列台幣以 11/18 臺銀現鈔賣出價 ₩1 ≈ NT$0.0269 概算；最新換算請用上方「韓元換算」。</p><p class='hint'>← 左右滑動看更多 →</p><div class='swipe' data-dots><div class='card slide'><span class='pt'>🚐 去程接機｜2/3</span><span class='ps'>仁川機場 → 明洞飯店，12 人座包車</span><span class='big-p'>約 ₩176,000 <small>≈ NT$4,734</small></span><ul class='info'><li>12 人座可載 12 人、16 件大行李，9 人 9 件夠放。</li><li>21:30 落地、約 22:00 集合，包車不受地鐵收班影響。</li><li>價格依平台與日期變動，22:00 後是否加價請預訂時確認。</li></ul></div><div class='card slide'><span class='pt'>🚆 回程｜2/8</span><span class='ps'>明洞 → 仁川機場 T2，大眾交通（14:15 起飛，白天搭乘）</span><span class='big-p'>約 ₩55,000～60,000 <small>≈ NT$1,480～1,610（9 人）</small></span><ul class='info'><li>AREX 普通列車約 ₩4,450～5,050／人，加地鐵段約 ₩1,500～1,600／人；普通列車首爾站到 T2 約 66 分鐘，兒童可能更便宜。</li><li>直達列車（約 51 分鐘到 T2）每人約 ₩9,000～13,000，需購票。</li><li>普通列車沒有行李架，9 件大行李人多時會擠；韓國春節連假到 2/9，請預留較多時間。</li></ul></div><div class='card slide'><span class='pt'>🚗 租車｜2/5 Plan A</span><span class='ps'>樂天租車首爾車站店，九人座</span><span class='big-p'>約 ₩250,000 <small>／12 小時 ≈ NT$6,720</small></span><ul class='info'><li>不含油錢、過路費、停車費。</li></ul></div><div class='card slide'><span class='pt'>🚇 氣候同行卡</span><span class='ps'>기후동행카드｜首爾地鐵＋市區公車，期間內無限搭乘</span><table class='ptb'><tr><td>1 日券</td><td>₩5,000<small>≈ NT$134</small></td></tr><tr><td>2 日券</td><td>₩8,000<small>≈ NT$215</small></td></tr><tr><td>3 日券</td><td>₩10,000<small>≈ NT$269</small></td></tr><tr class='hl'><td>5 日券（建議）</td><td>₩15,000<small>≈ NT$403</small></td></tr></table><ul class='info'><li>實體卡另有卡片費約 ₩3,000（≈ NT$81），以現場為準。</li><li>充值當天起算，<b>無法預先充值</b>。</li><li>可用海外信用卡／行動支付在地鐵站機台購買，加收約 <b>3.7%</b> 服務費。</li></ul></div><div class='card slide'><span class='pt'>💳 T-money 交通卡</span><span class='ps'>全國地鐵、公車、計程車通用</span><table class='ptb'><tr><td>卡片費（不退）</td><td>₩3,000～5,000<small>≈ NT$81～134</small></td></tr><tr><td>退餘額手續費</td><td>₩500<small>≈ NT$13</small></td></tr></table><ul class='info'><li>便利商店（GS25、CU、7-Eleven）、機場、地鐵站買得到，₩1,000 起儲值。</li><li>iPhone 可用 MobileTmoney App 加入 Apple Wallet；註冊偶有不順，建議先測試並備一張實體卡。</li><li>餘額可退：便利商店約 ₩20,000 以下，超過到地鐵服務中心。</li><li>6～12 歲需用登記的兒童卡才算兒童票，請現場確認。</li></ul></div><div class='card slide'><span class='pt'>💳 WOWPASS</span><span class='ps'>外國旅客預付卡｜換匯＋付款＋可轉入 T-money</span><table class='ptb'><tr><td>首次發卡費</td><td>₩5,000<small>≈ NT$134</small></td></tr><tr><td>餘額提領手續費</td><td>₩1,000／次<small>≈ NT$27，每次最多 ₩100,000</small></td></tr></table><ul class='info'><li>機場、明洞、地鐵站有機台可換匯（含新台幣）；也能用 App 以 Mastercard／JCB 儲值（每次上限 ₩200,000）。</li><li>可在接受韓國本地卡的店家刷卡，不另收服務費；仍建議帶少量現金給只收現金的攤販。</li><li>⚠️ <b>餘額不能直接刷地鐵</b>，需先在機台或 App 轉入 T-money（單向）。</li><li>匯率不一定比其他方式便宜，出發前可比價；遺失可在 App 暫停卡片。</li></ul></div></div>",
+    "tips": "<details class='card fold'><summary>🛂 入境與證件</summary><ul class='info'><li>護照效期建議 6 個月以上，全員確認。</li><li>出發前至官方網站確認 K-ETA、Q-CODE 與電子入境卡等最新規定。</li><li>肉製品、蔬果等禁止攜帶入境，海關申報須誠實。</li></ul></details><details class='card fold'><summary>❄️ 冬季穿著與安全</summary><ul class='info'><li>2 月首爾約 -8～3°C，洋蔥式穿搭、暖暖包、手套、帽子。</li><li>準備防滑鞋，清溪川與韓屋區地面易結冰。</li><li>室內暖氣強，可脫式外套較方便；護唇膏與保濕必備。</li><li>玩雪備防水外套、防水手套、替換襪子。</li></ul></details><details class='card fold'><summary>🎎 春節連假提醒</summary><ul class='info'><li>韓國 2027 年春節：2/7（日）是初一，連假為 <b>2/6（六）～2/9（二）</b>，2/9 為補假。</li><li>連假期間部分餐廳、市場、博物館休息或縮短營業，出門前先查營業時間。</li><li>2/8 回程當天仍在韓國連假中，往機場的交通與機場人潮可能較多。</li></ul></details><details class='card fold'><summary>🔌 電壓與插頭</summary><ul class='info'><li>韓國 220V／60Hz，台灣 110V；插頭為圓兩孔（C/F 型），需轉接頭。</li><li>手機、相機充電器多半支援 100–240V；吹風機、電棒等不支援者勿直接使用。</li></ul></details><details class='card fold'><summary>💸 退稅說明</summary><ul class='info'><li>資格：外國旅客（在韓國停留未滿 6 個月），在有「TAX FREE」標示的店家，單筆含稅消費滿 ₩15,000，購買後 3 個月內帶出境，商品出境前不可拆封或使用。</li><li>結帳時出示護照，向店家索取<b>退稅單</b>（不是一般收據）；多數店家需人工結帳，部分品牌只有部分分店可退稅。</li><li>實際可退金額約為含稅價的 5～8%，不是完整的 10%。</li><li>有些店結帳時直接扣稅（即時退稅）；其餘先付含稅價，再到市區退稅櫃台、機場或指定 App 辦理。</li><li>事後退稅：依 Creatrip 整理，單筆可退稅額未滿 ₩75,000 可用市區或機場退稅機台自行辦理；超過要在機場海關確認商品後才能領退稅。需檢查的商品建議託運前先辦，並提早抵達機場，以機場現場公告為準。</li><li>醫美：據 Creatrip 說明，2026 年起醫美服務不再列入退稅，2/4 的醫美請先向診所確認。</li><li>免稅店（Duty Free）的標價已扣稅，不需要再退稅。</li></ul></details>",
+    "apps": "<p class='hint'>← 左右滑動看更多 →</p><div class='swipe' data-dots><div class='card item slide'><b>Naver Map</b><span>韓國最準的地圖，步行、大眾運輸、店家資訊首選（有中文）</span><div class='btns'><a class='b bt dk' target='_blank' rel='noopener' href='https://apps.apple.com/tw/app/id311867728'>App Store 下載</a></div></div><div class='card item slide'><b>KakaoMap</b><span>地鐵與公車即時到站、路線規劃，與 Naver 互補</span><div class='btns'><a class='b bt dk' target='_blank' rel='noopener' href='https://apps.apple.com/tw/app/id304608425'>App Store 下載</a></div></div><div class='card item slide'><b>Kakao T</b><span>叫計程車（機場、9 人分車可用），可綁海外信用卡</span><div class='btns'><a class='b bt dk' target='_blank' rel='noopener' href='https://apps.apple.com/tw/app/id981110422'>App Store 下載</a></div></div><div class='card item slide'><b>Papago</b><span>Naver 翻譯，支援繁中、相機翻譯菜單</span><div class='btns'><a class='b bt dk' target='_blank' rel='noopener' href='https://apps.apple.com/tw/app/id1147874819'>App Store 下載</a></div></div><div class='card item slide'><b>Google 翻譯</b><span>離線翻譯與相機即時翻譯，可當備案</span><div class='btns'><a class='b bt dk' target='_blank' rel='noopener' href='https://apps.apple.com/tw/app/id414706506'>App Store 下載</a></div></div><div class='card item slide'><b>Google 地圖</b><span>查營業時間與評論，韓國路線導航較不準，建議搭配 Naver</span><div class='btns'><a class='b bt dk' target='_blank' rel='noopener' href='https://apps.apple.com/tw/app/id585027354'>App Store 下載</a></div></div></div><p class='note'>連結為 iOS App Store。部分 App 需先註冊，建議出發前安裝並登入。</p>"
   },
   "kop": {
     "Incheon International Airport": "인천국제공항",
@@ -54,6 +92,8 @@
       "g": ["韓國春節前夕","台灣除夕"],
       "h": "Day 3 玩雪或市區（二選一）",
       "ab": 1,
+      "abL": ["A 洪川玩雪","B 龍山＋東大門"],
+      "abN": "依天氣、路況與租車狀況二選一。",
       "A": [["08:00","早餐、前往租車門市"],["09:00","樂天租車首爾車站店領取九人座租車（Carnival／Staria）","r","Lotte Rent-a-Car Seoul Station"],["10:00","自駕前往江原道洪川","r"],["12:00","抵達 Vivaldi Park 午餐休息","r","Vivaldi Park Hongcheon"],["13:00","Snowy Land 玩雪、雪橇、拍照"],["16:00","結束玩雪、整理衣物"],["17:00","自駕返回首爾","r"],["21:00","還車（首爾車站店 24 小時營業）、返回飯店","r","Lotte Rent-a-Car Seoul Station"]],
       "B": [["09:00","早餐"],["10:00","國立中央博物館參觀","m","National Museum of Korea"],["12:00","龍山午餐"],["13:00","I'Park Mall 購物、玩具動漫","w","I'Park Mall Yongsan"],["16:00","搭大眾交通前往東大門","m"],["17:00","東大門設計廣場 DDP 拍照","w","Dongdaemun Design Plaza"],["18:00","東大門晚餐"],["19:00","東大門商圈購物","w"],["21:00","返回明洞飯店","m"]],
       "nA": "確認：國際駕照與租車資格、冬季輪胎／雪鏈／保險、Snowy Land 營業與票價。春節返鄉車潮，回程保留彈性。",
