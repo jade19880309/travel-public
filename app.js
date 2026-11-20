@@ -48,7 +48,7 @@ const AMI='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5a6.5 6.5 
  if($('#plan'))$('#plan h2').insertAdjacentHTML('afterend',`<p class="rate">${P.note||'點任一天展開當天行程；也可用畫面最下方的日期列隨時切換。'}</p>${P.sheets?`<div class="btns" style="margin:0 0 14px">${btns(P.sheets,' mapbtn')}</div>`:''}`);
  // 方案切換：放在每日行程最上方；住宿區塊標示目前是哪個方案
  if(PL&&$('#plan')){const c=PL[PI];
-  $('#plan h2').insertAdjacentHTML('afterend',`<div class="card plans"><div class="plh">${TRIP.planHead||'行程方案・點選切換比較'}</div><div class="plb n${PL.length}">${PL.map((p,i)=>`<button data-pl="${i}" class="${i===PI?'on':''}" aria-pressed="${i===PI}"><b>${p.name}</b><span>${p.label||''}</span>${p.sub?`<small>${p.sub}</small>`:''}</button>`).join('')}</div>${c.desc?`<p class="pld">${c.desc}</p>`:''}</div>`);
+  $('#plan h2').insertAdjacentHTML('afterend',`<div class="card plans"><div class="plh">${TRIP.planHead||'行程方案・點選切換比較'}</div><div class="plb n${PL.length}">${PL.map((p,i)=>`<button data-pl="${i}" class="${i===PI?'on':''}" aria-pressed="${i===PI}">${p.ic?`<img class="pic" src="${TRIP.icBase||''}${p.ic}.svg" alt="">`:''}<b>${p.name}</b><span>${(p.label||'').replace('・','<br>')}</span>${p.sub?`<small>${p.sub}</small>`:''}</button>`).join('')}</div>${c.desc?`<p class="pld">${c.desc}</p>`:''}</div>`);
   $('#plan .plans').onclick=e=>{const b=e.target.closest('[data-pl]');if(!b||+b.dataset.pl===PI)return;
    try{localStorage.setItem(PK,JSON.stringify(PL[+b.dataset.pl].id));sessionStorage.setItem(PK+'go','1')}catch(_){}
    const u=new URL(location.href);u.searchParams.delete('p');u.hash='';if(u.href===location.href.split('#')[0])location.reload();else location.replace(u.href)};
