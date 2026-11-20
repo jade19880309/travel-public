@@ -48,6 +48,35 @@ const btns=(list,extra='')=>(list||[]).map(([k,l])=>`<button class="b bt gd${ext
  fetch('trips/index.json',{cache:'no-cache'}).then(r=>r.json()).then(L=>{const o=L.filter(t=>t.id!==M.id);if(o.length)$('footer').insertAdjacentHTML('beforeend',`<div class="trips">其他旅程：${o.map(t=>`<a href="${t.url||'?t='+t.id}">${t.title}</a>`).join('')}<a href="home.html">全部旅程總覽</a></div>`)}).catch(()=>{});
 })();
 
+// ===== 目前當地天氣（Open-Meteo，免金鑰）：封面下方一條；沒網路時顯示上次的結果 =====
+(function(){
+ const W=TRIP.weather;if(!W||!W.length||!$('#hero'))return;
+ const box=document.createElement('div');box.id='wx';box.className='card wx';$('#hero').after(box);
+ const KEY=K+'-wx';
+ const wmo=(c,day)=>{
+  if(c===0)return[day?'☀️':'🌙','晴'];if(c===1)return[day?'🌤':'🌙','晴時多雲'];if(c===2)return['⛅','多雲'];if(c===3)return['☁️','陰'];
+  if(c===45||c===48)return['🌫','霧'];if(c>=51&&c<=57)return['🌦','毛毛雨'];
+  if(c===61)return['🌧','小雨'];if(c===63)return['🌧','中雨'];if(c===65)return['🌧','大雨'];if(c===66||c===67)return['🌧','凍雨'];
+  if(c===71)return['🌨','小雪'];if(c===73)return['🌨','中雪'];if(c===75)return['❄️','大雪'];if(c===77)return['🌨','雪粒'];
+  if(c>=80&&c<=82)return['🌦','陣雨'];if(c===85||c===86)return['🌨','陣雪'];if(c>=95)return['⛈','雷雨'];return['🌡','—'];
+ };
+ const r=n=>Math.round(n);
+ function draw(L,ts,old){
+  const t=new Date(ts),hm=`${t.getMonth()+1}/${t.getDate()} ${String(t.getHours()).padStart(2,'0')}:${String(t.getMinutes()).padStart(2,'0')}`;
+  box.innerHTML=`<div class="wxh"><b>目前當地天氣</b><span>${old?'離線・上次更新 ':'更新 '}${hm}</span></div><div class="wxg n${L.length}">${L.map((d,i)=>{const c=d.current,y=d.daily,[ic,tx]=wmo(c.weather_code,c.is_day);
+   return `<div class="wxc"><div class="wxn">${W[i].name}</div><div class="wxt"><i>${ic}</i><b>${r(c.temperature_2m)}°</b></div><div class="wxs"><span>${tx}</span><span>體感 ${r(c.apparent_temperature)}°</span></div><div class="wxs"><span>${r(y.temperature_2m_min[0])}～${r(y.temperature_2m_max[0])}°</span><span>降雨 ${y.precipitation_probability_max[0]??'—'}%</span></div></div>`}).join('')}</div>`;
+ }
+ function load(){
+  const u='https://api.open-meteo.com/v1/forecast?latitude='+W.map(w=>w.lat).join(',')+'&longitude='+W.map(w=>w.lon).join(',')+'&current=temperature_2m,apparent_temperature,weather_code,is_day&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=auto&forecast_days=1';
+  fetch(u).then(x=>x.json()).then(j=>{const L=Array.isArray(j)?j:[j];if(!L[0]||!L[0].current)throw 0;const ts=Date.now();ls.set(KEY,{L,ts});draw(L,ts,false)})
+   .catch(()=>{const c=ls.get(KEY,null);if(c)draw(c.L,c.ts,true);else box.innerHTML='<div class="wxh"><b>目前當地天氣</b><span>暫時無法取得，連上網路後會自動顯示</span></div>'});
+ }
+ const c=ls.get(KEY,null);if(c)draw(c.L,c.ts,true);
+ load();
+ setInterval(()=>{if(!document.hidden)load()},30*60*1000);
+ document.addEventListener('visibilitychange',()=>{const c=ls.get(KEY,null);if(!document.hidden&&(!c||Date.now()-c.ts>15*60*1000))load()});
+})();
+
 // ===== 地圖連結小圖示（藍色＝Google 地圖、綠色 N＝Naver 地圖）=====
 const PIN='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5a6.5 6.5 0 0 0-6.5 6.5c0 4.6 6.5 12.5 6.5 12.5S18.5 13.6 18.5 9A6.5 6.5 0 0 0 12 2.5z" fill="#fff"/><circle cx="12" cy="9" r="2.6" fill="#1a73e8"/></svg>';
 const NAV=M.naver!==false;

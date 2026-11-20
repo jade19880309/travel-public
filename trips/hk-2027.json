@@ -10,6 +10,7 @@
     "reserve": false,
     "single": true
   },
+  "weather": [{"name":"珠海","lat":22.222,"lon":113.548},{"name":"澳門","lat":22.198,"lon":113.543},{"name":"香港","lat":22.302,"lon":114.177}],
   "nav": [["plan","行程"],["flight","航班"],["hotel","住宿"],["fx","換算"],["food","美食"],["tips","須知"],["todo","待辦"]],
   "titles": {"fx":"💱 外幣換算","price":"💰 預估費用","tips":"🛂 通關與須知","food":"🍜 美食推薦","apps":"📱 常用 App"},
   "hero": {

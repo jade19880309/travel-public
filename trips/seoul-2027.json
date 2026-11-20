@@ -6,6 +6,7 @@
     "end": "2027-02-08",
     "store": "seoul27"
   },
+  "weather": [{"name":"首爾","lat":37.5665,"lon":126.978}],
   "nav": [["fx","換算"],["flight","航班"],["hotel","住宿"],["plan","行程"],["price","價格"],["todo","待辦"],["tips","注意"],["food","美食"],["phr","韓語"],["apps","App"]],
   "titles": {"fx":"💱 韓元換算","tips":"🧣 旅遊與入境注意事項","phr":"🗣 常用韓語","apps":"📱 韓國常用 App"},
   "hero": {
