@@ -261,3 +261,29 @@ html.th-fuji{
 .th-fuji #flight .bp small::after{right:-28px}
 .th-fuji #flight>.rate{background:#fff;border:2px solid var(--ink);border-radius:999px;padding:6px 14px;box-shadow:var(--pop2);font-size:14px;display:inline-block}
 @media (prefers-reduced-motion:reduce){.th-fuji #flight .fl .mid::after{animation:none}}
+
+
+/* ===== 封面＋倒數：和封面插畫同一套柔和色調（只影響東京）=====
+   粉藍天空底＋白雲、日期小緞帶、倒數泡泡（奶油底、金與櫻花色）、封面像拍立得一樣放在下方 */
+.th-fuji .hero.bare{padding:16px 0 24px;border-bottom:0;border-radius:0 0 28px 28px;
+ background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='120' viewBox='0 0 300 120'%3E%3Cg fill='%23ffffff' fill-opacity='.9'%3E%3Ccircle cx='50' cy='70' r='18'/%3E%3Ccircle cx='72' cy='58' r='24'/%3E%3Ccircle cx='98' cy='70' r='17'/%3E%3Crect x='50' y='70' width='48' height='18'/%3E%3Ccircle cx='222' cy='40' r='12'/%3E%3Ccircle cx='238' cy='32' r='16'/%3E%3Ccircle cx='256' cy='41' r='11'/%3E%3Crect x='222' y='40' width='34' height='12'/%3E%3C/g%3E%3Cg fill='%23f6c453'%3E%3Cpath d='M160 20l2.5 6 6 2.5-6 2.5-2.5 6-2.5-6-6-2.5 6-2.5z'/%3E%3Cpath d='M20 24l1.8 4.2 4.2 1.8-4.2 1.8-1.8 4.2-1.8-4.2-4.2-1.8 4.2-1.8z'/%3E%3C/g%3E%3Cg fill='%23f4a9b8'%3E%3Cellipse cx='280' cy='86' rx='4' ry='2.6' transform='rotate(30 280 86)'/%3E%3Cellipse cx='130' cy='100' rx='4' ry='2.6' transform='rotate(-20 130 100)'/%3E%3C/g%3E%3C/svg%3E") center 118px/300px 120px no-repeat,linear-gradient(180deg,#d7eefc 0%,#f3f7f2 46%,#fbf3e6 100%);
+ box-shadow:0 14px 26px -22px rgba(36,50,74,.45)}
+.th-fuji .hero.bare>p:first-of-type{order:1;margin:0 auto;padding:4px 14px;border-radius:999px;background:rgba(255,255,255,.85);
+ border:1px solid rgba(201,151,63,.45);color:#6b5531;font-size:14px;font-weight:500;letter-spacing:.06em}
+.th-fuji .hero.bare p span{color:#6b5531}
+.th-fuji .hero.bare #cdnote{order:2;margin:12px 0 6px;font-size:13px;color:#7a6a55;letter-spacing:.12em}
+.th-fuji .hero.bare #cdnote::before{content:"✈ "}
+.th-fuji .hero.bare .cd{order:3;margin:0 auto 16px;gap:14px}
+.th-fuji .hero.bare .cd div{position:relative;min-width:0;width:64px;height:64px;padding:0;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;
+ background:radial-gradient(circle at 35% 30%,#fff,#fff7e6 70%);border:1.5px solid rgba(201,151,63,.55);box-shadow:0 6px 14px -8px rgba(160,120,60,.55)}
+.th-fuji .hero.bare .cd div+div::before{content:"·";position:absolute;left:-11px;top:50%;transform:translateY(-55%);color:#d7a948;font-size:22px;font-weight:700}
+.th-fuji .hero.bare .cd b{font-family:var(--sans);font-weight:700;font-size:23px;line-height:1.05;color:#b5822a}
+.th-fuji .hero.bare .cd div:nth-child(1) b{color:#d4556b;font-size:22px}
+.th-fuji .hero.bare .cd div:nth-child(2) b,.th-fuji .hero.bare .cd div:nth-child(3) b,.th-fuji .hero.bare .cd div:nth-child(4) b{color:#b5822a}
+.th-fuji .hero.bare .cd span{font-size:11px;color:#8b7a62;margin-top:1px}
+.th-fuji .hero.bare .cd div:nth-child(1){width:72px;height:72px;background:radial-gradient(circle at 35% 30%,#fff,#ffeef1 72%);border-color:rgba(212,85,107,.45)}
+.th-fuji .hero.bare .hero-bg{order:4;width:calc(100% - 32px);margin:0 16px;border:6px solid #fff;border-radius:18px;outline:1px solid rgba(201,151,63,.35);
+ box-shadow:0 14px 28px -16px rgba(60,50,30,.45);transform:rotate(-.8deg)}
+.th-fuji .hero.bare .go{order:5;margin-top:18px;background:#e8705f;border:0;box-shadow:0 8px 18px -10px rgba(200,90,70,.8);font-weight:700}
+.th-fuji .hero.bare .go:active{transform:scale(.97);box-shadow:none}
+@media (max-width:360px){.th-fuji .hero.bare .cd{gap:10px}.th-fuji .hero.bare .cd div{width:56px;height:56px}.th-fuji .hero.bare .cd div:nth-child(1){width:64px;height:64px}.th-fuji .hero.bare .cd b{font-size:19px}}
