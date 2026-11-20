@@ -5,7 +5,8 @@
 - 首爾：`https://jade19880309.github.io/travel-public/?t=seoul-2027`（`index.html`；分享與連結一律用這個網址，不加參數也能開）
 - 全部旅程總覽：`https://jade19880309.github.io/travel-public/home.html`（`home.html`，依 `trips/index.json` 自動列出每趟旅程，主色寫在頁內 `ACC`）
 - 港珠澳：`https://jade19880309.github.io/travel-public/hk.html`（分享到 LINE 請用這個網址，縮圖才會是港珠澳）
-- `index.html`、`hk.html`：各旅程的入口頁（名稱、圖示、主題寫死在網頁開頭，才能正確「加入主畫面」）
+- 東京：`https://jade19880309.github.io/travel-public/tokyo.html`（四套行程方案可切換；分享用這個網址）
+- `index.html`、`hk.html`、`tokyo.html`：各旅程的入口頁（名稱、圖示、主題寫死在網頁開頭，才能正確「加入主畫面」）
 - `style.css`：共用樣式；`app.js`：依旅程資料畫出所有區塊
 - `trips/<旅程代號>.json`：一個旅程的全部內容（封面、換算幣別、航班、住宿、每日行程、美食、待辦、語句、注意事項）
 - `trips/index.json`：旅程清單（頁尾「其他旅程」會列出）
@@ -28,12 +29,14 @@
 - `meta.single: true`：全程同一種語言，不顯示第二個名稱（當地語言副標）。港珠澳使用。
 - `hero.bare: true`：封面圖本身已含標題時使用，圖片完整顯示在上方，日期與倒數放在下方，不再疊標題文字。
 - `dayImages`（可省略）：每日行程的「當日行程圖」按鈕；沒有這個欄位就不會出現按鈕。
+- `plans`（可省略）：同一趟旅程有多個方案時使用，`[{"id","name","label","sub","desc","days","hotels","plan"}]`。
+  每日行程上方會出現方案切換按鈕，每個方案各有自己的 `days` 與 `hotels`；選擇存在這支手機，網址加 `?p=<方案 id>` 可直接指定。東京使用。
 - 每一天預設都是折疊的；旅程期間打開網頁會自動展開「今天」。
 
 ## 專用主題
 
 入口頁可以指定主題：在 `<html>` 加上 `class="th-<代號>"`，並在 `style.css` 之後載入 `theme-<代號>.css`
-（港珠澳是 `hk.html` 的 `th-bay` 與 `theme-bay.css`）。主題只覆寫顏色與少數元件，
+（港珠澳是 `hk.html` 的 `th-bay` 與 `theme-bay.css`；東京是 `tokyo.html` 的 `th-fuji` 與 `theme-fuji.css`，結構沿用 bay 主題、只換主色）。主題只覆寫顏色與少數元件，
 `index.html`（首爾）沒指定主題，維持預設的紅金配色。
 
 ## 加入主畫面

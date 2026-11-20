@@ -1,5 +1,13 @@
 // 旅程頁面的程式。所有旅程內容都在 trips/<代號>.json，這裡只負責畫面。
 const TRIP=window.TRIP,M=TRIP.meta;
+// 多方案（可省略）：TRIP.plans=[{id,name,label,sub,desc,days,hotels,plan}]，每個方案各有自己的每日行程與住宿。
+// 目前選的方案存在這支手機；網址加 ?p=<方案代號> 可直接指定。沒有 plans 的旅程（首爾、港珠澳）完全不受影響。
+const PL=Array.isArray(TRIP.plans)&&TRIP.plans.length?TRIP.plans:null,PK=(M.store||M.id)+'p';
+let PI=0;
+if(PL){const q=new URLSearchParams(location.search).get('p');PI=PL.findIndex(p=>p.id===q);
+ if(PI<0){try{PI=PL.findIndex(p=>p.id===JSON.parse(localStorage.getItem(PK)))}catch(e){PI=-1}}
+ if(PI<0)PI=0;
+ const p=PL[PI];['days','hotels','dayImages'].forEach(k=>{if(p[k])TRIP[k]=p[k]});TRIP.plan=Object.assign({},TRIP.plan,p.plan||{})}
 const {kop:KOP={},tags:T={},days:D,dayImages:DI={},foods:F={},sights:S={},ko:KO={},regions:REG={},todo:TODO={},phrases:PH=[],sheets:SH={}}=TRIP;
 const $=s=>document.querySelector(s);
 const enc=encodeURIComponent;
@@ -37,6 +45,15 @@ const AMI='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5a6.5 6.5 
  // 行程
  const P=TRIP.plan||{};
  if($('#plan'))$('#plan h2').insertAdjacentHTML('afterend',`<p class="rate">${P.note||'點任一天展開當天行程；也可用畫面最下方的日期列隨時切換。'}</p>${P.sheets?`<div class="btns" style="margin:0 0 14px">${btns(P.sheets,' mapbtn')}</div>`:''}`);
+ // 方案切換：放在每日行程最上方；住宿區塊標示目前是哪個方案
+ if(PL&&$('#plan')){const c=PL[PI];
+  $('#plan h2').insertAdjacentHTML('afterend',`<div class="card plans"><div class="plh">${TRIP.planHead||'行程方案・點選切換比較'}</div><div class="plb n${PL.length}">${PL.map((p,i)=>`<button data-pl="${i}" class="${i===PI?'on':''}" aria-pressed="${i===PI}"><b>${p.name}</b><span>${p.label||''}</span>${p.sub?`<small>${p.sub}</small>`:''}</button>`).join('')}</div>${c.desc?`<p class="pld">${c.desc}</p>`:''}</div>`);
+  $('#plan .plans').onclick=e=>{const b=e.target.closest('[data-pl]');if(!b||+b.dataset.pl===PI)return;
+   try{localStorage.setItem(PK,JSON.stringify(PL[+b.dataset.pl].id));sessionStorage.setItem(PK+'go','1')}catch(_){}
+   const u=new URL(location.href);u.searchParams.delete('p');u.hash='';if(u.href===location.href.split('#')[0])location.reload();else location.replace(u.href)};
+  if($('#hotel'))$('#hotel h2').insertAdjacentHTML('afterend',`<p class="rate">目前顯示<b>${c.name}${c.label?' '+c.label:''}</b>的住宿，<a href="#plan">到每日行程切換方案</a>。</p>`);
+  let go=null;try{go=sessionStorage.getItem(PK+'go');sessionStorage.removeItem(PK+'go')}catch(_){}
+  if(go)setTimeout(()=>$('#plan').scrollIntoView({block:'start'}),60)}
  // 價格／預算、注意事項、App：自由格式內容
  const HT=TRIP.html||{};
  if(HT.price&&$('#price'))$('#price').insertAdjacentHTML('beforeend',HT.price);

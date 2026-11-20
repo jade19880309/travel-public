@@ -15,7 +15,7 @@
 <script>
 // 舊的港珠澳網址（index.html?t=hk-2027）轉到專用入口頁 hk.html，
 // 這樣「加入主畫面」才會記住正確的名稱、圖示與網址
-if(new URLSearchParams(location.search).get('t')==='hk-2027')location.replace('hk.html');
+{const t=new URLSearchParams(location.search).get('t');if(t==='hk-2027')location.replace('hk.html');else if(t==='tokyo-2027')location.replace('tokyo.html'+location.hash)}
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

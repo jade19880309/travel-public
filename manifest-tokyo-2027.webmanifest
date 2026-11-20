@@ -1,0 +1,30 @@
+{
+  "name": "2027 東京・富士山",
+  "short_name": "東京",
+  "lang": "zh-Hant",
+  "id": "./tokyo.html",
+  "start_url": "./tokyo.html",
+  "scope": "./tokyo.html",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#f8f2e7",
+  "theme_color": "#2a4b70",
+  "icons": [
+    {
+      "src": "icon-tokyo-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-tokyo-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-tokyo-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
