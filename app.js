@@ -45,7 +45,7 @@ const btns=(list,extra='')=>(list||[]).map(([k,l])=>`<button class="b bt gd${ext
  if(TRIP.phrNote)set('#phr .rate',TRIP.phrNote);
  set('footer',TRIP.footer||'');
  // 其他旅程
- fetch('trips/index.json',{cache:'no-cache'}).then(r=>r.json()).then(L=>{const o=L.filter(t=>t.id!==M.id);if(o.length)$('footer').insertAdjacentHTML('beforeend',`<div class="trips">其他旅程：${o.map(t=>`<a href="${t.url||'?t='+t.id}">${t.title}</a>`).join('')}</div>`)}).catch(()=>{});
+ fetch('trips/index.json',{cache:'no-cache'}).then(r=>r.json()).then(L=>{const o=L.filter(t=>t.id!==M.id);if(o.length)$('footer').insertAdjacentHTML('beforeend',`<div class="trips">其他旅程：${o.map(t=>`<a href="${t.url||'?t='+t.id}">${t.title}</a>`).join('')}<a href="home.html">全部旅程總覽</a></div>`)}).catch(()=>{});
 })();
 
 // ===== 地圖連結小圖示（藍色＝Google 地圖、綠色 N＝Naver 地圖）=====

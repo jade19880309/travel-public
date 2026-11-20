@@ -3,6 +3,7 @@
 公開的旅程行程網站（GitHub Pages）。
 
 - 首爾：`https://jade19880309.github.io/travel-public/`（`index.html`，也可加 `?t=seoul-2027`）
+- 全部旅程總覽：`https://jade19880309.github.io/travel-public/home.html`（`home.html`，依 `trips/index.json` 自動列出每趟旅程，主色寫在頁內 `ACC`）
 - 港珠澳：`https://jade19880309.github.io/travel-public/hk.html`（分享到 LINE 請用這個網址，縮圖才會是港珠澳）
 - `index.html`、`hk.html`：各旅程的入口頁（名稱、圖示、主題寫死在網頁開頭，才能正確「加入主畫面」）
 - `style.css`：共用樣式；`app.js`：依旅程資料畫出所有區塊
