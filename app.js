@@ -63,8 +63,9 @@ const btns=(list,extra='')=>(list||[]).map(([k,l])=>`<button class="b bt gd${ext
  const r=n=>Math.round(n);
  function draw(L,ts,old){
   const t=new Date(ts),hm=`${t.getMonth()+1}/${t.getDate()} ${String(t.getHours()).padStart(2,'0')}:${String(t.getMinutes()).padStart(2,'0')}`;
-  box.innerHTML=`<div class="wxh"><b>目前當地天氣</b><span>${old?'離線・上次更新 ':'更新 '}${hm}</span></div><div class="wxg n${L.length}">${L.map((d,i)=>{const c=d.current,y=d.daily,[ic,tx]=wmo(c.weather_code,c.is_day);
-   return `<div class="wxc"><div class="wxn">${W[i].name}</div><div class="wxt"><i>${ic}</i><b>${r(c.temperature_2m)}°</b></div><div class="wxs"><span>${tx}</span><span>體感 ${r(c.apparent_temperature)}°</span></div><div class="wxs"><span>${r(y.temperature_2m_min[0])}～${r(y.temperature_2m_max[0])}°</span><span>降雨 ${y.precipitation_probability_max[0]??'—'}%</span></div></div>`}).join('')}</div>`;
+  const kind=c=>c<=1?'sun':c<=3?'cloud':c<=48?'fog':(c>=71&&c<=77)||c===85||c===86?'snow':c>=95?'storm':'rain';
+  box.innerHTML=`<div class="wxh"><b>目前當地天氣</b><span>${old?'離線・':''}${hm} 更新</span></div><div class="wxg n${L.length}">${L.map((d,i)=>{const c=d.current,y=d.daily,[ic,tx]=wmo(c.weather_code,c.is_day),pp=y.precipitation_probability_max[0];
+   return `<div class="wxc k-${kind(c.weather_code)}"><div class="wxtop"><span class="wxn">${W[i].name}</span><span class="wxk">${tx}</span></div><div class="wxt"><i>${ic}</i><b>${r(c.temperature_2m)}<sup>°</sup></b></div><div class="wxd"><div class="wxr"><span>體感</span><em>${r(c.apparent_temperature)}°</em></div><div class="wxr"><span>氣溫</span><em><u class="lo">${r(y.temperature_2m_min[0])}</u>～<u class="hi">${r(y.temperature_2m_max[0])}°</u></em></div><div class="wxr"><span>降雨</span><em>${pp??'—'}%</em></div><div class="wxbar"><s style="width:${Math.min(100,pp||0)}%"></s></div></div></div>`}).join('')}</div>`;
  }
  function load(){
   const u='https://api.open-meteo.com/v1/forecast?latitude='+W.map(w=>w.lat).join(',')+'&longitude='+W.map(w=>w.lon).join(',')+'&current=temperature_2m,apparent_temperature,weather_code,is_day&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=auto&forecast_days=1';
