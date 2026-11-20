@@ -183,3 +183,44 @@ html.th-fuji{
 .th-fuji .dock button.on{background:var(--seal);color:#fff;box-shadow:none;border:2px solid var(--ink)}
 .th-fuji #fs{border:2.5px solid var(--ink);box-shadow:var(--pop2)}
 @media (prefers-reduced-motion:reduce){.th-fuji .dic{transition:none}}
+
+/* ===== 字重調細、住宿卡片縮小（只影響東京）===== */
+.th-fuji h2{font-weight:700}
+.th-fuji header nav a,.th-fuji .tabs button,.th-fuji .dock button,.th-fuji .plh{font-weight:500}
+.th-fuji .dr b,.th-fuji .dp h3{font-weight:700}
+.th-fuji .tl .tm{font-weight:500}
+.th-fuji .pill{font-weight:500}
+.th-fuji .hero .go{font-weight:700;letter-spacing:.08em}
+.th-fuji .hero.bare>p:first-of-type{font-weight:500}
+.th-fuji .plb button span{font-weight:700}
+.th-fuji .plb button b{font-weight:400}
+.th-fuji .pi span{font-weight:500}
+.th-fuji .pi span small{font-weight:400}
+.th-fuji #big b{font-weight:700}
+.th-fuji .bnr figcaption b{font-weight:500}
+/* 住宿：名稱小一號、地圖按鈕改小膠囊、卡片間距縮小 */
+.th-fuji #hotel details.card.hotel{margin-top:10px!important}
+.th-fuji #hotel details.card>summary{padding:11px 44px 11px 14px}
+.th-fuji #hotel details.card>summary::after{top:20px;right:18px}
+.th-fuji #hotel details[open].card>summary::after{top:25px}
+.th-fuji #hotel .hbody{padding:0 14px 14px}
+.th-fuji #hotel .hn .ko{font-size:17px;font-weight:700;line-height:1.35}
+.th-fuji #hotel .hn .hph{font-size:14px;margin-top:2px}
+.th-fuji #hotel .hn .btns{margin-top:6px}
+.th-fuji #hotel .hn .b{min-height:32px;padding:2px 12px;font-size:13.5px;box-shadow:none;border-width:1.5px}
+.th-fuji #hotel .hbody{font-size:15px}
+.th-fuji #hotel .bnr{margin-bottom:12px}
+/* 住宿名稱與地圖按鈕同一行 */
+.th-fuji #hotel .hn{flex-direction:row;flex-wrap:wrap;align-items:center;gap:4px 10px}
+.th-fuji #hotel .hn .ko{flex:1 1 auto;min-width:0}
+.th-fuji #hotel .hn .hph{flex-basis:100%;order:3}
+.th-fuji #hotel .hn .btns{margin:0;order:2}
+/* 整體再輕一點：描邊變細、內文小一號 */
+.th-fuji{--pop:2px 2px 0 var(--ink);--pop2:1.5px 1.5px 0 var(--ink)}
+.th-fuji .card,.th-fuji .dy,.th-fuji .bnr,.th-fuji .pi,.th-fuji .plb button,.th-fuji .note{border-width:2px}
+.th-fuji header nav a,.th-fuji .tabs button,.th-fuji .tl .tm,.th-fuji .hero.bare .cd div{border-width:1.5px}
+.th-fuji h2{font-size:20px}
+.th-fuji .dr .ds{font-size:15px}
+.th-fuji .tl .tc{font-size:16px;line-height:1.65}
+.th-fuji .lead,.th-fuji .note{font-size:15px}
+.th-fuji .bp .fl big{font-weight:700}
