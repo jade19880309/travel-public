@@ -1,19 +1,20 @@
-/* 東京專用：日式和風。和紙底、藍染（富士山藍）、朱紅點綴、金色青海波紋（配合封面）
+/* 東京專用：和風・江戶紫
+   江戶紫是東京的傳統色，配朱紅（鳥居）、櫻花粉、金色；生成色和紙底，七寶紋與青海波紋。
    由 tokyo.html 的 <html class="th-fuji"> 套用，首爾、港珠澳不受影響。
-   結構沿用 theme-bay.css，只換主色；改版面時兩個主題檔要一起改。 */
+   結構沿用 theme-bay.css；改版面時兩個主題檔要一起改。 */
 
 html.th-fuji{
- --bg:#f8f2e7;--card:#fffcf6;--ink:#1f2b35;--sub:#6d6a62;--line:#e4dccd;--soft:#efe8da;
- --red:#23436b;--red2:#3a5f8a;--gold:#a8823f;--goldl:#f3e8d2;
- --seal:#b7372b;
- --pink:#eef1f3;--mint:#ecf1ea;--green:#3f6f57;
- --r:14px;--sh:0 1px 2px rgba(40,32,20,.05),0 10px 26px -12px rgba(40,32,20,.16);
+ --bg:#f7f1e6;--card:#fffdf8;--ink:#2a2230;--sub:#6e6471;--line:#e5d9c8;--soft:#f2eadf;
+ --red:#5b3a72;--red2:#7c5b96;--gold:#b08a3e;--goldl:#f4e8d0;
+ --seal:#c23b2e;--sakura:#e59aac;
+ --pink:#f9e9ee;--mint:#ecf1ea;--green:#3f6f57;
+ --r:8px;--sh:0 1px 2px rgba(40,32,20,.05),0 10px 26px -12px rgba(40,32,20,.16);
  --serif:"Noto Serif TC","Songti TC","PMingLiU",serif
 }
 /* 宣紙底：米白＋極淡紙紋＋上方淡淡的墨暈 */
 .th-fuji body{
  background:
-  radial-gradient(900px 420px at 50% -120px,rgba(42,75,112,.07),transparent 70%) no-repeat,
+  radial-gradient(900px 420px at 50% -120px,rgba(91,58,114,.07),transparent 70%) no-repeat,
   url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .45 0 0 0 0 .38 0 0 0 0 .28 0 0 0 .05 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"),
   var(--bg)}
 .th-fuji header{background:rgba(246,241,231,.93);border-bottom-color:var(--line)}
@@ -27,7 +28,7 @@ html.th-fuji{
 
 /* 區塊標題：明體、墨色筆觸短條、金色細線 */
 .th-fuji h2{font-family:var(--serif);font-weight:700;font-size:22px;letter-spacing:.08em;color:var(--ink)}
-.th-fuji h2::before{content:"";flex:none;width:5px;height:1.1em;border-radius:2px 3px 3px 2px;background:linear-gradient(180deg,var(--red),rgba(42,75,112,.55));transform:skewY(-6deg)}
+.th-fuji h2::before{content:"";flex:none;width:5px;height:1.1em;border-radius:2px 3px 3px 2px;background:linear-gradient(180deg,var(--red),rgba(91,58,114,.55));transform:skewY(-6deg)}
 .th-fuji h2::after{background:linear-gradient(90deg,var(--gold),rgba(168,130,63,0));opacity:.55;height:1px}
 .th-fuji .card{background:var(--card);border-color:var(--line);box-shadow:var(--sh)}
 
@@ -45,7 +46,7 @@ html.th-fuji{
 .th-fuji .hero.bare .cd b{color:var(--red);font-family:var(--serif)}
 .th-fuji .hero.bare .cd span{color:var(--gold);letter-spacing:.1em}
 .th-fuji .hero.bare #cdnote{margin-top:10px;color:var(--sub);text-shadow:none;font-size:14px;letter-spacing:.06em}
-.th-fuji .hero .go{background:var(--red);color:#f6efe0;font-family:var(--serif);letter-spacing:.12em;box-shadow:inset 0 -2px 0 var(--gold),0 8px 18px -10px rgba(42,75,112,.6)}
+.th-fuji .hero .go{background:var(--red);color:#f6efe0;font-family:var(--serif);letter-spacing:.12em;box-shadow:inset 0 -2px 0 var(--gold),0 8px 18px -10px rgba(91,58,114,.6)}
 @media (min-width:760px){.th-fuji .hero.bare{border-radius:0 0 28px 28px}}
 
 /* 按鈕 */
@@ -98,41 +99,48 @@ html.th-fuji{
 .th-fuji .mi.a,.th-fuji .b.am{background:var(--gold)}
 
 
-/* ===== 和風加強（只影響東京）===== */
-/* 上方功能列：和紙底＋淡金青海波紋，底下一條朱紅細線 */
-.th-fuji header{background:linear-gradient(rgba(246,240,228,.9),rgba(246,240,228,.9)),url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='24' viewBox='0 0 48 24'%3E%3Cg fill='none' stroke='%23b08a3e' stroke-width='1'%3E%3Cpath d='M0 24a24 24 0 0 1 48 0M8 24a16 16 0 0 1 32 0M16 24a8 8 0 0 1 16 0M-24 12a24 24 0 0 1 48 0M-16 12a16 16 0 0 1 32 0M-8 12a8 8 0 0 1 16 0M24 12a24 24 0 0 1 48 0M32 12a16 16 0 0 1 32 0M40 12a8 8 0 0 1 16 0'/%3E%3C/g%3E%3C/svg%3E");background-size:auto,48px 24px;border-bottom:2px solid var(--seal)}
-.th-fuji header nav a.on{background:var(--red);border-color:var(--red);color:#f7efe0;box-shadow:inset 0 -3px 0 var(--seal)}
-
-/* 區塊標題：朱紅圓印（日の丸）＋明體＋金色細線 */
-.th-fuji h2::before{width:.5em;height:.5em;border-radius:50%;background:var(--seal);transform:none;box-shadow:0 0 0 3px rgba(183,55,43,.15)}
-.th-fuji h2::after{background:linear-gradient(90deg,var(--gold),rgba(176,138,62,0))}
-
-/* 卡片：上緣一條極細金線，像和紙信箋 */
-.th-fuji .card,.th-fuji .dy{border-top:2px solid rgba(176,138,62,.35)}
-
-/* 封面下方：青海波收尾 */
-.th-fuji .hero.bare{background:linear-gradient(180deg,#f3ecdf,rgba(246,240,228,.6)),url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='24' viewBox='0 0 48 24'%3E%3Cg fill='none' stroke='%23b08a3e' stroke-width='1'%3E%3Cpath d='M0 24a24 24 0 0 1 48 0M8 24a16 16 0 0 1 32 0M16 24a8 8 0 0 1 16 0M-24 12a24 24 0 0 1 48 0M-16 12a16 16 0 0 1 32 0M-8 12a8 8 0 0 1 16 0M24 12a24 24 0 0 1 48 0M32 12a16 16 0 0 1 32 0M40 12a8 8 0 0 1 16 0'/%3E%3C/g%3E%3C/svg%3E");background-size:auto,48px 24px}
-.th-fuji .hero .go{box-shadow:inset 0 -3px 0 var(--seal),0 8px 18px -10px rgba(35,67,107,.6)}
-
-/* 方案切換：選中＝藍染＋朱紅底線 */
-.th-fuji .plb button{border-color:var(--line);background:var(--card)}
+/* ===== 和風・簡潔版（只影響東京）：花紋只留在封面下緣，其餘以留白、細線、江戶紫與朱紅點綴 ===== */
+/* 上方功能列：木札（方角），選中＝江戶紫＋朱紅底線；下緣一條江戶紫細線 */
+.th-fuji header{background:rgba(247,241,230,.96);border-bottom:2px solid var(--red)}
+.th-fuji header nav a{border-radius:4px;border-color:var(--line);background:var(--card)}
+.th-fuji header nav a.on{background:var(--red);border-color:var(--red);color:#fbf3e4;box-shadow:inset 0 -3px 0 var(--seal)}
+/* 區塊標題：櫻花紋＋明體＋一條金色細線 */
+.th-fuji h2{color:var(--red);letter-spacing:.1em}
+.th-fuji h2::before{width:1em;height:1em;border-radius:0;transform:none;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-12 -12 24 24'%3E%3Cg fill='%23d9708a'%3E%3Cellipse cx='0' cy='-5.6' rx='3.6' ry='5.6' transform='rotate(0)'/%3E%3Cellipse cx='0' cy='-5.6' rx='3.6' ry='5.6' transform='rotate(72)'/%3E%3Cellipse cx='0' cy='-5.6' rx='3.6' ry='5.6' transform='rotate(144)'/%3E%3Cellipse cx='0' cy='-5.6' rx='3.6' ry='5.6' transform='rotate(216)'/%3E%3Cellipse cx='0' cy='-5.6' rx='3.6' ry='5.6' transform='rotate(288)'/%3E%3C/g%3E%3Ccircle r='2.2' fill='%23f3cf6a'/%3E%3C/svg%3E") center/contain no-repeat;box-shadow:none}
+.th-fuji h2::after{height:1px;background:linear-gradient(90deg,var(--gold),rgba(176,138,62,0));opacity:.6}
+/* 卡片：方角、細框、淡陰影 */
+.th-fuji .card,.th-fuji .dy{border-radius:8px;border:1px solid var(--line);box-shadow:0 1px 2px rgba(60,40,30,.04),0 8px 20px -16px rgba(60,40,30,.28)}
+.th-fuji .dy.on .dr{background:var(--red);color:#fbf3e4}
+/* 封面下緣：唯一的青海波 */
+.th-fuji .hero.bare{background:linear-gradient(180deg,#f4ecdf,rgba(247,241,230,.6)),url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='24' viewBox='0 0 48 24'%3E%3Cg fill='none' stroke='%23b08a3e' stroke-opacity='.45' stroke-width='1'%3E%3Cpath d='M0 24a24 24 0 0 1 48 0M8 24a16 16 0 0 1 32 0M16 24a8 8 0 0 1 16 0M-24 12a24 24 0 0 1 48 0M-16 12a16 16 0 0 1 32 0M-8 12a8 8 0 0 1 16 0M24 12a24 24 0 0 1 48 0M32 12a16 16 0 0 1 32 0M40 12a8 8 0 0 1 16 0'/%3E%3C/g%3E%3C/svg%3E");background-size:auto,48px 24px;border-bottom:1px solid var(--line)}
+.th-fuji .hero .go{border-radius:4px;background:var(--red);box-shadow:inset 0 -3px 0 var(--seal),0 8px 18px -10px rgba(91,58,114,.55)}
+.th-fuji .hero.bare .cd div{border-radius:6px;border-color:rgba(176,138,62,.45)}
+.th-fuji .hero.bare .cd b{color:var(--red)}
+.th-fuji .hero.bare .cd span{color:var(--seal)}
+/* 方案切換：木札，選中＝江戶紫 */
+.th-fuji .plb button{border-radius:6px;border-color:var(--line);background:var(--card)}
 .th-fuji .plb button.on{background:var(--red);border-color:var(--red);box-shadow:inset 0 -3px 0 var(--seal)}
-.th-fuji .plh{font-family:var(--serif);letter-spacing:.04em}
-
-/* 每日行程：展開的日子用藍染、時間像木牌 */
-.th-fuji .dp h3::before{content:"";display:inline-block;width:.42em;height:.42em;margin:0 .4em .12em 0;border-radius:50%;background:var(--seal);vertical-align:middle}
-.th-fuji .tl .tm{background:#fbf6ec;border:1px solid #dccfb6;color:var(--red);border-radius:6px}
-.th-fuji .note{border-left-color:var(--seal);background:#faf3e6}
-
-/* 常用日語：卡片右側朱紅箭頭，全螢幕放大用墨色底 */
-.th-fuji .pi{background:var(--card);border-color:var(--line)}
+.th-fuji .plh{font-family:var(--serif);letter-spacing:.06em;color:var(--sub)}
+.th-fuji .pld{padding-top:10px;border-top:1px dashed var(--line)}
+/* 每日行程：時間用江戶紫粗字、不加框；當天標題前一枚朱印 */
+.th-fuji .tl .tm{background:none;border:0;color:var(--red);font-weight:700;text-align:left;font-family:var(--serif);font-size:16px}
+.th-fuji .tl::before{display:none}
+.th-fuji .tl li{border-bottom-color:#efe6d8}
+.th-fuji .dp h3{color:var(--red)}
+.th-fuji .dp h3::before{content:"";display:inline-block;width:.45em;height:.45em;margin:0 .5em .12em 0;background:var(--seal);transform:rotate(45deg);vertical-align:middle}
+.th-fuji .note{border-left:3px solid var(--seal);border-radius:2px;background:#fbf3ea}
+.th-fuji .pill{background:#fbe8ec;color:#a8324a}
+.th-fuji .b{border-radius:6px}
+/* 常用日語、分頁 */
+.th-fuji .tabs button{border-radius:6px;background:var(--card);border-color:var(--line);font-family:var(--serif)}
+.th-fuji .tabs button.on{background:var(--red);border-color:var(--red);color:#fbf3e4;box-shadow:inset 0 -2px 0 var(--seal)}
+.th-fuji .pi{border-radius:8px;background:var(--card);border-color:var(--line)}
 .th-fuji .pi::after{color:var(--seal)}
 .th-fuji .pi span small{font-family:var(--serif);color:var(--red2)}
-.th-fuji #big{background:#1d2633}
+.th-fuji #big{background:#241a2c}
 .th-fuji #big b{font-family:var(--serif);letter-spacing:.04em}
-
-/* 底部日期列：同樣的青海波 */
-.th-fuji .dock{background:linear-gradient(rgba(255,252,246,.94),rgba(255,252,246,.94)),url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='24' viewBox='0 0 48 24'%3E%3Cg fill='none' stroke='%23b08a3e' stroke-width='1'%3E%3Cpath d='M0 24a24 24 0 0 1 48 0M8 24a16 16 0 0 1 32 0M16 24a8 8 0 0 1 16 0M-24 12a24 24 0 0 1 48 0M-16 12a16 16 0 0 1 32 0M-8 12a8 8 0 0 1 16 0M24 12a24 24 0 0 1 48 0M32 12a16 16 0 0 1 32 0M40 12a8 8 0 0 1 16 0'/%3E%3C/g%3E%3C/svg%3E");background-size:auto,48px 24px;border-top:2px solid var(--seal)}
-.th-fuji .tabs button{background:var(--card);border-color:var(--line);font-family:var(--serif)}
-.th-fuji .tabs button.on{background:var(--red);border-color:var(--red);color:#f7efe0;box-shadow:inset 0 -2px 0 var(--seal)}
-.th-fuji .dock button.on{box-shadow:inset 0 -3px 0 var(--seal)}
+.th-fuji #big small{color:#f1d6de}
+/* 底部日期列：乾淨的和紙色，上緣細線 */
+.th-fuji .dock{background:rgba(255,251,244,.97);border-top:1px solid var(--line)}
+.th-fuji .dock button{border-radius:6px}
+.th-fuji .dock button.on{background:var(--red);box-shadow:inset 0 -3px 0 var(--seal)}
