@@ -1,73 +1,95 @@
-/* 港珠澳專用：海灣藍綠・清爽簡約
-   只在 ?t=hk-2027 時由 index.html 開頭的切換表載入，首爾頁面不受影響。
-   做法：覆寫 index.html 的顏色變數，再微調幾個元件。 */
+/* 港珠澳專用：水墨・宣紙風（配合封面水墨畫）
+   由 hk.html 的 <html class="th-bay"> 套用，首爾頁面不受影響。
+   配色：宣紙米白底、墨藍字（封面「香港」）、香檳金細線（封面「澳門」）、印章紅點綴。 */
 
 html.th-bay{
- --bg:#f3f8f9;--card:#fff;--ink:#12303a;--sub:#587079;--line:#d9e6ea;--soft:#eaf3f5;
- --red:#0a6c85;--red2:#1596ab;--gold:#e0a03e;--goldl:#fdf0d5;
- --pink:#e6f4f6;--mint:#e2f3ea;--green:#1f7a56;
- --r:16px;--sh:0 1px 2px rgba(10,60,80,.05),0 6px 20px rgba(10,60,80,.07);
- --serif:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif
+ --bg:#f6f1e7;--card:#fffcf6;--ink:#1f2b35;--sub:#6d6a62;--line:#e4dccd;--soft:#efe8da;
+ --red:#1d3a52;--red2:#3d6481;--gold:#a8823f;--goldl:#f3e8d2;
+ --seal:#b0362c;
+ --pink:#eef1f3;--mint:#ecf1ea;--green:#3f6f57;
+ --r:14px;--sh:0 1px 2px rgba(40,32,20,.05),0 10px 26px -12px rgba(40,32,20,.16);
+ --serif:"Noto Serif TC","Songti TC","PMingLiU",serif
 }
-.th-bay body{background:linear-gradient(180deg,#e4f2f4 0,var(--bg) 420px) no-repeat,var(--bg)}
-.th-bay header{background:rgba(243,248,249,.94)}
-.th-bay .net{background:#17333f}
+/* 宣紙底：米白＋極淡紙紋＋上方淡淡的墨暈 */
+.th-bay body{
+ background:
+  radial-gradient(900px 420px at 50% -120px,rgba(29,58,82,.07),transparent 70%) no-repeat,
+  url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .45 0 0 0 0 .38 0 0 0 0 .28 0 0 0 .05 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"),
+  var(--bg)}
+.th-bay header{background:rgba(246,241,231,.93);border-bottom-color:var(--line)}
+.th-bay .net{background:var(--red)}
 
-/* 區塊標題：左側色條＋淡線 */
-.th-bay h2{font-size:22px;letter-spacing:.03em}
-.th-bay h2::before{content:"";flex:none;width:5px;height:1.15em;border-radius:3px;background:linear-gradient(var(--red2),var(--red))}
-.th-bay h2::after{background:var(--line);opacity:1}
-.th-bay .card{border-color:var(--line)}
+/* 功能列：未選為紙色，選中為墨藍＋金色細底線；7 個兩字按鈕排成一排 */
+.th-bay header nav{grid-template-columns:none;grid-auto-flow:column;grid-auto-columns:1fr;gap:5px}
+.th-bay header nav a{padding:0 2px;background:var(--card);border-color:var(--line);color:var(--ink);font-family:var(--serif);font-weight:600}
+.th-bay header nav a.on{background:var(--red);border-color:var(--red);color:#f6efe0;box-shadow:inset 0 -2px 0 var(--gold)}
+@media (min-width:760px){.th-bay header nav{max-width:760px}}
 
-/* 封面 */
-.th-bay .hero{background:#0f4d6b;border-radius:0 0 32px 32px}
-.th-bay .hero::after{background:linear-gradient(to bottom,rgba(5,38,56,.62),rgba(5,38,56,.12) 32%,rgba(5,38,56,0) 50%,rgba(5,38,56,0) 64%,rgba(5,38,56,.7))}
-.th-bay .hero .eyebrow{color:#e3f6f6;font-size:13px;letter-spacing:.3em}
-.th-bay .hero h1{letter-spacing:.05em}
-.th-bay .hero p{color:#eaf8f8}
-.th-bay .cd div{background:rgba(255,255,255,.14);border-color:rgba(255,255,255,.5)}
-.th-bay .cd span{color:#e3f6f6}
-.th-bay .hero .go{color:var(--red)}
+/* 區塊標題：明體、墨色筆觸短條、金色細線 */
+.th-bay h2{font-family:var(--serif);font-weight:700;font-size:22px;letter-spacing:.08em;color:var(--ink)}
+.th-bay h2::before{content:"";flex:none;width:5px;height:1.1em;border-radius:2px 3px 3px 2px;background:linear-gradient(180deg,var(--red),rgba(29,58,82,.55));transform:skewY(-6deg)}
+.th-bay h2::after{background:linear-gradient(90deg,var(--gold),rgba(168,130,63,0));opacity:.55;height:1px}
+.th-bay .card{background:var(--card);border-color:var(--line);box-shadow:var(--sh)}
 
-/* 封面圖本身含標題（hero.bare）：圖片完整顯示在上方，日期與倒數放在下方的藍綠色區塊 */
-.th-bay .hero.bare{min-height:0;padding:0 0 22px;background:linear-gradient(180deg,#0f4d6b,#0a6c85);border-radius:0 0 28px 28px;justify-content:flex-start}
+/* 封面：圖片完整顯示，下方延續宣紙底色，像畫軸往下展開 */
+.th-bay .hero{background:var(--bg);border-radius:0 0 28px 28px}
+.th-bay .hero::after{background:none}
+.th-bay .hero.bare{min-height:0;padding:0 0 26px;background:linear-gradient(180deg,#f3ecdf,var(--bg));color:var(--ink);justify-content:flex-start;border-bottom:1px solid var(--line);box-shadow:0 18px 30px -24px rgba(40,32,20,.35)}
 .th-bay .hero.bare::after{display:none}
-.th-bay .hero.bare .hero-bg{position:static;display:block;width:100%;height:auto;object-fit:initial;object-position:initial}
-.th-bay .hero.bare>p:first-of-type{margin-top:14px;padding:0 14px}
-.th-bay .hero.bare .cd{margin-top:14px}
-.th-bay .hero.bare #cdnote{margin-top:8px}
+.th-bay .hero.bare .hero-bg{position:static;display:block;width:100%;height:auto;object-fit:initial;object-position:initial;
+ -webkit-mask-image:linear-gradient(180deg,#000 88%,transparent);mask-image:linear-gradient(180deg,#000 88%,transparent)}
+.th-bay .hero.bare>p:first-of-type{margin-top:6px;padding:0 14px;color:var(--ink);text-shadow:none;font-family:var(--serif);font-weight:600;letter-spacing:.06em}
+.th-bay .hero.bare p span{color:var(--ink)}
+.th-bay .hero.bare .cd{margin-top:16px}
+.th-bay .hero.bare .cd div{background:rgba(255,252,246,.85);border:1px solid rgba(168,130,63,.45);border-radius:12px;-webkit-backdrop-filter:none;backdrop-filter:none;box-shadow:0 6px 14px -10px rgba(40,32,20,.35)}
+.th-bay .hero.bare .cd b{color:var(--red);font-family:var(--serif)}
+.th-bay .hero.bare .cd span{color:var(--gold);letter-spacing:.1em}
+.th-bay .hero.bare #cdnote{margin-top:10px;color:var(--sub);text-shadow:none;font-size:14px;letter-spacing:.06em}
+.th-bay .hero .go{background:var(--red);color:#f6efe0;font-family:var(--serif);letter-spacing:.12em;box-shadow:inset 0 -2px 0 var(--gold),0 8px 18px -10px rgba(29,58,82,.6)}
 @media (min-width:760px){.th-bay .hero.bare{border-radius:0 0 28px 28px}}
 
 /* 按鈕 */
-.th-bay .b.bt.dk{background:#17333f}
-.th-bay .b.bt.gd{background:var(--red)}
+.th-bay .b.bt.dk{background:var(--red)}
+.th-bay .b.bt.gd{background:var(--gold)}
 
-/* 每日行程：時間改為淡色標籤，整體更輕 */
-.th-bay .dy{box-shadow:0 1px 2px rgba(10,60,80,.04)}
+/* 每日行程 */
+.th-bay .dy{background:var(--card);border-color:var(--line);box-shadow:0 1px 2px rgba(40,32,20,.04)}
 .th-bay .dy.on{box-shadow:var(--sh)}
-.th-bay .tl::before{border-left:2px dotted #bcdde3}
-.th-bay .tl .tm{background:var(--pink);color:var(--red);border:1px solid #cfe6ea}
+.th-bay .dr b{font-family:var(--serif)}
+.th-bay .tl::before{border-left:1.5px dashed #d2c6b0}
+.th-bay .tl .tm{background:var(--soft);color:var(--red);border:1px solid var(--line);font-family:var(--serif)}
 .th-bay .ab button.on{background:var(--red);border-color:var(--red)}
-.th-bay .ab button{border-color:#b9d9df}
-.th-bay .dp h3{font-size:19px}
+.th-bay .ab button{border-color:var(--line)}
+.th-bay .dp h3{font-family:var(--serif);font-size:19px;color:var(--red);letter-spacing:.04em}
 
-/* 提醒框：藍綠底＋左側色條 */
-.th-bay .note{background:#eef7f8;color:#23505c;border-radius:12px;border-left:4px solid var(--red2)}
+/* 提醒框：紙色＋金色左線 */
+.th-bay .note{background:#f8f2e6;color:#4a4335;border-radius:10px;border-left:3px solid var(--gold)}
 
 /* 小標籤 */
-.th-bay .pill{background:var(--pink);color:var(--red)}
+.th-bay .pill{background:#f4e4e1;color:var(--seal)}
 .th-bay .pill.tw{background:var(--mint);color:var(--green)}
-.th-bay .est{background:var(--goldl);color:#8a5a00}
+.th-bay .est{background:var(--goldl);color:#7d5a1c}
 
-/* 滑動區、全螢幕放大 */
+/* 滑動區、全螢幕放大、底部選單 */
 .th-bay .dots .sa{color:var(--red)}
-.th-bay #big{background:#0e2f3d}
-.th-bay #big small{color:#cdeff0}
+.th-bay #big{background:#17202a}
+.th-bay #big small{color:#e8dcc4}
 .th-bay #sheet .sx{background:var(--soft)}
 
-/* 底部日期列 */
-.th-bay .dock button.on small{color:#d6f1f4}
+/* 底部日期列與字體鈕 */
+.th-bay .dock{background:rgba(255,252,246,.96);border-top-color:var(--line)}
+.th-bay .dock button{font-family:var(--serif)}
+.th-bay .dock button.on{background:var(--red);box-shadow:inset 0 -2px 0 var(--gold)}
+.th-bay .dock button.on small{color:#e8dcc4}
+.th-bay #fs{background:var(--card);border-color:var(--line);color:var(--red)}
+.th-bay footer{color:var(--sub)}
 
-/* 港珠澳功能列只有 7 個兩字按鈕：排成一排，少佔畫面 */
-.th-bay header nav{grid-template-columns:none;grid-auto-flow:column;grid-auto-columns:1fr;gap:5px}
-.th-bay header nav a{padding:0 2px}
+/* 地圖圖示改墨藍，不用搶眼的 Google 藍 */
+.th-bay .mi.g,.th-bay .b.g{background:var(--red2)}
+.th-bay .mi.g svg circle{fill:var(--red2)}
+
+/* 平板、電腦：封面圖限制寬度置中，下面的內容不會被擠到太下面 */
+@media (min-width:760px){
+ .th-bay .hero.bare .hero-bg{max-width:820px;margin:0 auto}
+ .th-bay .hero.bare>p:first-of-type{margin-top:10px}
+}
