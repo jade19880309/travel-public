@@ -361,3 +361,20 @@ details[open].card>summary::after{transform:rotate(-135deg);top:31px}
 .wxg.n3 .wxtop{flex-direction:row;align-items:center;gap:4px}
 .wxg.n3 .wxn{letter-spacing:.04em}
 .wxg.n3 .wxk{padding:0 6px;font-size:11px}
+
+
+/* ===== 登機證票頭：依航空公司配色（所有旅程共用，不使用航空公司標誌）=====
+   app.js 依航班號前兩碼加上 al-br／al-ci／al-ke… class；沒列到的航空公司維持各旅程主題的顏色。 */
+html body #flight .bp.al-br .bph{background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='50' viewBox='0 0 120 50'%3E%3Cpath d='M20,50 Q70,10 120,18 L120,26 Q72,22 34,50Z' fill='%23f39800' fill-opacity='.75'/%3E%3C/svg%3E") right bottom/96px 34px no-repeat,linear-gradient(120deg,#00573a,#0a7d50);color:#fff}
+html body #flight .bp.al-br .bph .pill{background:#fff;color:#00573a;border-color:#f39800}
+html body #flight .bp.al-br .bph .al::before{content:"";display:inline-block;width:8px;height:8px;margin-right:6px;border-radius:50%;background:#f39800;vertical-align:middle}
+html body #flight .bp.al-ci .bph{background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='50' viewBox='0 0 120 50'%3E%3Cg transform='translate(96 14) scale(1.4)' fill='%23ffe3ee' fill-opacity='.35'%3E%3Ccircle cx='0' cy='-3.4' r='3'/%3E%3Ccircle cx='3.2' cy='-1' r='3'/%3E%3Ccircle cx='2' cy='2.8' r='3'/%3E%3Ccircle cx='-2' cy='2.8' r='3'/%3E%3Ccircle cx='-3.2' cy='-1' r='3'/%3E%3C/g%3E%3Cg transform='translate(110 34) scale(1)' fill='%23ffe3ee' fill-opacity='.35'%3E%3Ccircle cx='0' cy='-3.4' r='3'/%3E%3Ccircle cx='3.2' cy='-1' r='3'/%3E%3Ccircle cx='2' cy='2.8' r='3'/%3E%3Ccircle cx='-2' cy='2.8' r='3'/%3E%3Ccircle cx='-3.2' cy='-1' r='3'/%3E%3C/g%3E%3Cg transform='translate(78 36) scale(0.8)' fill='%23ffe3ee' fill-opacity='.35'%3E%3Ccircle cx='0' cy='-3.4' r='3'/%3E%3Ccircle cx='3.2' cy='-1' r='3'/%3E%3Ccircle cx='2' cy='2.8' r='3'/%3E%3Ccircle cx='-2' cy='2.8' r='3'/%3E%3Ccircle cx='-3.2' cy='-1' r='3'/%3E%3C/g%3E%3Cg transform='translate(60 10) scale(0.6)' fill='%23ffe3ee' fill-opacity='.35'%3E%3Ccircle cx='0' cy='-3.4' r='3'/%3E%3Ccircle cx='3.2' cy='-1' r='3'/%3E%3Ccircle cx='2' cy='2.8' r='3'/%3E%3Ccircle cx='-2' cy='2.8' r='3'/%3E%3Ccircle cx='-3.2' cy='-1' r='3'/%3E%3C/g%3E%3C/svg%3E") right center/120px 50px no-repeat,linear-gradient(120deg,#7a1f4f,#c0427a);color:#fff}
+html body #flight .bp.al-ci .bph .pill{background:#fff;color:#8c2458;border-color:#f3b6cd}
+html body #flight .bp.al-ci .bph .al::before{content:"✿";margin-right:5px;color:#ffd1e1}
+html body #flight .bp.al-ke .bph{background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='50' viewBox='0 0 120 50'%3E%3Cpath d='M40,50 L80,0 L92,0 L52,50Z M62,50 L102,0 L108,0 L68,50Z' fill='%23ffffff' fill-opacity='.18'/%3E%3C/svg%3E") right bottom/120px 50px no-repeat,linear-gradient(120deg,#0f78c2,#4fb0e5);color:#fff}
+html body #flight .bp.al-ke .bph .pill{background:#fff;color:#0f6fb4;border-color:#bfe2f7}
+html body #flight .bp.al-ke .bph .al::before{content:"";display:inline-block;width:8px;height:8px;margin-right:6px;border-radius:50%;background:linear-gradient(180deg,#d6303c 50%,#1e4fa0 50%);vertical-align:middle}
+html body #flight .bp.al-ak .bph{background:linear-gradient(120deg,#c8102e,#ef3340);color:#fff}
+html body #flight .bp[class*="al-"] .bph .al{color:#fff;opacity:.96}
+html body #flight .bp[class*="al-"] .bph::after{display:none}
+html body #flight .bp[class*="al-"] .bph .al{margin-right:0}

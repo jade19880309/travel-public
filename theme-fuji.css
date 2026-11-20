@@ -238,7 +238,6 @@ html.th-fuji{
 .th-fuji #flight .bp{position:relative;overflow:hidden;padding:0 0 14px;border-radius:20px}
 /* 上方彩色票頭：去程天藍、回程珊瑚 */
 .th-fuji #flight .bp .bph{position:relative;padding:12px 16px 12px;background:var(--sky);color:#fff;border-bottom:2px dashed var(--ink);font-weight:700}
-.th-fuji #flight .grid>.bp:nth-child(2) .bph{background:var(--seal)}
 .th-fuji #flight .bp .bph .pill{background:#fff;color:var(--ink);border:1.5px solid var(--ink)}
 .th-fuji #flight .bp .bph .al{color:#fff;font-weight:500;opacity:.95}
 .th-fuji #flight .bp .bph::after{content:"";position:absolute;right:-6px;top:-10px;width:70px;height:35px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 40'%3E%3Cg fill='%23fff' stroke='%2324324a' stroke-width='3'%3E%3Ccircle cx='24' cy='26' r='12'/%3E%3Ccircle cx='40' cy='18' r='15'/%3E%3Ccircle cx='57' cy='26' r='11'/%3E%3C/g%3E%3Cg fill='%23fff'%3E%3Ccircle cx='24' cy='26' r='12'/%3E%3Ccircle cx='40' cy='18' r='15'/%3E%3Ccircle cx='57' cy='26' r='11'/%3E%3C/g%3E%3C/svg%3E") center/contain no-repeat;opacity:.95;pointer-events:none}
