@@ -13,6 +13,8 @@ const btns=(list,extra='')=>(list||[]).map(([k,l])=>`<button class="b bt gd${ext
  // 上方功能列：只列出這個旅程有的區塊
  $('#hd nav').innerHTML=(TRIP.nav||[]).map(([id,l])=>`<a href="#${id}">${l}</a>`).join('');
  document.querySelectorAll('main>section[id]').forEach(s=>{if(!(TRIP.nav||[]).some(n=>n[0]===s.id))s.remove()});
+ // 區塊順序跟著上方功能列的順序走（資料裡的 nav 怎麼排，畫面就怎麼排）
+ (TRIP.nav||[]).forEach(n=>{const s=document.getElementById(n[0]);if(s&&s.tagName==='SECTION')$('footer').before(s)});
  // 封面
  const h=TRIP.hero||{};
  $('#hero').innerHTML=`<img class="hero-bg" src="${h.img}" alt="${h.alt||''}">${h.seal?`<div class="seal">${h.seal}</div>`:''}<div class="eyebrow">${h.eyebrow||''}</div><h1>${h.title||M.title}</h1><p>${(h.sub||[]).map(x=>`<span>${x}</span>`).join('｜')}</p><div class="cd" id="cd"></div><p id="cdnote"></p><a class="b go" href="#plan" id="gotoday">看每日行程</a>`;
@@ -86,7 +88,8 @@ dbox.addEventListener('click',e=>{
 // ===== 美食與景點 =====
 const first=o=>{const ks=Object.keys(o),s=ks.filter(k=>k.includes('海鮮'));return [...s,...ks.filter(k=>!s.includes(k))]};
 function tabs(el,keys,draw){const box=$(el);if(!box)return;keys.forEach((k,i)=>{const b=document.createElement('button');b.textContent=k;b.onclick=()=>{[...box.children].forEach(c=>c.classList.remove('on'));b.classList.add('on');draw(k)};box.append(b);if(!i)b.click()})}
-const kn=(kind,x)=>kind==='f'?x[1]:(x[3]||KO[x[0]]||'');
+// meta.single＝true：全程同一種語言，不顯示第二個名稱（當地語言副標）
+const kn=(kind,x)=>M.single?'':(kind==='f'?x[1]:(x[3]||KO[x[0]]||''));
 let R=ls.get(K+'r',{});
 const LD={};
 function listDraw(sel,arr,sea,kind){const box=$(sel);box.className='pl';LD[kind]=[sel,arr,sea];

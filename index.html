@@ -8,8 +8,10 @@
 <title>2027 首爾春節自由行</title>
 <script>
 // 依網址 ?t= 切換主畫面圖示與名稱（加入主畫面時用）
-(function(){var t=new URLSearchParams(location.search).get('t'),A={'hk-2027':['manifest-hk-2027.webmanifest','港珠澳','icon-hk-180.png','icon-hk-192.png','2027 香港・珠海・澳門']}[t];
- if(!A)return;document.getElementById('mf').href=A[0];document.getElementById('mt').content=A[1];document.getElementById('ti').href=A[2];document.getElementById('fi').href=A[3];document.title=A[4]})();
+(function(){var t=new URLSearchParams(location.search).get('t'),A={'hk-2027':['manifest-hk-2027.webmanifest','港珠澳','icon-hk-180.png','icon-hk-192.png','2027 香港・珠海・澳門','bay','#0a6c85']}[t];
+ if(!A)return;document.getElementById('mf').href=A[0];document.getElementById('mt').content=A[1];document.getElementById('ti').href=A[2];document.getElementById('fi').href=A[3];document.title=A[4];
+ // 有專用主題的旅程：在畫面出現前就載入主題樣式，避免閃一下舊配色
+ if(A[5]){document.documentElement.classList.add('th-'+A[5]);var l=document.createElement('link');l.rel='stylesheet';l.href='theme-'+A[5]+'.css';document.head.appendChild(l);document.querySelector('meta[name=theme-color]').content=A[6]}})();
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

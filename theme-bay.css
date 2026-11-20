@@ -1,0 +1,60 @@
+/* 港珠澳專用：海灣藍綠・清爽簡約
+   只在 ?t=hk-2027 時由 index.html 開頭的切換表載入，首爾頁面不受影響。
+   做法：覆寫 index.html 的顏色變數，再微調幾個元件。 */
+
+html.th-bay{
+ --bg:#f3f8f9;--card:#fff;--ink:#12303a;--sub:#587079;--line:#d9e6ea;--soft:#eaf3f5;
+ --red:#0a6c85;--red2:#1596ab;--gold:#e0a03e;--goldl:#fdf0d5;
+ --pink:#e6f4f6;--mint:#e2f3ea;--green:#1f7a56;
+ --r:16px;--sh:0 1px 2px rgba(10,60,80,.05),0 6px 20px rgba(10,60,80,.07);
+ --serif:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif
+}
+.th-bay body{background:linear-gradient(180deg,#e4f2f4 0,var(--bg) 420px) no-repeat,var(--bg)}
+.th-bay header{background:rgba(243,248,249,.94)}
+.th-bay .net{background:#17333f}
+
+/* 區塊標題：左側色條＋淡線 */
+.th-bay h2{font-size:22px;letter-spacing:.03em}
+.th-bay h2::before{content:"";flex:none;width:5px;height:1.15em;border-radius:3px;background:linear-gradient(var(--red2),var(--red))}
+.th-bay h2::after{background:var(--line);opacity:1}
+.th-bay .card{border-color:var(--line)}
+
+/* 封面 */
+.th-bay .hero{background:#0f4d6b;border-radius:0 0 32px 32px}
+.th-bay .hero::after{background:linear-gradient(to bottom,rgba(5,38,56,.62),rgba(5,38,56,.12) 32%,rgba(5,38,56,0) 50%,rgba(5,38,56,0) 64%,rgba(5,38,56,.7))}
+.th-bay .hero .eyebrow{color:#e3f6f6;font-size:13px;letter-spacing:.3em}
+.th-bay .hero h1{letter-spacing:.05em}
+.th-bay .hero p{color:#eaf8f8}
+.th-bay .cd div{background:rgba(255,255,255,.14);border-color:rgba(255,255,255,.5)}
+.th-bay .cd span{color:#e3f6f6}
+.th-bay .hero .go{color:var(--red)}
+
+/* 按鈕 */
+.th-bay .b.bt.dk{background:#17333f}
+.th-bay .b.bt.gd{background:var(--red)}
+
+/* 每日行程：時間改為淡色標籤，整體更輕 */
+.th-bay .dy{box-shadow:0 1px 2px rgba(10,60,80,.04)}
+.th-bay .dy.on{box-shadow:var(--sh)}
+.th-bay .tl::before{border-left:2px dotted #bcdde3}
+.th-bay .tl .tm{background:var(--pink);color:var(--red);border:1px solid #cfe6ea}
+.th-bay .ab button.on{background:var(--red);border-color:var(--red)}
+.th-bay .ab button{border-color:#b9d9df}
+.th-bay .dp h3{font-size:19px}
+
+/* 提醒框：藍綠底＋左側色條 */
+.th-bay .note{background:#eef7f8;color:#23505c;border-radius:12px;border-left:4px solid var(--red2)}
+
+/* 小標籤 */
+.th-bay .pill{background:var(--pink);color:var(--red)}
+.th-bay .pill.tw{background:var(--mint);color:var(--green)}
+.th-bay .est{background:var(--goldl);color:#8a5a00}
+
+/* 滑動區、全螢幕放大 */
+.th-bay .dots .sa{color:var(--red)}
+.th-bay #big{background:#0e2f3d}
+.th-bay #big small{color:#cdeff0}
+.th-bay #sheet .sx{background:var(--soft)}
+
+/* 底部日期列 */
+.th-bay .dock button.on small{color:#d6f1f4}
