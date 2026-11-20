@@ -224,3 +224,11 @@ html.th-fuji{
 .th-fuji .tl .tc{font-size:16px;line-height:1.65}
 .th-fuji .lead,.th-fuji .note{font-size:15px}
 .th-fuji .bp .fl big{font-weight:700}
+/* 封面：日期與倒數放在上方，封面圖在下方 */
+.th-fuji .hero.bare{padding:18px 0 22px}
+.th-fuji .hero.bare>p:first-of-type{order:1;margin-top:0}
+.th-fuji .hero.bare .cd{order:2;margin-top:10px}
+.th-fuji .hero.bare #cdnote{order:3;margin:8px 0 14px}
+.th-fuji .hero.bare .hero-bg{order:4;border-top:2px solid var(--ink);border-bottom:2px solid var(--ink)}
+.th-fuji .hero.bare .seal{order:0}
+.th-fuji .hero.bare .go{order:5;margin-top:16px}

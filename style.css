@@ -340,3 +340,24 @@ details[open].card>summary::after{transform:rotate(-135deg);top:31px}
 .plb button.on b,.plb button.on small{color:rgba(255,255,255,.85)}
 .pld{margin:10px 2px 0;font-size:15px;line-height:1.65;color:var(--ink)}
 @media (min-width:760px){.plb.n4{grid-template-columns:repeat(4,1fr)}}
+
+/* 天氣卡片精簡版（所有旅程）：縮小字級與間距，只留天氣、氣溫範圍與降雨機率 */
+.wx{margin-top:12px;padding:10px 12px}
+.wxh{margin:0 2px 8px}
+.wxh b{font-size:14.5px;white-space:nowrap}
+.wxh span{font-size:11.5px;text-align:right}
+.wxg{gap:8px}
+.wxc{border-radius:12px;padding:8px 10px 9px}
+.wxt{margin:4px 0 5px;gap:5px}
+.wxt i{font-size:21px}
+.wxt b{font-size:24px}
+.wxd{padding-top:5px;gap:2px}
+.wxd .wxr:first-child,.wxbar{display:none}
+.wxr{font-size:11.5px}
+.wxg.n1 .wxc{padding:10px 14px}
+.wxg.n1 .wxt i{font-size:26px}.wxg.n1 .wxt b{font-size:32px}
+.wxg.n1 .wxr{font-size:12.5px}
+@media (max-width:380px){.wxg.n3 .wxt i{font-size:18px}.wxg.n3 .wxt b{font-size:21px}}
+.wxg.n3 .wxtop{flex-direction:row;align-items:center;gap:4px}
+.wxg.n3 .wxn{letter-spacing:.04em}
+.wxg.n3 .wxk{padding:0 6px;font-size:11px}
