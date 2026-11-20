@@ -1,5 +1,5 @@
 // 2027 首爾春節自由行：離線快取。更新網頁後請把 VERSION 數字加 1，手機才會換成新版。
-const VERSION='v30';
+const VERSION='v31';
 const CACHE='seoul27-'+VERSION;
 const CORE=['./','./index.html','./app.js','./trips/index.json','./trips/seoul-2027.json','./manifest.webmanifest','./icon-180.png','./icon-192.png','./icon-512.png','./icon-maskable-512.png','./images/seoul-2027/day-0.jpg','./images/seoul-2027/day-1.jpg','./images/seoul-2027/day-2a.jpg','./images/seoul-2027/day-2b.jpg','./images/seoul-2027/day-3.jpg','./images/seoul-2027/day-4.jpg','./images/seoul-2027/day-5.jpg','./images/seoul-2027/hero.jpg','./images/seoul-2027/map-hotel.jpg','./images/seoul-2027/map-seoul.jpg'];
 self.addEventListener('install',e=>{
@@ -16,7 +16,7 @@ self.addEventListener('fetch',e=>{
   if(r.mode==='navigate'){
     const fb=()=>caches.match('./index.html').then(x=>x||caches.match('./'));
     // 連網 3 秒內沒回應（訊號很弱）就先用快取版
-    const net=fetch(r).then(res=>{if(res.ok){const cp=res.clone();caches.open(CACHE).then(c=>c.put('./index.html','./app.js','./trips/index.json','./trips/seoul-2027.json',cp))}return res});
+    const net=fetch(r).then(res=>{if(res.ok){const cp=res.clone();caches.open(CACHE).then(c=>c.put('./index.html',cp))}return res});
     const slow=new Promise(ok=>setTimeout(()=>fb().then(x=>ok(x||undefined)),3000));
     e.respondWith(Promise.race([net.catch(()=>fb()),slow]).then(x=>x||net));
     return;

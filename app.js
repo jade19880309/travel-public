@@ -2,14 +2,14 @@
 const {kop:KOP,tags:T,days:D,dayImages:DI,foods:F,sights:S,ko:KO,regions:REG,todo:TODO,phrases:PH,sheets:SH}=window.TRIP;
 const $=s=>document.querySelector(s);
 const enc=encodeURIComponent;
-const mp=n=>`<span class="btns" style="display:inline-flex;margin:0 0 0 4px"><a class="b g" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=${enc(KOP[n]||n)}">G</a><a class="b" target="_blank" rel="noopener" href="https://map.naver.com/p/search/${enc(KOP[n]||n)}">N</a></span>`;
+const mp=n=>`<span class="maps"><a class="b g" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=${enc(KOP[n]||n)}">Google 地圖</a><a class="b" target="_blank" rel="noopener" href="https://map.naver.com/p/search/${enc(KOP[n]||n)}">Naver 地圖</a></span>`;
 // s=大綱說明、g=春節標籤［韓國,台灣］
 let day=0,ab='A';
 const dbox=$('#days');
 dbox.innerHTML=D.map((d,k)=>{const p=d.t.split(' ');return `<div class="dy" id="dy${k}"><button class="dr" data-k="${k}"><b>${p[0]} ${p[1]}</b><span class="ds">${d.s}</span>${d.g?`<span class="tg"><span class="pill">${d.g[0]}</span><span class="pill tw">${d.g[1]}</span></span>`:''}</button><div class="dp" hidden></div></div>`}).join('');
 function panel(k){
  const d=D[k],items=d.ab?d[ab]:d.i,im=DI[d.ab?k+ab:k];
- const tl=items.map(x=>{const g=x[2]?`<span class="tag" style="background:${T[x[2]][1]}">${T[x[2]][0]}</span>`:'';return `<li><span class="tm">${x[0]}</span><div class="tc">${x[1]}${g}${x[3]?mp(x[3]):''}${x[3]&&KOP[x[3]]?'<small class="kp">'+KOP[x[3]]+'</small>':''}</div></li>`}).join('');
+ const tl=items.map(x=>{const g=x[2]?`<span class="tag" style="background:${T[x[2]][1]}">${T[x[2]][0]}</span>`:'';return `<li><span class="tm">${x[0]}</span><div class="tc">${x[1]}${g}${x[3]&&KOP[x[3]]?'<small class="kp">'+KOP[x[3]]+'</small>':''}${x[3]?mp(x[3]):''}</div></li>`}).join('');
  return `<h3>${d.h}</h3>`
   +(d.ab?`<div class="ab"><button data-v="A" class="${ab==='A'?'on':''}">A 洪川玩雪</button><button data-v="B" class="${ab==='B'?'on':''}">B 龍山＋東大門</button></div><p class="rate" style="margin:0 0 8px">依天氣、路況與租車狀況二選一。</p>`:'')
   +(im?`<div class="btns" style="margin:0 0 10px"><button class="b bt gd mapbtn" data-img="${im}">🖼 當日行程圖</button></div>`:'')
@@ -17,7 +17,7 @@ function panel(k){
   +`<div class="dn">${k>0?`<button data-go="${k-1}">← 前一天</button>`:''}${k<D.length-1?`<button data-go="${k+1}">下一天 →</button>`:''}</div>`;
 }
 const dbtn=$('#dbtn');
-D.forEach((d,k)=>{const b=document.createElement('button'),p=d.t.split(' ');b.innerHTML=p[0]+'<small>'+p[1]+'</small>';b.onclick=()=>{day=k;render(true)};dbtn.append(b)});
+D.forEach((d,k)=>{const b=document.createElement('button'),p=d.t.split(' ');b.innerHTML=p[0]+'<small>週'+p[1]+'</small>';b.setAttribute('aria-label',p[0]+' 週'+p[1]+' 行程');b.onclick=()=>{day=k;render(true)};dbtn.append(b)});
 function render(scroll){
  [...dbtn.children].forEach((b,k)=>b.classList.toggle('on',k===day));
  [...dbox.children].forEach((el,k)=>{const on=k===day,p=el.querySelector('.dp');el.classList.toggle('on',on);p.hidden=!on;p.innerHTML=on?panel(k):''});
@@ -29,7 +29,9 @@ dbox.addEventListener('click',e=>{
  const g=e.target.closest('[data-go]');if(g){day=+g.dataset.go;render(true);return}
  const im=e.target.closest('[data-img]');if(im){openLB(im.dataset.img)}
 });
-{const n=new Date(),k=D.findIndex(d=>d.t.split(' ')[0]===(n.getMonth()+1)+'/'+n.getDate());if(n.getFullYear()===2027&&k>=0){day=k;setTimeout(()=>{dbtn.children[k].innerHTML=D[k].t.split(' ')[0]+'<small>今天</small>'},0)}}
+{const n=new Date(),k=D.findIndex(d=>d.t.split(' ')[0]===(n.getMonth()+1)+'/'+n.getDate()),go=$('#gotoday');
+ if(n.getFullYear()===2027&&k>=0){day=k;setTimeout(()=>{dbtn.children[k].innerHTML=D[k].t.split(' ')[0]+'<small>今天</small>'},0);go.textContent='看今天行程'}
+ go.onclick=e=>{e.preventDefault();if(day<0)day=0;render(true)}}
 // 食物 [名稱,韓文,特色,營業]
 // 景點 [名稱,時間,備註]
 function tabs(el,list,data,draw){const box=$(el);Object.keys(data).forEach((k,i)=>{const b=document.createElement('button');b.textContent=k;b.onclick=()=>{[...box.children].forEach(c=>c.classList.remove('on'));b.classList.add('on');draw(k)};box.append(b);if(!i)b.click()})}
@@ -50,7 +52,7 @@ function openSheet(kind,x){
  if(REG[name])rows.unshift(['📍','區域',REG[name]]);
  $('#sbody').innerHTML='<h3>'+(ko||name)+'</h3>'+(ko&&ko!==name?'<p class="ko">'+name+'</p>':'')
   +rows.filter(r=>r[2]).map(r=>`<div class="sr"><span>${r[0]}</span><div><small>${r[1]}</small>${r[2]}</div></div>`).join('')
-  +`<div class="sbt"><a class="b g" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=${enc(q)}">Google Map</a><a class="b" target="_blank" rel="noopener" href="https://map.naver.com/p/search/${enc(q)}">Naver Map</a>${hg?'<button class="b" id="sbig" style="background:#3b2a2a;border:0;font-family:inherit;cursor:pointer">放大給人看</button>':''}${f?`<button class="b" id="srv" style="background:${R[name]?'#27ae60':'#8a7468'};border:0;font-family:inherit;cursor:pointer">${R[name]?'✅ 已訂位':'☐ 標記已訂位'}</button>`:''}</div>`;
+  +`<div class="sbt"><a class="b g" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=${enc(q)}">Google 地圖</a><a class="b" target="_blank" rel="noopener" href="https://map.naver.com/p/search/${enc(q)}">Naver 地圖</a>${hg?'<button class="b bt dk" id="sbig">🔍 放大給人看</button>':''}${f?`<button class="b" id="srv" style="background:${R[name]?'#2c7a54':'#6b5d55'}">${R[name]?'✅ 已訂位':'☐ 標記已訂位'}</button>`:''}</div>`;
  const sb=$('#sbig');if(sb)sb.onclick=()=>{const z=$('#big');z.querySelector('b').textContent=ko;z.querySelector('small').textContent=name;z.classList.add('on')};
  const sr=$('#srv');if(sr)sr.onclick=()=>{R[name]=!R[name];try{localStorage.setItem('seoul27r',JSON.stringify(R))}catch(e){}openSheet(kind,x);const L=LD[kind];if(L)listDraw(L[0],L[1],L[2],kind)};
  $('#sheet').classList.add('on');$('#sheet .sp').scrollTop=0}
@@ -169,11 +171,29 @@ $('#fs').onclick=()=>{i=(i+1)%3;ap();try{localStorage.setItem('seoul27z',i)}catc
 // 左右滑動區：圓點指示目前第幾張
 document.querySelectorAll('.swipe[data-dots]').forEach(sw=>{const sl=[...sw.children],d=document.createElement('div');d.className='dots';d.innerHTML=sl.map(()=>'<i></i>').join('');sw.after(d);
  const dd=[...d.children];let t=0;
- const go=i=>sw.scrollTo({left:sl[Math.max(0,Math.min(sl.length-1,i))].offsetLeft-sw.offsetLeft-14,behavior:'smooth'});
+ const go=i=>sw.scrollTo({left:sl[Math.max(0,Math.min(sl.length-1,i))].offsetLeft-sw.offsetLeft-16,behavior:'smooth'});
  const cur=()=>dd.findIndex(e=>e.classList.contains('on'));
  const pv=document.createElement('button'),nx=document.createElement('button');pv.className=nx.className='sa';pv.textContent='‹';nx.textContent='›';pv.setAttribute('aria-label','上一張');nx.setAttribute('aria-label','下一張');
  pv.onclick=()=>go(cur()-1);nx.onclick=()=>go(cur()+1);d.prepend(pv);d.append(nx);
  dd.forEach((e,i)=>{e.onclick=()=>go(i)});
- const upd=()=>{const l=sw.getBoundingClientRect().left+14;let k=0,m=1e9;sl.forEach((x,i)=>{const g=Math.abs(x.getBoundingClientRect().left-l);if(g<m){m=g;k=i}});if(sw.scrollLeft+sw.clientWidth>=sw.scrollWidth-4)k=sl.length-1;dd.forEach((e,i)=>e.classList.toggle('on',i===k))};
+ const upd=()=>{const l=sw.getBoundingClientRect().left+16;let k=0,m=1e9;sl.forEach((x,i)=>{const g=Math.abs(x.getBoundingClientRect().left-l);if(g<m){m=g;k=i}});if(sw.scrollLeft+sw.clientWidth>=sw.scrollWidth-4)k=sl.length-1;dd.forEach((e,i)=>e.classList.toggle('on',i===k))};
  sw.addEventListener('scroll',()=>{cancelAnimationFrame(t);t=requestAnimationFrame(upd)},{passive:true});upd()});
+// 上方功能列與底部日期列的高度：內容不被遮住
+(function(){const hd=$('#hd'),dk=$('#daybar'),rs=document.documentElement.style;
+ const fit=()=>{rs.setProperty('--hh',hd.offsetHeight+'px');rs.setProperty('--dock',dk.offsetHeight+'px')};
+ fit();addEventListener('resize',fit);
+ // 沒有網路時在最上方提示
+ const net=$('#net'),upd=()=>{net.hidden=navigator.onLine;fit()};
+ addEventListener('online',upd);addEventListener('offline',upd);upd();
+ if(document.fonts&&document.fonts.ready)document.fonts.ready.then(fit);
+})();
+// 離線使用：檢查這支手機是否已經存好網站
+(function(){const box=$('#offst');if(!box)return;const t=box.querySelector('span');
+ const ok=m=>{box.classList.add('ok');t.textContent=m};
+ if(!('caches' in window)||!/^https?:/.test(location.protocol)){t.textContent='這個瀏覽器無法離線使用，請改用 Safari 或 Chrome 開啟。';return}
+ const chk=()=>caches.keys().then(ks=>{const k=ks.filter(x=>x.startsWith('seoul27-')).pop();return k?caches.open(k).then(c=>c.match('./trips/seoul-2027.json')):null}).then(h=>{
+  if(h)ok(matchMedia('(display-mode: standalone)').matches||navigator.standalone?'✓ 已存在這支手機，沒有網路也能打開。':'✓ 已存在這支手機，沒有網路也能看。建議再「加入主畫面」，之後點圖示就能打開。');
+  else t.textContent='還沒存好：請在有網路時打開網站，等 10 秒後重新整理一次。'}).catch(()=>{t.textContent='無法確認離線狀態。'});
+ chk();if(navigator.serviceWorker)navigator.serviceWorker.ready.then(()=>setTimeout(chk,3000));
+})();
 render(false);

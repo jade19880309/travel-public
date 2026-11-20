@@ -78,10 +78,10 @@
     {
       "t": "2/8 一",
       "s": "退房 → 仁川機場 → 台中",
-      "g": ["韓國連假最後一天","台灣初三"],
+      "g": ["韓國春節連假（到 2/9）","台灣初三"],
       "h": "Day 6 明洞 → 仁川 → 台中",
       "i": [["08:00","早餐、整理行李"],["09:00","飯店退房"],["10:00","前往仁川機場（地鐵到首爾站轉 AREX；或改包車）","p"],["11:30","抵達機場：報到、託運、退稅、安檢","p","Incheon International Airport"],["14:15","搭 KE2031 返回台中","f"],["16:25","抵達台中國際機場","f"]],
-      "n": "9人加大行李，建議比較包車費用與便利性。"
+      "n": "9人加大行李，建議比較包車費用與便利性。韓國春節連假到 2/9，往機場交通與機場人潮可能較多，請提早出發。"
     }
   ],
   "dayImages": {
@@ -193,7 +193,7 @@
     ],
     "🦞 海鮮市場": [
       ["鷺梁津水產市場","零售約 01:00／09:00～22:00（各區不同，部分 24 小時）；競標約 00:00 起，週日休；零售全年無休","📍 서울 동작구 노들로 674｜地鐵 1／9 號線鷺梁津站 7 或 9 號出口｜一樓挑活魚、貝類，二樓餐廳代客料理（座位／加工費約 ₩4,000～6,000／人）｜地板濕滑，穿防滑鞋","노량진수산시장"],
-      ["可樂市場","水產區約 00:00～24:00（零售多為 08:00～22:00）；⚠️ 週日及春節休市","📍 서울 송파구 양재대로 932｜地鐵 3／8 號線可樂市場站 1 或 2 號出口｜規模比鷺梁津大、環境較整齊｜春節連假（約 2/6～2/8）與週日 2/7 可能休市，建議 2/4、2/5 去或改去鷺梁津","가락시장"],
+      ["可樂市場","水產區約 00:00～24:00（零售多為 08:00～22:00）；⚠️ 週日及春節休市","📍 서울 송파구 양재대로 932｜地鐵 3／8 號線可樂市場站 1 或 2 號出口｜規模比鷺梁津大、環境較整齊｜春節連假（2/6～2/9）與週日 2/7 可能休市，建議 2/4、2/5 去或改去鷺梁津","가락시장"],
       ["麻浦農水產品市場","約 07:00～20:00（各來源 20:00／21:00 不一）","📍 서울 마포구 월드컵로 235（來源地址不一，請以地圖為準）｜地鐵 6 號線世界盃競技場站 1 號出口｜在地人愛去，二樓有用餐區，樸素熱鬧，觀光客較少","마포농수산물시장"]
     ],
     "蠶室／樂天": [
@@ -294,6 +294,6 @@
     "bag": "<h3>🧳 行李規定（每人）</h3><table class=\"ptb bagt\"><tr><td>🎒 個人物品</td><td>1 件<small>放前座下方，40×30×15 cm，重量計入手提 10 公斤</small></td></tr><tr><td>👜 手提行李</td><td>1 件，共 10 公斤（含個人物品）<small>長＋寬＋高 ≤ 115 cm</small></td></tr><tr><td>🧳 託運行李</td><td>1 件 × 23 公斤<small>長＋寬＋高 ≤ 158 cm</small></td></tr></table><ul class=\"info\"><li>託運行李可於 <b>2/2 17:50（GMT+8）前</b>線上加購，回程購物的重量請預留。</li><li>手提行李額度無法線上加購，須到機場櫃檯。</li></ul>",
     "bk": "<h3>🍳 飯店早餐</h3><div class=\"sr\"><span>🕒</span><div><small>供應時間</small>每日約 07:00～10:00（1 樓 The Cafe）</div></div><div class=\"sr\"><span>💰</span><div><small>官方價（加購）</small>大人（14 歲以上）₩15,000／兒童（3～13 歲）₩8,000</div></div><div class=\"sr\"><span>👨‍👩‍👧</span><div><small>9 人估算（6 大 3 小）</small>每天約 ₩114,000</div></div><div class=\"sr\"><span>🏪</span><div><small>省錢替代</small>GS25 步行約 1 分、7-Eleven 約 3～5 分、明洞 Isaac Toast（이삭토스트）</div></div>",
     "map": "<h3>🗺 飯店周邊地圖</h3><img src=\"images/seoul-2027/map-hotel.jpg\" alt=\"飯店周邊簡易地圖\" style=\"width:100%;border-radius:12px;margin:8px 0 2px;display:block\" onclick=\"openLB(this.src)\"><p class=\"ko\">點圖可放大</p><table class=\"ptb\"><tr class=\"grp\"><td colspan=\"2\">從飯店步行</td></tr><tr><td>GS25</td><td>約 1 分</td></tr><tr><td>7-Eleven</td><td>約 3～5 分</td></tr><tr><td>忠武路站（3・4 號線）</td><td>約 5～7 分</td></tr><tr><td>明洞站（4 號線）</td><td>約 6～9 分</td></tr><tr><td>乙支路三街站（2・3 號線）</td><td>約 6～9 分</td></tr><tr><td>明洞購物街</td><td>約 5～10 分</td></tr><tr><td>南山谷韓屋村</td><td>約 8～12 分</td></tr></table>",
-    "seoul": "<h3>🗺 首爾區域地圖</h3><img src=\"images/seoul-2027/map-seoul.jpg\" alt=\"首爾首都圈可愛區域地圖\" style=\"width:100%;border-radius:12px;margin:8px 0 2px;display:block\" onclick=\"openLB(this.src)\"><p class=\"ko\">點圖可放大</p><div class=\"sbt\"><a class=\"b g\" target=\"_blank\" rel=\"noopener\" href=\"https://www.google.com/maps/search/?api=1&query=Seoul\">Google Map 首爾</a><a class=\"b\" target=\"_blank\" rel=\"noopener\" href=\"https://map.naver.com/p/search/서울\">Naver Map 首爾</a></div>"
+    "seoul": "<h3>🗺 首爾區域地圖</h3><img src=\"images/seoul-2027/map-seoul.jpg\" alt=\"首爾首都圈可愛區域地圖\" style=\"width:100%;border-radius:12px;margin:8px 0 2px;display:block\" onclick=\"openLB(this.src)\"><p class=\"ko\">點圖可放大</p><div class=\"sbt\"><a class=\"b g\" target=\"_blank\" rel=\"noopener\" href=\"https://www.google.com/maps/search/?api=1&query=Seoul\">Google 地圖・首爾</a><a class=\"b\" target=\"_blank\" rel=\"noopener\" href=\"https://map.naver.com/p/search/서울\">Naver 地圖・首爾</a></div>"
   }
 }
