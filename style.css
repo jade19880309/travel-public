@@ -378,3 +378,8 @@ html body #flight .bp.al-ak .bph{background:linear-gradient(120deg,#c8102e,#ef33
 html body #flight .bp[class*="al-"] .bph .al{color:#fff;opacity:.96}
 html body #flight .bp[class*="al-"] .bph::after{display:none}
 html body #flight .bp[class*="al-"] .bph .al{margin-right:0}
+
+/* 登機證上的機型：一行淺色小字 */
+.bp .ac{font-size:12px;line-height:1.5;color:var(--sub);opacity:.72;letter-spacing:.03em;margin:-4px 0 8px}
+.bp .ac::before{content:"✈ ";opacity:.8}
+html body #flight .bp .ac{margin:-4px 16px 8px}

@@ -1,6 +1,6 @@
 // 旅程網站離線快取（所有旅程共用）。更新網頁後請把 VERSION 數字加 1，手機才會換成新版。
 // 新增旅程時，把 trips/<代號>.json、圖示與圖片加進 CORE。
-const VERSION='v73';
+const VERSION='v74';
 const CACHE='trip-'+VERSION;
 const CORE=['./','./?t=seoul-2027','./index.html','./hk.html','./home.html','./style.css','./app.js','./theme-bay.css','./theme-han.css','./tokyo.html','./theme-fuji.css','./trips/tokyo-2027.json','./manifest-tokyo-2027.webmanifest','./icon-tokyo-180.png','./icon-tokyo-192.png','./icon-tokyo-512.png','./icon-tokyo-maskable-512.png','./images/tokyo-2027/hero.jpg','./images/tokyo-2027/banner-fuji.svg','./images/tokyo-2027/banner-karuizawa.svg','./images/tokyo-2027/ic-plane.svg','./images/tokyo-2027/ic-van.svg','./images/tokyo-2027/ic-fuji.svg','./images/tokyo-2027/ic-forest.svg','./images/tokyo-2027/ic-city.svg','./images/tokyo-2027/ic-port.svg','./trips/index.json','./trips/seoul-2027.json','./trips/hk-2027.json','./manifest.webmanifest','./manifest-hk-2027.webmanifest','./manifest-home.webmanifest','./icon-home-180.png','./icon-home-192.png','./icon-home-512.png','./icon-home-maskable-512.png','./icon-180.png','./icon-192.png','./icon-512.png','./icon-maskable-512.png','./icon-hk-180.png','./icon-hk-192.png','./icon-hk-512.png','./icon-hk-maskable-512.png','./images/hk-2027/hero-ink.jpg','./images/seoul-2027/hero-snow.jpg','./images/seoul-2027/map-hotel.jpg','./images/seoul-2027/map-seoul.jpg'];
 self.addEventListener('install',e=>{
