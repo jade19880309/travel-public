@@ -49,13 +49,13 @@ function listDraw(sel,arr,sea,kind){const box=$(sel);box.className='pl';LD[kind]
  box.innerHTML=arr.map((x,i)=>{const k=kn(kind,x);return `<button class="pi" data-i="${i}"><span>${kind==='f'&&R[x[0]]?'✅ ':''}${k||x[0]}${sea?' 🦐':''}${k&&k!==x[0]?`<small>${x[0]}</small>`:''}${sea&&REG[x[0]]?`<small>📍 ${REG[x[0]]}</small>`:''}</span></button>`}).join('');
  box.onclick=e=>{const b=e.target.closest('.pi');if(b)openSheet(kind,arr[b.dataset.i])}}
 function openSheet(kind,x){
- // 美食第 6 欄（可省略）＝指定分店的定位搜尋字，讓地圖直接開到正確分店
+ // 美食第 6 欄（可省略）＝指定分店的定位搜尋字，讓地圖直接開到正確分店；第 7 欄＝訂位連結（網址或 tel:）
  const f=kind==='f',name=x[0],ko=kn(kind,x),q=(f&&x[5])||(/[가-힣]/.test(ko)?ko:name),hg=/[가-힣]/.test(ko);
  const rows=f?[['🍴','特色',x[2]],['🕒','營業時間',x[3]],['📍','地址',x[4]]]:[['🕒','開放時間',x[1]],['📝','備註',x[2]]];
  if(REG[name])rows.unshift(['📍','區域',REG[name]]);
  $('#sbody').innerHTML='<h3>'+(ko||name)+'</h3>'+(ko&&ko!==name?'<p class="ko">'+name+'</p>':'')
   +rows.filter(r=>r[2]).map(r=>`<div class="sr"><span>${r[0]}</span><div><small>${r[1]}</small>${r[2]}</div></div>`).join('')
-  +`<div class="sbt"><a class="b g" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=${enc(q)}">Google 地圖</a><a class="b" target="_blank" rel="noopener" href="https://map.naver.com/p/search/${enc(q)}">Naver 地圖</a>${hg?'<button class="b bt dk" id="sbig">🔍 放大給人看</button>':''}${f?`<button class="b" id="srv" style="background:${R[name]?'#2c7a54':'#6b5d55'}">${R[name]?'✅ 已訂位':'☐ 標記已訂位'}</button>`:''}</div>`;
+  +`<div class="sbt"><a class="b g" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=${enc(q)}">Google 地圖</a><a class="b" target="_blank" rel="noopener" href="https://map.naver.com/p/search/${enc(q)}">Naver 地圖</a>${f&&x[6]?(/^tel:/.test(x[6])?`<a class="b bt gd" href="${x[6]}">📞 打電話訂位</a>`:`<a class="b bt gd" target="_blank" rel="noopener" href="${x[6]}">📅 線上訂位</a>`):''}${hg?'<button class="b bt dk" id="sbig">🔍 放大給人看</button>':''}${f?`<button class="b" id="srv" style="background:${R[name]?'#2c7a54':'#6b5d55'}">${R[name]?'✅ 已訂位':'☐ 標記已訂位'}</button>`:''}</div>`;
  const sb=$('#sbig');if(sb)sb.onclick=()=>{const z=$('#big');z.querySelector('b').textContent=ko;z.querySelector('small').textContent=name;z.classList.add('on')};
  const sr=$('#srv');if(sr)sr.onclick=()=>{R[name]=!R[name];try{localStorage.setItem('seoul27r',JSON.stringify(R))}catch(e){}openSheet(kind,x);const L=LD[kind];if(L)listDraw(L[0],L[1],L[2],kind)};
  $('#sheet').classList.add('on');$('#sheet .sp').scrollTop=0}
