@@ -139,3 +139,15 @@ html.th-han{
 .th-han .hero.bare .cd div:nth-child(1){width:74px}
 .th-han .hero.bare .go{order:5;margin-top:20px}
 @media (max-width:360px){.th-han .hero.bare .cd{gap:7px}.th-han .hero.bare .cd div{width:58px}.th-han .hero.bare .cd div:nth-child(1){width:64px}.th-han .hero.bare #cdnote::before{font-size:15px}}
+
+/* 紅包倒數再寬鬆一點：字小一號、上下留白多 */
+.th-han .hero.bare .cd{gap:12px}
+.th-han .hero.bare .cd div{width:62px;height:92px;padding-top:30px}
+.th-han .hero.bare .cd div:nth-child(1){width:68px}
+.th-han .hero.bare .cd div::before{height:28px}
+.th-han .hero.bare .cd div::after{top:20px;width:12px;height:12px;margin-left:-6px}
+.th-han .hero.bare .cd b{margin-top:10px;font-size:20px;letter-spacing:.02em}
+.th-han .hero.bare .cd span{margin-top:4px;font-size:11px;letter-spacing:.1em}
+.th-han .hero.bare>p:first-of-type{font-size:14.5px;letter-spacing:.06em}
+.th-han .hero.bare #cdnote::before{font-size:16px}
+@media (max-width:360px){.th-han .hero.bare .cd{gap:8px}.th-han .hero.bare .cd div{width:56px}.th-han .hero.bare .cd div:nth-child(1){width:60px}.th-han .hero.bare .cd b{font-size:18px}}
