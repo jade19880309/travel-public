@@ -96,3 +96,29 @@ html.th-bay{
 
 /* 高德地圖按鈕：用香檳金，和墨藍的 Google 地圖一眼分得出來 */
 .th-bay .mi.a,.th-bay .b.am{background:var(--gold)}
+
+
+/* ===== 港珠澳機票：水墨登機證 ===== */
+.th-bay #flight .bp{position:relative;overflow:hidden;padding:0 0 14px;border-radius:16px}
+/* 票頭：墨藍（去程）、印章紅（回程），右側淡淡的遠山 */
+.th-bay #flight .bp .bph{position:relative;padding:12px 16px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 40'%3E%3Cpath d='M0,40 Q18,14 34,28 Q48,8 66,26 Q84,6 102,24 Q112,16 120,22 L120,40Z' fill='%23ffffff' fill-opacity='.16'/%3E%3Cpath d='M0,40 Q24,24 44,34 Q70,18 94,32 Q108,26 120,30 L120,40Z' fill='%23ffffff' fill-opacity='.12'/%3E%3C/svg%3E") right bottom/150px 50px no-repeat,linear-gradient(120deg,#1d3a52,#3d6481);color:#f6efe0;border-bottom:1px dashed rgba(168,130,63,.8);font-family:var(--serif);font-weight:600;letter-spacing:.04em}
+.th-bay #flight .grid>.bp:nth-child(2) .bph{background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 40'%3E%3Cpath d='M0,40 Q18,14 34,28 Q48,8 66,26 Q84,6 102,24 Q112,16 120,22 L120,40Z' fill='%23ffffff' fill-opacity='.16'/%3E%3Cpath d='M0,40 Q24,24 44,34 Q70,18 94,32 Q108,26 120,30 L120,40Z' fill='%23ffffff' fill-opacity='.12'/%3E%3C/svg%3E") right bottom/150px 50px no-repeat,linear-gradient(120deg,#8e2a22,#b0362c)}
+.th-bay #flight .bp .bph .pill{background:#f6efe0;color:var(--red);border:1px solid var(--gold)}
+.th-bay #flight .grid>.bp:nth-child(2) .bph .pill{color:var(--seal)}
+.th-bay #flight .bp .bph .al{color:#f3e6cc;font-family:var(--sans);font-weight:400}
+/* 機場代號：像印章 */
+.th-bay #flight .fl{margin:16px 16px 10px}
+.th-bay #flight .fl big{font-size:clamp(22px,7vw,28px);letter-spacing:.08em;color:var(--red);border:1.5px solid var(--red);border-radius:6px;padding:1px 9px;background:#fffaf0;margin-bottom:4px}
+.th-bay #flight .fl>div.r big{color:var(--seal);border-color:var(--seal)}
+.th-bay #flight .fl b{font-family:var(--serif);color:var(--ink)}
+/* 中間：墨色小飛機沿著金色虛線 */
+.th-bay #flight .fl .mid{position:relative;border-top:0;padding-top:30px;font-size:12.5px}
+.th-bay #flight .fl .mid::before{content:"";position:absolute;left:4px;right:4px;top:16px;border-top:1.5px dashed var(--gold)}
+.th-bay #flight .fl .mid::after{content:"";position:absolute;left:50%;top:3px;width:40px;height:26px;margin-left:-20px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 40'%3E%3Cg fill='%231d3a52'%3E%3Cpath d='M6,20 Q30,15 58,20 Q30,25 6,20Z'/%3E%3Cpath d='M28,18.5 L21,5 L27,5 L39,18.5Z M28,21.5 L21,35 L27,35 L39,21.5Z'/%3E%3Cpath d='M8,20 L5,12 L10,12 L14,19.5Z'/%3E%3C/g%3E%3Cpath d='M58,20 l3,0' stroke='%23b0362c' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E") center/contain no-repeat;animation:hkfly 3.6s ease-in-out infinite}
+@keyframes hkfly{0%,100%{transform:translateX(-6px)}50%{transform:translateX(6px) translateY(-2px)}}
+/* 票根：撕線與半圓缺口 */
+.th-bay #flight .bp small{position:relative;margin:0 16px;padding-top:10px;border-top:1px dashed #d9ccb2;font-size:13.5px}
+.th-bay #flight .bp small::before,.th-bay #flight .bp small::after{content:"";position:absolute;top:-10px;width:18px;height:18px;border-radius:50%;background:var(--bg);border:1px solid var(--line)}
+.th-bay #flight .bp small::before{left:-26px}
+.th-bay #flight .bp small::after{right:-26px}
+@media (prefers-reduced-motion:reduce){.th-bay #flight .fl .mid::after{animation:none}}
