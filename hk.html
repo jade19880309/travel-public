@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="zh-Hant" class="th-bay">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex,nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="manifest" href="manifest-hk-2027.webmanifest"><meta name="theme-color" content="#0a6c85"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="港珠澳"><link rel="apple-touch-icon" href="icon-hk-180.png"><link rel="icon" href="icon-hk-192.png">
+<title>2027 香港・珠海・澳門家庭旅遊</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="theme-bay.css">
+</head>
+<body>
+<header id="hd"><div class="net" id="net" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 18h10.5a4 4 0 0 0 .6-7.95A6 6 0 0 0 6.6 9.1 4.5 4.5 0 0 0 7 18z"/><path d="m9.5 13.5 2 2 3.5-3.5"/></svg><span>目前沒有網路・行程已存在手機，可照常查看</span></div><nav></nav></header>
+<main>
+<div class="hero" id="hero"></div>
+
+<section id="fx"><h2>💱 外幣換算</h2>
+<div class="card fx">
+<div id="fxc" hidden></div>
+<div class="fxrow"><label id="fxkl">外幣<input id="fxk" type="text" inputmode="decimal" placeholder="0" autocomplete="off" aria-label="外幣金額"></label><span class="fxeq" aria-hidden="true">⇄</span><label>NT$ 台幣<input id="fxt" type="text" inputmode="decimal" placeholder="0" autocomplete="off" aria-label="台幣金額"></label></div>
+<p class="fxrate" id="fxrate">匯率載入中…</p>
+<div class="fxq" id="fxq"></div>
+</div></section>
+
+<section id="flight"><h2>✈️ 航班與行李</h2></section>
+
+<section id="hotel"><h2>🏨 住宿</h2></section>
+
+<section id="plan"><h2>🗓 每日行程</h2>
+<div id="days"></div></section>
+
+<section id="price"><h2>💰 價格參考</h2></section>
+
+<section id="todo"><h2>✅ 待辦清單</h2><p class="rate">勾選的結果只存在這支手機。</p><div class="card todo" id="todolist"></div></section>
+
+<section id="tips"><h2>🧣 旅遊注意事項</h2>
+<div class="grid">
+<details class="card fold" id="offline"><summary>📲 離線使用與加入主畫面</summary><div class="offst" id="offst"><svg viewBox="0 0 32 32" aria-hidden="true"><rect x="7" y="2.5" width="18" height="27" rx="4" fill="#fff" stroke="currentColor" stroke-width="1.8"/><path d="M13 6h6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="16" cy="16.5" r="5.5" fill="currentColor" opacity=".14"/><path d="m13.4 16.6 1.9 1.9 3.4-3.6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>檢查中…</span></div><ul class="info"><li>出發前用 Safari／Chrome 開啟網址一次，網站會自動存在手機。</li><li>iPhone：按下方「分享」→「加入主畫面」，桌面會出現這個旅程的圖示，之後點圖示就能打開，沒有網路也能看。</li><li>Android：Chrome 右上角「⋮」→「加到主畫面」。</li><li>行程、地圖圖片、待辦可離線看；Google 地圖等外部連結、App Store 連結與即時匯率需要網路。</li><li>用「檔案」App 或 LINE 內建瀏覽器開啟時無法離線使用，請改用 Safari／Chrome。</li><li>備案：自行截圖行程，或把頁面存成 PDF。</li></ul></details>
+</div></section>
+
+<section id="food"><h2>🍜 美食與景點</h2>
+<div class="seg" id="seg"><button class="on" data-p="f">🍜 美食</button><button data-p="s">🏯 備用景點</button></div>
+<div id="pf"><div class="tabs" id="ftabs"></div><div class="grid" id="flist"></div>
+</div>
+<div id="ps" hidden><div class="tabs" id="stabs"></div><div class="grid" id="slist"></div>
+<p class="note">以上為備案。</p></div></section>
+<section id="phr"><h2>🗣 常用語句</h2><p class="rate">點任一句會放大成全螢幕，直接給司機或店員看。</p><div class="tabs" id="ptabs"></div><div class="pl" id="plist"></div></section>
+<section id="apps"><h2>📱 常用 App</h2></section>
+<footer></footer>
+</main>
+
+<div id="sheet"><div class="sbd"></div><div class="sp" role="dialog" aria-modal="true"><button class="sx" aria-label="關閉">✕</button><div id="sbody"></div></div></div>
+<div id="big" role="dialog" aria-label="放大顯示"><b></b><small></small></div>
+<div class="dock" id="daybar" aria-label="行程日期"><div><span class="dl">行程<br>日期</span><div id="dbtn" style="display:contents"></div></div></div>
+<button id="fs" aria-label="調整字體大小">Aa<small>字體</small></button>
+<div id="lb"><img alt="放大圖片"><div class="lbc"><button id="lbz1" aria-label="縮小">−</button><button id="lbz2" aria-label="放大">+</button><button id="lbx" aria-label="關閉">✕</button></div><div class="lbh">雙指縮放・拖曳移動・連點兩下放大</div></div>
+<script>
+(function(){
+ var id='hk-2027'; // 這個入口頁固定是港珠澳
+ function fail(m){document.body.insertAdjacentHTML('afterbegin','<p style="padding:16px;font:16px sans-serif">'+m+'</p>')}
+ fetch('trips/'+id+'.json',{cache:'no-cache'}).then(function(r){if(!r.ok)throw 0;return r.json()}).then(function(d){
+  window.TRIP=d;var s=document.createElement('script');s.src='app.js';s.onerror=function(){fail('程式載入失敗，請重新整理。')};document.body.appendChild(s)
+ }).catch(function(){fail('行程資料載入失敗，請確認網路後重新整理。（直接開本機檔案無法讀取資料，請用網址開啟）')});
+})();
+</script>
+</body>
+</html>

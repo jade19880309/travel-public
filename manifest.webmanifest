@@ -2,6 +2,7 @@
   "name": "2027 首爾春節自由行",
   "short_name": "首爾春節",
   "lang": "zh-Hant",
+  "id": "./index.html",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
