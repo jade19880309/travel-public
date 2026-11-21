@@ -15,6 +15,12 @@ const K=M.store||M.id; // 這支手機存待辦、訂位勾選用的名稱
 const ls={get:(k,d)=>{try{const v=localStorage.getItem(k);return v==null?d:JSON.parse(v)}catch(e){return d}},set:(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
 const openUrl=u=>{const a=document.createElement('a');a.href=u;a.target='_blank';a.rel='noopener noreferrer';a.style.display='none';document.body.appendChild(a);a.click();a.remove()};
 const esc=t=>String(t==null?'':t).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+// 語音鈕圖示（只有線條圖示、不加底色；顏色跟著各旅程主題）
+const SPI='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9.3h3.3L12 5.4v13.2l-4.7-3.9H4z" fill="currentColor" fill-opacity=".14"/><path class="w" d="M15.4 9.2a3.9 3.9 0 0 1 0 5.6"/><path class="w w2" d="M18.2 6.6a7.6 7.6 0 0 1 0 10.8"/></svg>';
+// 行程裡可能要給當地人聽的名稱：韓文要有諺文；日文要有假名或漢字、不含英文、不是台灣用語
+const LANG=String(M.lang||({seoul:'ko',tokyo:'ja',keihan:'ja'})[String(M.id).split('-')[0]]||'').slice(0,2);
+const locOK=t=>{t=String(t||'');if(LANG==='ko')return /[가-힣]/.test(t);if(LANG==='ja')return /[\u3040-\u30ff\u3400-\u9fff]/.test(t)&&!/[A-Za-z]/.test(t)&&!/機場|航廈|淺|臺|灣/.test(t);return false};
+const spB=t=>locOK(t)?`<button class="sp" data-say="${esc(t)}" aria-label="播放：${esc(t)}" title="${esc(t)}">${SPI}</button>`:'';
 const btns=(list,extra='')=>(list||[]).map(([k,l])=>`<button class="b bt gd${extra}" data-sh="${k}">${l}</button>`).join('');
 
 // 高德地圖（大陸地點用）：TRIP.amap = {city, places:[地點代號], regions:[美食分區], q:{地點:簡體搜尋字}}
@@ -50,7 +56,7 @@ const AMI='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5a6.5 6.5 
   $('#flight').addEventListener('click',fo);
   $('#flight').addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();fo(e)}})}
  // 住宿
- if(TRIP.hotels&&$('#hotel'))$('#hotel').insertAdjacentHTML('beforeend',TRIP.hotels.map((o,i)=>{const q=enc(o.mapQ||o.ko);return `<details class="card hotel"${i?' style="margin-top:12px"':''}><summary><div class="hn"><div class="hko"><b class="ko">${o.ko}</b>${o.pic?`<button class="pic" data-sh="${o.pic}" onclick="event.preventDefault()" aria-label="飯店相片" title="飯店相片">📷</button>`:''}</div>${o.zh?`<span class="zh">${o.zh}</span>`:''}${o.en?`<span class="en">${o.en}</span>`:''}${o.tel?`<a class="hph" href="tel:${o.tel}" onclick="event.stopPropagation()">📞 ${o.telShow||o.tel}</a>`:''}<div class="btns"><a class="b g" target="_blank" rel="noopener" onclick="event.stopPropagation()" href="https://www.google.com/maps/search/?api=1&query=${q}">Google 地圖</a>${o.naver===false?'':`<a class="b" target="_blank" rel="noopener" onclick="event.stopPropagation()" href="https://map.naver.com/p/search/${q}">Naver 地圖</a>`}${amOk(o.ko)?`<a class="b am" target="_blank" rel="noopener" onclick="event.stopPropagation()" href="${amU(o.ko,o.mapQ||o.ko)}">高德地圖</a>`:''}</div></div></summary><div class="hbody">${o.addr?`<div class="blk"><div class="hn ha"><b class="ko">${o.addr[0]}</b>${o.addr[1]?`<span class="zh">${o.addr[1]}</span>`:''}${o.addr[2]?`<span class="en">${o.addr[2]}</span>`:''}</div>${o.big?`<div class="btns"><button class="b bt dk" data-big="${i}">🔍 放大地址給司機看</button></div>`:''}</div>`:''}${o.tel?`<div class="blk"><div class="lb">📞 飯店電話</div><a class="tel" href="tel:${o.tel}">${o.telShow||o.tel}</a></div>`:''}${(o.blocks||[]).map(b=>`<div class="blk"><div class="lb">${b[0]}</div>${b[1]}</div>`).join('')}${o.sheets?`<div class="btns">${btns(o.sheets)}</div>`:''}</div></details>`}).join(''));
+ if(TRIP.hotels&&$('#hotel'))$('#hotel').insertAdjacentHTML('beforeend',TRIP.hotels.map((o,i)=>{const q=enc(o.mapQ||o.ko);return `<details class="card hotel"${i?' style="margin-top:12px"':''}><summary><div class="hn"><div class="hko"><b class="ko">${o.ko}</b>${spB(o.ja||(M.single?'':o.ko))}${o.pic?`<button class="pic" data-sh="${o.pic}" onclick="event.preventDefault()" aria-label="飯店相片" title="飯店相片">📷</button>`:''}</div>${o.zh?`<span class="zh">${o.zh}</span>`:''}${o.en?`<span class="en">${o.en}</span>`:''}${o.tel?`<a class="hph" href="tel:${o.tel}" onclick="event.stopPropagation()">📞 ${o.telShow||o.tel}</a>`:''}<div class="btns"><a class="b g" target="_blank" rel="noopener" onclick="event.stopPropagation()" href="https://www.google.com/maps/search/?api=1&query=${q}">Google 地圖</a>${o.naver===false?'':`<a class="b" target="_blank" rel="noopener" onclick="event.stopPropagation()" href="https://map.naver.com/p/search/${q}">Naver 地圖</a>`}${amOk(o.ko)?`<a class="b am" target="_blank" rel="noopener" onclick="event.stopPropagation()" href="${amU(o.ko,o.mapQ||o.ko)}">高德地圖</a>`:''}</div></div></summary><div class="hbody">${o.addr?`<div class="blk"><div class="hn ha"><b class="ko">${o.addr[0]}</b>${o.addr[1]?`<span class="zh">${o.addr[1]}</span>`:''}${o.addr[2]?`<span class="en">${o.addr[2]}</span>`:''}</div>${o.big?`<div class="btns"><button class="b bt dk" data-big="${i}">🔍 放大地址給司機看</button></div>`:''}</div>`:''}${o.tel?`<div class="blk"><div class="lb">📞 飯店電話</div><a class="tel" href="tel:${o.tel}">${o.telShow||o.tel}</a></div>`:''}${(o.blocks||[]).map(b=>`<div class="blk"><div class="lb">${b[0]}</div>${b[1]}</div>`).join('')}${o.sheets?`<div class="btns">${btns(o.sheets)}</div>`:''}</div></details>`}).join(''));
  // 行程
  const P=TRIP.plan||{};
  if($('#plan'))$('#plan h2').insertAdjacentHTML('afterend',`<p class="rate">${P.note||'點任一天展開當天行程；也可用畫面最下方的日期列隨時切換。'}</p>${P.sheets?`<div class="btns" style="margin:0 0 14px">${btns(P.sheets,' mapbtn')}</div>`:''}`);
@@ -141,7 +147,7 @@ dbox.innerHTML=D.map((d,k)=>{const p=d.t.split(' ');return `<div class="dy" id="
 function panel(k){
  const d=D[k],items=d.ab?d[ab]:d.i,im=DI[d.ab?k+ab:k],abL=d.abL||['A 方案','B 方案'];
  const food=!!document.getElementById('food');
- const tl=items.map((x,i)=>{const meal=food&&MEAL.test(x[1])&&!!foodKey(k,x);return `<li class="${meal?'meal':''}" data-i="${i}"><span class="tm">${x[0]}</span><div class="tc">${x[1]}${tagH(x[2])}${x[3]?mp(x[3]):''}${x[3]&&KOP[x[3]]&&M.kop!==false?'<small class="kp">'+KOP[x[3]]+'</small>':''}${meal?'<span class="lh" aria-hidden="true">🍴 看美食推薦 ↓</span>':''}</div></li>`}).join('');
+ const tl=items.map((x,i)=>{const meal=food&&MEAL.test(x[1])&&!!foodKey(k,x);return `<li class="${meal?'meal':''}" data-i="${i}"><span class="tm">${x[0]}</span><div class="tc">${x[1]}${tagH(x[2])}${x[3]?mp(x[3]).replace(/<\/span>$/,spB(KOP[x[3]]||x[3])+'</span>'):''}${x[3]&&KOP[x[3]]&&M.kop!==false?'<small class="kp">'+KOP[x[3]]+'</small>':''}${meal?'<span class="lh" aria-hidden="true">🍴 看美食推薦 ↓</span>':''}</div></li>`}).join('');
  return `<h3>${d.h}</h3>`
   +(d.lead?`<p class="lead">${d.lead}</p>`:'')
   +(d.ab?`<div class="ab"><button data-v="A" class="${ab==='A'?'on':''}">${abL[0]}</button><button data-v="B" class="${ab==='B'?'on':''}">${abL[1]}</button></div><p class="rate" style="margin:0 0 8px">${d.abN||'依天氣、路況二選一。'}</p>`:'')
@@ -189,7 +195,7 @@ function openSheet(kind,x){
  const f=kind==='f',name=x[0],ko=kn(kind,x),q=(f&&x[5])||(kind==='s'&&x[4])||(/[가-힣]/.test(ko)?ko:name),hg=/[가-힣]/.test(ko)||(M.bigAll&&ko);
  const rows=f?[['🍴','特色',x[2]],['🕒','營業時間',x[3]],['📍','地址',x[4]]]:[['🕒','開放時間',x[1]],['📝','備註',x[2]]];
  if(REG[name])rows.unshift(['📍','區域',REG[name]]);
- $('#sbody').innerHTML='<h3>'+(ko||name)+'</h3>'+(ko&&ko!==name?'<p class="ko">'+name+'</p>':'')
+ $('#sbody').innerHTML='<h3>'+(ko||name)+spB(ko)+'</h3>'+(ko&&ko!==name?'<p class="ko">'+name+'</p>':'')
   +rows.filter(r=>r[2]).map(r=>`<div class="sr"><span>${r[0]}</span><div><small>${r[1]}</small>${r[2]}</div></div>`).join('')
   +`<div class="sbt"><a class="b g" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=${enc(q)}">Google 地圖</a>${NAV?`<a class="b" target="_blank" rel="noopener" href="https://map.naver.com/p/search/${enc(q)}">Naver 地圖</a>`:''}${AM&&(amOk(name)||(f&&(AM.regions||[]).some(r=>(F[r]||[]).includes(x))))?`<a class="b am" target="_blank" rel="noopener" href="${amU(name,q)}">高德地圖</a>`:''}${f&&x[6]?(/^tel:/.test(x[6])?`<a class="b bt gd" href="${x[6]}">📞 打電話訂位</a>`:`<a class="b bt gd" target="_blank" rel="noopener" href="${x[6]}">📅 線上訂位</a>`):''}${hg?'<button class="b bt dk" id="sbig">🔍 放大給人看</button>':''}${f&&M.reserve!==false?`<button class="b" id="srv" style="background:${R[name]?'#2c7a54':'#6b5d55'}">${R[name]?'✅ 已訂位':'☐ 標記已訂位'}</button>`:''}</div>`;
  const sb=$('#sbig');if(sb)sb.onclick=()=>showBig(ko,name);
@@ -229,18 +235,19 @@ function speak(t,btn){if(!VL)return;if(!TTS){vdiag();return}
  try{speechSynthesis.cancel();
   const u=new SpeechSynthesisUtterance(txt),lg=VL.toLowerCase(),pre=lg.split('-')[0];u.lang=VL;u.rate=.85;
   const v=VOICES.find(v=>v.lang.replace('_','-').toLowerCase()===lg)||VOICES.find(v=>v.lang.toLowerCase().startsWith(pre));if(v)u.voice=v;
-  document.querySelectorAll('.spk.on,.bspk.on').forEach(x=>x.classList.remove('on'));
+  document.querySelectorAll('.sp.on').forEach(x=>x.classList.remove('on'));
   if(btn){btn.classList.add('on');u.onend=u.onerror=()=>btn.classList.remove('on')}
   speechSynthesis.speak(u)}catch(e){}}
-{const pr=$('#phr .rate');if(VL&&pr)pr.insertAdjacentHTML('beforeend','按 🔊 可聽發音。')}
-const SPK=VL?'<button class="spk" aria-label="播放語音" title="播放語音">🔊</button>':'';
+{const pr=$('#phr .rate');if(VL&&pr)pr.insertAdjacentHTML('beforeend','按右邊喇叭可聽發音。')}
+const SPK=VL?'<button class="sp" aria-label="播放語音" title="播放語音">'+SPI+'</button>':'';
 tabs('#ptabs',PH.map(c=>c[0]),k=>{const c=PH.find(x=>x[0]===k)[1];const box=$('#plist');
- box.innerHTML=c.map((x,i)=>`<div class="pw"><button class="pi" data-i="${i}"><span>${x[1]}${x[2]?`<small>${x[2]}</small>`:''}</span></button>${SPK.replace('class="spk"','class="spk" data-i="'+i+'"')}</div>`).join('');
- box.onclick=e=>{const sp=e.target.closest('.spk');if(sp){speak(c[sp.dataset.i][0],sp);return}
+ box.innerHTML=c.map((x,i)=>`<div class="pw"><button class="pi" data-i="${i}"><span>${x[1]}${x[2]?`<small>${x[2]}</small>`:''}</span></button>${SPK.replace('class="sp"','class="sp" data-i="'+i+'"')}</div>`).join('');
+ box.onclick=e=>{const sp=e.target.closest('.sp');if(sp){speak(c[sp.dataset.i][0],sp);return}
   const b=e.target.closest('.pi');if(!b)return;const x=c[b.dataset.i];showBig(x[0],x[1])}});
 function showBig(a,b){const z=$('#big');z.querySelector('b').textContent=a;z.querySelector('small').textContent=b;
- let sp=z.querySelector('.bspk');if(VL){if(!sp){sp=document.createElement('button');sp.className='bspk';sp.textContent='🔊 播放語音';sp.onclick=e=>{e.stopPropagation();speak(z.querySelector('b').textContent,sp)};z.appendChild(sp)}}
+ let sp=z.querySelector('.sp');if(VL){if(!sp){sp=document.createElement('button');sp.className='sp';sp.setAttribute('aria-label','播放語音');sp.innerHTML=SPI;sp.onclick=e=>{e.stopPropagation();speak(z.querySelector('b').textContent,sp)};z.appendChild(sp)}}
  z.classList.add('on')}
+document.addEventListener('click',e=>{const s=e.target.closest('[data-say]');if(s){e.preventDefault();e.stopPropagation();speak(s.dataset.say,s)}},true);
 $('#big').onclick=()=>{$('#big').classList.remove('on');if(TTS)try{speechSynthesis.cancel()}catch(e){}};
 document.addEventListener('click',e=>{const h=e.target.closest('[data-big]');if(h){const o=TRIP.hotels[h.dataset.big];showBig(o.big[0],o.big[1])}});
 if('serviceWorker' in navigator&&/^https?:/.test(location.protocol))navigator.serviceWorker.register('sw.js').catch(()=>{});

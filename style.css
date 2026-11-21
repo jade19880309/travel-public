@@ -422,14 +422,20 @@ html body #flight .bp .ac{margin:-4px 16px 8px}
 @media (prefers-reduced-motion:reduce){.flash{animation:none;outline:3px solid var(--gold);outline-offset:3px}}
 
 /* ===== 常用語句：語音播放 ===== */
-.pw{display:flex;gap:6px;align-items:stretch}
-.pw .pi{flex:1;min-width:0}
-.spk{flex:none;width:48px;font-size:20px;line-height:1;border-radius:14px;border:1px solid var(--line);background:#fff;cursor:pointer;padding:0}
-.spk:active,.spk.on{background:var(--goldl)}
-.spk.on{animation:spkp .9s ease-in-out infinite}
-@keyframes spkp{50%{transform:scale(1.08)}}
-.bspk{margin-top:26px;font:inherit;font-size:20px;font-weight:500;color:#2a211e;background:#ffe9d6;border:0;border-radius:99px;padding:12px 28px;min-height:48px;cursor:pointer;position:relative;z-index:1}
-.bspk.on{background:#ffd0a8}
+.pw{position:relative}
+.pw .pi{width:100%;padding-right:66px}
+/* 語音鈕：只有圖示、不加底色，顏色跟主題；播放中波紋閃動 */
+.sp{display:inline-grid;place-items:center;width:30px;height:30px;padding:0;margin:0 0 0 2px;border:0;background:none;color:var(--red2);cursor:pointer;vertical-align:-9px;position:relative;-webkit-tap-highlight-color:transparent}
+.sp::before{content:"";position:absolute;inset:-6px}
+.sp svg{width:20px;height:20px}
+.sp.on{color:var(--seal,var(--red))}.sp.on .w{animation:spw .9s ease-in-out infinite}.sp.on .w2{animation-delay:.2s}
+@keyframes spw{50%{opacity:.15}}
+.maps .sp{margin:0;vertical-align:0}
+.pw .sp{position:absolute;right:28px;top:50%;transform:translateY(-50%);width:40px;height:40px;margin:0}
+.pw .sp svg{width:23px;height:23px}
+#big .sp{margin-top:22px;width:72px;height:72px;z-index:1}
+#big .sp svg{width:44px;height:44px}
+#sbody h3 .sp{vertical-align:-6px}
 /* 站內連結小膠囊（行程 ↔ 價格參考） */
 a.xl{display:inline-block;margin:2px 0 0 6px;padding:1px 10px;border-radius:999px;border:1px solid var(--gold);background:var(--goldl);color:var(--gold);font-size:13px;font-weight:600;line-height:1.7;text-decoration:none;white-space:nowrap}
 a.xl:active{transform:scale(.97)}

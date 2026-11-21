@@ -299,11 +299,20 @@ html.night .c-f{--c:#9fb0ea}html.night .c-t{--c:#b6a8ec}
 #big small{font-size:18px;color:var(--sub)}
 #big i{font-style:normal;font-size:12px;color:var(--sub);position:absolute;bottom:30px}
 .bp[data-fn]{cursor:pointer}
-.ph .pw{display:flex;gap:6px;align-items:stretch}
-.ph .pw>button:first-child{flex:1;min-width:0}
-.ph .pw .spk{flex:none;width:46px;padding:0;text-align:center;font-size:19px;line-height:1;border-radius:14px;background:var(--paper2);border:0;cursor:pointer}
-.ph .pw .spk.on,#big .bspk.on{filter:brightness(.92)}
-#big .bspk{font:inherit;font-size:18px;color:inherit;background:var(--paper2);border:1px solid var(--line);border-radius:99px;padding:10px 24px;min-height:46px;cursor:pointer;position:relative;z-index:1}
+.ph .pw{position:relative}
+.ph .pw>button:first-child{width:100%;padding-right:52px}
+/* 語音鈕：只有圖示、不加底色；播放中波紋閃動 */
+.sp{display:inline-grid;place-items:center;width:30px;height:30px;padding:0;margin:0 0 0 2px;border:0;background:none;color:var(--ai);cursor:pointer;vertical-align:-9px;position:relative;-webkit-tap-highlight-color:transparent}
+.sp::before{content:"";position:absolute;inset:-6px}
+.sp svg{width:19px;height:19px}
+.sp.on{color:var(--shu)}.sp.on .w{animation:spw .9s ease-in-out infinite}.sp.on .w2{animation-delay:.2s}
+@keyframes spw{50%{opacity:.15}}
+.ph .pw .sp{position:absolute;right:6px;top:50%;transform:translateY(-50%);width:42px;height:42px;margin:0;padding:0;background:none;border-radius:0}
+.ph .pw .sp svg{width:23px;height:23px}
+.pc .ja .sp{vertical-align:-8px}
+.ics{white-space:nowrap}
+#big .sp{width:72px;height:72px;margin:0;z-index:1}
+#big .sp svg{width:42px;height:42px}
 footer{text-align:center;padding:46px 18px calc(110px + env(safe-area-inset-bottom));font-family:var(--wk);color:var(--sub);letter-spacing:.12em;font-size:15px}
 footer img{width:90px;margin:0 auto 10px;opacity:.9}
 .off{position:fixed;left:50%;top:calc(var(--hh) + 8px);transform:translateX(-50%);z-index:40;font-size:12.5px;padding:6px 14px;border-radius:999px;background:var(--ink);color:var(--paper)}
@@ -366,6 +375,11 @@ const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 const ls={g:(k,d)=>{try{const v=localStorage.getItem('kh27-'+k);return v==null?d:JSON.parse(v)}catch(e){return d}},s:(k,v)=>{try{localStorage.setItem('kh27-'+k,JSON.stringify(v))}catch(e){}}};
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const IMG='images/keihan-2027/',PIN='<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>';
+const SPI='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9.3h3.3L12 5.4v13.2l-4.7-3.9H4z" fill="currentColor" fill-opacity=".14"/><path class="w" d="M15.4 9.2a3.9 3.9 0 0 1 0 5.6"/><path class="w w2" d="M18.2 6.6a7.6 7.6 0 0 1 0 10.8"/></svg>';
+// 行程中可能要給當地人看／聽的日文名稱：有假名或漢字、不含英文字母、也不是台灣用語才加語音鈕
+const jaOK=t=>{t=String(t||'');return /[\u3040-\u30ff\u3400-\u9fff]/.test(t)&&!/[A-Za-z]/.test(t)&&!/機場|航廈|淺|臺|灣/.test(t)};
+let HT=[];const jaOf=m=>{for(const h of HT){if(h.map===m)return h.ja;if(h.alt&&h.alt.map===m&&h.alt.ja)return h.alt.ja}return m};
+const sp=t=>jaOK(t)?`<button class="sp" data-say="${esc(t)}" aria-label="播放日語：${esc(t)}" title="${esc(t)}">${SPI}</button>`:'';
 const gm=q=>'https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(q);
 // 夜間、字體
 const root=document.documentElement;
@@ -375,9 +389,9 @@ const Z=[1,1.12,1.25];let zi=ls.g('z',0);const az=()=>root.style.setProperty('--
 const hd=$('header');const fit=()=>root.style.setProperty('--hh',hd.offsetHeight+'px');fit();addEventListener('resize',fit);
 const off=$('#off'),upd=()=>off.hidden=navigator.onLine;addEventListener('online',upd);addEventListener('offline',upd);upd();
 
-fetch('trips/keihan-2027.json',{cache:'no-cache'}).then(r=>r.json()).then(go).catch(()=>{$('#day').innerHTML='<p>行程資料載入失敗，請確認網路後重新整理。</p>'});
+fetch('trips/keihan-2027.json',{cache:'no-cache'}).then(r=>r.json()).then(go).catch(e=>{console.error(e);$('#day').innerHTML='<p>行程資料載入失敗，請確認網路後重新整理。</p>'});
 
-function go(T){
+function go(T){HT=T.hotels||[];
  const D=T.days,TG=T.tags;
  let C=ls.g('c',{}),ST=ls.g('st',{}),TD=ls.g('td',{});
  const opt=d=>{if(!d.choice)return null;const o=d.choice.options;return o.find(x=>x.id===C[d.choice.key])||o[0]};
@@ -404,7 +418,7 @@ function go(T){
      +(ls.g('cmp',false)?`<table class="cmp"><tr><th></th><th>步行</th><th>花費</th><th>新鮮</th><th>交通／人</th></tr>`+ch.options.map(x=>{const m=x.meters.split(',');return `<tr class="${x===o?'on':''}"><td>${esc(x.name)}<br><small style="font-family:var(--sans);font-size:11px;color:var(--sub)">${esc(x.sub)}</small></td><td>${m[0]}</td><td>${m[1]}</td><td>${m[2]}</td><td>¥${x.budget[0].toLocaleString()}–${x.budget[1].toLocaleString()}</td></tr>`}).join('')+`</table>`:'')
      +(()=>{const m=o.meters.split(',').map(Number);return `<p class="odesc">${esc(o.desc)}</p><div class="osel"><span>步行 ${meter(m[0])}</span><span>花費 ${meter(m[1])}</span><span>新鮮 ${meter(m[2])}</span></div></div>`})()}
    else h+=`<div class="ch"><div class="chh"><span>${esc(ch.title)}</span></div><div class="seg">`+ch.options.map(x=>`<button class="${x===o?'on':''}" data-o="${x.id}"><b>${esc(x.name)}</b><small>${esc(x.sub)}</small></button>`).join('')+`</div></div>`}
-  h+='<ul class="tl">'+it.map((x,i)=>`<li class="c-${x.g||'walk'}"><span class="tm">${x.t}</span><div class="tx">${esc(x.x)}${x.m?`<a class="mp" href="${gm(x.m)}" target="_blank" rel="noopener" aria-label="在 Google 地圖開啟">${PIN}</a>`:''}</div>${x.s?`<button class="st${ST[pre+i]?' on':''}" data-s="${pre+i}" aria-label="蓋章">${ST[pre+i]?'済':'印'}</button>`:'<span></span>'}</li>`).join('')+'</ul>';
+  h+='<ul class="tl">'+it.map((x,i)=>`<li class="c-${x.g||'walk'}"><span class="tm">${x.t}</span><div class="tx">${esc(x.x)}${x.m?`<span class="ics"><a class="mp" href="${gm(x.m)}" target="_blank" rel="noopener" aria-label="在 Google 地圖開啟">${PIN}</a>${sp(jaOf(x.m))}</span>`:''}</div>${x.s?`<button class="st${ST[pre+i]?' on':''}" data-s="${pre+i}" aria-label="蓋章">${ST[pre+i]?'済':'印'}</button>`:'<span></span>'}</li>`).join('')+'</ul>';
   const X=(o&&o.x)||d.x;if(X)h+=X.map(x=>`<details class="xd"><summary>${esc(x[0])}</summary><div>${esc(x[1])}</div></details>`).join('');
   const N=(o&&o.n)||d.n;h+=(N?`<div class="note">${esc(N)}</div>`:'')+`<div class="nav2">${cur>0?`<button data-go="${cur-1}">← ${D[cur-1].date}</button>`:'<span></span>'}${cur<D.length-1?`<button data-go="${cur+1}">${D[cur+1].date} →</button>`:'<span></span>'}</div>`;
   const box=$('#day');box.innerHTML=h;box.style.animation='none';box.offsetHeight;box.style.animation='';
@@ -430,10 +444,10 @@ function go(T){
  $('#fl').addEventListener('click',fo);$('#fl').addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();fo(e)}});
  // 住宿
  $('#ht').innerHTML=T.hotels.map(h=>`<div class="card pc"><div class="stp"><div><img src="${IMG}ic-${h.stk}.svg" alt="" onerror="if(!this.dataset.r){this.dataset.r=1;this.src=this.src.split('?')[0]+'?r='+Date.now()}else{this.style.visibility='hidden'}"></div></div><div class="pm">${h.badge}<br>${h.when.split('・')[0]}</div>
-  <span class="bd">${h.badge}</span><h3>${esc(h.name)}</h3><div class="ja">${esc(h.ja)}</div><div class="en">${esc(h.en)}</div>
+  <span class="bd">${h.badge}</span><h3>${esc(h.name)}</h3><div class="ja">${esc(h.ja)}${sp(h.ja)}</div><div class="en">${esc(h.en)}</div>
   <div class="ln"><b>${esc(h.when)}</b><br>${esc(h.room)}</div><ul>${h.notes.map(n=>`<li>${esc(n)}</li>`).join('')}</ul>
   <div class="btns"><a class="bt p" href="${gm(h.map)}" target="_blank" rel="noopener">${PIN.replace('<svg','<svg width="13" height="13"')} 地圖</a><a class="bt" href="tel:${h.tel}">📞 ${h.telShow}</a><button class="bt" data-big="${esc(h.addr)}|${esc(h.ja)}">🔍 地址</button></div>
-  ${h.alt?`<div class="alt"><span class="ab">備選</span><div><b>${esc(h.alt.name)}</b>${h.alt.ja?`<small>${esc(h.alt.ja)}</small>`:''}<small>${esc(h.alt.when)}・${esc(h.alt.note)}</small></div><a class="mp" href="${gm(h.alt.map)}" target="_blank" rel="noopener" aria-label="地圖">${PIN}</a></div>`:''}</div>`).join('');
+  ${h.alt?`<div class="alt"><span class="ab">備選</span><div><b>${esc(h.alt.name)}</b>${h.alt.ja?`<small>${esc(h.alt.ja)}${sp(h.alt.ja)}</small>`:''}<small>${esc(h.alt.when)}・${esc(h.alt.note)}</small></div><a class="mp" href="${gm(h.alt.map)}" target="_blank" rel="noopener" aria-label="地圖">${PIN}</a></div>`:''}</div>`).join('');
  // 預算
  let two=ls.g('two',false),rate=T.fx.ref;
  function budget(){let lo=0,hi=0;
@@ -450,7 +464,7 @@ function go(T){
    const fj=$('#fj'),ft=$('#ft'),n=v=>parseFloat(String(v).replace(/,/g,''));
    fj.oninput=()=>{const v=n(fj.value);ft.value=v>=0?Math.round(v*rate).toLocaleString():''};ft.oninput=()=>{const v=n(ft.value);fj.value=v>=0?Math.round(v/rate).toLocaleString():''};
    p.querySelector('.qk').onclick=e=>{const b=e.target.closest('[data-j]');if(b){fj.value=(+b.dataset.j).toLocaleString();fj.oninput()}};}
-  if(tab==='ph'){const P=T.phrases;p.innerHTML=`<div class="pht">${P.map((c,i)=>`<button data-pt="${i}" class="${i===pt?'on':''}">${c[0]}</button>`).join('')}</div><div class="ph">${P[pt][1].map(x=>`<div class="pw"><button data-big="${esc(x[0])}|${esc(x[1])}"><b>${esc(x[0])}</b><small>${esc(x[1])}</small></button><button class="spk" data-say="${esc(x[0])}" aria-label="播放日語語音" title="播放語音">🔊</button></div>`).join('')}</div><p class="rate">點一下放大給人看，按 🔊 播放日語發音</p>`;
+  if(tab==='ph'){const P=T.phrases;p.innerHTML=`<div class="pht">${P.map((c,i)=>`<button data-pt="${i}" class="${i===pt?'on':''}">${c[0]}</button>`).join('')}</div><div class="ph">${P[pt][1].map(x=>`<div class="pw"><button data-big="${esc(x[0])}|${esc(x[1])}"><b>${esc(x[0])}</b><small>${esc(x[1])}</small></button><button class="sp" data-say="${esc(x[0])}" aria-label="播放日語語音" title="播放語音">${SPI}</button></div>`).join('')}</div><p class="rate">點一下放大給人看，按右邊喇叭播放日語發音</p>`;
    p.querySelector('.pht').onclick=e=>{const b=e.target.closest('[data-pt]');if(b){pt=+b.dataset.pt;pane()}}}
   if(tab==='td'){p.innerHTML='<div class="tdg">'+Object.keys(T.todo).map(g=>{const l=T.todo[g];return `<h4>${g}<small>${l.filter(t=>TD[t]).length}/${l.length}</small></h4>`+l.map(t=>`<label><input type="checkbox" data-t="${esc(t)}"${TD[t]?' checked':''}><span>${esc(t)}</span></label>`).join('')}).join('')+'</div>';
    p.querySelector('.tdg').onchange=e=>{const t=e.target.dataset.t;TD[t]=e.target.checked;if(!TD[t])delete TD[t];ls.s('td',TD);pane()}}
@@ -475,11 +489,12 @@ function go(T){
  function say(t,btn){if(!TTS){vdiag();return}const x=String(t).replace(/〇+/g,'').replace(/\s+/g,' ').trim();if(!x)return;
   try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(x);u.lang='ja-JP';u.rate=.9;
    const v=VO.find(v=>v.lang.replace('_','-').toLowerCase()==='ja-jp')||VO.find(v=>v.lang.toLowerCase().startsWith('ja'));if(v)u.voice=v;
-   document.querySelectorAll('.spk.on,.bspk.on').forEach(y=>y.classList.remove('on'));if(btn){btn.classList.add('on');u.onend=u.onerror=()=>btn.classList.remove('on')}
+   document.querySelectorAll('.sp.on').forEach(y=>y.classList.remove('on'));if(btn){btn.classList.add('on');u.onend=u.onerror=()=>btn.classList.remove('on')}
    speechSynthesis.speak(u)}catch(e){}}
- document.addEventListener('click',e=>{const sp=e.target.closest('[data-say]');if(sp){say(sp.dataset.say,sp);return}
+ document.addEventListener('click',e=>{const s=e.target.closest('[data-say]');if(s){e.preventDefault();e.stopPropagation();say(s.dataset.say,s)}},true);
+ document.addEventListener('click',e=>{
   const b=e.target.closest('[data-big]');if(b){const [a,c]=b.dataset.big.split('|');$('#big b').textContent=a;$('#big small').textContent=c||'';showSpk();$('#big').classList.add('on')}});
- function showSpk(){if($('#big .bspk'))return;const sp=document.createElement('button');sp.className='bspk';sp.textContent='🔊 播放語音';sp.onclick=e=>{e.stopPropagation();say($('#big b').textContent,sp)};$('#big small').after(sp)}
+ function showSpk(){if($('#big .sp'))return;const b=document.createElement('button');b.className='sp';b.setAttribute('aria-label','播放日語語音');b.innerHTML=SPI;b.onclick=e=>{e.stopPropagation();say($('#big b').textContent,b)};$('#big small').after(b)}
  $('#big').onclick=()=>{$('#big').classList.remove('on');if(TTS)try{speechSynthesis.cancel()}catch(e){}};addEventListener('keydown',e=>{if(e.key==='Escape')$('#big').classList.remove('on')});
  pane();draw(false);
  // 下方功能列高亮
