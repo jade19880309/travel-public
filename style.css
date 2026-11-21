@@ -223,6 +223,10 @@ details[open].card>summary::after{transform:rotate(-135deg);top:31px}
 #fsub{margin-top:-4px;gap:6px}#fsub[hidden]{display:none}
 #fsub button{min-height:34px;font-size:14.5px;padding:3px 14px;background:transparent;box-shadow:none}
 #fsub button.on{background:var(--goldl);border-color:var(--gold);color:var(--ink)}
+/* 左右滑動切換分頁時的小動畫 */
+.swl{animation:swl .25s ease-out}.swr{animation:swr .25s ease-out}
+@keyframes swl{from{opacity:.3;transform:translateX(28px)}}@keyframes swr{from{opacity:.3;transform:translateX(-28px)}}
+@media (prefers-reduced-motion:reduce){.swl,.swr{animation:none}}
 .pl{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 @media (min-width:760px){.pl{grid-template-columns:repeat(3,1fr)}}
 .pi{font-size:16px;text-align:left;background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px 12px 12px 14px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:6px;min-height:58px;line-height:1.4;box-shadow:0 1px 2px rgba(70,35,20,.04)}
@@ -427,7 +431,7 @@ html body #flight .bp .ac{margin:-4px 16px 8px}
 
 /* ===== 常用語句：語音播放 ===== */
 .pw{position:relative}
-.pw .pi{width:100%;padding-right:66px}
+.pw .pi{width:100%;padding-right:52px}
 /* 語音鈕：只有圖示、不加底色，顏色跟主題；播放中波紋閃動 */
 .vo{display:inline-grid;place-items:center;width:30px;height:30px;padding:0;margin:0 0 0 2px;border:0;background:none;color:var(--red2);cursor:pointer;vertical-align:-9px;position:relative;-webkit-tap-highlight-color:transparent}
 .vo::before{content:"";position:absolute;inset:-6px}
@@ -435,7 +439,8 @@ html body #flight .bp .ac{margin:-4px 16px 8px}
 .vo.on{color:var(--seal,var(--red))}.vo.on .w{animation:spw .9s ease-in-out infinite}.vo.on .w2{animation-delay:.2s}
 @keyframes spw{50%{opacity:.15}}
 .maps .vo{margin:0;vertical-align:0}
-.pw .vo{position:absolute;right:28px;top:50%;transform:translateY(-50%);width:40px;height:40px;margin:0}
+.pw .pi::after{display:none}
+.pw .vo{position:absolute;right:8px;top:50%;transform:translateY(-50%);width:40px;height:40px;margin:0}
 .pw .vo svg{width:23px;height:23px}
 #big .vo{margin-top:22px;width:72px;height:72px;z-index:1}
 #big .vo svg{width:44px;height:44px}

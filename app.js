@@ -245,7 +245,7 @@ function speak(t,btn){if(!VL)return;if(!TTS){vdiag();return}
   document.querySelectorAll('.vo.on').forEach(x=>x.classList.remove('on'));
   if(btn){btn.classList.add('on');u.onend=u.onerror=()=>btn.classList.remove('on')}
   speechSynthesis.speak(u)}catch(e){}}
-{const pr=$('#phr .rate');if(VL&&pr)pr.insertAdjacentHTML('beforeend','按右邊喇叭可聽發音。')}
+{const pr=$('#phr .rate');if(VL&&pr)pr.insertAdjacentHTML('beforeend','按右邊喇叭可聽發音。');if(pr)pr.insertAdjacentHTML('beforeend','清單左右滑動可切換分類。')}
 const SPK=VL?'<button class="vo" aria-label="播放語音" title="播放語音">'+SPI+'</button>':'';
 tabs('#ptabs',PH.map(c=>c[0]),k=>{const c=PH.find(x=>x[0]===k)[1];const box=$('#plist');
  box.innerHTML=c.map((x,i)=>`<div class="pw"><button class="pi" data-i="${i}"><span>${x[1]}${x[2]?`<small>${x[2]}</small>`:''}</span></button>${SPK.replace('class="vo"','class="vo" data-i="'+i+'"')}</div>`).join('');
@@ -257,6 +257,19 @@ function showBig(a,b){const z=$('#big');z.querySelector('b').textContent=a;z.que
 document.addEventListener('click',e=>{const s=e.target.closest('[data-say]');if(s){e.preventDefault();e.stopPropagation();speak(s.dataset.say,s)}},true);
 $('#big').onclick=()=>{$('#big').classList.remove('on');if(TTS)try{speechSynthesis.cancel()}catch(e){}};
 document.addEventListener('click',e=>{const h=e.target.closest('[data-big]');if(h){const o=TRIP.hotels[h.dataset.big];showBig(o.big[0],o.big[1])}});
+// ===== 分頁清單左右滑動切換（常用語句、美食、備用景點）=====
+function swipeTabs(area,step){const el=$(area);if(!el)return;let x0=null,y0=0,t0=0;
+ el.addEventListener('touchstart',e=>{if(e.touches.length!==1){x0=null;return}x0=e.touches[0].clientX;y0=e.touches[0].clientY;t0=Date.now()},{passive:true});
+ el.addEventListener('touchend',e=>{if(x0===null)return;const t=e.changedTouches[0],dx=t.clientX-x0,dy=t.clientY-y0;x0=null;
+  if(Math.abs(dx)<50||Math.abs(dx)<Math.abs(dy)*1.5||Date.now()-t0>800)return;
+  if(step(dx<0?1:-1)){el.classList.remove('swl','swr');void el.offsetWidth;el.classList.add(dx<0?'swl':'swr')}},{passive:true})}
+const tabMove=(sel,d,last)=>{const box=$(sel);if(!box||box.hidden)return false;const bs=[...box.children],i=bs.findIndex(b=>b.classList.contains('on')),j=last===undefined?i+d:last;
+ if(i<0||j<0||j>=bs.length)return false;const b=bs[j];b.click();b.scrollIntoView({block:'nearest',inline:'center',behavior:'smooth'});return true};
+swipeTabs('#plist',d=>tabMove('#ptabs',d));
+swipeTabs('#slist',d=>tabMove('#stabs',d));
+// 美食有兩層：先在下層（例：明洞的早餐／其他）切換，到頭再換上層；往回切到上一組時停在它的最後一個下層
+swipeTabs('#flist',d=>{if(tabMove('#fsub',d))return true;if(!tabMove('#ftabs',d))return false;
+ if(d<0){const sb=$('#fsub');if(sb&&!sb.hidden&&sb.children.length>1)tabMove('#fsub',0,sb.children.length-1)}return true});
 if('serviceWorker' in navigator&&/^https?:/.test(location.protocol))navigator.serviceWorker.register('sw.js').catch(()=>{});
 
 // ===== 圖片檢視器：雙指縮放、拖曳、連點放大、滾輪縮放 =====
