@@ -44,13 +44,6 @@ h1{font-family:var(--serif);font-weight:700;font-size:clamp(34px,8.6vw,60px);let
  background:linear-gradient(180deg,#fbf5ea 30%,#d9c3a0);-webkit-background-clip:text;background-clip:text;color:transparent}
 .lead{color:var(--sub);font-size:15px;letter-spacing:.12em}
 
-/* 下一趟倒數 */
-.next{margin:34px auto 0;max-width:420px;border:1px solid var(--line);border-radius:999px;padding:12px 22px;display:flex;align-items:center;justify-content:center;gap:14px;
- background:rgba(255,255,255,.025);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
-.next[hidden]{display:none}
-.next small{color:var(--sub);font-size:13px;letter-spacing:.08em}
-.next b{font-family:var(--latin);font-weight:600;font-size:34px;line-height:1;color:var(--gold)}
-.next span{font-size:14px;color:var(--ink)}
 
 /* 時間軸與卡片 */
 .label{display:flex;align-items:center;gap:14px;margin:6px 0 18px;color:var(--gold);font-size:13px;letter-spacing:.3em}
@@ -131,8 +124,6 @@ footer .orn{display:block;color:var(--gold2);font-family:var(--latin);font-size:
  .mark{font-size:11.5px;gap:10px;letter-spacing:.28em}.mark::before,.mark::after{width:26px}
  h1{font-size:clamp(26px,7.6vw,34px);margin:4px 0 2px;letter-spacing:.12em}
  .lead{font-size:12.5px}
- .next{margin-top:10px;padding:6px 16px;gap:10px;max-width:320px}
- .next b{font-size:24px}.next small{font-size:12px}.next span{font-size:13px}
  main{flex:1;display:flex;flex-direction:column;justify-content:center}
  .chips{margin-bottom:8px;gap:6px}
  .chip{padding:7px 12px;font-size:13px}
@@ -153,7 +144,7 @@ footer .orn{display:block;color:var(--gold2);font-family:var(--latin);font-size:
  .fnote{font-size:11.5px;letter-spacing:.06em;text-align:left;line-height:1.5}
  .updb{flex:none;padding:7px 14px;font-size:13px}
 }
-@media (max-width:699px) and (max-height:620px){.mark,.lead{display:none}.next{margin-top:6px}}
+@media (max-width:699px) and (max-height:620px){.mark,.lead{display:none}}
 </style>
 </head>
 <body>
@@ -163,7 +154,6 @@ footer .orn{display:block;color:var(--gold2);font-family:var(--latin);font-size:
  <div class="mark">Family Journeys</div>
  <h1>家庭旅行手帖</h1>
  <p class="lead">2027・全家的旅程都在這裡</p>
- <div class="next" id="next" hidden></div>
 </header>
 
 <main>
@@ -214,7 +204,6 @@ fetch('trips/index.json',{cache:'no-cache'}).then(r=>r.json()).then(L=>Promise.a
  const now=new Date();
  T.sort((a,b)=>a.start.localeCompare(b.start));
  const S=T.map(t=>[t,state(t,now)]);
- const up=S.filter(x=>x[1].k!=='done');
  // 依出發日由左到右排列（過去的在左邊），預設停在下一趟
  let cur=Math.max(0,S.findIndex(x=>x[1].k!=='done'));
  try{const v=sessionStorage.getItem('homeTrip');const k=S.findIndex(x=>x[0].id===v);if(k>=0)cur=k}catch(e){}
@@ -242,10 +231,6 @@ fetch('trips/index.json',{cache:'no-cache'}).then(r=>r.json()).then(L=>Promise.a
  deck.addEventListener('keydown',e=>{if(e.key==='ArrowLeft'){e.preventDefault();goTo(cur-1)}else if(e.key==='ArrowRight'){e.preventDefault();goTo(cur+1)}});
  addEventListener('resize',()=>goTo(cur,false));
  const start=cur;cur=-1;requestAnimationFrame(()=>{goTo(start,false);mark(start);onScroll()});
- const f=up[0];
- if(f){const el=$('#next');el.hidden=false;
-  el.style.cursor='pointer';el.onclick=()=>goTo(S.indexOf(f));
-  el.innerHTML=f[1].k==='on'?`<small>現在</small><span>${f[0].title}</span>`:`<small>下一趟</small><b>${f[1].d}</b><span>天後・${f[0].title.replace(/^2027\s*/,'')}</span>`}
 }).catch(()=>{$('#up').innerHTML='<p class="err">行程清單載入失敗，請稍後重新整理。</p>'});
 
 if('serviceWorker' in navigator&&/^https?:/.test(location.protocol))navigator.serviceWorker.register('sw.js').catch(()=>{});
