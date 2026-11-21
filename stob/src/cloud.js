@@ -222,8 +222,8 @@ function adTrip(){const f=ADS.tf;
   <div class="kvl mt-2">備註</div><input class="${IN}" id="tf_note" value="${esc(f.note||'')}" placeholder="例如：6天5夜">
   <div class="kvl mt-2">外幣（逗號分隔）</div><input class="${IN}" id="tf_curs" value="${esc((f.curs||[]).join(','))}" placeholder="JPY">
   <div class="kvl mt-2">旅程網頁連結（可不填）</div><input class="${IN}" id="tf_web" value="${esc(f.web||'')}" placeholder="https://">
-  <label class="block text-sm mt-2"><input type="checkbox" id="tf_fam" ${f.fam?'checked':''}> 住宿費用按「分組」平均分攤</label>
-  <label class="block text-sm"><input type="checkbox" id="tf_ns" ${f.nosplit?'checked':''}> 交通費用不按分組平分（依每人金額）</label>
+  <label class="adck"><input type="checkbox" id="tf_fam" ${f.fam?'checked':''}><span>住宿費用按「分組」平均分攤</span></label>
+  <label class="adck"><input type="checkbox" id="tf_ns" ${f.nosplit?'checked':''}><span>交通費用依每人金額計算（不按分組平分）</span></label>
   <div class="flex gap-2 mt-3"><button type="button" class="${BP}" onclick="tripSave()">儲存</button><button type="button" class="${BT}" onclick="ADS.tf=null;render()">取消</button></div></div>`:'';
  const list=[...db.trips].sort((a,b)=>(a.start||'').localeCompare(b.start||'')).map(t=>{const c=[...db.fl,...db.ht,...db.tr,...db.ot].filter(x=>x.trip==t.id).length;
   return `<div class="adli"><div class="min-w-0"><div class="font-medium">${esc(t.name.replace(/^\d{6}/,''))}</div><div class="text-sm text-stone-500">${rng(t)}・${c} 筆訂單</div></div><div class="flex gap-1 shrink-0"><button type="button" class="${BT}" onclick="ADS.tf=JSON.parse(JSON.stringify(db.trips.find(x=>x.id=='${t.id}')));render()">編輯</button>${ADS.del=='t'+t.id?`<button type="button" class="adyes" onclick="tripDel('${t.id}')">確定刪除${c?'（含訂單）':''}</button>`:`<button type="button" class="${BD}" onclick="ADS.del='t${t.id}';render()">刪除</button>`}</div></div>`}).join('');

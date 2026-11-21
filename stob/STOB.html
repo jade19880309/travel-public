@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="zh-Hant"><head><meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
 <meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="STOB 旅遊訂單"><meta name="apple-mobile-web-app-status-bar-style" content="default">
 
@@ -929,7 +929,7 @@ const OFFS=[[/vessel/i,'https://www.vessel-hotel.jp/'],[/東橫|toyoko/i,'https:
 const platRow=h=>{if(!h.platform)return '';const u=h.platform=='官網'?(OFFS.find(([r])=>r.test((h.zh||'')+(h.en||'')))||[])[1]:'';return `<div class="text-sm text-stone-500">平台：${u?`<a class="underline font-medium" style="color:rgb(var(--goldt))" href="${u}" target="_blank" rel="noopener">官網 ↗</a>`:esc(h.platform)}</div>`};
 function hBook(h,multi){const all=[...new Set(h.rooms.flatMap(r=>r.members))].filter(M);return `<details class="${BK}" ${S.focus==h.id?'open':''}><summary class="cursor-pointer p-3"><div class="flex items-center justify-between gap-2"><span><b>${esc(lbl(h))}</b> <span class="text-sm text-stone-500">${all.length}人・${h.rooms.map(r=>esc(r.type)).join('、')}</span>${(()=>{const s=[...new Set(h.rooms.map(r=>{const m=M(r.members.includes(h.rep)?h.rep:r.members.find(M));return m?zh(m):''}).filter(Boolean))];return s.length?` <span class="rep">代表人 ${esc(s.join('、'))}</span>`:''})()}</span><span class="flex items-center gap-1 shrink-0">${badge(h.status)}${multi&&h.status!='已取消'?chkB(h.id,okH(h),false,okH(h)?'已採用，取消勾選可不計入費用':'勾選後計入費用'):''}</span></div><div class="flex items-center justify-between mt-1"><span class="text-sm break-all" ${lpA(h.orderNo)}>訂單 <b>${esc(h.orderNo)}</b></span>${ordBtn(h)}</div>${cxlLine(h)}</summary><div class="px-3 pb-3">${h.rooms.map((r,i)=>`<div class="rounded-xl bg-stone-50 p-2 mb-2"><div class="font-medium">房間 ${i+1}：${esc(r.type)}${r.beds?'・'+esc(r.beds):''}${r.bf?'・含早餐':'・不含早餐'}</div>${nl(r.note)}${r.members.filter(M).map(k=>`<div class="mt-1 text-sm">${esc(zh(M(k)))}　<span class="text-stone-500">${esc(M(k).last)} / ${esc(M(k).first)}</span></div>`).join('')}</div>`).join('')}<div class="text-sm mt-1 border-t border-stone-200 pt-2">總額 <b>${money(htot(h),h.cur)}</b>　${h.paid?'已付款':'未付款'}${h.rooms.map((r,n2)=>`<br>房間 ${n2+1}：${money(rp(h,r),h.cur)}`).join('')}</div>${h.grp?nl(h.note):''}</div></details>`}
 function hGroup(list){const h0=list[0],hs0=list.filter(h=>h.status!='已取消'),hid=hs0.map(h=>h.id).join(','),nOn=hs0.filter(okH).length,gOn=hs0.length>0&&nOn==hs0.length,gPart=nOn>0&&!gOn,all=[...new Set(list.flatMap(h=>h.rooms.flatMap(r=>r.members)))].filter(M),tot=sum(list.filter(okH).map(h=>conv(htot(h),h.cur))),mp=h0.map||((h0.addr||h0.en)?'https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(h0.en||h0.addr):'');return `<details class="${CC}${nOn?'':' opacity-60'}" ${S.focus&&list.some(h=>h.id==S.focus)?'open':''}><summary class="cursor-pointer"><div class="flex items-center justify-between gap-2"><div class="min-w-0"><div class="font-bold text-lg">${esc(h0.zh||h0.en)}</div><div class="text-sm text-stone-500 ci-meta"><span>${nights(h0)} 晚</span><span>${list.reduce((a,h)=>a+h.rooms.length,0)} 間房</span><span>${all.length} 位旅客</span></div>${hs0.length?`<div class="text-sm text-stone-500">全部訂單 TWD ${n(sum(hs0.map(h=>conv(htot(h),h.cur))))}</div>`:''}${platRow(h0)}</div>${hs0.length?chkB(hid,gOn,gPart,gOn?'已採用，取消勾選可不計入費用':gPart?'部分採用（'+nOn+'/'+hs0.length+'）':'勾選後計入費用'):''}</div></summary><div class="mt-2">${kv('飯店英文名稱',h0.en)}${addrRow(h0.addr)}${kv('入住日期',cinT(h0))}${kv('退房日期',d(h0.cout))}${mp?`<a class="${BP} inline-block" href="${esc(mp)}" target="_blank" rel="noopener">開啟 Google Maps</a>`:''}<div class="text-sm my-2">已選合計 <b>TWD ${n(tot)}</b></div>${list.map(h=>hBook(h,list.length>1)).join('')}</div></details>`}
-const SUB=[['mem','成員'],['fl','機票'],['ht','飯店'],['tr','交通'],['ot','其他'],['cost','費用']],FE={mem:'👨‍👩‍👧',fl:'✈️',ht:'🏨',tr:'🚃',ot:'🎫',cost:'💴',cia:'✈️',cih:'🏨',cit:'🚃',cio:'🎫'},fe=k=>'',tIc=n=>/韓國|首爾/.test(n)?'🇰🇷 ':/港珠澳|香港|澳門/.test(n)?'🇭🇰 ':/日本|東京|沖繩/.test(n)?'🇯🇵 ':'🌏 ';
+const SUB=[['mem','成員'],['fl','機票'],['ht','飯店'],['tr','交通'],['ot','其他'],['cost','費用']],FE={mem:'👨‍👩‍👧',fl:'✈️',ht:'🏨',tr:'🚃',ot:'🎫',cost:'💴',cia:'✈️',cih:'🏨',cit:'🚃',cio:'🎫'},fe=k=>'',tIc=n=>/台灣|臺灣|台北|臺北|新北|基隆|桃園|新竹|苗栗|台中|臺中|彰化|南投|雲林|嘉義|台南|臺南|高雄|屏東|墾丁|宜蘭|花蓮|台東|臺東|澎湖|金門|馬祖|綠島|蘭嶼|日月潭|阿里山|小琉球/.test(n)?'🇹🇼 ':/韓國|首爾/.test(n)?'🇰🇷 ':/港珠澳|香港|澳門/.test(n)?'🇭🇰 ':/日本|東京|沖繩/.test(n)?'🇯🇵 ':'🌏 ';
 const inSub=()=>SUB.some(s=>s[0]==S.v);
 
 /* ---------- 店家報到：航空／飯店／交通／其他（餐廳門票） ---------- */
@@ -1575,6 +1575,19 @@ h1::after{display:none!important}
 /* 滿版：外框（含 iPhone 安全區域）也鋪上底色，不留白邊 */
 html{background:rgb(var(--s50))!important;min-height:100%}
 body{min-height:100vh;min-height:100dvh}
+/* 手機（iOS）：日期欄位不撐破版面、整頁不左右滑 */
+#app{overflow-x:clip;padding-bottom:5rem}
+input,select,textarea{max-width:100%;min-width:0}
+.adrow{grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important}
+.adrow>*{min-width:0}
+input[type=date]{display:block;width:100%;min-width:0;-webkit-appearance:none;appearance:none;min-height:2.75rem;line-height:1.4;text-align:left}
+input[type=date]::-webkit-date-and-time-value{text-align:left}
+input[type=date]::-webkit-calendar-picker-indicator{opacity:.6}
+.block{display:block}
+.adck{display:flex;align-items:flex-start;gap:.55rem;margin-top:.7rem;font-size:.92rem;line-height:1.45;cursor:pointer}
+.adck input{flex:0 0 auto;width:1.2rem;height:1.2rem;margin-top:.1rem;accent-color:rgb(var(--gold))}
+/* 上傳按鈕縮小一點，少擋內容 */
+.upfab{padding:.6rem 1rem!important;font-size:.9rem!important}
 </style>
 <script>
 /* =====================================================================
@@ -1801,8 +1814,8 @@ function adTrip(){const f=ADS.tf;
   <div class="kvl mt-2">備註</div><input class="${IN}" id="tf_note" value="${esc(f.note||'')}" placeholder="例如：6天5夜">
   <div class="kvl mt-2">外幣（逗號分隔）</div><input class="${IN}" id="tf_curs" value="${esc((f.curs||[]).join(','))}" placeholder="JPY">
   <div class="kvl mt-2">旅程網頁連結（可不填）</div><input class="${IN}" id="tf_web" value="${esc(f.web||'')}" placeholder="https://">
-  <label class="block text-sm mt-2"><input type="checkbox" id="tf_fam" ${f.fam?'checked':''}> 住宿費用按「分組」平均分攤</label>
-  <label class="block text-sm"><input type="checkbox" id="tf_ns" ${f.nosplit?'checked':''}> 交通費用不按分組平分（依每人金額）</label>
+  <label class="adck"><input type="checkbox" id="tf_fam" ${f.fam?'checked':''}><span>住宿費用按「分組」平均分攤</span></label>
+  <label class="adck"><input type="checkbox" id="tf_ns" ${f.nosplit?'checked':''}><span>交通費用依每人金額計算（不按分組平分）</span></label>
   <div class="flex gap-2 mt-3"><button type="button" class="${BP}" onclick="tripSave()">儲存</button><button type="button" class="${BT}" onclick="ADS.tf=null;render()">取消</button></div></div>`:'';
  const list=[...db.trips].sort((a,b)=>(a.start||'').localeCompare(b.start||'')).map(t=>{const c=[...db.fl,...db.ht,...db.tr,...db.ot].filter(x=>x.trip==t.id).length;
   return `<div class="adli"><div class="min-w-0"><div class="font-medium">${esc(t.name.replace(/^\d{6}/,''))}</div><div class="text-sm text-stone-500">${rng(t)}・${c} 筆訂單</div></div><div class="flex gap-1 shrink-0"><button type="button" class="${BT}" onclick="ADS.tf=JSON.parse(JSON.stringify(db.trips.find(x=>x.id=='${t.id}')));render()">編輯</button>${ADS.del=='t'+t.id?`<button type="button" class="adyes" onclick="tripDel('${t.id}')">確定刪除${c?'（含訂單）':''}</button>`:`<button type="button" class="${BD}" onclick="ADS.del='t${t.id}';render()">刪除</button>`}</div></div>`}).join('');

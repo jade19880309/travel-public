@@ -76,6 +76,8 @@ rep("[['fl','機票'],['ht','飯店'],['tr','交通'],['ot','其他']].map(([k,l
 rep('family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@600;700', 'family=Huninn&family=Noto+Sans+TC:wght@400;500;700')
 rep('<meta name="theme-color" content="#faf5ec" media="(prefers-color-scheme: light)"><meta name="theme-color" content="#1c1815" media="(prefers-color-scheme: dark)">', '<meta name="theme-color" content="#f3f6f5" media="(prefers-color-scheme: light)"><meta name="theme-color" content="#101719" media="(prefers-color-scheme: dark)">')
 s = s.replace('"Noto Serif TC"','"Huninn","Noto Sans TC"').replace('"Songti TC",','').replace('"PMingLiU",','')
+rep('content="width=device-width, initial-scale=1, viewport-fit=cover"', 'content="width=device-width, initial-scale=1"')
+rep("tIc=n=>/韓國|首爾/.test(n)?", "tIc=n=>/台灣|臺灣|台北|臺北|新北|基隆|桃園|新竹|苗栗|台中|臺中|彰化|南投|雲林|嘉義|台南|臺南|高雄|屏東|墾丁|宜蘭|花蓮|台東|臺東|澎湖|金門|馬祖|綠島|蘭嶼|日月潭|阿里山|小琉球/.test(n)?'🇹🇼 ':/韓國|首爾/.test(n)?")
 # privacy check
 bad = sorted(set(re.findall(r"mkP\('m\d+','([^']+)'", src) + re.findall(r"pp:'(\w{6,})'", src) + re.findall(r"orderNo:'(\d{6,})'", src)[:20]))
 hits = [w for w in bad if w in s]

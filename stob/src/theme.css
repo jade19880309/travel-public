@@ -44,3 +44,16 @@ h1::after{display:none!important}
 /* 滿版：外框（含 iPhone 安全區域）也鋪上底色，不留白邊 */
 html{background:rgb(var(--s50))!important;min-height:100%}
 body{min-height:100vh;min-height:100dvh}
+/* 手機（iOS）：日期欄位不撐破版面、整頁不左右滑 */
+#app{overflow-x:clip;padding-bottom:5rem}
+input,select,textarea{max-width:100%;min-width:0}
+.adrow{grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important}
+.adrow>*{min-width:0}
+input[type=date]{display:block;width:100%;min-width:0;-webkit-appearance:none;appearance:none;min-height:2.75rem;line-height:1.4;text-align:left}
+input[type=date]::-webkit-date-and-time-value{text-align:left}
+input[type=date]::-webkit-calendar-picker-indicator{opacity:.6}
+.block{display:block}
+.adck{display:flex;align-items:flex-start;gap:.55rem;margin-top:.7rem;font-size:.92rem;line-height:1.45;cursor:pointer}
+.adck input{flex:0 0 auto;width:1.2rem;height:1.2rem;margin-top:.1rem;accent-color:rgb(var(--gold))}
+/* 上傳按鈕縮小一點，少擋內容 */
+.upfab{padding:.6rem 1rem!important;font-size:.9rem!important}
