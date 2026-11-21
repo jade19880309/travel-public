@@ -128,7 +128,8 @@ section{padding:40px 0 8px}
 .tk img{width:58px;height:50px;object-fit:contain;margin:0 auto 4px;transition:transform .35s}
 .tk .dt{font-family:var(--wk);font-size:22px;line-height:1.1}
 .tk .jp{position:absolute;top:8px;right:8px;width:22px;height:22px;border-radius:50%;display:grid;place-items:center;font-family:var(--wk);font-size:12px;color:var(--shu);border:1px solid color-mix(in srgb,var(--shu) 55%,transparent)}
-.tk .tt{font-size:12px;color:var(--sub);margin-top:4px;line-height:1.4}
+.tk .dw{font-size:11.5px;letter-spacing:.2em;text-indent:.2em;color:var(--sub);margin-top:2px;line-height:1.2}
+.tk .tt{display:flex;align-items:center;justify-content:center;min-height:2.8em;margin-top:6px;padding-top:6px;border-top:1px dashed var(--line);font-size:12.5px;color:var(--ink);line-height:1.4;text-wrap:balance;overflow-wrap:anywhere}
 .tk.on{border-color:transparent;transform:translateY(-3px);box-shadow:0 14px 26px -16px rgba(150,110,170,.55);background:linear-gradient(var(--card),var(--card)) padding-box,var(--grad) border-box;border:1.5px solid transparent}
 .tk.on img{transform:scale(1.08) rotate(-3deg)}
 .tk .td{position:absolute;left:50%;bottom:-8px;transform:translateX(-50%);font-size:10.5px;padding:1px 8px;border-radius:999px;background:var(--shu);color:#fff;letter-spacing:.1em}
@@ -385,7 +386,7 @@ function go(T){
  const now=new Date(),md=(now.getMonth()+1)+'/'+now.getDate();
  let cur=now.getFullYear()===2027?D.findIndex(d=>d.date===md):-1;const today=cur;if(cur<0)cur=ls.g('day',0);
  // 日期票卡
- $('#strip').innerHTML=D.map((d,k)=>`<button class="tk" data-k="${k}"><span class="jp">${d.jp}</span><img src="${IMG}ic-${(opt(d)||d).stk}.svg" alt=""><div class="dt">${d.date}</div><div class="tt">週${d.wd}・${esc(d.title)}</div>${k===today?'<span class="td">今天</span>':''}</button>`).join('');
+ $('#strip').innerHTML=D.map((d,k)=>`<button class="tk" data-k="${k}"><span class="jp">${d.jp}</span><img src="${IMG}ic-${(opt(d)||d).stk}.svg" alt="" onerror="if(!this.dataset.r){this.dataset.r=1;this.src=this.src.split('?')[0]+'?r='+Date.now()}else{this.style.visibility='hidden'}"><div class="dt">${d.date}</div><div class="dw">週${d.wd}</div><div class="tt">${esc(d.title)}</div>${k===today?'<span class="td">今天</span>':''}</button>`).join('');
  $('#dch').innerHTML=D.map((d,k)=>`<button data-k="${k}" class="${k===today?'td':''}"><b>${d.date}</b><small>${k===today?'今天':d.jp}</small></button>`).join('');
  $('#dch').onclick=e=>{const b=e.target.closest('[data-k]');if(b){cur=+b.dataset.k;ls.s('day',cur);draw(true)}};
  $('#strip').onclick=e=>{const b=e.target.closest('.tk');if(b){cur=+b.dataset.k;ls.s('day',cur);draw(true)}};
@@ -399,7 +400,7 @@ function go(T){
   const im=$$('.tk')[cur].querySelector('img');const sk=(o&&o.stk)||d.stk;if(!im.src.includes('ic-'+sk+'.svg'))im.src=IMG+'ic-'+sk+'.svg';
   let h=`<div class="dh"><div class="seal"><span><b>${d.date.split('/')[1]}</b><small>${d.jp}曜</small></span></div><div><h3>${esc(o&&d.choice.compare?o.name+'・'+o.sub:d.title)}</h3><p>${esc(d.sub)}<span class="stay">${esc(d.stay)}</span></p></div></div>`;
   if(d.choice){const ch=d.choice;
-   if(ch.compare){h+=`<div class="ch"><div class="chh"><span>${esc(ch.title)}</span><button id="cmpb">${ls.g('cmp',false)?'收起比較':'比較表'}</button></div><div class="opts">`+ch.options.map(x=>{const m=x.meters.split(',').map(Number);return `<button class="op${x===o?' on':''}" data-o="${x.id}"><img src="${IMG}ic-${x.stk}.svg" alt=""><b>${esc(x.name)}</b><small>${esc(x.sub)}</small></button>`}).join('')+`</div>`
+   if(ch.compare){h+=`<div class="ch"><div class="chh"><span>${esc(ch.title)}</span><button id="cmpb">${ls.g('cmp',false)?'收起比較':'比較表'}</button></div><div class="opts">`+ch.options.map(x=>{const m=x.meters.split(',').map(Number);return `<button class="op${x===o?' on':''}" data-o="${x.id}"><img src="${IMG}ic-${x.stk}.svg" alt="" onerror="if(!this.dataset.r){this.dataset.r=1;this.src=this.src.split('?')[0]+'?r='+Date.now()}else{this.style.visibility='hidden'}"><b>${esc(x.name)}</b><small>${esc(x.sub)}</small></button>`}).join('')+`</div>`
      +(ls.g('cmp',false)?`<table class="cmp"><tr><th></th><th>步行</th><th>花費</th><th>新鮮</th><th>交通／人</th></tr>`+ch.options.map(x=>{const m=x.meters.split(',');return `<tr class="${x===o?'on':''}"><td>${esc(x.name)}<br><small style="font-family:var(--sans);font-size:11px;color:var(--sub)">${esc(x.sub)}</small></td><td>${m[0]}</td><td>${m[1]}</td><td>${m[2]}</td><td>¥${x.budget[0].toLocaleString()}–${x.budget[1].toLocaleString()}</td></tr>`}).join('')+`</table>`:'')
      +(()=>{const m=o.meters.split(',').map(Number);return `<p class="odesc">${esc(o.desc)}</p><div class="osel"><span>步行 ${meter(m[0])}</span><span>花費 ${meter(m[1])}</span><span>新鮮 ${meter(m[2])}</span></div></div>`})()}
    else h+=`<div class="ch"><div class="chh"><span>${esc(ch.title)}</span></div><div class="seg">`+ch.options.map(x=>`<button class="${x===o?'on':''}" data-o="${x.id}"><b>${esc(x.name)}</b><small>${esc(x.sub)}</small></button>`).join('')+`</div></div>`}
@@ -428,7 +429,7 @@ function go(T){
  const fo=e=>{const c=e.target.closest('.bp[data-fn]');if(!c||e.target.closest('a'))return;openUrl('https://www.trip.com/flights/status-'+c.dataset.fn.toLowerCase()+'/')};
  $('#fl').addEventListener('click',fo);$('#fl').addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();fo(e)}});
  // 住宿
- $('#ht').innerHTML=T.hotels.map(h=>`<div class="card pc"><div class="stp"><div><img src="${IMG}ic-${h.stk}.svg" alt=""></div></div><div class="pm">${h.badge}<br>${h.when.split('・')[0]}</div>
+ $('#ht').innerHTML=T.hotels.map(h=>`<div class="card pc"><div class="stp"><div><img src="${IMG}ic-${h.stk}.svg" alt="" onerror="if(!this.dataset.r){this.dataset.r=1;this.src=this.src.split('?')[0]+'?r='+Date.now()}else{this.style.visibility='hidden'}"></div></div><div class="pm">${h.badge}<br>${h.when.split('・')[0]}</div>
   <span class="bd">${h.badge}</span><h3>${esc(h.name)}</h3><div class="ja">${esc(h.ja)}</div><div class="en">${esc(h.en)}</div>
   <div class="ln"><b>${esc(h.when)}</b><br>${esc(h.room)}</div><ul>${h.notes.map(n=>`<li>${esc(n)}</li>`).join('')}</ul>
   <div class="btns"><a class="bt p" href="${gm(h.map)}" target="_blank" rel="noopener">${PIN.replace('<svg','<svg width="13" height="13"')} 地圖</a><a class="bt" href="tel:${h.tel}">📞 ${h.telShow}</a><button class="bt" data-big="${esc(h.addr)}|${esc(h.ja)}">🔍 地址</button></div>
