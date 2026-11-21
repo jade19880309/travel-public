@@ -219,6 +219,10 @@ details[open].card>summary::after{transform:rotate(-135deg);top:31px}
 .tabs::-webkit-scrollbar{display:none}
 .tabs button{flex:none;scroll-snap-align:start;min-height:42px;font-size:15.5px;border:1px solid var(--line);background:#fff;border-radius:99px;padding:6px 16px;cursor:pointer}
 .tabs button.on{background:var(--ink);border-color:var(--ink);color:#fff}
+/* 美食第二層分頁（例：明洞 → 早餐／其他） */
+#fsub{margin-top:-4px;gap:6px}#fsub[hidden]{display:none}
+#fsub button{min-height:34px;font-size:14.5px;padding:3px 14px;background:transparent;box-shadow:none}
+#fsub button.on{background:var(--goldl);border-color:var(--gold);color:var(--ink)}
 .pl{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 @media (min-width:760px){.pl{grid-template-columns:repeat(3,1fr)}}
 .pi{font-size:16px;text-align:left;background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px 12px 12px 14px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:6px;min-height:58px;line-height:1.4;box-shadow:0 1px 2px rgba(70,35,20,.04)}
@@ -425,17 +429,17 @@ html body #flight .bp .ac{margin:-4px 16px 8px}
 .pw{position:relative}
 .pw .pi{width:100%;padding-right:66px}
 /* 語音鈕：只有圖示、不加底色，顏色跟主題；播放中波紋閃動 */
-.sp{display:inline-grid;place-items:center;width:30px;height:30px;padding:0;margin:0 0 0 2px;border:0;background:none;color:var(--red2);cursor:pointer;vertical-align:-9px;position:relative;-webkit-tap-highlight-color:transparent}
-.sp::before{content:"";position:absolute;inset:-6px}
-.sp svg{width:20px;height:20px}
-.sp.on{color:var(--seal,var(--red))}.sp.on .w{animation:spw .9s ease-in-out infinite}.sp.on .w2{animation-delay:.2s}
+.vo{display:inline-grid;place-items:center;width:30px;height:30px;padding:0;margin:0 0 0 2px;border:0;background:none;color:var(--red2);cursor:pointer;vertical-align:-9px;position:relative;-webkit-tap-highlight-color:transparent}
+.vo::before{content:"";position:absolute;inset:-6px}
+.vo svg{width:20px;height:20px}
+.vo.on{color:var(--seal,var(--red))}.vo.on .w{animation:spw .9s ease-in-out infinite}.vo.on .w2{animation-delay:.2s}
 @keyframes spw{50%{opacity:.15}}
-.maps .sp{margin:0;vertical-align:0}
-.pw .sp{position:absolute;right:28px;top:50%;transform:translateY(-50%);width:40px;height:40px;margin:0}
-.pw .sp svg{width:23px;height:23px}
-#big .sp{margin-top:22px;width:72px;height:72px;z-index:1}
-#big .sp svg{width:44px;height:44px}
-#sbody h3 .sp{vertical-align:-6px}
+.maps .vo{margin:0;vertical-align:0}
+.pw .vo{position:absolute;right:28px;top:50%;transform:translateY(-50%);width:40px;height:40px;margin:0}
+.pw .vo svg{width:23px;height:23px}
+#big .vo{margin-top:22px;width:72px;height:72px;z-index:1}
+#big .vo svg{width:44px;height:44px}
+#sbody h3 .vo{vertical-align:-6px}
 /* 站內連結小膠囊（行程 ↔ 價格參考） */
 a.xl{display:inline-block;margin:2px 0 0 6px;padding:1px 10px;border-radius:999px;border:1px solid var(--gold);background:var(--goldl);color:var(--gold);font-size:13px;font-weight:600;line-height:1.7;text-decoration:none;white-space:nowrap}
 a.xl:active{transform:scale(.97)}

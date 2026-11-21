@@ -20,7 +20,7 @@ const SPI='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-wid
 // 行程裡可能要給當地人聽的名稱：韓文要有諺文；日文要有假名或漢字、不含英文、不是台灣用語
 const LANG=String(M.lang||({seoul:'ko',tokyo:'ja',keihan:'ja'})[String(M.id).split('-')[0]]||'').slice(0,2);
 const locOK=t=>{t=String(t||'');if(LANG==='ko')return /[가-힣]/.test(t);if(LANG==='ja')return /[\u3040-\u30ff\u3400-\u9fff]/.test(t)&&!/[A-Za-z]/.test(t)&&!/機場|航廈|淺|臺|灣/.test(t);return false};
-const spB=t=>locOK(t)?`<button class="sp" data-say="${esc(t)}" aria-label="播放：${esc(t)}" title="${esc(t)}">${SPI}</button>`:'';
+const spB=t=>locOK(t)?`<button class="vo" data-say="${esc(t)}" aria-label="播放：${esc(t)}" title="${esc(t)}">${SPI}</button>`:'';
 const btns=(list,extra='')=>(list||[]).map(([k,l])=>`<button class="b bt gd${extra}" data-sh="${k}">${l}</button>`).join('');
 
 // 高德地圖（大陸地點用）：TRIP.amap = {city, places:[地點代號], regions:[美食分區], q:{地點:簡體搜尋字}}
@@ -138,8 +138,8 @@ function goFood(k,x){
  const key=foodKey(k,x);if(!key)return;
  goSec('food',()=>{
   const sg=$('#seg');if(sg&&$('#pf')&&$('#pf').hidden)sg.children[0].click();
-  const b=[...($('#ftabs')||{children:[]}).children].find(t=>t.textContent===key);
-  if(b&&!b.classList.contains('on'))b.click()})}
+  const g=key.includes('・')?key.split('・')[0]:key,pick=(sel,txt)=>{const t=[...($(sel)||{children:[]}).children].find(x=>x.textContent===txt);if(t&&!t.classList.contains('on'))t.click()};
+  pick('#ftabs',g);if(g!==key)pick('#fsub',key.slice(g.length+1))})}
 const tagH=x=>String(x||'').split(',').filter(k=>T[k]).map(k=>`<span class="tag" style="background:${T[k][1]}">${T[k][0]}</span>`).join('');
 
 // ===== 每日行程 =====
@@ -206,7 +206,12 @@ function openSheet(kind,x){
 function closeSheet(){$('#sheet').classList.remove('on')}
 $('#sheet .sbd').onclick=closeSheet;$('#sheet .sx').onclick=closeSheet;
 addEventListener('keydown',e=>{if(e.key==='Escape')closeSheet()});
-tabs('#ftabs',first(F),k=>listDraw('#flist',F[k],k.includes('海鮮'),'f'));
+// 美食分頁：名稱含「・」的分成兩層（「明洞・早餐」「明洞・其他」→ 上層「明洞」，下層「早餐／其他」）
+{const box=$('#ftabs'),FK=first(F);if(box){const sub=document.createElement('div');sub.className='tabs sub';sub.id='fsub';sub.hidden=true;box.after(sub);
+ const grp=k=>k.includes('・')?k.split('・')[0]:k,show=k=>listDraw('#flist',F[k],k.includes('海鮮'),'f');
+ tabs('#ftabs',[...new Set(FK.map(grp))],g=>{const ks=FK.filter(k=>grp(k)===g);sub.innerHTML='';
+  if(ks.length===1&&ks[0]===g){sub.hidden=true;show(g);return}
+  sub.hidden=false;tabs('#fsub',ks.map(k=>k.slice(g.length+1)),x=>show(g+'・'+x))})}}
 tabs('#stabs',first(S),k=>listDraw('#slist',S[k],k.includes('海鮮'),'s'));
 if($('#seg'))$('#seg').onclick=e=>{const b=e.target.closest('button');if(!b)return;[...$('#seg').children].forEach(x=>x.classList.toggle('on',x===b));$('#pf').hidden=b.dataset.p!=='f';$('#ps').hidden=b.dataset.p!=='s'};
 
@@ -237,17 +242,17 @@ function speak(t,btn){if(!VL)return;if(!TTS){vdiag();return}
  try{speechSynthesis.cancel();
   const u=new SpeechSynthesisUtterance(txt),lg=VL.toLowerCase(),pre=lg.split('-')[0];u.lang=VL;u.rate=.85;
   const v=VOICES.find(v=>v.lang.replace('_','-').toLowerCase()===lg)||VOICES.find(v=>v.lang.toLowerCase().startsWith(pre));if(v)u.voice=v;
-  document.querySelectorAll('.sp.on').forEach(x=>x.classList.remove('on'));
+  document.querySelectorAll('.vo.on').forEach(x=>x.classList.remove('on'));
   if(btn){btn.classList.add('on');u.onend=u.onerror=()=>btn.classList.remove('on')}
   speechSynthesis.speak(u)}catch(e){}}
 {const pr=$('#phr .rate');if(VL&&pr)pr.insertAdjacentHTML('beforeend','按右邊喇叭可聽發音。')}
-const SPK=VL?'<button class="sp" aria-label="播放語音" title="播放語音">'+SPI+'</button>':'';
+const SPK=VL?'<button class="vo" aria-label="播放語音" title="播放語音">'+SPI+'</button>':'';
 tabs('#ptabs',PH.map(c=>c[0]),k=>{const c=PH.find(x=>x[0]===k)[1];const box=$('#plist');
- box.innerHTML=c.map((x,i)=>`<div class="pw"><button class="pi" data-i="${i}"><span>${x[1]}${x[2]?`<small>${x[2]}</small>`:''}</span></button>${SPK.replace('class="sp"','class="sp" data-i="'+i+'"')}</div>`).join('');
- box.onclick=e=>{const sp=e.target.closest('.sp');if(sp){speak(c[sp.dataset.i][0],sp);return}
+ box.innerHTML=c.map((x,i)=>`<div class="pw"><button class="pi" data-i="${i}"><span>${x[1]}${x[2]?`<small>${x[2]}</small>`:''}</span></button>${SPK.replace('class="vo"','class="vo" data-i="'+i+'"')}</div>`).join('');
+ box.onclick=e=>{const sp=e.target.closest('.vo');if(sp){speak(c[sp.dataset.i][0],sp);return}
   const b=e.target.closest('.pi');if(!b)return;const x=c[b.dataset.i];showBig(x[0],x[1])}});
 function showBig(a,b){const z=$('#big');z.querySelector('b').textContent=a;z.querySelector('small').textContent=b;
- let sp=z.querySelector('.sp');if(VL){if(!sp){sp=document.createElement('button');sp.className='sp';sp.setAttribute('aria-label','播放語音');sp.innerHTML=SPI;sp.onclick=e=>{e.stopPropagation();speak(z.querySelector('b').textContent,sp)};z.appendChild(sp)}}
+ let sp=z.querySelector('.vo');if(VL){if(!sp){sp=document.createElement('button');sp.className='vo';sp.setAttribute('aria-label','播放語音');sp.innerHTML=SPI;sp.onclick=e=>{e.stopPropagation();speak(z.querySelector('b').textContent,sp)};z.appendChild(sp)}}
  z.classList.add('on')}
 document.addEventListener('click',e=>{const s=e.target.closest('[data-say]');if(s){e.preventDefault();e.stopPropagation();speak(s.dataset.say,s)}},true);
 $('#big').onclick=()=>{$('#big').classList.remove('on');if(TTS)try{speechSynthesis.cancel()}catch(e){}};
