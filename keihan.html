@@ -304,6 +304,7 @@ footer img{width:90px;margin:0 auto 10px;opacity:.9}
 @media (max-width:440px){.logo{display:none}.hb{padding-left:8px}.intro .en{letter-spacing:.24em}.vt{font-size:12px}}
 @media (min-width:800px){.vt.l{left:calc(50% - 370px)}.vt.r{right:calc(50% - 370px)}}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+.qupd{display:grid;place-items:center;color:var(--fuji)}
 </style>
 </head>
 <body>
@@ -341,7 +342,7 @@ footer img{width:90px;margin:0 auto 10px;opacity:.9}
   <button data-q="hotel"><i>🏨</i><b>給司機看</b><small id="qhotel"></small></button>
   <button data-q="night"><i id="qni">🌙</i><b>夜間模式</b><small id="qns"></small></button>
   <button data-q="font"><i>Aa</i><b>字體大小</b><small id="qfs"></small></button>
-  <button data-upd><i>🔄</i><b>檢查更新</b><small>抓最新版</small></button>
+  <button data-upd><i class="qupd"><svg class="updi" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 11a8 8 0 0 0-14.3-4.9L4 8"/><path d="M4 3.5V8h4.5"/><path d="M4 13a8 8 0 0 0 14.3 4.9L20 16"/><path d="M20 20.5V16h-4.5"/></svg></i><b>檢查更新</b><small>抓最新版</small></button>
   <button data-q="top"><i>⬆︎</i><b>回到最上面</b><small>封面</small></button>
  </div>
  <div class="qfx"><label>¥<input id="qj" inputmode="decimal" placeholder="輸入日圓" autocomplete="off"></label><span id="qt">≈ NT$ 0</span></div>
