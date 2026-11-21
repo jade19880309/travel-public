@@ -397,3 +397,9 @@ html body #flight .bp .ac{margin:-4px 16px 8px}
 .fxp input{font-size:22px;padding:7px 10px}
 .fxp .fxeq{padding-bottom:10px}
 @keyframes fxin{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+/* 飯店相片：左右滑動，點圖放大 */
+.hgal{margin:0 -18px 4px;padding:2px 18px 8px;scroll-padding-left:18px}
+.hgal .slide{margin:0;width:min(82%,380px)}
+.hgal img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:12px;background:var(--soft);cursor:zoom-in}
+.hgal figcaption{font-size:13.5px;color:var(--sub);margin-top:5px;text-align:center}
