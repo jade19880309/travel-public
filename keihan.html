@@ -450,7 +450,7 @@ function go(T){
    const fj=$('#fj'),ft=$('#ft'),n=v=>parseFloat(String(v).replace(/,/g,''));
    fj.oninput=()=>{const v=n(fj.value);ft.value=v>=0?Math.round(v*rate).toLocaleString():''};ft.oninput=()=>{const v=n(ft.value);fj.value=v>=0?Math.round(v/rate).toLocaleString():''};
    p.querySelector('.qk').onclick=e=>{const b=e.target.closest('[data-j]');if(b){fj.value=(+b.dataset.j).toLocaleString();fj.oninput()}};}
-  if(tab==='ph'){const P=T.phrases;p.innerHTML=`<div class="pht">${P.map((c,i)=>`<button data-pt="${i}" class="${i===pt?'on':''}">${c[0]}</button>`).join('')}</div><div class="ph">${P[pt][1].map(x=>`<div class="pw"><button data-big="${esc(x[0])}|${esc(x[1])}"><b>${esc(x[0])}</b><small>${esc(x[1])}</small></button>${TTS?`<button class="spk" data-say="${esc(x[0])}" aria-label="播放日語語音" title="播放語音">🔊</button>`:''}</div>`).join('')}</div><p class="rate">點一下放大給人看${TTS?'，按 🔊 播放日語發音':''}</p>`;
+  if(tab==='ph'){const P=T.phrases;p.innerHTML=`<div class="pht">${P.map((c,i)=>`<button data-pt="${i}" class="${i===pt?'on':''}">${c[0]}</button>`).join('')}</div><div class="ph">${P[pt][1].map(x=>`<div class="pw"><button data-big="${esc(x[0])}|${esc(x[1])}"><b>${esc(x[0])}</b><small>${esc(x[1])}</small></button><button class="spk" data-say="${esc(x[0])}" aria-label="播放日語語音" title="播放語音">🔊</button></div>`).join('')}</div><p class="rate">點一下放大給人看，按 🔊 播放日語發音</p>`;
    p.querySelector('.pht').onclick=e=>{const b=e.target.closest('[data-pt]');if(b){pt=+b.dataset.pt;pane()}}}
   if(tab==='td'){p.innerHTML='<div class="tdg">'+Object.keys(T.todo).map(g=>{const l=T.todo[g];return `<h4>${g}<small>${l.filter(t=>TD[t]).length}/${l.length}</small></h4>`+l.map(t=>`<label><input type="checkbox" data-t="${esc(t)}"${TD[t]?' checked':''}><span>${esc(t)}</span></label>`).join('')}).join('')+'</div>';
    p.querySelector('.tdg').onchange=e=>{const t=e.target.dataset.t;TD[t]=e.target.checked;if(!TD[t])delete TD[t];ls.s('td',TD);pane()}}
@@ -469,14 +469,17 @@ function go(T){
  // 語音播放：用手機內建語音引擎朗讀日語（不需網路）
  const TTS='speechSynthesis' in window&&!!window.SpeechSynthesisUtterance;let VO=[];
  if(TTS){const lv=()=>{try{VO=speechSynthesis.getVoices()||[]}catch(e){}};lv();try{speechSynthesis.addEventListener('voiceschanged',lv)}catch(e){}}
- function say(t,btn){if(!TTS)return;const x=String(t).replace(/〇+/g,'').replace(/\s+/g,' ').trim();if(!x)return;
+ const vdiag=()=>{const m=['speechSynthesis：'+('speechSynthesis' in window?'有':'沒有'),'語音物件：'+(window.SpeechSynthesisUtterance?'有':'沒有'),'主畫面 App：'+((navigator.standalone||(matchMedia&&matchMedia('(display-mode: standalone)').matches))?'是':'否')];
+ const e=document.createElement('div');e.style.cssText='position:fixed;left:16px;right:16px;bottom:calc(96px + env(safe-area-inset-bottom,0px));z-index:300;padding:12px 14px;border-radius:14px;background:rgba(40,36,60,.95);color:#fff;font-size:13px;line-height:1.7;white-space:pre-line';
+ e.textContent='這個瀏覽器目前無法播放語音\n'+m.join('\n')+'\n（請把這個畫面截圖給我）';document.body.appendChild(e);setTimeout(()=>e.remove(),9000)};
+ function say(t,btn){if(!TTS){vdiag();return}const x=String(t).replace(/〇+/g,'').replace(/\s+/g,' ').trim();if(!x)return;
   try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(x);u.lang='ja-JP';u.rate=.9;
    const v=VO.find(v=>v.lang.replace('_','-').toLowerCase()==='ja-jp')||VO.find(v=>v.lang.toLowerCase().startsWith('ja'));if(v)u.voice=v;
    document.querySelectorAll('.spk.on,.bspk.on').forEach(y=>y.classList.remove('on'));if(btn){btn.classList.add('on');u.onend=u.onerror=()=>btn.classList.remove('on')}
    speechSynthesis.speak(u)}catch(e){}}
  document.addEventListener('click',e=>{const sp=e.target.closest('[data-say]');if(sp){say(sp.dataset.say,sp);return}
   const b=e.target.closest('[data-big]');if(b){const [a,c]=b.dataset.big.split('|');$('#big b').textContent=a;$('#big small').textContent=c||'';showSpk();$('#big').classList.add('on')}});
- function showSpk(){if(!TTS||$('#big .bspk'))return;const sp=document.createElement('button');sp.className='bspk';sp.textContent='🔊 播放語音';sp.onclick=e=>{e.stopPropagation();say($('#big b').textContent,sp)};$('#big small').after(sp)}
+ function showSpk(){if($('#big .bspk'))return;const sp=document.createElement('button');sp.className='bspk';sp.textContent='🔊 播放語音';sp.onclick=e=>{e.stopPropagation();say($('#big b').textContent,sp)};$('#big small').after(sp)}
  $('#big').onclick=()=>{$('#big').classList.remove('on');if(TTS)try{speechSynthesis.cancel()}catch(e){}};addEventListener('keydown',e=>{if(e.key==='Escape')$('#big').classList.remove('on')});
  pane();draw(false);
  // 下方功能列高亮

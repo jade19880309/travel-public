@@ -221,7 +221,10 @@ if(CD.start){tick();setInterval(tick,1000)}
 const VL=M.lang||({seoul:'ko-KR',tokyo:'ja-JP',keihan:'ja-JP'})[String(M.id).split('-')[0]]||'';
 const TTS=!!(VL&&'speechSynthesis' in window&&window.SpeechSynthesisUtterance);
 let VOICES=[];if(TTS){const lv=()=>{try{VOICES=speechSynthesis.getVoices()||[]}catch(e){}};lv();try{speechSynthesis.addEventListener('voiceschanged',lv)}catch(e){}}
-function speak(t,btn){if(!TTS)return;
+function vdiag(){const m=['speechSynthesis：'+('speechSynthesis' in window?'有':'沒有'),'語音物件：'+(window.SpeechSynthesisUtterance?'有':'沒有'),'主畫面 App：'+((navigator.standalone||(matchMedia&&matchMedia('(display-mode: standalone)').matches))?'是':'否')];
+ const e=document.createElement('div');e.style.cssText='position:fixed;left:16px;right:16px;bottom:calc(96px + env(safe-area-inset-bottom,0px));z-index:300;padding:12px 14px;border-radius:14px;background:rgba(40,36,60,.95);color:#fff;font-size:13px;line-height:1.7;white-space:pre-line';
+ e.textContent='這個瀏覽器目前無法播放語音\n'+m.join('\n')+'\n（請把這個畫面截圖給我）';document.body.appendChild(e);setTimeout(()=>e.remove(),9000)}
+function speak(t,btn){if(!VL)return;if(!TTS){vdiag();return}
  const txt=String(t).replace(/〇+/g,'').replace(/\s+/g,' ').trim();if(!txt)return;
  try{speechSynthesis.cancel();
   const u=new SpeechSynthesisUtterance(txt),lg=VL.toLowerCase(),pre=lg.split('-')[0];u.lang=VL;u.rate=.85;
@@ -229,14 +232,14 @@ function speak(t,btn){if(!TTS)return;
   document.querySelectorAll('.spk.on,.bspk.on').forEach(x=>x.classList.remove('on'));
   if(btn){btn.classList.add('on');u.onend=u.onerror=()=>btn.classList.remove('on')}
   speechSynthesis.speak(u)}catch(e){}}
-{const pr=$('#phr .rate');if(TTS&&pr)pr.insertAdjacentHTML('beforeend','按 🔊 可聽發音。')}
-const SPK=TTS?'<button class="spk" aria-label="播放語音" title="播放語音">🔊</button>':'';
+{const pr=$('#phr .rate');if(VL&&pr)pr.insertAdjacentHTML('beforeend','按 🔊 可聽發音。')}
+const SPK=VL?'<button class="spk" aria-label="播放語音" title="播放語音">🔊</button>':'';
 tabs('#ptabs',PH.map(c=>c[0]),k=>{const c=PH.find(x=>x[0]===k)[1];const box=$('#plist');
  box.innerHTML=c.map((x,i)=>`<div class="pw"><button class="pi" data-i="${i}"><span>${x[1]}${x[2]?`<small>${x[2]}</small>`:''}</span></button>${SPK.replace('class="spk"','class="spk" data-i="'+i+'"')}</div>`).join('');
  box.onclick=e=>{const sp=e.target.closest('.spk');if(sp){speak(c[sp.dataset.i][0],sp);return}
   const b=e.target.closest('.pi');if(!b)return;const x=c[b.dataset.i];showBig(x[0],x[1])}});
 function showBig(a,b){const z=$('#big');z.querySelector('b').textContent=a;z.querySelector('small').textContent=b;
- let sp=z.querySelector('.bspk');if(TTS){if(!sp){sp=document.createElement('button');sp.className='bspk';sp.textContent='🔊 播放語音';sp.onclick=e=>{e.stopPropagation();speak(z.querySelector('b').textContent,sp)};z.appendChild(sp)}}
+ let sp=z.querySelector('.bspk');if(VL){if(!sp){sp=document.createElement('button');sp.className='bspk';sp.textContent='🔊 播放語音';sp.onclick=e=>{e.stopPropagation();speak(z.querySelector('b').textContent,sp)};z.appendChild(sp)}}
  z.classList.add('on')}
 $('#big').onclick=()=>{$('#big').classList.remove('on');if(TTS)try{speechSynthesis.cancel()}catch(e){}};
 document.addEventListener('click',e=>{const h=e.target.closest('[data-big]');if(h){const o=TRIP.hotels[h.dataset.big];showBig(o.big[0],o.big[1])}});
