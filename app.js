@@ -52,7 +52,7 @@ const AMI='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5a6.5 6.5 
   $('#plan .plans').onclick=e=>{const b=e.target.closest('[data-pl]');if(!b||+b.dataset.pl===PI)return;
    try{localStorage.setItem(PK,JSON.stringify(PL[+b.dataset.pl].id));sessionStorage.setItem(PK+'go','1')}catch(_){}
    const u=new URL(location.href);u.searchParams.delete('p');u.hash='';if(u.href===location.href.split('#')[0])location.reload();else location.replace(u.href)};
-  if($('#hotel'))$('#hotel h2').insertAdjacentHTML('afterend',`<p class="rate">目前顯示<b>${c.name}${c.label?' '+c.label:''}</b>的住宿，<a href="#plan">到每日行程切換方案</a>。</p>`);
+  if(c.hotels&&$('#hotel'))$('#hotel h2').insertAdjacentHTML('afterend',`<p class="rate">目前顯示<b>${c.name}${c.label?' '+c.label:''}</b>的住宿，<a href="#plan">到每日行程切換方案</a>。</p>`);
   let go=null;try{go=sessionStorage.getItem(PK+'go');sessionStorage.removeItem(PK+'go')}catch(_){}
   if(go)setTimeout(()=>$('#plan').scrollIntoView({block:'start'}),60)}
  // 價格／預算、注意事項、App：自由格式內容
@@ -69,8 +69,8 @@ const AMI='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5a6.5 6.5 
  set('footer',TRIP.footer||'');
  // 插圖橫幅（可省略）：TRIP.banners={區塊id: HTML}，放在該區塊標題正下方
  const BN=TRIP.banners||{};Object.keys(BN).forEach(id=>{const h2=$('#'+id+' h2');if(h2)h2.insertAdjacentHTML('afterend',BN[id])});
- // 其他旅程
- fetch('trips/index.json',{cache:'no-cache'}).then(r=>r.json()).then(L=>{const o=L.filter(t=>t.id!==M.id);if(o.length)$('footer').insertAdjacentHTML('beforeend',`<div class="trips">其他旅程：${o.map(t=>`<a href="${t.url||'?t='+t.id}">${t.title}</a>`).join('')}<a href="home.html">全部旅程總覽</a></div>`)}).catch(()=>{});
+ // 其他旅程（meta.hideOthers：不列其他旅程與總覽連結）
+ if(!M.hideOthers)fetch('trips/index.json',{cache:'no-cache'}).then(r=>r.json()).then(L=>{const o=L.filter(t=>t.id!==M.id);if(o.length)$('footer').insertAdjacentHTML('beforeend',`<div class="trips">其他旅程：${o.map(t=>`<a href="${t.url||'?t='+t.id}">${t.title}</a>`).join('')}<a href="home.html">全部旅程總覽</a></div>`)}).catch(()=>{});
 })();
 
 // ===== 目前當地天氣（Open-Meteo，免金鑰）：封面下方一條；沒網路時顯示上次的結果 =====
