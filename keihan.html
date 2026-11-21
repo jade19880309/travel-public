@@ -332,7 +332,7 @@ footer img{width:90px;margin:0 auto 10px;opacity:.9}
 <button id="night" hidden></button><button id="fs" hidden></button><button class="sbadge" id="sbadge" aria-label="蓋章進度"><span>印</span><b id="sbn">0</b></button></div></header>
 <div class="cover"><img src="images/keihan-2027/cover.jpg" alt="京阪自由行封面：京都塔、五重塔、電車、河岸夜景與夕陽" width="1672" height="706"></div>
 <div class="intro"><span class="vt l">京都・清水・貴船</span><span class="vt r">そして大阪へ</span>
- <h1>兩個人的京阪</h1><div class="en">KYOTO ・ UJI ・ NARA ・ OSAKA</div>
+ <h1>兩個人的京阪</h1><div class="en">KYOTO ・ KIBUNE ・ OSAKA</div>
  <div class="chips"><span class="chip">2027.9.9 – 9.13</span><span class="chip">5 天 4 夜</span><span class="chip">京都 3 晚・大阪 1 晚</span><span class="chip">背包自由行</span></div>
  <div class="prog"><div class="ring"><svg viewBox="0 0 46 46"><circle cx="23" cy="23" r="19" fill="none" stroke="var(--line)" stroke-width="4"/><circle id="rg" cx="23" cy="23" r="19" fill="none" stroke="url(#rgg)" stroke-width="4" stroke-linecap="round" stroke-dasharray="119.4" stroke-dashoffset="119.4" style="transition:stroke-dashoffset .6s"/><defs><linearGradient id="rgg"><stop offset="0" stop-color="#f2b8c3"/><stop offset="1" stop-color="#a9bce8"/></linearGradient></defs></svg><b id="rgn">0</b></div>
  <p><b>旅の印・蓋章收集</b><span id="rgt"></span></p></div>
@@ -400,7 +400,7 @@ function go(T){HT=T.hotels||[];
  const now=new Date(),md=(now.getMonth()+1)+'/'+now.getDate();
  let cur=now.getFullYear()===2027?D.findIndex(d=>d.date===md):-1;const today=cur;if(cur<0)cur=ls.g('day',0);
  // 日期票卡
- $('#strip').innerHTML=D.map((d,k)=>`<button class="tk" data-k="${k}"><span class="jp">${d.jp}</span><img src="${IMG}ic-${(opt(d)||d).stk}.svg" alt="" onerror="if(!this.dataset.r){this.dataset.r=1;this.src=this.src.split('?')[0]+'?r='+Date.now()}else{this.style.visibility='hidden'}"><div class="dt">${d.date}</div><div class="dw">週${d.wd}</div><div class="tt">${esc(d.title)}</div>${k===today?'<span class="td">今天</span>':''}</button>`).join('');
+ $('#strip').innerHTML=D.map((d,k)=>`<button class="tk" data-k="${k}"><span class="jp">${d.jp}</span><img src="${IMG}ic-${((opt(d)||{}).stk)||d.stk}.svg" alt="" onerror="if(!this.dataset.r){this.dataset.r=1;this.src=this.src.split('?')[0]+'?r='+Date.now()}else{this.style.visibility='hidden'}"><div class="dt">${d.date}</div><div class="dw">週${d.wd}</div><div class="tt">${esc(d.title)}</div>${k===today?'<span class="td">今天</span>':''}</button>`).join('');
  $('#dch').innerHTML=D.map((d,k)=>`<button data-k="${k}" class="${k===today?'td':''}"><b>${d.date}</b><small>${k===today?'今天':d.jp}</small></button>`).join('');
  $('#dch').onclick=e=>{const b=e.target.closest('[data-k]');if(b){cur=+b.dataset.k;ls.s('day',cur);draw(true)}};
  $('#strip').onclick=e=>{const b=e.target.closest('.tk');if(b){cur=+b.dataset.k;ls.s('day',cur);draw(true)}};
