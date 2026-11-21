@@ -247,9 +247,13 @@ function speak(t,btn){if(!VL)return;if(!TTS){vdiag();return}
   speechSynthesis.speak(u)}catch(e){}}
 {const pr=$('#phr .rate');if(VL&&pr)pr.insertAdjacentHTML('beforeend','按右邊喇叭可聽發音。');if(pr)pr.insertAdjacentHTML('beforeend','清單左右滑動可切換分類。')}
 const SPK=VL?'<button class="vo" aria-label="播放語音" title="播放語音">'+SPI+'</button>':'';
-tabs('#ptabs',PH.map(c=>c[0]),k=>{const c=PH.find(x=>x[0]===k)[1];const box=$('#plist');
- box.innerHTML=c.map((x,i)=>`<div class="pw"><button class="pi" data-i="${i}"><span>${x[1]}${x[2]?`<small>${x[2]}</small>`:''}</span></button>${SPK.replace('class="vo"','class="vo" data-i="'+i+'"')}</div>`).join('');
- box.onclick=e=>{const sp=e.target.closest('.vo');if(sp){speak(c[sp.dataset.i][0],sp);return}
+// meta.phrFold＝數字：每個分類只先顯示前幾句，其餘折疊（東京使用）；展開狀態切換分類時保留
+const PF=+M.phrFold||0;let pOpen=false;
+tabs('#ptabs',PH.map(c=>c[0]),k=>{const c=PH.find(x=>x[0]===k)[1];const box=$('#plist'),fold=PF&&c.length>PF+1;
+ box.classList.toggle('open',!fold||pOpen);
+ box.innerHTML=c.map((x,i)=>`<div class="pw${fold&&i>=PF?' fx':''}"><button class="pi" data-i="${i}"><span>${x[1]}${x[2]?`<small>${x[2]}</small>`:''}</span></button>${SPK.replace('class="vo"','class="vo" data-i="'+i+'"')}</div>`).join('')+(fold?`<button class="pmore" aria-expanded="${pOpen}">${pOpen?'收起':'看全部 '+c.length+' 句'}<span>${pOpen?'▴':'▾'}</span></button>`:'');
+ box.onclick=e=>{const mo=e.target.closest('.pmore');if(mo){pOpen=!pOpen;box.classList.toggle('open',pOpen);mo.setAttribute('aria-expanded',pOpen);mo.innerHTML=(pOpen?'收起':'看全部 '+c.length+' 句')+'<span>'+(pOpen?'▴':'▾')+'</span>';if(!pOpen)$('#phr').scrollIntoView({block:'start',behavior:'smooth'});return}
+  const sp=e.target.closest('.vo');if(sp){speak(c[sp.dataset.i][0],sp);return}
   const b=e.target.closest('.pi');if(!b)return;const x=c[b.dataset.i];showBig(x[0],x[1])}});
 function showBig(a,b){const z=$('#big');z.querySelector('b').textContent=a;z.querySelector('small').textContent=b;
  let sp=z.querySelector('.vo');if(VL){if(!sp){sp=document.createElement('button');sp.className='vo';sp.setAttribute('aria-label','播放語音');sp.innerHTML=SPI;sp.onclick=e=>{e.stopPropagation();speak(z.querySelector('b').textContent,sp)};z.appendChild(sp)}}
