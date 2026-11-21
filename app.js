@@ -166,6 +166,10 @@ dbox.addEventListener('click',e=>{
  const li=e.target.closest('.tl li.meal');
  if(li&&!e.target.closest('a,.maps')){const k=+li.closest('.dy').id.slice(2),d=D[k],items=d.ab?d[ab]:d.i;goFood(k,items[+li.dataset.i])}
 });
+// 站內連結：data-to＝捲到指定卡片（價格卡、美食等）；data-day（可加 data-ab）＝切到某天行程
+document.addEventListener('click',e=>{const a=e.target.closest('a[data-to],a[data-day]');if(!a)return;e.preventDefault();
+ if(a.dataset.day!==undefined){day=+a.dataset.day;if(a.dataset.ab)ab=a.dataset.ab;render(true);return}
+ const t=document.getElementById(a.dataset.to);if(!t)return;t.scrollIntoView({behavior:'smooth',block:'center',inline:'center'});flash(t)});
 {const n=new Date(),yr=+M.start.slice(0,4),k=D.findIndex(d=>d.t.split(' ')[0]===(n.getMonth()+1)+'/'+n.getDate()),go=$('#gotoday');
  if(n.getFullYear()===yr&&k>=0){day=k;setTimeout(()=>{dbtn.children[k].innerHTML=D[k].t.split(' ')[0]+'<small>今天</small>'},0);go.textContent='看今天行程'}
  go.onclick=e=>{e.preventDefault();if(day<0)day=0;render(true)}}

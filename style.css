@@ -430,3 +430,7 @@ html body #flight .bp .ac{margin:-4px 16px 8px}
 @keyframes spkp{50%{transform:scale(1.08)}}
 .bspk{margin-top:26px;font:inherit;font-size:20px;font-weight:500;color:#2a211e;background:#ffe9d6;border:0;border-radius:99px;padding:12px 28px;min-height:48px;cursor:pointer;position:relative;z-index:1}
 .bspk.on{background:#ffd0a8}
+/* 站內連結小膠囊（行程 ↔ 價格參考） */
+a.xl{display:inline-block;margin:2px 0 0 6px;padding:1px 10px;border-radius:999px;border:1px solid var(--gold);background:var(--goldl);color:var(--gold);font-size:13px;font-weight:600;line-height:1.7;text-decoration:none;white-space:nowrap}
+a.xl:active{transform:scale(.97)}
+.flash{scroll-margin:90px}
