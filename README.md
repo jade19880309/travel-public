@@ -6,7 +6,7 @@
 - 全部旅程總覽：`https://jade19880309.github.io/travel-public/home.html`（`home.html`，依 `trips/index.json` 自動列出每趟旅程，可左右滑動切換；主色寫在頁內 `ACC`、切換按鈕短名稱寫在 `SHORT`）
 - 港珠澳：`https://jade19880309.github.io/travel-public/hk.html`（分享到 LINE 請用這個網址，縮圖才會是港珠澳）
 - 東京：`https://jade19880309.github.io/travel-public/tokyo.html`（四套行程方案可切換；分享用這個網址）
-- 京阪（兩人旅）：`https://jade19880309.github.io/travel-public/keihan.html`（暮色主題 `th-yume`；**刻意不放進 `trips/index.json`，總覽與其他旅程頁不會列出**，只從私人訂單頁連過來；`meta.hideOthers` 讓頁尾不列其他旅程；不顯示倒數）
+- 京阪（兩人旅）：`https://jade19880309.github.io/travel-public/keihan.html`（**獨立版型**：版面、樣式、程式都寫在 `keihan.html` 裡，只讀 `trips/keihan-2027.json`，不使用 `app.js`、`style.css`；**刻意不放進 `trips/index.json`**，總覽不會列出，只從私人訂單頁連過來；不顯示倒數。每天可有 `choice`（當日選項），預算會跟著選項自動加總）
 - `index.html`、`hk.html`、`tokyo.html`：各旅程的入口頁（名稱、圖示、主題寫死在網頁開頭，才能正確「加入主畫面」）
 - `style.css`：共用樣式；`app.js`：依旅程資料畫出所有區塊
 - `trips/<旅程代號>.json`：一個旅程的全部內容（封面、換算幣別、航班、住宿、每日行程、美食、待辦、語句、注意事項）
@@ -27,7 +27,7 @@
 - `weather`（可省略）：封面下方「目前當地天氣」的城市清單，`[{"name":"首爾","lat":37.57,"lon":126.98}]`；資料來自 Open-Meteo（免金鑰），每 30 分鐘更新，沒網路時顯示上次結果。
 - `amap`（可省略）：大陸地點加「高德地圖」按鈕，`{"city":"珠海","places":[地點代號],"regions":[美食分區],"q":{地點:簡體搜尋字}}`。港珠澳使用。
 - `nav`：上方功能列的順序，**頁面區塊也會照這個順序排列**；沒列在 `nav` 的區塊不會顯示。
-- `meta.hideOthers: true`：頁尾不列「其他旅程」與總覽連結。京阪使用。
+- `meta.hideOthers: true`：頁尾不列「其他旅程」與總覽連結。
 - `meta.single: true`：全程同一種語言，不顯示第二個名稱（當地語言副標）。港珠澳使用。
 - `hero.bare: true`：封面圖本身已含標題時使用，圖片完整顯示在上方，日期與倒數放在下方，不再疊標題文字。
 - `dayImages`（可省略）：每日行程的「當日行程圖」按鈕；沒有這個欄位就不會出現按鈕。
