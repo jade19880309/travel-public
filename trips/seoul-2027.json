@@ -7,7 +7,7 @@
     "store": "seoul27"
   },
   "weather": [{"name":"首爾","lat":37.5665,"lon":126.978}],
-  "nav": [["flight","航班"],["plan","行程"],["hotel","住宿"],["fx","換算"],["phr","韓語"],["food","美食"],["price","價格"],["tips","注意"],["todo","待辦"],["apps","App"]],
+  "nav": [["flight","航班"],["plan","行程"],["hotel","住宿"],["phr","韓語"],["food","美食"],["price","價格"],["tips","注意"],["todo","待辦"],["apps","App"]],
   "titles": {"fx":"💱 韓元換算","tips":"🧣 旅遊與入境注意事項","phr":"🗣 常用韓語","apps":"📱 韓國常用 App"},
   "hero": {
     "img": "images/seoul-2027/hero-snow.jpg",

@@ -237,6 +237,17 @@ if(k===cur||!links[k])return;cur=k;
 links.forEach((a,i)=>a.classList.toggle('on',i===k))}
 addEventListener('scroll',()=>requestAnimationFrame(spy),{passive:true});addEventListener('resize',spy);spy();})();
 
+// ===== 懸浮換算鈕：點一下展開外幣⇄台幣，固定在畫面右下（取代內容區的換算區塊）=====
+(function(){const FX=TRIP.fx||[];if(!FX.length)return;
+ const old=document.querySelector('main>section#fx');if(old)old.remove();
+ document.body.insertAdjacentHTML('beforeend',`<button id="fxb" aria-label="匯率換算" aria-expanded="false"><b${FX[0].sym.trim().length>1?' class="sm"':''}>${FX[0].sym.trim()}</b><small>換算</small></button><div id="fx" class="card fx fxp" hidden><div id="fxc" hidden></div><div class="fxrow"><label id="fxkl">外幣<input id="fxk" type="text" inputmode="decimal" placeholder="0" autocomplete="off" aria-label="外幣金額"></label><span class="fxeq" aria-hidden="true">⇄</span><label>NT$<input id="fxt" type="text" inputmode="decimal" placeholder="0" autocomplete="off" aria-label="台幣金額"></label></div><p class="fxrate" id="fxrate" hidden></p><div class="fxq" id="fxq" hidden></div></div>`);
+ const b=$('#fxb'),p=$('#fx');
+ const set=v=>{p.hidden=!v;b.classList.toggle('on',v);b.setAttribute('aria-expanded',v)};
+ b.onclick=e=>{e.stopPropagation();set(p.hidden);if(!p.hidden)setTimeout(()=>$('#fxk').focus({preventScroll:true}),50)};
+ document.addEventListener('click',e=>{if(!p.hidden&&!p.contains(e.target)&&e.target!==b)set(false)});
+ addEventListener('keydown',e=>{if(e.key==='Escape')set(false)});
+ p.addEventListener('click',e=>{const c=e.target.closest('#fxc button');if(c)setTimeout(()=>{const s=FX[+c.dataset.i].sym.trim(),e=b.querySelector('b');e.textContent=s;e.classList.toggle('sm',s.length>1)},0)});
+})();
 // ===== 外幣換算：即時國際中價 × 臺銀現鈔加碼 = 估算現鈔價；抓不到時用上次取得的值或資料內的參考值 =====
 (function(){
 const FX=TRIP.fx||[];if(!FX.length||!$('#fx'))return;
