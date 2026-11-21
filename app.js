@@ -129,8 +129,10 @@ const clean=t=>String(t).replace(/[\u{1F000}-\u{1FFFF}\u2600-\u27BF\uFE0F]/gu,''
 // 依這一格（標題、地點，找不到再看當天標題）比對美食分頁；沒有對應區域就回傳 null，該方塊不放連結
 function foodKey(k,x){
  const d=D[k],keys=Object.keys(F||{});if(!keys.length)return null;
- const toks=key=>clean(key).split(/[／/、]/).map(w=>w.trim()).filter(w=>w.length>1);
- const hit=txt=>keys.find(key=>toks(key).some(w=>txt.includes(w)))||null;
+ const toks=key=>clean(key).split(/[／/、・]/).map(w=>w.trim()).filter(w=>w.length>1);
+ // 早餐列優先連到名稱含「早餐」的分頁；午餐、晚餐等不連到早餐分頁
+ const hit=txt=>{const bf=/早餐/.test(txt)&&!/早午餐/.test(txt),ks=keys.filter(key=>bf||!key.includes('早餐'));
+  return (bf&&ks.find(key=>key.includes('早餐')))||ks.find(key=>toks(key).some(w=>txt.includes(w)))||null};
  return hit(x[1]+' '+(x[3]||''))||(d.ab?null:hit(d.s+' '+d.h))}
 function goFood(k,x){
  const key=foodKey(k,x);if(!key)return;
