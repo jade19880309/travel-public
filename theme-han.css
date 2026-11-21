@@ -82,7 +82,7 @@ html.th-han{
 .th-han .dock button{font-family:var(--serif)}
 .th-han .dock button.on{background:var(--red);box-shadow:inset 0 -2px 0 var(--gold)}
 .th-han .dock button.on small{color:#e8dcc4}
-.th-han #fs{background:var(--card);border-color:var(--line);color:var(--red)}
+.th-han #fs,.th-han #fxb{background:var(--card);border-color:var(--line);color:var(--red)}
 .th-han footer{color:var(--sub)}
 
 /* 地圖圖示改墨藍，不用搶眼的 Google 藍 */
