@@ -99,6 +99,7 @@ footer .orn{display:block;color:var(--gold2);font-family:var(--latin);font-size:
 .chip.done{opacity:.7}
 .deck{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;margin:0 -22px;padding:6px calc((100% - min(84vw,560px))/2 + 22px) 26px;overscroll-behavior-x:contain}
 .deck::-webkit-scrollbar{display:none}
+@media (min-width:700px){.deck{-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 7%,#000 93%,transparent 100%);mask-image:linear-gradient(90deg,transparent 0,#000 7%,#000 93%,transparent 100%)}}
 .deck .trip{flex:0 0 min(84vw,560px);scroll-snap-align:center;scroll-snap-stop:always;animation:none;opacity:.5;transform:scale(.92);transition:transform .5s cubic-bezier(.2,.7,.2,1),opacity .5s,box-shadow .5s,border-color .5s}
 .deck .trip.cur{opacity:1;transform:none;border-color:color-mix(in srgb,var(--ac) 45%,transparent);box-shadow:0 30px 60px -26px color-mix(in srgb,var(--ac) 65%,#000)}
 .deck .trip:not(.cur){cursor:pointer}
