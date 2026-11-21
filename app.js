@@ -40,13 +40,11 @@ const AMI='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5a6.5 6.5 
  Object.keys(TT).forEach(id=>set('#'+id+' h2',TT[id]));
  // 航班（登機證的配色依航空公司代碼：BR 長榮、CI 華航、KE 大韓…，樣式在 style.css）
  const alCls=t=>{const m=String(t||'').match(/\b([A-Z][A-Z0-9])\s?\d{2,4}\b/);return m?'al-'+m[1].toLowerCase():''};
- // 航班動態：點航班卡片（或卡片下方連結）開啟 Flightradar24 即時動態，另附 Google 航班狀態
+ // 航班動態：點登機證方塊，直接開啟 Trip.com 的航班動態查詢
  const fnOf=t=>{const m=String(t||'').match(/\b([A-Z][A-Z0-9])\s?(\d{2,4})\b/);return m?m[1]+m[2]:''};
- const frU=n=>'https://www.flightradar24.com/data/flights/'+n.toLowerCase();
- const gfU=n=>'https://www.google.com/search?q='+enc(n+' 航班動態 flight status');
- const fdyn=f=>{const n=fnOf(f.al);return n?`<div class="fdyn"><a class="fd" target="_blank" rel="noopener" href="${frU(n)}">🛰 ${n} 即時動態</a><a class="fd g" target="_blank" rel="noopener" href="${gfU(n)}">Google 航班狀態</a></div>`:''};
+ const frU=n=>'https://www.trip.com/flights/status-'+n.toLowerCase()+'/';
  const FL=TRIP.flights;
- if(FL&&$('#flight'))$('#flight').insertAdjacentHTML('beforeend',`<div class="grid">${FL.list.map(f=>`<div class="card bp ${alCls(f.al)}"${fnOf(f.al)?` data-fn="${fnOf(f.al)}" role="link" tabindex="0" aria-label="${f.dir}航班 ${fnOf(f.al)}，點一下查看航班動態"`:''}><div class="bph"><span class="pill">${f.dir}</span>${f.date}<span class="al">${f.al}</span></div><div class="fl"><div><big>${f.from[0]}</big><span>${f.from[1]}</span><b>${f.from[2]}</b></div><div class="mid">${f.dur||''}</div><div class="r"><big>${f.to[0]}</big><span>${f.to[1]}</span><b>${f.to[2]}</b></div></div>${f.ac?`<div class="ac">${f.ac}</div>`:''}<small>${f.note||''}</small>${fdyn(f)}</div>`).join('')}</div>${FL.note?`<p class="rate" style="margin:12px 0 0">${FL.note}</p>`:''}${FL.sheets?`<div class="btns">${btns(FL.sheets)}</div>`:''}`);
+ if(FL&&$('#flight'))$('#flight').insertAdjacentHTML('beforeend',`<div class="grid">${FL.list.map(f=>`<div class="card bp ${alCls(f.al)}"${fnOf(f.al)?` data-fn="${fnOf(f.al)}" role="link" tabindex="0" aria-label="${f.dir}航班 ${fnOf(f.al)}，點一下查看航班動態"`:''}><div class="bph"><span class="pill">${f.dir}</span>${f.date}<span class="al">${f.al}</span></div><div class="fl"><div><big>${f.from[0]}</big><span>${f.from[1]}</span><b>${f.from[2]}</b></div><div class="mid">${f.dur||''}</div><div class="r"><big>${f.to[0]}</big><span>${f.to[1]}</span><b>${f.to[2]}</b></div></div>${f.ac?`<div class="ac">${f.ac}</div>`:''}<small>${f.note||''}</small></div>`).join('')}</div>${FL.note?`<p class="rate" style="margin:12px 0 0">${FL.note}</p>`:''}${FL.sheets?`<div class="btns">${btns(FL.sheets)}</div>`:''}`);
  if($('#flight')){const fo=e=>{const c=e.target.closest('.bp[data-fn]');if(!c||e.target.closest('a'))return;window.open(frU(c.dataset.fn),'_blank','noopener')};
   $('#flight').addEventListener('click',fo);
   $('#flight').addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();fo(e)}})}
@@ -116,9 +114,8 @@ const AMI='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5a6.5 6.5 
 const PIN='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5a6.5 6.5 0 0 0-6.5 6.5c0 4.6 6.5 12.5 6.5 12.5S18.5 13.6 18.5 9A6.5 6.5 0 0 0 12 2.5z" fill="#fff"/><circle cx="12" cy="9" r="2.6" fill="#1a73e8"/></svg>';
 const NAV=M.naver!==false;
 const mp=n=>`<span class="maps"><a class="mi g" target="_blank" rel="noopener" aria-label="用 Google 地圖開啟" title="Google 地圖" href="https://www.google.com/maps/search/?api=1&query=${enc(KOP[n]||n)}">${PIN}</a>${NAV?`<a class="mi n" target="_blank" rel="noopener" aria-label="用 Naver 地圖開啟" title="Naver 地圖" href="https://map.naver.com/p/search/${enc(KOP[n]||n)}">N</a>`:''}${amOk(n)?`<a class="mi a" target="_blank" rel="noopener" aria-label="用高德地圖開啟" title="高德地圖" href="${amU(n,KOP[n]||n)}">高</a>`:''}</span>`;
-// 用餐方塊：點一下直接跳到「美食」區塊（並自動切到對應區域）；其他方塊：點一下展開「後續相關資訊」
+// 用餐方塊：點一下直接跳到「美食」區塊（並自動切到對應區域）
 const MEAL=/早餐|午餐|晚餐|宵夜|早午餐|點心/;
-const secName=id=>{const n=(TRIP.nav||[]).find(x=>x[0]===id);return n?n[1]:''};
 const flash=el=>{if(!el)return;el.classList.remove('flash');void el.offsetWidth;el.classList.add('flash')};
 const goSec=(id,after)=>{const el=document.getElementById(id);if(!el)return;el.scrollIntoView({behavior:'smooth',block:'start'});flash(el.querySelector('h2'));if(after)after(el)};
 const clean=t=>String(t).replace(/[\u{1F000}-\u{1FFFF}\u2600-\u27BF\uFE0F]/gu,'').trim();
@@ -131,31 +128,6 @@ function goFood(k,x,items){
   // 先比對這一格的標題與地點，找不到再看當天標題
   const b=hit(x[1]+' '+(x[3]||''))||(d.ab?null:hit(d.s+' '+d.h))||null;
   if(b&&!b.classList.contains('on'))b.click()})}
-const KW=['接送','包車','租車','機場','入住','退房','訂位','門票','醫美','景福宮','雲峴宮','韓屋','博物館','Snowy','Vivaldi','保險','行李','交通','春節','口岸','通關','大橋','澳門','珠海','香港','金巴','接駁','營地','露營車','Hygge','輕井澤','浩庵','eSIM','換匯','退稅','AREX','地鐵'];
-function relHTML(k,i,items){
- const d=D[k],x=items[i],txt=x[1]+' '+(x[3]||''),date=d.t.split(' ')[0],cs=[],ex=(d.x||[]);
- const add=(ic,l,j)=>cs.push(`<button class="rc" data-j="${esc(j)}">${ic} ${esc(l)}</button>`);
- const isF=String(x[2]||'').split(',').includes('f')||/航班|起飛|報到|托運|出境|入境|[A-Z]{2}\d{3,4}/.test(txt)||(/機場/.test(txt)&&!/包車|接送|鐵路|AREX|公車|巴士|前往|交通/.test(txt));
- const isT=/包車|租車|計程車|公車|巴士|地鐵|搭|交通|接送|接駁|路線|口岸|通關|過橋|AREX|前往/.test(txt);
- const has=id=>!!document.getElementById(id);
- if(isF&&has('flight'))add('✈️',secName('flight')||'航班資訊','sec:flight');
- if(/入住|退房|飯店|住宿/.test(txt)&&has('hotel'))add('🏨',secName('hotel')||'住宿資訊','sec:hotel');
- if(isT){ex.forEach((b,n)=>add('🧭',clean(b[0]),'x:'+n))}
- if(/包車|租車|門票|交通|票|費/.test(txt)&&has('price'))add('💰',secName('price')||'價格參考','sec:price');
- if((isT||isF||/入境|退稅|營業|開放/.test(txt))&&has('tips'))add('📌',secName('tips')||'注意事項','sec:tips');
- // 相關待辦：同一關鍵字、或同一天日期＋關鍵字
- if(has('todo')){const seen=new Set();let n=0;
-  Object.keys(TODO).forEach(g=>TODO[g].forEach(t=>{if(n>=3||seen.has(t))return;
-   const kw=KW.filter(w=>txt.includes(w)&&t.includes(w));
-   if(kw.length||(t.includes(date)&&/接送|包車|租車|機場|訂位|門票/.test(t)&&KW.some(w=>txt.includes(w)&&t.includes(w)))){seen.add(t);n++;add('📝',t.length>20?t.slice(0,20)+'…':t,'todo:'+t)}}))}
- const nx=items[i+1];
- return `<div class="rel"><div class="rl">後續相關資訊</div>${nx?`<button class="rc nx" data-j="item:${i+1}">⏭ 接著 ${esc(nx[0])}　${esc(nx[1])}</button>`:`<div class="rn">這是今天最後一個行程。${k<D.length-1?'':'旅程到這裡結束 🏠'}</div>`}${cs.length?`<div class="rcs">${cs.join('')}</div>`:''}</div>`}
-function relGo(li,j,k,items){
- const [t,v]=[j.slice(0,j.indexOf(':')),j.slice(j.indexOf(':')+1)];
- if(t==='sec')goSec(v);
- else if(t==='todo')goSec('todo',()=>{const inp=[...document.querySelectorAll('#todolist input')].find(c=>c.dataset.t===v);if(!inp)return;const det=inp.closest('details');if(det)det.open=true;const lb=inp.closest('label');flash(lb);setTimeout(()=>lb.scrollIntoView({behavior:'smooth',block:'center'}),350)});
- else if(t==='x'){const dx=li.closest('.dp').querySelectorAll('details.dx')[+v];if(dx){dx.open=true;dx.scrollIntoView({behavior:'smooth',block:'center'});flash(dx)}}
- else if(t==='item'){const nx=li.parentNode.children[+v];if(nx){nx.scrollIntoView({behavior:'smooth',block:'center'});flash(nx)}}}
 const tagH=x=>String(x||'').split(',').filter(k=>T[k]).map(k=>`<span class="tag" style="background:${T[k][1]}">${T[k][0]}</span>`).join('');
 
 // ===== 每日行程 =====
@@ -165,7 +137,7 @@ dbox.innerHTML=D.map((d,k)=>{const p=d.t.split(' ');return `<div class="dy" id="
 function panel(k){
  const d=D[k],items=d.ab?d[ab]:d.i,im=DI[d.ab?k+ab:k],abL=d.abL||['A 方案','B 方案'];
  const food=!!document.getElementById('food');
- const tl=items.map((x,i)=>{const meal=food&&MEAL.test(x[1]);return `<li class="${meal?'meal':'info'}" data-i="${i}"><span class="tm">${x[0]}</span><div class="tc">${x[1]}${tagH(x[2])}${x[3]?mp(x[3]):''}${x[3]&&KOP[x[3]]&&M.kop!==false?'<small class="kp">'+KOP[x[3]]+'</small>':''}<span class="lh" aria-hidden="true">${meal?'🍴 看美食推薦 ↓':'相關資訊 ▾'}</span></div></li>`}).join('');
+ const tl=items.map((x,i)=>{const meal=food&&MEAL.test(x[1]);return `<li class="${meal?'meal':''}" data-i="${i}"><span class="tm">${x[0]}</span><div class="tc">${x[1]}${tagH(x[2])}${x[3]?mp(x[3]):''}${x[3]&&KOP[x[3]]&&M.kop!==false?'<small class="kp">'+KOP[x[3]]+'</small>':''}${meal?'<span class="lh" aria-hidden="true">🍴 看美食推薦 ↓</span>':''}</div></li>`}).join('');
  return `<h3>${d.h}</h3>`
   +(d.lead?`<p class="lead">${d.lead}</p>`:'')
   +(d.ab?`<div class="ab"><button data-v="A" class="${ab==='A'?'on':''}">${abL[0]}</button><button data-v="B" class="${ab==='B'?'on':''}">${abL[1]}</button></div><p class="rate" style="margin:0 0 8px">${d.abN||'依天氣、路況二選一。'}</p>`:'')
@@ -187,14 +159,8 @@ dbox.addEventListener('click',e=>{
  const v=e.target.closest('[data-v]');if(v){ab=v.dataset.v;render(false);return}
  const g=e.target.closest('[data-go]');if(g){day=+g.dataset.go;render(true);return}
  const im=e.target.closest('[data-img]');if(im){openLB(im.dataset.img);return}
- const rc=e.target.closest('.rc');
- const li=e.target.closest('.tl li');
- if(li){const dy=li.closest('.dy'),k=+dy.id.slice(2),d=D[k],items=d.ab?d[ab]:d.i,i=+li.dataset.i;
-  if(rc){relGo(li,rc.dataset.j,k,items);return}
-  if(e.target.closest('a,.maps'))return;
-  if(li.classList.contains('meal')){goFood(k,items[i],items);return}
-  const o=li.querySelector('.rel');
-  if(o){o.remove();li.classList.remove('open')}else{li.querySelector('.tc').insertAdjacentHTML('beforeend',relHTML(k,i,items));li.classList.add('open')}}
+ const li=e.target.closest('.tl li.meal');
+ if(li&&!e.target.closest('a,.maps')){const k=+li.closest('.dy').id.slice(2),d=D[k],items=d.ab?d[ab]:d.i;goFood(k,items[+li.dataset.i],items)}
 });
 {const n=new Date(),yr=+M.start.slice(0,4),k=D.findIndex(d=>d.t.split(' ')[0]===(n.getMonth()+1)+'/'+n.getDate()),go=$('#gotoday');
  if(n.getFullYear()===yr&&k>=0){day=k;setTimeout(()=>{dbtn.children[k].innerHTML=D[k].t.split(' ')[0]+'<small>今天</small>'},0);go.textContent='看今天行程'}
