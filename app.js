@@ -13,6 +13,7 @@ const $=s=>document.querySelector(s);
 const enc=encodeURIComponent;
 const K=M.store||M.id; // 這支手機存待辦、訂位勾選用的名稱
 const ls={get:(k,d)=>{try{const v=localStorage.getItem(k);return v==null?d:JSON.parse(v)}catch(e){return d}},set:(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+const openUrl=u=>{const a=document.createElement('a');a.href=u;a.target='_blank';a.rel='noopener noreferrer';a.style.display='none';document.body.appendChild(a);a.click();a.remove()};
 const esc=t=>String(t==null?'':t).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const btns=(list,extra='')=>(list||[]).map(([k,l])=>`<button class="b bt gd${extra}" data-sh="${k}">${l}</button>`).join('');
 
@@ -45,7 +46,7 @@ const AMI='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5a6.5 6.5 
  const frU=n=>'https://www.trip.com/flights/status-'+n.toLowerCase()+'/';
  const FL=TRIP.flights;
  if(FL&&$('#flight'))$('#flight').insertAdjacentHTML('beforeend',`<div class="grid">${FL.list.map(f=>`<div class="card bp ${alCls(f.al)}"${fnOf(f.al)?` data-fn="${fnOf(f.al)}" role="link" tabindex="0" aria-label="${f.dir}航班 ${fnOf(f.al)}，點一下查看航班動態"`:''}><div class="bph"><span class="pill">${f.dir}</span>${f.date}<span class="al">${f.al}</span></div><div class="fl"><div><big>${f.from[0]}</big><span>${f.from[1]}</span><b>${f.from[2]}</b></div><div class="mid">${f.dur||''}</div><div class="r"><big>${f.to[0]}</big><span>${f.to[1]}</span><b>${f.to[2]}</b></div></div>${f.ac?`<div class="ac">${f.ac}</div>`:''}<small>${f.note||''}</small></div>`).join('')}</div>${FL.note?`<p class="rate" style="margin:12px 0 0">${FL.note}</p>`:''}${FL.sheets?`<div class="btns">${btns(FL.sheets)}</div>`:''}`);
- if($('#flight')){const fo=e=>{const c=e.target.closest('.bp[data-fn]');if(!c||e.target.closest('a'))return;window.open(frU(c.dataset.fn),'_blank','noopener')};
+ if($('#flight')){const fo=e=>{const c=e.target.closest('.bp[data-fn]');if(!c||e.target.closest('a'))return;openUrl(frU(c.dataset.fn))};
   $('#flight').addEventListener('click',fo);
   $('#flight').addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();fo(e)}})}
  // 住宿
@@ -119,14 +120,17 @@ const MEAL=/早餐|午餐|晚餐|宵夜|早午餐|點心/;
 const flash=el=>{if(!el)return;el.classList.remove('flash');void el.offsetWidth;el.classList.add('flash')};
 const goSec=(id,after)=>{const el=document.getElementById(id);if(!el)return;el.scrollIntoView({behavior:'smooth',block:'start'});flash(el.querySelector('h2'));if(after)after(el)};
 const clean=t=>String(t).replace(/[\u{1F000}-\u{1FFFF}\u2600-\u27BF\uFE0F]/gu,'').trim();
-function goFood(k,x,items){
+// 依這一格（標題、地點，找不到再看當天標題）比對美食分頁；沒有對應區域就回傳 null，該方塊不放連結
+function foodKey(k,x){
+ const d=D[k],keys=Object.keys(F||{});if(!keys.length)return null;
+ const toks=key=>clean(key).split(/[／/、]/).map(w=>w.trim()).filter(w=>w.length>1);
+ const hit=txt=>keys.find(key=>toks(key).some(w=>txt.includes(w)))||null;
+ return hit(x[1]+' '+(x[3]||''))||(d.ab?null:hit(d.s+' '+d.h))}
+function goFood(k,x){
+ const key=foodKey(k,x);if(!key)return;
  goSec('food',()=>{
   const sg=$('#seg');if(sg&&$('#pf')&&$('#pf').hidden)sg.children[0].click();
-  const tb=[...($('#ftabs')||{children:[]}).children];if(!tb.length)return;
-  const d=D[k],toks=b=>clean(b.textContent).split(/[／/、]/).map(w=>w.trim()).filter(w=>w.length>1);
-  const hit=txt=>tb.find(b=>toks(b).some(w=>txt.includes(w)));
-  // 先比對這一格的標題與地點，找不到再看當天標題
-  const b=hit(x[1]+' '+(x[3]||''))||(d.ab?null:hit(d.s+' '+d.h))||null;
+  const b=[...($('#ftabs')||{children:[]}).children].find(t=>t.textContent===key);
   if(b&&!b.classList.contains('on'))b.click()})}
 const tagH=x=>String(x||'').split(',').filter(k=>T[k]).map(k=>`<span class="tag" style="background:${T[k][1]}">${T[k][0]}</span>`).join('');
 
@@ -137,7 +141,7 @@ dbox.innerHTML=D.map((d,k)=>{const p=d.t.split(' ');return `<div class="dy" id="
 function panel(k){
  const d=D[k],items=d.ab?d[ab]:d.i,im=DI[d.ab?k+ab:k],abL=d.abL||['A 方案','B 方案'];
  const food=!!document.getElementById('food');
- const tl=items.map((x,i)=>{const meal=food&&MEAL.test(x[1]);return `<li class="${meal?'meal':''}" data-i="${i}"><span class="tm">${x[0]}</span><div class="tc">${x[1]}${tagH(x[2])}${x[3]?mp(x[3]):''}${x[3]&&KOP[x[3]]&&M.kop!==false?'<small class="kp">'+KOP[x[3]]+'</small>':''}${meal?'<span class="lh" aria-hidden="true">🍴 看美食推薦 ↓</span>':''}</div></li>`}).join('');
+ const tl=items.map((x,i)=>{const meal=food&&MEAL.test(x[1])&&!!foodKey(k,x);return `<li class="${meal?'meal':''}" data-i="${i}"><span class="tm">${x[0]}</span><div class="tc">${x[1]}${tagH(x[2])}${x[3]?mp(x[3]):''}${x[3]&&KOP[x[3]]&&M.kop!==false?'<small class="kp">'+KOP[x[3]]+'</small>':''}${meal?'<span class="lh" aria-hidden="true">🍴 看美食推薦 ↓</span>':''}</div></li>`}).join('');
  return `<h3>${d.h}</h3>`
   +(d.lead?`<p class="lead">${d.lead}</p>`:'')
   +(d.ab?`<div class="ab"><button data-v="A" class="${ab==='A'?'on':''}">${abL[0]}</button><button data-v="B" class="${ab==='B'?'on':''}">${abL[1]}</button></div><p class="rate" style="margin:0 0 8px">${d.abN||'依天氣、路況二選一。'}</p>`:'')
@@ -160,7 +164,7 @@ dbox.addEventListener('click',e=>{
  const g=e.target.closest('[data-go]');if(g){day=+g.dataset.go;render(true);return}
  const im=e.target.closest('[data-img]');if(im){openLB(im.dataset.img);return}
  const li=e.target.closest('.tl li.meal');
- if(li&&!e.target.closest('a,.maps')){const k=+li.closest('.dy').id.slice(2),d=D[k],items=d.ab?d[ab]:d.i;goFood(k,items[+li.dataset.i],items)}
+ if(li&&!e.target.closest('a,.maps')){const k=+li.closest('.dy').id.slice(2),d=D[k],items=d.ab?d[ab]:d.i;goFood(k,items[+li.dataset.i])}
 });
 {const n=new Date(),yr=+M.start.slice(0,4),k=D.findIndex(d=>d.t.split(' ')[0]===(n.getMonth()+1)+'/'+n.getDate()),go=$('#gotoday');
  if(n.getFullYear()===yr&&k>=0){day=k;setTimeout(()=>{dbtn.children[k].innerHTML=D[k].t.split(' ')[0]+'<small>今天</small>'},0);go.textContent='看今天行程'}

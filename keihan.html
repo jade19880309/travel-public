@@ -424,7 +424,8 @@ function go(T){
   <div class="bpd"><div><small>日期</small><b>${f.date.slice(5)}</b></div><div><small>起飛</small><b>${f.from[2]}</b></div><div><small>抵達</small><b>${f.to[2]}</b></div><div><small>飛行</small><b>${f.dur}</b></div></div>
   </div>
   <div class="stub"><div class="no">${f.no}</div><div class="sd">${f.date} 週${f.wd}</div><div class="bc"></div></div></div>`).join('');
- const fo=e=>{const c=e.target.closest('.bp[data-fn]');if(!c||e.target.closest('a'))return;window.open('https://www.trip.com/flights/status-'+c.dataset.fn.toLowerCase()+'/','_blank','noopener')};
+ const openUrl=u=>{const a=document.createElement('a');a.href=u;a.target='_blank';a.rel='noopener noreferrer';a.style.display='none';document.body.appendChild(a);a.click();a.remove()};
+ const fo=e=>{const c=e.target.closest('.bp[data-fn]');if(!c||e.target.closest('a'))return;openUrl('https://www.trip.com/flights/status-'+c.dataset.fn.toLowerCase()+'/')};
  $('#fl').addEventListener('click',fo);$('#fl').addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();fo(e)}});
  // 住宿
  $('#ht').innerHTML=T.hotels.map(h=>`<div class="card pc"><div class="stp"><div><img src="${IMG}ic-${h.stk}.svg" alt=""></div></div><div class="pm">${h.badge}<br>${h.when.split('・')[0]}</div>
