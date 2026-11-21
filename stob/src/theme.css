@@ -1,0 +1,46 @@
+/* ===== STOB 視覺：霧白底、港灣藍綠、行李吊牌金黃（與 TOB 的米色棕金區隔） ===== */
+:root{--s50:243 246 245;--s100:233 239 238;--s200:218 227 226;--s300:196 209 208;--s400:108 124 128;--s500:96 112 117;--s600:78 92 97;--s700:58 71 76;--s800:40 51 56;--s900:28 37 41;--s950:16 22 25;--card:255 255 255;--a100:253 240 214;--a800:150 98 18;--a900:110 70 10;
+ --gold:20 108 114;--goldt:16 92 98;--fc:16 92 98;--fcon:255 255 255;--acc:20 108 114;--acc2:14 84 90;--tag:232 169 58;--tagt:58 40 6;--shd:20 50 55}
+@media (prefers-color-scheme: dark){:root{--s50:16 23 25;--s100:24 33 36;--s200:36 47 51;--s300:54 68 72;--s400:140 158 162;--s500:156 173 177;--s600:180 195 198;--s700:204 216 218;--s800:222 231 232;--s900:236 242 243;--s950:248 251 251;--card:24 33 36;--a100:70 52 18;--a800:240 200 120;--a900:90 64 20;
+ --gold:94 194 192;--goldt:128 212 208;--fc:128 212 208;--fcon:16 23 25;--acc:94 194 192;--acc2:70 170 168;--tag:240 190 92;--tagt:40 28 4;--shd:0 0 0}}
+
+/* 字體：標題用圓體 */
+h1,h2,.text-2xl,.sr{font-family:"Huninn","Noto Sans TC","PingFang TC",sans-serif!important}
+h1{font-weight:400!important;letter-spacing:.06em!important;font-size:1.65rem!important}
+h1::after{display:none!important}
+
+/* 招牌：行李吊牌 */
+.tobt{position:relative;display:inline-flex!important;align-items:center;margin-left:.65rem!important;padding:.2rem .75rem .2rem 1.15rem!important;border:0!important;border-radius:.3rem .85rem .85rem .3rem!important;background:rgb(var(--tag))!important;color:rgb(var(--tagt))!important;font-family:"Huninn","Noto Sans TC",sans-serif!important;font-size:.78rem!important;font-weight:400!important;letter-spacing:.14em!important;vertical-align:.3em!important;transform:rotate(-5deg);box-shadow:0 2px 6px rgb(var(--shd)/.18)}
+.tobt::before{content:"";position:absolute;left:.42rem;top:50%;width:.38rem;height:.38rem;margin-top:-.19rem;border-radius:50%;background:rgb(var(--s50));box-shadow:inset 0 0 0 1px rgb(var(--tagt)/.25)}
+
+/* 卡片、按鈕的陰影改冷色 */
+.bg-card{box-shadow:0 1px 2px rgb(var(--shd)/.05),0 10px 24px -14px rgb(var(--shd)/.28)!important}
+.hbtn{box-shadow:0 1px 4px rgb(var(--shd)/.1)!important}
+.xnb.on,.fb.on{box-shadow:0 1px 5px rgb(var(--shd)/.16)!important}
+
+/* 個人單抬頭改成同色系 */
+.sx-h{background:#0f4c52!important}
+
+/* 歡迎卡 */
+.adhero{padding:1.4rem 1.25rem!important}
+.adhero h3{font-family:"Huninn","Noto Sans TC",sans-serif;font-size:1.45rem;line-height:1.35;margin-bottom:.35rem}
+.adsteps{list-style:none;margin:1rem 0 1.2rem;padding:0;display:grid;gap:.7rem}
+.adsteps li{display:grid;grid-template-columns:2rem 1fr;gap:.7rem;align-items:start}
+.adsteps b{display:inline-flex;align-items:center;justify-content:center;width:2rem;height:2rem;border-radius:50%;background:rgb(var(--gold)/.12);color:rgb(var(--goldt));font-family:"Huninn","Noto Sans TC",sans-serif;font-weight:400}
+.adsteps span{font-size:.92rem;line-height:1.5;color:rgb(var(--s700))}
+.adsteps em{font-style:normal;display:block;font-weight:700;color:rgb(var(--s900))}
+
+/* 上傳區 */
+.adpick{border-color:rgb(var(--gold)/.45)!important;background:rgb(var(--gold)/.05);color:rgb(var(--goldt))!important;border-radius:1rem!important;padding:1.4rem!important}
+.adpick:focus-within{outline:2px solid rgb(var(--gold));outline-offset:2px}
+
+/* 行程：日期圓章用吊牌色點綴今天之後最近的一天 */
+.pldn{background:rgb(var(--gold)/.12)!important;color:rgb(var(--goldt))!important;font-family:"Huninn","Noto Sans TC",sans-serif}
+.plit.bk .pltm{background:rgb(var(--gold))!important;color:rgb(var(--fcon))!important}
+.plbk{background:rgb(var(--tag)/.25)!important;color:rgb(var(--tagt))!important}
+@media (prefers-color-scheme: dark){.plbk{color:rgb(var(--tag))!important}}
+:focus-visible{outline:2px solid rgb(var(--gold));outline-offset:2px}
+@media (prefers-reduced-motion: reduce){*{scroll-behavior:auto!important;transition:none!important}}
+/* 滿版：外框（含 iPhone 安全區域）也鋪上底色，不留白邊 */
+html{background:rgb(var(--s50))!important;min-height:100%}
+body{min-height:100vh;min-height:100dvh}
