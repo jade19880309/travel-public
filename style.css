@@ -260,8 +260,10 @@ details[open].card>summary::after{transform:rotate(-135deg);top:31px}
 .dock button{flex:1;min-width:0;min-height:50px;border:0;background:none;border-radius:12px;padding:4px 0;font-size:15.5px;font-weight:700;line-height:1.25;cursor:pointer;color:var(--ink);font-variant-numeric:tabular-nums}
 .dock button small{display:block;font-size:12.5px;font-weight:400;color:var(--sub)}
 .dock button.on{background:var(--red);color:#fff}.dock button.on small{color:#ffe3dc}
-#fs{position:fixed;right:calc(env(safe-area-inset-right,0px) + 12px);bottom:calc(var(--dock) + env(safe-area-inset-bottom,0px) + 12px);z-index:44;width:52px;height:52px;border-radius:50%;border:1px solid var(--line);background:#fff;color:var(--red);font-size:17px;font-weight:700;line-height:1.05;box-shadow:0 4px 14px rgba(70,35,20,.16);cursor:pointer}
-#fs small{display:block;font-size:10.5px;font-weight:400;color:var(--sub)}
+#fs,#upd{position:fixed;right:calc(env(safe-area-inset-right,0px) + 12px);bottom:calc(var(--dock) + env(safe-area-inset-bottom,0px) + 12px);z-index:44;width:52px;height:52px;border-radius:50%;border:1px solid var(--line);background:#fff;color:var(--red);font-size:17px;font-weight:700;line-height:1.05;box-shadow:0 4px 14px rgba(70,35,20,.16);cursor:pointer}
+#fs{bottom:calc(var(--dock) + env(safe-area-inset-bottom,0px) + 74px)}
+#upd{font-size:18px;line-height:1.1}
+#fs small,#upd small{display:block;font-size:10.5px;font-weight:400;color:var(--sub)}
 /* ===== 多旅程共用的補充樣式 ===== */
 .lead{font-size:15.5px;color:var(--sub);line-height:1.65;margin:-4px 0 10px}
 .dx{margin-top:10px;border:1px solid var(--line);border-radius:14px;background:var(--soft)}
@@ -385,10 +387,10 @@ html body #flight .bp[class*="al-"] .bph .al{margin-right:0}
 html body #flight .bp .ac{margin:-4px 16px 8px}
 
 /* 懸浮換算鈕（在字體鈕上方）與換算小面板 */
-#fxb{position:fixed;right:calc(env(safe-area-inset-right,0px) + 12px);bottom:calc(var(--dock) + env(safe-area-inset-bottom,0px) + 74px);z-index:44;width:52px;height:52px;border-radius:50%;border:1px solid var(--line);background:var(--card,#fff);color:var(--red);font-size:17px;font-weight:700;line-height:1.05;box-shadow:0 4px 14px rgba(70,35,20,.16);cursor:pointer}
+#fxb{position:fixed;right:calc(env(safe-area-inset-right,0px) + 12px);bottom:calc(var(--dock) + env(safe-area-inset-bottom,0px) + 136px);z-index:44;width:52px;height:52px;border-radius:50%;border:1px solid var(--line);background:var(--card,#fff);color:var(--red);font-size:17px;font-weight:700;line-height:1.05;box-shadow:0 4px 14px rgba(70,35,20,.16);cursor:pointer}
 #fxb small{display:block;font-size:10.5px;font-weight:400;color:var(--sub)}
 #fxb.on{background:var(--red);color:#fff;border-color:var(--red)}#fxb.on small{color:rgba(255,255,255,.85)}
-.fxp{position:fixed;right:calc(env(safe-area-inset-right,0px) + 12px);bottom:calc(var(--dock) + env(safe-area-inset-bottom,0px) + 136px);z-index:46;width:min(340px,calc(100vw - 24px));padding:14px;margin:0;box-shadow:0 18px 40px -12px rgba(40,25,15,.35);animation:fxin .2s ease}
+.fxp{position:fixed;right:calc(env(safe-area-inset-right,0px) + 12px);bottom:calc(var(--dock) + env(safe-area-inset-bottom,0px) + 198px);z-index:46;width:min(340px,calc(100vw - 24px));padding:14px;margin:0;box-shadow:0 18px 40px -12px rgba(40,25,15,.35);animation:fxin .2s ease}
 .fxp[hidden]{display:none}
 .fxp .fxq,.fxp .fxrate{display:none}
 #fxb b.sm{font-size:13px;letter-spacing:-.02em}

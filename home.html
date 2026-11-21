@@ -119,6 +119,8 @@ footer .orn{display:block;color:var(--gold2);font-family:var(--latin);font-size:
 .deck-wrap{opacity:0;transform:translateY(16px);animation:up .9s cubic-bezier(.2,.7,.2,1) .1s forwards}
 @media(prefers-reduced-motion:reduce){.deck .trip{transition:none}.deck .ph img{transform:none}.deck-wrap{animation:none;opacity:1;transform:none}}
 @media(prefers-reduced-motion:reduce){.trip{animation:none;opacity:1;transform:none}.ph img,.go i,.trip{transition:none}}
+.updb{display:block;margin:14px auto 0;padding:9px 20px;border-radius:999px;border:1px solid var(--line);background:transparent;color:var(--ink);font:inherit;font-size:14px;letter-spacing:.06em;cursor:pointer}
+.updb:active{opacity:.7}
 </style>
 </head>
 <body>
@@ -136,7 +138,7 @@ footer .orn{display:block;color:var(--gold2);font-family:var(--latin);font-size:
  <noscript><div class="list"><a class="trip" href="./?t=seoul-2027"><div class="body"><h2>2027 首爾春節自由行</h2></div></a><a class="trip" href="hk.html"><div class="body"><h2>2027 香港・珠海・澳門</h2></div></a><a class="trip" href="tokyo.html"><div class="body"><h2>2027 東京・富士山</h2></div></a></div></noscript>
 </main>
 
-<footer><span class="orn">❦</span>左右滑動切換旅程・點卡片進入行程・每趟都可以加入主畫面離線查看</footer>
+<footer><span class="orn">❦</span>左右滑動切換旅程・點卡片進入行程・每趟都可以加入主畫面離線查看<button class="updb" data-upd>🔄 檢查更新</button></footer>
 </div>
 
 <script>
@@ -215,5 +217,6 @@ fetch('trips/index.json',{cache:'no-cache'}).then(r=>r.json()).then(L=>Promise.a
 
 if('serviceWorker' in navigator&&/^https?:/.test(location.protocol))navigator.serviceWorker.register('sw.js').catch(()=>{});
 </script>
+<script src="upd.js"></script>
 </body>
 </html>

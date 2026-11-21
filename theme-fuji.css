@@ -83,7 +83,7 @@ html.th-fuji{
 .th-fuji .dock button{font-family:var(--serif)}
 .th-fuji .dock button.on{background:var(--red);box-shadow:inset 0 -2px 0 var(--gold)}
 .th-fuji .dock button.on small{color:#e8dcc4}
-.th-fuji #fs,.th-fuji #fxb{background:var(--card);border-color:var(--line);color:var(--red)}
+.th-fuji #fs,.th-fuji #upd,.th-fuji #fxb{background:var(--card);border-color:var(--line);color:var(--red)}
 .th-fuji footer{color:var(--sub)}
 
 /* 地圖圖示改墨藍，不用搶眼的 Google 藍 */
@@ -181,7 +181,7 @@ html.th-fuji{
 .th-fuji .dock{background:#fff;border-top:3px solid var(--ink)}
 .th-fuji .dock button{border-radius:12px;font-weight:700}
 .th-fuji .dock button.on{background:var(--seal);color:#fff;box-shadow:none;border:2px solid var(--ink)}
-.th-fuji #fs,.th-fuji #fxb{border:2.5px solid var(--ink);box-shadow:var(--pop2)}
+.th-fuji #fs,.th-fuji #upd,.th-fuji #fxb{border:2.5px solid var(--ink);box-shadow:var(--pop2)}
 @media (prefers-reduced-motion:reduce){.th-fuji .dic{transition:none}}
 
 /* ===== 字重調細、住宿卡片縮小（只影響東京）===== */

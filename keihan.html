@@ -341,6 +341,7 @@ footer img{width:90px;margin:0 auto 10px;opacity:.9}
   <button data-q="hotel"><i>🏨</i><b>給司機看</b><small id="qhotel"></small></button>
   <button data-q="night"><i id="qni">🌙</i><b>夜間模式</b><small id="qns"></small></button>
   <button data-q="font"><i>Aa</i><b>字體大小</b><small id="qfs"></small></button>
+  <button data-upd><i>🔄</i><b>檢查更新</b><small>抓最新版</small></button>
   <button data-q="top"><i>⬆︎</i><b>回到最上面</b><small>封面</small></button>
  </div>
  <div class="qfx"><label>¥<input id="qj" inputmode="decimal" placeholder="輸入日圓" autocomplete="off"></label><span id="qt">≈ NT$ 0</span></div>
@@ -482,5 +483,6 @@ function go(T){
 if('serviceWorker' in navigator&&/^https?:/.test(location.protocol))navigator.serviceWorker.register('sw.js').catch(()=>{});
 })();
 </script>
+<script src="upd.js"></script>
 </body>
 </html>

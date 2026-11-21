@@ -62,6 +62,7 @@
 <div id="big" role="dialog" aria-label="放大顯示"><b></b><small></small></div>
 <div class="dock" id="daybar" aria-label="行程日期"><div><span class="dl">行程<br>日期</span><div id="dbtn" style="display:contents"></div></div></div>
 <button id="fs" aria-label="調整字體大小">Aa<small>字體</small></button>
+<button id="upd" data-upd aria-label="檢查更新">🔄<small>更新</small></button>
 <div id="lb"><img alt="放大圖片"><div class="lbc"><button id="lbz1" aria-label="縮小">−</button><button id="lbz2" aria-label="放大">+</button><button id="lbx" aria-label="關閉">✕</button></div><div class="lbh">雙指縮放・拖曳移動・連點兩下放大</div></div>
 <script>
 (function(){
@@ -72,5 +73,6 @@
  }).catch(function(){fail('行程資料載入失敗，請確認網路後重新整理。（直接開本機檔案無法讀取資料，請用網址開啟）')});
 })();
 </script>
+<script src="upd.js"></script>
 </body>
 </html>
