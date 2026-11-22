@@ -76,3 +76,8 @@ h2.sr::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,rgb(v
 .dtr-sw{display:flex}.dtr-sw i{width:1.5rem;height:1.5rem;border-radius:50%;margin-right:-.4rem;border:2px solid rgb(var(--card))}
 .dtr-romantic .dtr-sw i:nth-child(1){background:#7A1F2C}.dtr-romantic .dtr-sw i:nth-child(2){background:#F7E6E8}.dtr-romantic .dtr-sw i:nth-child(3){background:#C9A06A}
 .dtr-navy .dtr-sw i:nth-child(1){background:#0D2B52}.dtr-navy .dtr-sw i:nth-child(2){background:#1E4A7C}.dtr-navy .dtr-sw i:nth-child(3){background:#D6B273}
+.dtr-vr summary{cursor:pointer;list-style:none;padding:.1rem 0}
+.dtr-vr summary::-webkit-details-marker{display:none}
+.dtr-vr summary:focus-visible{outline:2px solid rgb(var(--gold));outline-offset:2px}
+.dtr-vr ul ul,.dtr-vr details>ul{list-style:disc}
+.dtr-vr details>ul>li{margin:.15rem 0}

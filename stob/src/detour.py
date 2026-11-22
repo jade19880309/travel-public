@@ -69,8 +69,8 @@ print('DETOUR.html', len(s.encode()), 'bytes, v' + VER)
 # 說明頁：版本歷程
 g = GUIDE.read_text(encoding='utf-8')
 rows = ''.join(
-    '<li%s><b>v%s</b>%s<small>%s</small><ul>%s</ul></li>' % (
-        ' class="cur"' if i == 0 else '', h['v'], h['t'], h['d'], ''.join('<li>%s</li>' % x for x in h['n']))
+    '<li%s><details%s><summary><b>v%s</b>%s<small>%s</small></summary><ul>%s</ul></details></li>' % (
+        ' class="cur"' if i == 0 else '', ' open' if i == 0 else '', h['v'], h['t'], h['d'], ''.join('<li>%s</li>' % x for x in h['n']))
     for i, h in enumerate(V['history']))
 block = '<!--VER:START--><ul class="vr">' + rows + '</ul><!--VER:END-->'
 if '<!--VER:START-->' in g:
