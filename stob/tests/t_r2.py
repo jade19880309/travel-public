@@ -166,7 +166,7 @@ async def main():
     await A.evaluate("window.__pubHtml0=pubHtml;pubHtml=t=>window.__pubHtml0(t).replace('</main>','<p>聯絡 0912-345-678</p></main>');window.__dlMode='ok';window.__dlTry=[];window.__copied=[];PL.out=null;plPub(1)");await A.wait_for_timeout(600)
     ok('最後檢查失敗：不下載、不複製、不留可輸出的內容',await A.evaluate("[window.__dlTry.length,window.__copied.length,PL.out]")==[0,0,None])
     await A.evaluate("pubHtml=window.__pubHtml0;1")
-    await A.screenshot(path=HERE+'/r2_pub.png')
+    await A.screenshot(path=str(HERE)+'/r2_pub.png')
     ok('沒有 JS 錯誤',not errs,errs[:3])
     await b.close()
   print('\n%d/%d passed'%(sum(1 for _,c in R if c),len(R)))
