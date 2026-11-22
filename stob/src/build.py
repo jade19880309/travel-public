@@ -1,13 +1,10 @@
-import re, sys, pathlib
+import re, sys, pathlib, os
 HERE = pathlib.Path(__file__).resolve().parent
-ROOT = HERE.parent.parent  # 輸出：travel-public 根目錄
-import os
+ROOT = HERE.parent.parent  # travel-public 根目錄
 # STOB 以私人 repo travel-private 裡 TOB 的某一版為基礎：設定 TOB_REPO 指到 travel-private（預設與 travel-public 並排）
 TOB = pathlib.Path(os.environ.get('TOB_REPO', str(ROOT.parent / 'travel-private')))
-# STOB 以 TOB 某一版為基礎（之後 TOB 改版不影響 STOB）；用 git 取出那一版，不另存含個資的副本
-BASE = '21ce4f8'
 import subprocess
-src = subprocess.run(['git', '-C', str(TOB), 'show', BASE + ':index.html'], capture_output=True, check=True).stdout.decode('utf-8')
+src = subprocess.run(['git','-C',str(TOB),'show','21ce4f8:index.html'],capture_output=True,check=True).stdout.decode('utf-8')
 L = src.split('\n')
 
 def find(prefix, start=0):
@@ -66,7 +63,9 @@ rep("'旅遊訂單<span class=\"tobt\" title=\"Travel Order Book\">TOB</span>'",
 
 # append cloud + upload script
 cloud = (HERE / 'cloud.js').read_text(encoding='utf-8')
-cloud += '\n' + (HERE / 'plan.js').read_text(encoding='utf-8')
+import json as _json
+PUBCSS = (HERE / 'pub.css').read_text(encoding='utf-8')
+cloud += '\nconst PUB_CSS=' + _json.dumps(PUBCSS, ensure_ascii=False).replace('</','<\\/') + ';\n' + (HERE / 'plan.js').read_text(encoding='utf-8')
 css = (HERE / 'cloud.css').read_text(encoding='utf-8')
 css += '\n' + (HERE / 'theme.css').read_text(encoding='utf-8')
 idx = s.rfind('</script></body></html>')
@@ -78,6 +77,8 @@ rep('<meta name="theme-color" content="#faf5ec" media="(prefers-color-scheme: li
 s = s.replace('"Noto Serif TC"','"Huninn","Noto Sans TC"').replace('"Songti TC",','').replace('"PMingLiU",','')
 rep('content="width=device-width, initial-scale=1, viewport-fit=cover"', 'content="width=device-width, initial-scale=1"')
 rep("tIc=n=>/韓國|首爾/.test(n)?", "tIc=n=>/台灣|臺灣|台北|臺北|新北|基隆|桃園|新竹|苗栗|台中|臺中|彰化|南投|雲林|嘉義|台南|臺南|高雄|屏東|墾丁|宜蘭|花蓮|台東|臺東|澎湖|金門|馬祖|綠島|蘭嶼|日月潭|阿里山|小琉球/.test(n)?'🇹🇼 ':/韓國|首爾/.test(n)?")
+VT = (HERE / 'v.tpl.html').read_text(encoding='utf-8')
+(ROOT / 'stob' / 'v.html').write_text(VT.replace('/*PUB_CSS*/', PUBCSS), encoding='utf-8')
 # privacy check
 bad = sorted(set(re.findall(r"mkP\('m\d+','([^']+)'", src) + re.findall(r"pp:'(\w{6,})'", src) + re.findall(r"orderNo:'(\d{6,})'", src)[:20]))
 hits = [w for w in bad if w in s]

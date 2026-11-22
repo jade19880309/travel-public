@@ -87,3 +87,7 @@ button[disabled]{opacity:.55}
 .upfab span{font-size:1.15rem;line-height:1}
 .upfab[hidden]{display:none}
 #toast{bottom:calc(5.2rem + env(safe-area-inset-bottom,0px))!important}
+.plpubb{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.6rem;width:100%}
+.pllk{width:100%;margin-top:.45rem;font-size:.8rem;color:rgb(var(--s500))}
+.pllk.long{color:rgb(185 28 28)}
+.pllk small{display:block;font-size:.75rem}
