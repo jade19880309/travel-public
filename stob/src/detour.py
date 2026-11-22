@@ -30,7 +30,11 @@ rep('<meta name="theme-color" content="#f3f6f5" media="(prefers-color-scheme: li
 rep('family=Noto+Sans+TC:wght@400;500;700&display=swap', 'family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@500;600&family=Cormorant+Garamond:wght@500;600&family=Playfair+Display:ital,wght@1,500&display=swap')
 rep('<title>STOB 旅遊訂單</title>', '<title>偏航 DETOUR</title>\n<script>(function(){var t="romantic";try{var v=localStorage.getItem("detour-theme");if(v==="navy"||v==="romantic")t=v}catch(e){}document.documentElement.setAttribute("data-theme",t);var m=t==="navy"?["#F7F4E9","#0A1526"]:["#FFF9F6","#1C1216"],q=document.querySelectorAll("meta[name=theme-color]");for(var i=0;i<q.length;i++)q[i].setAttribute("content",/dark/.test(q[i].getAttribute("media")||"")?m[1]:m[0])})()</script>')
 
-MARK = '<svg viewBox="0 0 256 256" aria-hidden="true"><rect class="lb" width="256" height="256" rx="52"/><path class="lp" d="M45 196 103 149 86 181 117 165 45 196Z"/><path class="la" d="M105 164C149 151 180 113 198 66" stroke-width="6" stroke-linecap="round"/><path class="ls" d="m200 37 7 19 19 7-19 7-7 19-7-19-19-7 19-7Z"/></svg>'
+def svg(n):
+    return (HERE / 'assets' / n).read_text(encoding='utf-8').strip()
+
+
+MARK = '<span class="th-r">' + svg('logo-romantic.svg') + '</span><span class="th-n">' + svg('logo-navy.svg') + '</span>'
 # 頁首標誌（svg 航線）與名稱，副標帶版本號
 rep('<span class="stm" role="button" tabindex="0" aria-label="回到頁首"', '<span class="stm dtl" role="button" tabindex="0" aria-label="偏航 DETOUR，回到頁首"')
 rep('<i></i>STOB</span><span class="stw"><b>旅遊訂單</b><small>Share Travel Order Book</small></span>',
@@ -52,6 +56,7 @@ rep('不像是 STOB 的備份', '不像是偏航的備份')
 # 附加樣式與程式
 css = (HERE / 'detour.css').read_text(encoding='utf-8')
 js = (HERE / 'detour.js').read_text(encoding='utf-8').replace('/*VERSIONS*/null', json.dumps(V, ensure_ascii=False))
+js = js.replace('@@FLIGHT_ROMANTIC@@', svg('flight-romantic.svg')).replace('@@FLIGHT_NAVY@@', svg('flight-navy.svg'))
 js = js.replace('</', '<\\/')
 partA, partB = js.split('/*PART2*/')
 boot = '(async function boot(){'

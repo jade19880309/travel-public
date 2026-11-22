@@ -34,7 +34,10 @@ h2.sr::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,rgb(v
 /* 頁首標誌 */
 .stm.dtl{width:2.9rem;height:2.9rem;padding:0;background:none;border-radius:22%;clip-path:none;transform:none;filter:none;box-shadow:0 8px 16px -8px rgb(var(--shd)/.55)}
 .stm.dtl svg{width:100%;height:100%;display:block}
-.lb{fill:var(--lg-bg)}.lp{fill:var(--lg-plane)}.la{fill:none;stroke:var(--lg-arc)}.ls{fill:var(--lg-star)}
+.th-n{display:none!important}
+[data-theme="navy"] .th-n{display:block!important}
+[data-theme="navy"] .th-r{display:none!important}
+.th-r,.th-n{display:block}
 .stw b{font-family:"Noto Serif TC","Songti TC",serif!important;font-weight:600;font-size:1.7rem;letter-spacing:.18em;color:rgb(var(--s900))}
 .stw small{margin-top:.28rem;font-family:"Cormorant Garamond","Noto Serif TC",serif;font-weight:600;font-size:.78rem;letter-spacing:.26em;color:rgb(var(--goldt));opacity:1;text-transform:uppercase}
 .stw small em{font-style:normal;letter-spacing:.12em;margin-left:.45em;padding:0 .4em;border-radius:99px;background:rgb(var(--tag)/.38);color:rgb(var(--tagt));font-size:.7rem;text-transform:none}
@@ -44,7 +47,7 @@ h2.sr::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,rgb(v
 .dtr-hero{position:relative;overflow:hidden;margin:.3rem 0 1.1rem;padding:1.35rem 1.2rem 1.3rem;border-radius:1.4rem;background:var(--hero-bg);border:1px solid var(--hero-edge);box-shadow:0 18px 36px -24px rgb(var(--shd)/.55)}
 .dtr-hero>*{position:relative}
 .dtr-fl{position:absolute!important;right:.5rem;top:.55rem;width:40%;max-width:13rem;height:auto;pointer-events:none}
-.dtr-fl .fa{stroke:var(--fl-arc)}.dtr-fl .f1{fill:var(--fl-1)}.dtr-fl .f2{fill:var(--fl-2)}
+.dtr-fl svg{display:block;width:100%;height:auto}
 .dtr-g{display:inline-block;padding-left:.6rem;border-left:2px solid rgb(var(--tag));font-size:.82rem;line-height:1.2;letter-spacing:.1em;color:var(--hero-sub)}
 .dtr-t{margin:.95rem 0 .6rem;font-family:"Noto Serif TC","Songti TC",serif;font-weight:600;font-size:1.5rem;line-height:1.5;letter-spacing:.04em;color:var(--hero-text)}
 .dtr-t em{font-style:normal;color:var(--hero-em);border-bottom:1px solid var(--hero-em)}
