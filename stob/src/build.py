@@ -59,7 +59,7 @@ s = s.replace('grid-template-columns:repeat(4,minmax(0,1fr))!important', 'grid-t
 rep("const NAVI={", "const NAVI={'add':'<path d=\"M4 7h10M18 7h2M4 17h4M12 17h8\"/><circle cx=\"16\" cy=\"7\" r=\"2\"/><circle cx=\"10\" cy=\"17\" r=\"2\"/>',")
 
 # header label
-rep("'旅遊訂單<span class=\"tobt\" title=\"Travel Order Book\">TOB</span>'", "'旅遊訂單<span class=\"tobt\" title=\"Share Travel Order Book\">STOB</span>'+(typeof cloudBadge=='function'?cloudBadge():'')")
+rep("'旅遊訂單<span class=\"tobt\" title=\"Travel Order Book\">TOB</span>'", "'<span class=\"sth\"><span class=\"stm\" aria-hidden=\"true\"><i></i>STOB</span><span class=\"stw\"><b>旅遊訂單</b><small>Share Travel Order Book</small></span></span>'+(typeof cloudBadge=='function'?cloudBadge():'')")
 
 # append cloud + upload script
 cloud = (HERE / 'cloud.js').read_text(encoding='utf-8')

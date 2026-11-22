@@ -71,3 +71,11 @@ select.w-full{-webkit-appearance:none;appearance:none;border-radius:999px!import
 /* 區塊標題（日期分組）字距收一點 */
 section>h3{letter-spacing:.02em}
 .selm-d i{font-style:normal;white-space:nowrap;margin-right:.55rem}
+/* 頁首標題：行李吊牌標誌＋旅遊訂單＋副標 */
+.sth{display:inline-flex;align-items:center;gap:.75rem;vertical-align:middle}
+.stm{position:relative;flex:0 0 auto;display:inline-flex;align-items:center;justify-content:center;width:4rem;height:2.4rem;padding:0 .35rem 0 1.25rem;box-sizing:border-box;background:rgb(var(--tag));color:rgb(var(--tagt));font-family:"Huninn","Noto Sans TC",sans-serif;font-size:.74rem;letter-spacing:.08em;clip-path:polygon(28% 0,100% 0,100% 100%,28% 100%,0 50%);border-radius:.35rem;transform:rotate(-7deg);filter:drop-shadow(0 2px 3px rgb(var(--shd)/.25))}
+.stm i{position:absolute;left:.7rem;top:50%;width:.42rem;height:.42rem;margin-top:-.21rem;border-radius:50%;background:rgb(var(--s50))}
+.stw{display:flex;flex-direction:column;line-height:1.1}
+.stw b{font-family:"Huninn","Noto Sans TC",sans-serif;font-weight:400;font-size:1.6rem;letter-spacing:.08em;color:rgb(var(--s900))}
+.stw small{margin-top:.3rem;font-family:"Noto Sans TC",system-ui,sans-serif;font-size:.64rem;font-weight:600;letter-spacing:.14em;color:rgb(var(--goldt));opacity:.9}
+#app h1:has(.sth){font-size:inherit!important;letter-spacing:0!important}

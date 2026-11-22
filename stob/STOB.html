@@ -1146,7 +1146,7 @@ function vCis(){ciInit();const pp=shEnsure(),t=T(S.ct),gs=famRows(t);
  return `<h2 class="sr">每人行程單</h2>${tsel}<div class="text-sm text-stone-500 mb-1">選人（可多選）</div>${who}${panel}<div class="flex gap-2 flex-wrap mb-2"><button type="button" class="pbtn" onclick="shImg()">存成圖片</button><button type="button" class="${BT}" onclick="shCopy()">複製文字</button></div><div class="sheet" id="sheet">${shInner()}</div>`}
 
 const VIEWS={home:vHome,cip:vCip,cis:vCis,ci:()=>{NOCP=1;try{return vCia()}finally{NOCP=0}},cit:vCit,cio:vCio,mem:vMem,fl:vFl,ht:vHt,tr:vTr,ot:vOt,cost:vCost,person:vPerson,cia:()=>{NOCP=1;try{return vCia()}finally{NOCP=0}},cih:()=>{NOCP=1;try{return vCih()}finally{NOCP=0}}};
-function render(keep=true){const A=document.getElementById('app'),op=keep?[...A.querySelectorAll('details')].map(e=>e.open):null,y=scrollY;A.innerHTML=`<div class="stk"><div class="pt-4 hdr"><h1 class="text-2xl font-medium tracking-wide">${inCi()?'店家報到':'旅遊訂單<span class="tobt" title="Share Travel Order Book">STOB</span>'+(typeof cloudBadge=='function'?cloudBadge():'')}</h1>${inCi()?`<button type="button" class="hbtn" onclick="go('home')"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg><span>返回</span></button>`:`<button type="button" class="hbtn" onclick="go('cia')"><svg viewBox="0 0 24 24" aria-hidden="true">${NAVI.cia}</svg><span>店家報到</span></button>`}</div>
+function render(keep=true){const A=document.getElementById('app'),op=keep?[...A.querySelectorAll('details')].map(e=>e.open):null,y=scrollY;A.innerHTML=`<div class="stk"><div class="pt-4 hdr"><h1 class="text-2xl font-medium tracking-wide">${inCi()?'店家報到':'<span class="sth"><span class="stm" aria-hidden="true"><i></i>STOB</span><span class="stw"><b>旅遊訂單</b><small>Share Travel Order Book</small></span></span>'+(typeof cloudBadge=='function'?cloudBadge():'')}</h1>${inCi()?`<button type="button" class="hbtn" onclick="go('home')"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg><span>返回</span></button>`:`<button type="button" class="hbtn" onclick="go('cia')"><svg viewBox="0 0 24 24" aria-hidden="true">${NAVI.cia}</svg><span>店家報到</span></button>`}</div>
 ${inCi()?'':xNav()}</div>${VIEWS[S.v]()}<div style="height:4.5rem"></div>${pfab()}`;A.querySelectorAll('input[data-ind]').forEach(e=>e.indeterminate=true);if(op){const ds=A.querySelectorAll('details');if(ds.length==op.length)ds.forEach((e,i)=>e.open=op[i]);scrollTo(0,y)}}
 function go(v,x){S.v=v;S.focus=x||'';render(false);try{history.pushState(null,'','#'+v+(x?'-'+x:''))}catch(e){}scrollTo(0,0)}
 function route(){const h=location.hash.slice(1),i=h.indexOf('-'),v=i<0?h:h.slice(0,i);S.v=VIEWS[v]?v:'home';S.focus=VIEWS[v]&&i>=0?h.slice(i+1):'';render(false)}
@@ -1606,6 +1606,14 @@ select.w-full{-webkit-appearance:none;appearance:none;border-radius:999px!import
 /* 區塊標題（日期分組）字距收一點 */
 section>h3{letter-spacing:.02em}
 .selm-d i{font-style:normal;white-space:nowrap;margin-right:.55rem}
+/* 頁首標題：行李吊牌標誌＋旅遊訂單＋副標 */
+.sth{display:inline-flex;align-items:center;gap:.75rem;vertical-align:middle}
+.stm{position:relative;flex:0 0 auto;display:inline-flex;align-items:center;justify-content:center;width:4rem;height:2.4rem;padding:0 .35rem 0 1.25rem;box-sizing:border-box;background:rgb(var(--tag));color:rgb(var(--tagt));font-family:"Huninn","Noto Sans TC",sans-serif;font-size:.74rem;letter-spacing:.08em;clip-path:polygon(28% 0,100% 0,100% 100%,28% 100%,0 50%);border-radius:.35rem;transform:rotate(-7deg);filter:drop-shadow(0 2px 3px rgb(var(--shd)/.25))}
+.stm i{position:absolute;left:.7rem;top:50%;width:.42rem;height:.42rem;margin-top:-.21rem;border-radius:50%;background:rgb(var(--s50))}
+.stw{display:flex;flex-direction:column;line-height:1.1}
+.stw b{font-family:"Huninn","Noto Sans TC",sans-serif;font-weight:400;font-size:1.6rem;letter-spacing:.08em;color:rgb(var(--s900))}
+.stw small{margin-top:.3rem;font-family:"Noto Sans TC",system-ui,sans-serif;font-size:.64rem;font-weight:600;letter-spacing:.14em;color:rgb(var(--goldt));opacity:.9}
+#app h1:has(.sth){font-size:inherit!important;letter-spacing:0!important}
 </style>
 <script>
 /* =====================================================================
@@ -1960,8 +1968,8 @@ function vPlan(){const head=`<h2 class="sr">🗺 建議行程</h2>${tbar()}`;con
   <div class="text-xs text-stone-500 mt-2">已訂的航班、住宿、交通、門票會自動放進行程，不用另外填。</div></details>`;
  const gen=`<div class="flex gap-2 items-center flex-wrap mb-3">${pl?(PL.conf?`<button type="button" class="adyes" onclick="plGen()">確定重新產生整份</button><button type="button" class="${BT}" onclick="PL.conf=false;render()">取消</button>`:`<button type="button" class="${BT}" ${b||noAi?'disabled':''} onclick="PL.conf=true;render()">↻ 重新產生整份</button><button type="button" class="${BP}" ${PL.dl?'disabled':''} onclick="plPdf()">${PL.dl?'製作 PDF 中…':'📄 下載 PDF'}</button>${PL.delc?`<button type="button" class="adyes" onclick="plDel()">確定刪除整份行程</button><button type="button" class="${BT}" onclick="PL.delc=false;render()">取消</button>`:`<button type="button" class="${BD}" ${b?'disabled':''} onclick="PL.delc=true;render()">🗑 刪除行程</button>`}`):`<button type="button" class="${BP}" ${b||noAi?'disabled':''} onclick="plGen()">${b=='all'?'排行程中…':'✨ 產生建議行程'}</button>`}${b?`<button type="button" class="${BT}" onclick="plStop()">停止</button><span class="text-sm text-stone-500">${b=='all'?'整份行程約需 1–2 分鐘':'處理中…'}</span>`:''}</div>
   ${noAi&&CLD.st!='load'?'<div class="text-sm text-red-700 mb-2">這個畫面目前無法使用 Claude（需在 Claude 中開啟並允許使用）。</div>':''}${PL.err?`<div class="text-sm text-red-700 mb-2">${esc(PL.err)}</div>`:''}`;
- const pub=`<div class="${CC} plpub"><div class="min-w-0"><div class="font-bold">🌐 發佈成網頁</div><div class="text-sm text-stone-500">把${pl?'行程、':''}航班、住宿、交通${PL.safe!==false?'':'與訂單編號'}做成網頁（不含護照）。可以下載成檔案，或複製連結貼到 LINE；對方不用 Claude 帳號，用 Safari 打開還能加入主畫面。</div><label class="plsafe"><input type="checkbox" ${PL.safe!==false?'checked':''} onchange="PL.safe=this.checked;PL.lkShow=false;render()"> 不含 PNR 和訂單編號<small>網址外流也不怕被拿去改訂位；報到時再看各自的訂單</small></label></div><div class="plpubb"><button type="button" class="${BP}" ${PL.pub?'disabled':''} onclick="plPub()">${PL.pub?'製作中…':'⬇️ 下載網頁檔'}</button><button type="button" class="${BT}" id="lkbtn" ${PL.lk&&PL.lk.url?'':'disabled'} onclick="plLinkCopy()">${PL.lk&&PL.lk.err?'無法產生連結':PL.lk&&PL.lk.url?'🔗 複製連結':'連結準備中…'}</button></div>
- ${PL.lk&&PL.lk.url?`<div class="pllk${PL.lk.url.length>5000?' long':''}">連結長度 ${PL.lk.url.length.toLocaleString()} 字${PL.lk.url.length>5000?'：超過 LINE 單則 5,000 字上限，建議改傳網頁檔，或分兩則傳':'・貼到 LINE 給同行的人，用 Safari 打開可「加入主畫面」'}${PL.lkShow?`<textarea class="${IN} adjs mt-1" rows="3" readonly onclick="this.select()">${esc(PL.lk.url)}</textarea><small>若沒複製成功，長按上面的文字全選後複製</small>`:''}</div>`:''}</div>`;
+ const pub=`<div class="${CC} plpub"><div class="min-w-0"><div class="font-bold">🌐 發佈成網頁</div><div class="text-sm text-stone-500">把${pl?'行程、':''}航班、住宿、交通時間做成網頁，可以下載成檔案，或複製連結貼到 LINE；對方不用 Claude 帳號，用 Safari 打開還能加入主畫面。</div><div class="text-xs text-stone-500 mt-1">🔒 不含個資：不放姓名、PNR、訂單編號、取票代碼和護照資料。</div></div><div class="plpubb"><button type="button" class="${BP}" ${PL.pub?'disabled':''} onclick="plPub()">${PL.pub?'製作中…':'⬇️ 下載網頁檔'}</button><button type="button" class="${BT}" id="lkbtn" ${PL.lk&&PL.lk.url?'':'disabled'} onclick="plLinkCopy()">${PL.lk&&PL.lk.err?'無法產生連結':PL.lk&&PL.lk.url?'🔗 複製連結':'連結準備中…'}</button>${PL.lk&&PL.lk.url?`<a class="${BT}" href="${esc('https://tinyurl.com/api-create.php?url='+encodeURIComponent(PL.lk.url))}" target="_blank" rel="noopener">✂️ 縮短網址</a>`:''}</div>
+ ${PL.lk&&PL.lk.url?`<div class="pllk${PL.lk.url.length>5000?' long':''}">連結長度 ${PL.lk.url.length.toLocaleString()} 字${PL.lk.url.length>5000?'：超過 LINE 單則 5,000 字上限，建議改傳網頁檔，或分兩則傳':'・貼到 LINE 給同行的人，用 Safari 打開可「加入主畫面」'}<small>「縮短網址」會用 TinyURL 開一個新頁面，頁面上那行就是短網址，長按複製即可</small>${PL.lkShow?`<textarea class="${IN} adjs mt-1" rows="3" readonly onclick="this.select()">${esc(PL.lk.url)}</textarea><small>若沒複製成功，長按上面的文字全選後複製</small>`:''}</div>`:''}</div>`;
  if(!pl)return head+prefs+gen+pub;
  const outline=`<div class="${CC} plo"><div class="font-bold text-lg">${esc(pl.title||t.name.replace(/^\d{6}/,''))}</div>${pl.summary?`<p class="text-sm text-stone-600 mt-1">${esc(pl.summary)}</p>`:''}
   <div class="plol">${pl.days.map((x,i)=>`<button type="button" class="plor" onclick="document.getElementById('pld${i}').open=true;document.getElementById('pld${i}').scrollIntoView({behavior:'smooth',block:'start'})"><span class="plod"><b>D${i+1}</b>${d(x.date).slice(5)}<small>${wkd(x.date)}</small></span><span class="plot"><b>${esc(x.title)}</b><small>${esc(x.items.map(y=>y.title).join(' → '))}</small></span></button>`).join('')}</div>
@@ -2090,10 +2098,11 @@ function pubParts(t,safe){const e=esc,pl=plOf(t.id).plan,ns=nightStay(t),nm=t.na
  const nightsN=hg.reduce((a,L)=>a+nights(L[0]),0);
  const dash=`<nav class="jump" aria-label="各區">${secs.map(([k,ic,l,,c])=>`<a href="#${k}"><span>${ic}</span>${l}<small>${c}</small></a>`).join('')}</nav>`;
  const V=o=>Object.entries(o).map(([k,v])=>`--${k}:${v}`).join(';');
- const body=`<header><div class="w"><span class="brand">STOB</span><h1>${e(pl&&pl.title||nm)}</h1><p>${wkF(t.start)} – ${wkF(t.end)}・${days.length} 天</p>${ppl.length?`<p>${e(whoN(ppl.map(m=>m.id)))}</p>`:''}</div></header>
+ const body=`<header><div class="w"><span class="brand">STOB</span><h1>${e(pl&&pl.title||nm)}</h1><p>${wkF(t.start)} – ${wkF(t.end)}・${days.length} 天</p>${ppl.length?`<p class="ppl">${e(whoN(ppl.map(m=>m.id)))}</p>`:''}</div></header>
 <main>${dash}${secs.map(([k,ic,l,h])=>`<section id="${k}"><h2><span aria-hidden="true">${ic}</span>${l}</h2>${h}</section>`).join('')}</main>
 <footer>更新於 ${d(new Date().toLocaleDateString('sv-SE'))}・由 STOB 旅遊訂單產生<br><button type="button" data-act="open">全部展開</button><button type="button" data-act="print">列印</button></footer>`;
- return {C,nm,title:(pl&&pl.title)||nm,short:pubShort(nm),body}}
+ const pb=safe?body.replace(/<(p|div) class="ppl">[^<]*<\/\1>/g,'').replace(/<div class="sub"><\/div>/g,''):body;
+ return {C,nm,title:(pl&&pl.title)||nm,short:pubShort(nm),body:pb}}
 const pubShort=nm=>{nm=String(nm||'行程').replace(/\s+/g,'');return nm.length<=4?nm+'行程':nm.slice(0,6)};
 const PUB_ACT="document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act]');if(!b)return;document.querySelectorAll('details.day').forEach(function(x){x.open=true});if(b.getAttribute('data-act')=='print')print()});";
 /* 主畫面圖示：用網頁的配色＋旅程名稱前兩字（檢視頁 v.js 也用同樣畫法） */
@@ -2107,23 +2116,23 @@ function pubDoc(P,icon){const e=esc,V=o=>Object.entries(o).map(([k,v])=>`--${k}:
 <style>:root{${V(P.C.light)}}@media (prefers-color-scheme:dark){:root{${V(P.C.dark)}}}
 ${PUB_CSS}
 </style></head><body>${P.body}<script>${PUB_ACT}<\/script></body></html>`}
-function pubHtml(t,safe){const P=pubParts(t,safe);return pubDoc(P,pubIcon(P))}
+function pubHtml(t){const P=pubParts(t,true);return pubDoc(P,pubIcon(P))}
 /* 複製連結：把網頁內容壓縮進網址 #後面，由共用檢視頁還原（資料不經過任何伺服器） */
 const PUB_VIEW='https://jade19880309.github.io/travel-public/stob/v.html';
-async function pubLink(t,safe){const P=pubParts(t,safe),js=JSON.stringify({v:1,t:P.title,n:P.nm,s:P.short,c:P.C,b:P.body});
+async function pubLink(t){const P=pubParts(t,true),js=JSON.stringify({v:1,t:P.title,n:P.nm,s:P.short,c:P.C,b:P.body});
  const cs=new Blob([js]).stream().pipeThrough(new CompressionStream('deflate-raw')),buf=new Uint8Array(await new Response(cs).arrayBuffer());
  let bin='';for(let i=0;i<buf.length;i+=32768)bin+=String.fromCharCode.apply(null,buf.subarray(i,i+32768));
  return PUB_VIEW+'#'+btoa(bin).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'')}
-function plLinkPrep(){const tid=oneT();if(!tid||S.v!='plan')return;const key=tid+'|'+(PL.safe!==false)+'|'+JSON.stringify(plOf(tid).plan||'')+'|'+db.fl.length+db.ht.length+db.tr.length+db.ot.length;
+function plLinkPrep(){const tid=oneT();if(!tid||S.v!='plan')return;const key=tid+'|'+JSON.stringify(plOf(tid).plan||'')+'|'+db.fl.length+db.ht.length+db.tr.length+db.ot.length;
  if(PL.lk&&PL.lk.key==key)return;PL.lk={key,url:''};if(typeof CompressionStream=='undefined'){PL.lk.err='這個瀏覽器不支援產生連結，請改用下載網頁';return}
- pubLink(T(tid),PL.safe!==false).then(u=>{if(PL.lk&&PL.lk.key==key){PL.lk.url=u;const b=document.getElementById('lkbtn');if(b){render()}}}).catch(()=>{if(PL.lk)PL.lk.err='連結產生失敗'})}
+ pubLink(T(tid)).then(u=>{if(PL.lk&&PL.lk.key==key){PL.lk.url=u;const b=document.getElementById('lkbtn');if(b){render()}}}).catch(()=>{if(PL.lk)PL.lk.err='連結產生失敗'})}
 function plLinkCopy(){const u=PL.lk&&PL.lk.url;if(!u)return;cpText(u,'已複製連結（'+u.length.toLocaleString()+' 字）');PL.lkShow=true;render()}
 
 async function plPub(){const tid=oneT(),t=T(tid);if(!tid||PL.pub)return;PL.pub=1;render();
- try{const safe=PL.safe!==false,html=pubHtml(t,safe),name=t.name.replace(/^\d{6}/,'')+'-行程網頁.html';let dls=null;try{dls=await claude.use('downloads')}catch(e){}
+ try{const html=pubHtml(t),name=t.name.replace(/^\d{6}/,'')+'-行程網頁.html';let dls=null;try{dls=await claude.use('downloads')}catch(e){}
   if(!dls){cpText(html,'無法下載，已複製網頁原始碼');throw {code:'shown'}}
   await dls.save({filename:name,data:html});tip('網頁檔已儲存，可以直接傳給同行的人')}
- catch(e){const k=e&&e.code;if(k&&k!='declined'&&k!='shown'){try{cpText(pubHtml(t,PL.safe!==false),'無法下載，已複製網頁原始碼')}catch(_){tip('發佈失敗（'+k+'）')}}}
+ catch(e){const k=e&&e.code;if(k&&k!='declined'&&k!='shown'){try{cpText(pubHtml(t),'無法下載，已複製網頁原始碼')}catch(_){tip('發佈失敗（'+k+'）')}}}
  PL.pub=null;render()}
 
 </script></body></html>
