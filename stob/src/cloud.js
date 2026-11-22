@@ -431,3 +431,4 @@ function adBk(){const B=ADS.bk,c0=bkCount(db),row=(l,a,b)=>`<tr><td>${l}</td><td
 function bkRestore(){const B=ADS.bk;if(!B||!B.data||B.errs.length||!ADS.bkAck||!canWrite())return;ADS.undo=JSON.stringify(db);const keep=db.imgs;applyDb(B.data);db.imgs=keep.filter(k=>ORDIMG[k]);ADS.imp='';ADS.bk=null;ADS.bkAck=false;cloudSave();tip('已還原，可在「管理 › 備份」復原');render()}
 function bkUndo(){if(!ADS.undo||!canWrite())return;const keep=db.imgs;applyDb(JSON.parse(ADS.undo));db.imgs=keep.filter(k=>ORDIMG[k]);ADS.undo=null;cloudSave();tip('已回到還原前的資料');render()}
 function bkImport(){ADS.bk=bkCheck(ADS.imp);ADS.bkAck=false;render()}
+function toTop(){if(S.v!=='home'){go('home');return}scrollTo({top:0,behavior:'smooth'})}

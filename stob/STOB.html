@@ -17,6 +17,9 @@
 .border-stone-700{border-color:rgb(var(--acc)/1)}
 .bg-card{box-shadow:0 1px 2px rgb(70 45 25/.04),0 8px 20px -10px rgb(70 45 25/.14)}
 .bg-card.rounded-lg{border-radius:.875rem}
+.stm{cursor:pointer;-webkit-tap-highlight-color:transparent;transition:transform .12s ease}
+.stm:active{transform:scale(.92)}
+.stm:focus-visible{outline:2px solid rgb(var(--gold));outline-offset:2px}
 h1,h2,.text-2xl{font-family:"Huninn","Noto Sans TC",serif}
 .text-2xl.tracking-wider{font-family:inherit}
 h1{color:rgb(var(--s900));font-weight:600;letter-spacing:.08em}
@@ -1146,8 +1149,9 @@ function vCis(){ciInit();const pp=shEnsure(),t=T(S.ct),gs=famRows(t);
  return `<h2 class="sr">每人行程單</h2>${tsel}<div class="text-sm text-stone-500 mb-1">選人（可多選）</div>${who}${panel}<div class="flex gap-2 flex-wrap mb-2"><button type="button" class="pbtn" onclick="shImg()">存成圖片</button><button type="button" class="${BT}" onclick="shCopy()">複製文字</button></div><div class="sheet" id="sheet">${shInner()}</div>`}
 
 const VIEWS={home:vHome,cip:vCip,cis:vCis,ci:()=>{NOCP=1;try{return vCia()}finally{NOCP=0}},cit:vCit,cio:vCio,mem:vMem,fl:vFl,ht:vHt,tr:vTr,ot:vOt,cost:vCost,person:vPerson,cia:()=>{NOCP=1;try{return vCia()}finally{NOCP=0}},cih:()=>{NOCP=1;try{return vCih()}finally{NOCP=0}}};
-function render(keep=true){const A=document.getElementById('app'),op=keep?[...A.querySelectorAll('details')].map(e=>e.open):null,y=scrollY;A.innerHTML=`<div class="stk"><div class="pt-4 hdr"><h1 class="text-2xl font-medium tracking-wide">${inCi()?'店家報到':'<span class="sth"><span class="stm" aria-hidden="true"><i></i>STOB</span><span class="stw"><b>旅遊訂單</b><small>Share Travel Order Book</small></span></span>'+(typeof cloudBadge=='function'?cloudBadge():'')}</h1>${inCi()?`<button type="button" class="hbtn" onclick="go('home')"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg><span>返回</span></button>`:`<button type="button" class="hbtn" onclick="go('cia')"><svg viewBox="0 0 24 24" aria-hidden="true">${NAVI.cia}</svg><span>店家報到</span></button>`}</div>
+function render(keep=true){const A=document.getElementById('app'),op=keep?[...A.querySelectorAll('details')].map(e=>e.open):null,y=scrollY;A.innerHTML=`<div class="stk"><div class="pt-4 hdr"><h1 class="text-2xl font-medium tracking-wide">${inCi()?'店家報到':'<span class="sth"><span class="stm" role="button" tabindex="0" aria-label="回到頁首" onclick="toTop()" onkeydown="if(event.keyCode==13||event.keyCode==32){event.preventDefault();toTop()}"><i></i>STOB</span><span class="stw"><b>旅遊訂單</b><small>Share Travel Order Book</small></span></span>'+(typeof cloudBadge=='function'?cloudBadge():'')}</h1>${inCi()?`<button type="button" class="hbtn" onclick="go('home')"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg><span>返回</span></button>`:`<button type="button" class="hbtn" onclick="go('cia')"><svg viewBox="0 0 24 24" aria-hidden="true">${NAVI.cia}</svg><span>店家報到</span></button>`}</div>
 ${inCi()?'':xNav()}</div>${VIEWS[S.v]()}<div style="height:4.5rem"></div>${pfab()}`;A.querySelectorAll('input[data-ind]').forEach(e=>e.indeterminate=true);if(op){const ds=A.querySelectorAll('details');if(ds.length==op.length)ds.forEach((e,i)=>e.open=op[i]);scrollTo(0,y)}}
+function toTop(){if(S.v!=='home'){go('home');return}scrollTo({top:0,behavior:'smooth'})}
 function go(v,x){S.v=v;S.focus=x||'';render(false);try{history.pushState(null,'','#'+v+(x?'-'+x:''))}catch(e){}scrollTo(0,0)}
 function route(){const h=location.hash.slice(1),i=h.indexOf('-'),v=i<0?h:h.slice(0,i);S.v=VIEWS[v]?v:'home';S.focus=VIEWS[v]&&i>=0?h.slice(i+1):'';render(false)}
 

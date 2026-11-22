@@ -79,3 +79,6 @@ section>h3{letter-spacing:.02em}
 .stw b{font-family:"Huninn","Noto Sans TC",sans-serif;font-weight:400;font-size:1.6rem;letter-spacing:.08em;color:rgb(var(--s900))}
 .stw small{margin-top:.3rem;font-family:"Noto Sans TC",system-ui,sans-serif;font-size:.64rem;font-weight:600;letter-spacing:.14em;color:rgb(var(--goldt));opacity:.9}
 #app h1:has(.sth){font-size:inherit!important;letter-spacing:0!important}
+.stm{cursor:pointer;-webkit-tap-highlight-color:transparent;transition:transform .12s ease}
+.stm:active{transform:scale(.92)}
+.stm:focus-visible{outline:2px solid rgb(var(--gold));outline-offset:2px}
