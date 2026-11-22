@@ -4,41 +4,42 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
-<meta name="theme-color" content="#0f4c52">
+<meta name="theme-color" content="#4B3A52">
 <title>安裝偏航 DETOUR</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Huninn&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Huninn&family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@500;600&family=Cormorant+Garamond:wght@500;600&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#f3f6f5;--card:#fff;--ink:#1c2529;--mut:#5f7075;--line:#dce6e6;--acc:#146c72;--hd:#0f4c52;--tag:#e8a93a;--tagt:#3a2806}
-@media (prefers-color-scheme:dark){:root{--bg:#101719;--card:#182124;--ink:#ecf2f3;--mut:#9cadb1;--line:#2a373b;--acc:#5ec2c0;--hd:#0f4c52}}
+:root{--bg:#F9F2ED;--card:#FFFBF8;--ink:#2C232F;--mut:#6C5C67;--line:#E9DCD5;--acc:#8F5468;--hd:#4B3A52;--tag:#E0C496;--tagt:#4A3414}
+@media (prefers-color-scheme:dark){:root{--bg:#1A1521;--card:#241E2E;--ink:#F7F2F8;--mut:#B6A9BC;--line:#3A3048;--acc:#E8AABA;--hd:#2B2240}}
 *{box-sizing:border-box}
 html{background:var(--bg)}
-body{margin:0;font:16px/1.7 "Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;color:var(--ink);background:var(--bg);-webkit-text-size-adjust:100%}
-header{background:var(--hd);color:#f3f6f5;padding:2.2rem 1.25rem 2rem}
-.w{max-width:560px;margin:0 auto}
+body{margin:0;font:16px/1.75 "Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;color:var(--ink);background:var(--bg);-webkit-text-size-adjust:100%}
+header{background:linear-gradient(135deg,var(--hd),#6B4560);color:#F9F2ED;padding:2.2rem 1.25rem 2rem}
+.w{max-width:640px;margin:0 auto}
 .brand{display:flex;align-items:center;gap:.8rem}
 .tag{position:relative;display:inline-flex;align-items:center;justify-content:center;width:4.2rem;height:2.5rem;padding-left:1.25rem;background:var(--tag);color:var(--tagt);font-family:"Huninn","Noto Sans TC",sans-serif;font-size:.78rem;letter-spacing:.08em;clip-path:polygon(28% 0,100% 0,100% 100%,28% 100%,0 50%);border-radius:.35rem;transform:rotate(-7deg)}
 .tag i{position:absolute;left:.72rem;top:50%;width:.44rem;height:.44rem;margin-top:-.22rem;border-radius:50%;background:var(--hd)}
-h1{margin:0;font-family:"Huninn","Noto Sans TC",sans-serif;font-weight:400;font-size:1.75rem;line-height:1.25;letter-spacing:.05em}
-header p{margin:.9rem 0 0;color:#cfe2e1;font-size:.95rem}
+h1{margin:0;font-family:"Noto Serif TC","Songti TC",serif;font-weight:600;font-size:1.75rem;line-height:1.25;letter-spacing:.05em}
+header p{margin:.9rem 0 0;color:#EBD9E0;font-size:.95rem}
 main{padding:1.2rem 1.1rem 3rem}
-.card{background:var(--card);border:1px solid var(--line);border-radius:1.1rem;padding:1.1rem 1.15rem;margin-bottom:.9rem}
+.card{background:var(--card);border:1px solid var(--line);border-radius:1.1rem;padding:1.15rem 1.2rem;margin-bottom:.95rem;box-shadow:0 14px 30px -22px rgba(96,52,74,.45)}
 .step{display:grid;grid-template-columns:2.4rem 1fr;gap:.85rem;align-items:start}
-.n{display:inline-flex;align-items:center;justify-content:center;width:2.4rem;height:2.4rem;border-radius:50%;background:color-mix(in srgb,var(--acc) 13%,transparent);color:var(--acc);font-family:"Huninn","Noto Sans TC",sans-serif;font-size:1.05rem}
-h2{margin:.2rem 0 .3rem;font-size:1.08rem}
+.n{display:inline-flex;align-items:center;justify-content:center;width:2.4rem;height:2.4rem;border-radius:50%;background:color-mix(in srgb,var(--acc) 13%,transparent);color:var(--acc);font-family:"Cormorant Garamond","Noto Serif TC",serif;font-weight:600;font-size:1.3rem}
+h2{margin:.2rem 0 .3rem;font-size:1.22rem;font-family:"Noto Serif TC","Songti TC",serif;font-weight:600;letter-spacing:.03em;color:var(--acc)}
 .step p{margin:0 0 .5rem;color:var(--mut);font-size:.93rem}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:.4rem;min-height:46px;padding:.55rem 1.2rem;border-radius:999px;border:0;background:var(--acc);color:var(--card);font:inherit;font-weight:700;font-size:.98rem;text-decoration:none;cursor:pointer}
 .btn.ghost{background:transparent;color:var(--acc);border:1.5px solid var(--acc)}
-.btn.done{background:#2f8a4b}
+.btn.done{background:#2f8a4b;color:#fff}
 .prompt{margin:.6rem 0 .7rem;padding:.75rem .9rem;border:1.5px dashed var(--line);border-radius:.8rem;font-size:.92rem;line-height:1.6;user-select:all;-webkit-user-select:all;word-break:break-all;color:var(--ink)}
 .note{font-size:.85rem;color:var(--mut);margin:.4rem 0 0}
 details{margin-top:.2rem}
+details+details{margin-top:.7rem}
 summary{cursor:pointer;font-weight:700;padding:.2rem 0}
 details p,details li{color:var(--mut);font-size:.92rem}
 ul{padding-left:1.2rem;margin:.4rem 0}
 a{color:var(--acc)}
 :focus-visible{outline:2px solid var(--acc);outline-offset:2px}
-footer{text-align:center;color:var(--mut);font-size:.8rem;padding:0 1rem 2.5rem}
+footer{text-align:center;color:var(--mut);font-size:.82rem;padding:0 1rem 2.5rem}
 </style>
 </head>
 <body>
@@ -81,7 +82,9 @@ footer{text-align:center;color:var(--mut);font-size:.8rem;padding:0 1rem 2.5rem}
   <details>
    <summary>Claude 說下載失敗、網路被關閉？（備用做法）</summary>
    <p>有些對話的程式碼環境沒有網路，Claude 會抓不到檔案。改成自己附加檔案：先下載檔案，再開新對話，用「＋」附加它，並貼上下面這句（這句不需要上網就能照做）。</p>
-   <a class="btn ghost" href="DETOUR.html" download="DETOUR.html">下載 DETOUR.html</a>
+   <a class="btn ghost" id="dl" href="DETOUR.html" download="DETOUR.html">下載 DETOUR.html</a>
+   <p class="note" id="dlmsg" hidden></p>
+   <p class="note" id="inapp" hidden>你現在可能是在 LINE 或其他 App 內建的瀏覽器，這類瀏覽器常常不能下載檔案。請點右上角（或選單）的「用 Safari／Chrome 開啟」，換到瀏覽器再按一次下載。</p>
    <div class="prompt" id="prompt2">請把我附加的 DETOUR.html 原封不動發佈成我的 Claude 網頁（artifact），標題「偏航 DETOUR」，入口檔名 index.html，不要修改檔案內容。發佈時幫這個網頁開啟（declare）這些功能：{"db":{"rules":[{"path":"","read":"admin","write":"admin"},{"path":"data/users/{self}","read":"interact","write":"interact"}]},"user":{},"sample":{"images":true},"downloads":true}。做完把網址給我；如果這個帳號不能建立網頁或開啟這些功能，請直接告訴我是哪一步做不到，不要改用其他方式。</div>
    <button type="button" class="btn" id="copy2">複製這句話</button>
   </details>
@@ -106,6 +109,35 @@ footer{text-align:center;color:var(--mut);font-size:.8rem;padding:0 1rem 2.5rem}
  function done(){b.textContent='已複製';b.classList.add('done');ok.hidden=false}
  function fallback(){var r=document.createRange();r.selectNodeContents(p);var s=getSelection();s.removeAllRanges();s.addRange(r);try{if(document.execCommand('copy')){done();return}}catch(e){}ok.hidden=false}
  b.addEventListener('click',function(){var t=p.textContent.trim();if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,fallback)}else fallback()});
+})();
+</script>
+<script>
+(function(){
+ var a=document.getElementById('dl'),m=document.getElementById('dlmsg'),ia=document.getElementById('inapp');
+ if(!a)return;
+ if(/Line\/|FBAN|FBAV|Instagram|MicroMessenger|MessengerForiOS|; wv\)/i.test(navigator.userAgent))ia.hidden=false;
+ function msg(t){m.textContent=t;m.hidden=false}
+ a.addEventListener('click',function(e){
+  if(!window.fetch||!window.Blob)return;
+  e.preventDefault();
+  a.textContent='下載中…';
+  fetch('DETOUR.html',{cache:'no-store'}).then(function(r){if(!r.ok)throw 0;return r.arrayBuffer()}).then(function(buf){
+   a.textContent='下載 DETOUR.html';
+   var f=null;try{f=new File([buf],'DETOUR.html',{type:'text/html'})}catch(x){}
+   var mobile=/iPhone|iPad|Android/i.test(navigator.userAgent);
+   if(mobile&&f&&navigator.canShare&&navigator.canShare({files:[f]})){
+    navigator.share({files:[f],title:'DETOUR.html'}).then(function(){msg('請在跳出的選單選「儲存到檔案」（或存到 Chrome／下載），然後回到 Claude 對話用「＋」附加這個檔案。')},function(err){if(err&&err.name!=='AbortError')save(buf)});
+    return;
+   }
+   save(buf);
+  }).catch(function(){a.textContent='下載 DETOUR.html';msg('下載沒成功。請換到 Safari／Chrome 開這個頁面再試；或長按按鈕選「下載連結檔案」。');location.href='DETOUR.html'});
+ });
+ function save(buf){
+  var u=URL.createObjectURL(new Blob([buf],{type:'application/octet-stream'})),b=document.createElement('a');
+  b.href=u;b.download='DETOUR.html';document.body.appendChild(b);b.click();b.remove();
+  setTimeout(function(){URL.revokeObjectURL(u)},4000);
+  msg('已開始下載。到手機的「檔案」App 或瀏覽器的下載清單找 DETOUR.html，再附加到 Claude 對話。');
+ }
 })();
 </script>
 </body>
