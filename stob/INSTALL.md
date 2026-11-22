@@ -2,8 +2,12 @@
 
 使用者想在自己的 Claude 帳號裡建立一份「STOB 旅遊訂單」網頁（整理旅遊訂單的工具，資料存在使用者自己的帳號）。請照下面步驟做，**不要修改檔案內容**。
 
-1. 取得檔案：下載 `https://raw.githubusercontent.com/jade19880309/travel-public/main/stob/STOB.html`（約 310 KB 的單一 HTML 檔）。
-   - 下載不到的話，請使用者打開 `https://jade19880309.github.io/travel-public/stob/`，按「下載 STOB.html」，再把檔案附加到這個對話，然後用附加的檔案繼續。
+1. 取得檔案：**用程式碼執行環境（shell）下載**，不要用網頁擷取／web fetch 工具（那會把 HTML 轉成文字，檔案就壞了）：
+   ```
+   curl -fsSL -o STOB.html https://raw.githubusercontent.com/jade19880309/travel-public/main/stob/STOB.html
+   ```
+   下載後確認：檔案約 340–360 KB、開頭是 `<!DOCTYPE html>`、裡面有 `STOB`。
+   - 下載不到（沒有程式碼執行、網路被擋、檔案不對）的話，請使用者打開 `https://jade19880309.github.io/travel-public/stob/`，按「下載 STOB.html」，再把檔案附加到這個對話，然後用附加的檔案繼續。
 2. 把這個檔案**原封不動**發佈成使用者的新網頁（artifact），標題用「STOB 旅遊訂單」，入口檔名 `index.html`。
 3. 幫這個網頁開啟（declare）以下功能，完整設定如下：
 
