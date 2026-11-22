@@ -91,3 +91,49 @@ button[disabled]{opacity:.55}
 .pllk{width:100%;margin-top:.45rem;font-size:.8rem;color:rgb(var(--s500))}
 .pllk.long{color:rgb(185 28 28)}
 .pllk small{display:block;font-size:.75rem}
+/* ---- 鎖定提示列 ---- */
+.lockbar{position:fixed;left:.75rem;right:.75rem;top:.75rem;z-index:80;display:flex;align-items:center;gap:.6rem;padding:.6rem .8rem;border-radius:.7rem;background:rgb(254 242 242);color:rgb(153 27 27);border:1px solid rgb(252 165 165);box-shadow:0 6px 20px rgb(0 0 0/.12);font-size:.88rem;line-height:1.35}
+.lockbar[hidden]{display:none}
+.lockbar span{flex:1;min-width:0}
+.lockbar button{flex:none;min-height:44px;padding:.4rem .9rem;border-radius:.5rem;border:0;background:rgb(185 28 28);color:#fff;font-weight:600}
+/* ---- AI 修改逐欄位預覽 ---- */
+.aipv{margin-top:.7rem;border-top:1px solid rgb(var(--s500)/.15);padding-top:.6rem}
+.aio{border:1px solid rgb(var(--s500)/.2);border-radius:.6rem;padding:.55rem .65rem;margin-top:.45rem}
+.aio.bad{border-color:rgb(252 165 165);background:rgb(254 242 242/.6)}
+.aio.del{border-color:rgb(253 186 116)}
+.aioh{display:flex;align-items:center;gap:.55rem;min-height:44px;cursor:pointer}
+.aioh input{width:1.25rem;height:1.25rem;flex:none}
+.aix{flex:none;width:1.25rem;text-align:center;color:rgb(185 28 28);font-weight:700}
+.aiorows{margin:.2rem 0 0 1.8rem}
+.aior{display:flex;gap:.5rem;font-size:.85rem;padding:.15rem 0;border-top:1px dashed rgb(var(--s500)/.15)}
+.aior:first-child{border-top:0}
+.aiok{flex:0 0 5.5em;color:rgb(var(--s500))}
+.aiov{flex:1;min-width:0;word-break:break-word}
+.aiov s{color:rgb(var(--s500))}
+.aiov em{display:block;font-style:normal;color:rgb(185 28 28);font-size:.8rem}
+.aior.bad .aiov b{color:rgb(185 28 28)}
+.aioe{margin:.25rem 0 0 1.8rem;font-size:.8rem;color:rgb(185 28 28)}
+/* ---- 長表單：固定在底部的操作列 ---- */
+.adbar{position:sticky;bottom:0;z-index:5;display:flex;flex-wrap:wrap;gap:.5rem;margin:.8rem -.25rem 0;padding:.6rem .25rem calc(.6rem + env(safe-area-inset-bottom));background:linear-gradient(to bottom,rgb(var(--card,255 255 255)/0),rgb(var(--card,255 255 255)/.96) 30%);}
+.adbar>button{min-height:44px}
+.adbar>button[disabled]{opacity:.45}
+.adform{scroll-margin-top:8.5rem}
+.bkr .adbar,.pubchk .adbar{background:none}
+.adform input,.adform select,.adform textarea,.adta,.adjs,#lockbar button{font-size:16px!important}
+.adck{min-height:44px;align-items:center}
+.adx,.plx{min-width:44px;min-height:44px}
+/* ---- 還原檢查報告 ---- */
+.bkr{margin-top:.7rem;padding:.65rem .75rem;border-radius:.6rem;background:rgb(var(--s500)/.06)}
+.bkr.bad{background:rgb(254 242 242);color:rgb(153 27 27)}
+.bkr ul{margin:.3rem 0 0 1.1rem;list-style:disc;font-size:.85rem}
+.bkt{width:100%;margin:.45rem 0;font-size:.88rem;border-collapse:collapse}
+.bkt th,.bkt td{padding:.25rem .3rem;text-align:right;border-bottom:1px solid rgb(var(--s500)/.15)}
+.bkt th:first-child,.bkt td:first-child{text-align:left}
+.bkw{margin:.3rem 0;list-style:none!important;padding:0;font-size:.82rem;color:rgb(146 64 14)}
+.adyes[disabled]{opacity:.4}
+/* ---- 公開網頁匯出前檢查 ---- */
+.pubchk{flex-basis:100%;margin-top:.7rem;padding:.65rem .75rem;border-radius:.6rem;background:rgb(255 251 235);color:rgb(120 53 15);border:1px solid rgb(253 230 138)}
+.pubchk ul{margin:.45rem 0 0;padding:0;list-style:none;font-size:.86rem}
+.pubchk li{padding:.2rem 0;border-top:1px dashed rgb(253 230 138)}
+.pubchk li b{margin-right:.4rem}
+.pubchk li small{display:block;color:rgb(146 64 14/.8)}

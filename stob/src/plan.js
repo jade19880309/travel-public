@@ -2,7 +2,7 @@
    建議行程：依訂單（航班、住宿、交通、門票）＋偏好，由 Claude 排出每日大綱＋細項；
    可單日重排、一句話修改，存在雲端；可匯出 A4 PDF 列印存檔
    ===================================================================== */
-const PL={busy:'',err:'',ctl:null,ask:{},conf:false,edit:'',dl:null};
+const PL={busy:'',err:'',ctl:null,ask:{},conf:false,edit:'',dl:null,chk:null,pal:{}};
 SUB.splice(SUB.length-1,0,['plan','行程']);
 const PACE=['輕鬆（每天 2–3 個點）','適中','緊湊（想多跑一些）'];
 const addD=(x,n)=>{const t=pd(x);t.setDate(t.getDate()+n);return t.toLocaleDateString('sv-SE')};
@@ -46,19 +46,19 @@ const PLAN_RULES=`排行程規則：
 function plSave(){cloudSave()}
 function plPref(tid,k,v){const P=plOf(tid);P.prefs=P.prefs||{};P.prefs[k]=v;clearTimeout(PL.pt);PL.pt=setTimeout(plSave,800)}
 function plErr(e){return errTxt(e)}
-async function plGen(){const tid=oneT(),t=T(tid);if(!tid||PL.busy||!CLD.sample)return;PL.busy='all';PL.err='';PL.conf=false;render();
+async function plGen(){const tid=oneT(),t=T(tid);if(!tid||PL.busy||!CLD.sample||!canWrite())return;PL.busy='all';PL.err='';PL.conf=false;render();
  try{PL.ctl=new AbortController();const r=obj(await CLD.sample.json(`你是專業的旅遊行程規劃師。請依下面的資料，排出這趟旅程每天的建議行程。\n\n${planCtx(t)}\n\n${PLAN_RULES}\n\n${PLAN_FMT}`,{signal:PL.ctl.signal,cache:false}));
   if(!arr(r.days).length)throw {code:'invalid_json'};plOf(tid).plan=plNorm(r,t);plOf(tid).at=Date.now();plSave()}
  catch(e){PL.err=plErr(e)}PL.busy='';PL.ctl=null;render()}
 function plNorm(r,t){const ns=nightStay(t),days=arr(r.days).map(d0=>({date:String(d0.date||''),title:String(d0.title||''),area:String(d0.area||''),hotel:String(d0.hotel||''),items:arr(d0.items).map(i=>({time:String(i.time||''),title:String(i.title||''),detail:String(i.detail||''),move:String(i.move||''),q:String(i.q||i.title||''),booked:!!i.booked,cost:String(i.cost||'')}))}));
  days.forEach(x=>{if(ns[x.date])x.hotel=ns[x.date].name});const td=tDays(t),days2=td.length?days.filter(x=>td.includes(x.date)):days;days.length=0;days.push(...days2);days.sort((a,b)=>a.date.localeCompare(b.date));
  return {title:String(r.title||''),summary:String(r.summary||''),tips:arr(r.tips).map(String),days}}
-async function plDay(i){const tid=oneT(),t=T(tid),P=plOf(tid),cur=P.plan&&P.plan.days[i];if(!cur||PL.busy)return;const ask=String(PL.ask[i]||'').trim();PL.busy='d'+i;PL.err='';render();
+async function plDay(i){if(!canWrite())return;const tid=oneT(),t=T(tid),P=plOf(tid),cur=P.plan&&P.plan.days[i];if(!cur||PL.busy)return;const ask=String(PL.ask[i]||'').trim();PL.busy='d'+i;PL.err='';render();
  const others=P.plan.days.map((x,j)=>j==i?'':`${x.date} ${x.title}：${x.items.map(y=>y.title).join('、')}`).filter(Boolean).join('\n');
  try{PL.ctl=new AbortController();const r=obj(await CLD.sample.json(`你是專業的旅遊行程規劃師。請重新安排 ${cur.date} 這一天的行程，${ask?'使用者的要求：'+ask:'給一個不同的建議（換掉大部分非已訂的點）'}。\n\n${planCtx(t)}\n\n其他天已經安排（不要重複這些地點）：\n${others}\n\n這一天目前的安排：${JSON.stringify(cur)}\n\n${PLAN_RULES}\n\n只回傳這一天，JSON 格式：{"date":"${cur.date}","title":"","area":"","hotel":"","items":[{"time":"","title":"","detail":"","move":"","q":"","booked":false,"cost":""}]}`,{signal:PL.ctl.signal,cache:false}));
   const nd=plNorm({days:[r]},t).days[0];if(!nd||!nd.items.length)throw {code:'invalid_json'};nd.date=cur.date;P.plan.days[i]=nd;PL.ask[i]='';plSave()}
  catch(e){PL.err=plErr(e)}PL.busy='';PL.ctl=null;render()}
-async function plEdit(){const tid=oneT(),t=T(tid),P=plOf(tid),q=String(PL.edit||'').trim();if(!q||!P.plan||PL.busy)return;PL.busy='edit';PL.err='';render();
+async function plEdit(){if(!canWrite())return;const tid=oneT(),t=T(tid),P=plOf(tid),q=String(PL.edit||'').trim();if(!q||!P.plan||PL.busy)return;PL.busy='edit';PL.err='';render();
  try{PL.ctl=new AbortController();const r=obj(await CLD.sample.json(`你是專業的旅遊行程規劃師。使用者想修改已排好的行程：「${q}」\n\n${planCtx(t)}\n\n目前行程：${JSON.stringify(P.plan.days)}\n\n${PLAN_RULES}\n\n只回傳有變動的天（整天完整內容），JSON：{"summary":"一句話說明改了什麼","days":[{"date":"","title":"","area":"","hotel":"","items":[…]}]}`,{signal:PL.ctl.signal,cache:false}));
   const nd=plNorm({days:r.days},t).days;if(!nd.length)throw {code:'invalid_json'};nd.forEach(x=>{const j=P.plan.days.findIndex(y=>y.date==x.date);if(j>=0)P.plan.days[j]=x;else P.plan.days.push(x)});P.plan.days.sort((a,b)=>a.date.localeCompare(b.date));
   PL.edit='';plSave();tip(r.summary?String(r.summary).slice(0,40):'已修改')}
@@ -78,7 +78,7 @@ function vPlan(){const head=`<h2 class="sr">🗺 建議行程</h2>${tbar()}`;con
  const gen=`<div class="flex gap-2 items-center flex-wrap mb-3">${pl?(PL.conf?`<button type="button" class="adyes" onclick="plGen()">確定重新產生整份</button><button type="button" class="${BT}" onclick="PL.conf=false;render()">取消</button>`:`<button type="button" class="${BT}" ${b||noAi?'disabled':''} onclick="PL.conf=true;render()">↻ 重新產生整份</button><button type="button" class="${BP}" ${PL.dl?'disabled':''} onclick="plPdf()">${PL.dl?'製作 PDF 中…':'📄 下載 PDF'}</button>${PL.delc?`<button type="button" class="adyes" onclick="plDel()">確定刪除整份行程</button><button type="button" class="${BT}" onclick="PL.delc=false;render()">取消</button>`:`<button type="button" class="${BD}" ${b?'disabled':''} onclick="PL.delc=true;render()">🗑 刪除行程</button>`}`):`<button type="button" class="${BP}" ${b||noAi?'disabled':''} onclick="plGen()">${b=='all'?'排行程中…':'✨ 產生建議行程'}</button>`}${b?`<button type="button" class="${BT}" onclick="plStop()">停止</button><span class="text-sm text-stone-500">${b=='all'?'整份行程約需 1–2 分鐘':'處理中…'}</span>`:''}</div>
   ${noAi&&CLD.st!='load'?'<div class="text-sm text-red-700 mb-2">這個畫面目前無法使用 Claude（需在 Claude 中開啟並允許使用）。</div>':''}${PL.err?`<div class="text-sm text-red-700 mb-2">${esc(PL.err)}</div>`:''}`;
  const pub=`<div class="${CC} plpub"><div class="min-w-0"><div class="font-bold">🌐 發佈成網頁</div><div class="text-sm text-stone-500">把${pl?'行程、':''}航班、住宿、交通時間做成網頁，下載成網頁檔後用 LINE 傳給同行的人，對方不用 Claude 帳號就能打開。</div><div class="text-xs text-stone-500 mt-1">🔒 不含個資：不放姓名、PNR、訂單編號、取票代碼和護照資料。</div></div><div class="plpubb"><button type="button" class="${BP}" ${PL.pub?'disabled':''} onclick="plPub()">${PL.pub?'製作中…':'⬇️ 下載網頁檔'}</button></div>
-</div>`;
+${PUB_CHK()}</div>`;
  if(!pl)return head+prefs+gen+pub;
  const outline=`<div class="${CC} plo"><div class="font-bold text-lg">${esc(pl.title||t.name.replace(/^\d{6}/,''))}</div>${pl.summary?`<p class="text-sm text-stone-600 mt-1">${esc(pl.summary)}</p>`:''}
   <div class="plol">${pl.days.map((x,i)=>`<button type="button" class="plor" onclick="document.getElementById('pld${i}').open=true;document.getElementById('pld${i}').scrollIntoView({behavior:'smooth',block:'start'})"><span class="plod"><b>D${i+1}</b>${d(x.date).slice(5)}<small>${wkd(x.date)}</small></span><span class="plot"><b>${esc(x.title)}</b><small>${esc(x.items.map(y=>y.title).join(' → '))}</small></span></button>`).join('')}</div>
@@ -159,8 +159,8 @@ async function plPdf(){const tid=oneT(),t=T(tid),pl=plOf(tid).plan;if(!pl||PL.dl
  PL.dl=null;render()}
 
 /* ---------- 刪除建議行程／單一項目 ---------- */
-function plDel(){const tid=oneT();if(!tid)return;plOf(tid).plan=null;PL.delc=false;PL.ask={};plSave();render();tip('已刪除建議行程')}
-function plItemDel(i,j){const pl=plOf(oneT()).plan;if(!pl||!pl.days[i])return;pl.days[i].items.splice(j,1);PL.idel='';plSave();render()}
+function plDel(){const tid=oneT();if(!tid||!canWrite())return;plOf(tid).plan=null;PL.delc=false;PL.ask={};plSave();render();tip('已刪除建議行程')}
+function plItemDel(i,j){if(!canWrite())return;const pl=plOf(oneT()).plan;if(!pl||!pl.days[i])return;pl.days[i].items.splice(j,1);PL.idel='';plSave();render()}
 
 /* ---------- 一鍵發佈成網頁：產生獨立 HTML（不需 Claude，可離線、可放 GitHub Pages） ---------- */
 /* 共用：整理一趟旅程要輸出的航班、住宿、交通（只取已採用、未取消） */
@@ -180,38 +180,56 @@ function pubPalette(){const H=[192,205,220,245,265,285,330,350,12,28,95,140,160,
  return {name:H,light:{bg:h(H,30,96),card:'#fff',ink:h(H,25,13),mut:h(H,12,40),line:h(H,22,88),acc:h(H,58,32),hd:h(H,52,20),hdt:h(H,30,92),hdm:h(H,25,78),tag:h(c,78,62),tagt:h(c,60,15)},
   dark:{bg:h(H,22,8),card:h(H,18,12),ink:h(H,15,93),mut:h(H,10,66),line:h(H,15,20),acc:h(H,55,66),hd:h(H,40,16),hdt:h(H,25,92),hdm:h(H,18,72),tag:h(c,70,64),tagt:h(c,60,12)}}}
 
-function pubParts(t,safe){const e=esc,pl=plOf(t.id).plan,ns=nightStay(t),nm=t.name.replace(/^\d{6}/,''),ppl=people(t.id).map(M).filter(Boolean),{segs,hg,tr,pnrs}=tripData(t),C=pubPalette();
- const kv=(l,v)=>v&&!(safe&&/PNR|訂單編號|代碼/.test(l))?`<div class="kv"><span>${e(l)}</span><b>${e(v)}</b></div>`:'';
- const days=tDays(t),dayOf=x=>days.indexOf(x)+1;
- /* 1. 航班 */
- const flH=segs.map(({s,air,L})=>`<article class="card"><div class="ch"><span class="tag">${e(s.dir||'航班')}</span><span class="dt">${wkF(s.date)}</span></div><h3>${e(air)} ${e(s.no)}</h3>
-  <div class="fly"><div><b>${e(s.dep||'—')}</b><small>${e(s.from)}</small></div><i aria-hidden="true">✈</i><div class="r"><b>${e(s.arr||'—')}</b><small>${e(s.to)}</small></div></div>
-  ${L.map(f=>`<div class="sub">${pnrs(f).map(([p,ids])=>kv('訂位代碼 PNR',p)+`<div class="ppl">👤 ${e(whoN(ids))}</div>`).join('')}${kv('訂單編號',f.orderNo)}</div>`).join('')}</article>`).join('');
- /* 2. 飯店 */
- const htH=hg.map(L=>{const h=L[0],q=h.en||h.zh;return `<article class="card"><div class="ch"><span class="tag">${nights(h)} 晚</span><span class="dt">${wkF(h.cin)} → ${wkF(h.cout)}</span></div><h3>${e(h.zh||h.en)}</h3>${h.ori&&h.ori!=h.zh?`<div class="mut">${e(h.ori)}</div>`:''}${h.en&&h.en!=h.zh?`<div class="mut">${e(h.en)}</div>`:''}
-  ${h.addr?`<div class="addr">📍 ${e(h.addr)}</div>`:''}<a class="btn" href="${e(h.map||mapU(q))}" target="_blank" rel="noopener">在 Google 地圖開啟</a>
-  ${L.map(x=>`<div class="sub">${kv('訂單編號',x.orderNo)}${x.rooms.map((r,i)=>`<div class="room"><b>${e(r.type||'房間 '+(i+1))}</b>${r.bf?'・含早餐':''}${r.members.length?`<div class="ppl">👤 ${e(whoN(r.members))}</div>`:''}</div>`).join('')}${x.cancelBy?`<div class="warn">免費取消至 ${e(d(x.cancelBy))}</div>`:''}${!x.paid&&x.payDate?`<div class="warn">付款日 ${e(d(x.payDate))}</div>`:''}</div>`).join('')}</article>`}).join('');
- const trH=tr.map(x=>{const ttl=x.title||[x.type,x.company].filter(Boolean).join(' ');return `<article class="card"><div class="ch"><span class="tag">${e(x.type||'訂單')}</span><span class="dt">${wkF(x.date)}${x.dep?' '+e(x.dep):''}</span></div><h3>${e(ttl)}</h3>${x.title&&x.company?`<div class="mut">${e(x.company)}</div>`:''}
-  ${x.from||x.to?`<div class="route">${e(x.from||'—')} → ${e(x.to||'—')}${x.arr?`<small>抵達 ${e(x.arr)}</small>`:''}</div>`:''}${kv('代碼',x.code)}${kv('訂單編號',x.orderNo)}
-  ${(x.lines||[]).length?`<ul>${x.lines.map(l=>`<li>${e(l)}</li>`).join('')}</ul>`:''}${Object.keys(x.pax||{}).filter(M).length?`<div class="ppl">👤 ${e(whoN(Object.keys(x.pax).filter(M)))}</div>`:''}</article>`}).join('');
- /* 3. 每日行程：每天先大綱、再細節；預設折疊 */
- const dayL=pl?pl.days:days.map(x=>({date:x,title:ns[x]?ns[x].area||'':'',area:'',hotel:ns[x]?ns[x].name:'',items:[]}));
- const planH=`${pl&&pl.summary?`<p class="lead">${e(pl.summary)}</p>`:''}${dayL.map((x,i)=>`<details class="day" id="d${dayOf(x.date)||i+1}" data-date="${e(x.date)}"><summary><span class="dn">D${dayOf(x.date)||i+1}</span><span class="dsm"><b>${wkF(x.date)}${x.title?' '+e(x.title):''}</b>${x.items.length?`<span class="ol">${x.items.map(y=>e(y.title)).join('<i>→</i>')}</span>`:''}<small>${[x.area,x.hotel?'🏨 '+x.hotel:''].filter(Boolean).map(e).join('・')}</small></span><span class="chev" aria-hidden="true"></span></summary>
+/* ---------- 公開行程：個資白名單＋匯出前檢查 ----------
+   pubModel 只挑「白名單欄位」組成一份乾淨資料（不取姓名、PNR、票號、訂單編號、代碼、付款連結、護照、生日）；
+   pubScan 再拿使用者全部資料裡的個資，逐字比對白名單內的自由文字（行程細節、交通重點、提醒…），
+   有比對到就列出來讓使用者決定「遮蔽後下載」；pubParts 只用（遮蔽後的）乾淨資料產生網頁。 */
+function pubModel(t){const pl=plOf(t.id).plan,ns=nightStay(t),{segs,hg,tr}=tripData(t),days=tDays(t);
+ const S=v=>v==null?'':String(v);
+ return {name:S(t.name).replace(/^\d{6}/,''),start:S(t.start),end:S(t.end),days:days.length,
+  flights:segs.map(({s,air})=>({dir:S(s.dir),air:S(air),no:S(s.no),date:S(s.date),dep:S(s.dep),arr:S(s.arr),from:S(s.from),to:S(s.to)})),
+  hotels:hg.map(L=>{const h=L[0];return {zh:S(h.zh),ori:S(h.ori),en:S(h.en),addr:S(h.addr),cin:S(h.cin),cout:S(h.cout),nights:nights(h),
+   orders:L.map(x=>({rooms:arr(x.rooms).map(r=>({type:S(r.type),bf:!!r.bf})),cancelBy:S(x.cancelBy),payDate:x.paid?'':S(x.payDate)}))}}),
+  trans:tr.map(x=>({type:S(x.type),title:S(x.title||[x.type,x.company].filter(Boolean).join(' ')),company:x.title?S(x.company):'',date:S(x.date),dep:S(x.dep),arr:S(x.arr),from:S(x.from),to:S(x.to),lines:arr(x.lines).map(S)})),
+  plan:pl?{title:S(pl.title),summary:S(pl.summary),tips:arr(pl.tips).map(S),days:pl.days.map(y=>({date:S(y.date),title:S(y.title),area:S(y.area),hotel:S(y.hotel),items:arr(y.items).map(z=>({time:S(z.time),title:S(z.title),detail:S(z.detail),move:S(z.move),cost:S(z.cost),q:S(z.q),booked:!!z.booked}))}))}:null,
+  nights:days.map(x=>({date:x,area:ns[x]?S(ns[x].area):'',hotel:ns[x]?S(ns[x].name):''}))}}
+/* 使用者全部資料裡的個資字串（含不在這趟旅程的人與訂單） */
+function pubTokens(){const T=[],add=(v,kind,min)=>{v=String(v||'').trim();if(v.length>=(min||4)&&!T.some(x=>x.v==v))T.push({v,kind})};
+ db.members.forEach(m=>{add(m.zh,'姓名',2);const L=String(m.last||'').trim(),F=String(m.first||'').trim();if(L&&F){[L+' '+F,F+' '+L,L+'/'+F,L+' / '+F,L+', '+F,L+F].forEach(v=>add(v,'英文姓名',4))}add(F,'英文名',4);add(m.pp,'護照號碼',5);if(m.dob){add(m.dob,'生日',8);add(String(m.dob).replace(/-/g,'/'),'生日',8)}});
+ [...db.fl,...db.ht,...db.tr,...db.ot].forEach(x=>{add(x.orderNo,'訂單編號',4);add(x.pnr,'訂位代碼',5);add(x.ticketNo,'機票號碼',6);add(x.code,'取票代碼',4);
+  Object.values(obj(x.pp)).forEach(p=>{add(p&&p.pnr,'訂位代碼',5);add(p&&p.tkt,'機票號碼',6)});arr(x.segs).forEach(s=>add(s.pnr,'訂位代碼',5));arr(x.pays).forEach(q=>add(q&&q.url,'付款連結',8))});
+ return T}
+const PUB_RX=[[/末四碼\s*[:：]?\s*\d{4}/g,'信用卡末四碼'],[/\b(?:\d[ -]?){13,19}\b/g,'疑似卡號'],[/[\w.+-]+@[\w-]+\.[\w.-]+/g,'電子郵件']];
+function pubWalk(m,fn){const go=(o,path)=>{if(typeof o=='string')return fn(o,path);if(Array.isArray(o))return o.map((v,i)=>go(v,path.concat(i)));if(o&&typeof o=='object'){const r={};for(const k in o)r[k]=go(o[k],path.concat(k));return r}return o};return go(m,[])}
+const PUBWHERE={flights:'航班',hotels:'飯店',trans:'交通',plan:'行程',nights:'住宿',name:'旅程名稱',tips:'提醒',days:'每日',items:'項目',lines:'重點',detail:'說明',title:'標題',summary:'摘要',move:'移動',cost:'費用',q:'地圖搜尋',addr:'地址',type:'類型',rooms:'房型'};
+function pubScan(m){const T=pubTokens(),hits=[];
+ pubWalk(m,(s,path)=>{if(!s)return s;const low=s.toLowerCase();
+  T.forEach(t=>{if(low.includes(t.v.toLowerCase()))hits.push({kind:t.kind,v:t.v,where:path.filter(p=>typeof p=='string').map(p=>PUBWHERE[p]||'').filter(Boolean).join('・')})});
+  PUB_RX.forEach(([re,kind])=>{(s.match(re)||[]).forEach(v=>hits.push({kind,v,where:path.filter(p=>typeof p=='string').map(p=>PUBWHERE[p]||'').filter(Boolean).join('・')}))});return s});
+ return hits}
+function pubMask(m){const T=pubTokens().sort((a,b)=>b.v.length-a.v.length);
+ return pubWalk(m,s=>{if(!s)return s;let r=s;T.forEach(t=>{const re=new RegExp(t.v.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'),'gi');r=r.replace(re,'＊＊')});PUB_RX.forEach(([re])=>{r=r.replace(re,'＊＊')});return r})}
+function pubParts(t){const e=esc,M0=pubModel(t),m=pubMask(M0),C=PL.pal&&PL.pal[t.id]||((PL.pal=PL.pal||{})[t.id]=pubPalette());
+ const days=tDays(t),dayOf=x=>days.indexOf(x)+1,nm=m.name;
+ const flH=m.flights.map(s=>`<article class="card"><div class="ch"><span class="tag">${e(s.dir||'航班')}</span><span class="dt">${wkF(s.date)}</span></div><h3>${e(s.air)} ${e(s.no)}</h3>
+  <div class="fly"><div><b>${e(s.dep||'—')}</b><small>${e(s.from)}</small></div><i aria-hidden="true">✈</i><div class="r"><b>${e(s.arr||'—')}</b><small>${e(s.to)}</small></div></div></article>`).join('');
+ const htH=m.hotels.map(h=>`<article class="card"><div class="ch"><span class="tag">${h.nights} 晚</span><span class="dt">${wkF(h.cin)} → ${wkF(h.cout)}</span></div><h3>${e(h.zh||h.en)}</h3>${h.ori&&h.ori!=h.zh?`<div class="mut">${e(h.ori)}</div>`:''}${h.en&&h.en!=h.zh?`<div class="mut">${e(h.en)}</div>`:''}
+  ${h.addr?`<div class="addr">📍 ${e(h.addr)}</div>`:''}<a class="btn" href="${e(mapU(h.en||h.zh))}" target="_blank" rel="noopener">在 Google 地圖開啟</a>
+  ${h.orders.map(x=>`<div class="sub">${x.rooms.map((r,i)=>`<div class="room"><b>${e(r.type||'房間 '+(i+1))}</b>${r.bf?'・含早餐':''}</div>`).join('')}${x.cancelBy?`<div class="warn">免費取消至 ${e(d(x.cancelBy))}</div>`:''}${x.payDate?`<div class="warn">付款日 ${e(d(x.payDate))}</div>`:''}</div>`).join('')}</article>`).join('');
+ const trH=m.trans.map(x=>`<article class="card"><div class="ch"><span class="tag">${e(x.type||'訂單')}</span><span class="dt">${wkF(x.date)}${x.dep?' '+e(x.dep):''}</span></div><h3>${e(x.title)}</h3>${x.company?`<div class="mut">${e(x.company)}</div>`:''}
+  ${x.from||x.to?`<div class="route">${e(x.from||'—')} → ${e(x.to||'—')}${x.arr?`<small>抵達 ${e(x.arr)}</small>`:''}</div>`:''}
+  ${x.lines.length?`<ul>${x.lines.map(l=>`<li>${e(l)}</li>`).join('')}</ul>`:''}</article>`).join('');
+ const dayL=m.plan?m.plan.days:m.nights.map(x=>({date:x.date,title:x.area,area:'',hotel:x.hotel,items:[]}));
+ const planH=`${m.plan&&m.plan.summary?`<p class="lead">${e(m.plan.summary)}</p>`:''}${dayL.map((x,i)=>`<details class="day" id="d${dayOf(x.date)||i+1}" data-date="${e(x.date)}"><summary><span class="dn">D${dayOf(x.date)||i+1}</span><span class="dsm"><b>${wkF(x.date)}${x.title?' '+e(x.title):''}</b>${x.items.length?`<span class="ol">${x.items.map(y=>e(y.title)).join('<i>→</i>')}</span>`:''}<small>${[x.area,x.hotel?'🏨 '+x.hotel:''].filter(Boolean).map(e).join('・')}</small></span><span class="chev" aria-hidden="true"></span></summary>
   <div class="dbody">${x.items.map(y=>`${y.move?`<div class="mv">↓ ${e(y.move)}</div>`:''}<div class="it${y.booked?' bk':''}"><span class="tm">${e(y.time)}</span><div><b>${e(y.title)}</b>${y.booked?'<em>已預訂</em>':''}${y.detail?`<p>${e(y.detail)}</p>`:''}${y.cost?`<small>💴 ${e(y.cost)}</small>`:''}</div>${y.q?`<a class="pin" href="${e(mapU(y.q))}" target="_blank" rel="noopener" aria-label="${e(y.title)} 地圖">📍</a>`:''}</div>`).join('')||'<p class="mut">這天還沒有安排細節。</p>'}</div></details>`).join('')}`;
- /* 4. 注意事項 */
- const tips=pl?pl.tips:[];const tipH=tips.length?`<article class="card"><ul class="tips">${tips.map(x=>`<li>${e(x)}</li>`).join('')}</ul></article>`:'';
- const secs=[['fl','✈️','航班資訊',flH,segs.length+' 段'],['ht','🏨','飯店資訊',htH,hg.length+' 間'],['tr','🚃','交通與票券',trH,tr.length+' 筆'],['plan','🗓','每日行程',planH,dayL.length+' 天'],['tips','💡','注意事項・小提醒',tipH,tips.length+' 則']].filter(s=>s[3]);
- /* 導覽儀表板 */
- const out=segs.find(x=>x.s.dir=='去程')||segs[0],back=[...segs].reverse().find(x=>x.s.dir=='回程')||(segs.length>1?segs[segs.length-1]:null);
- const fx=x=>x?`<b>${e(d(x.s.date).slice(5))} ${e(x.s.no)}</b><small>${e(x.s.dep||'')} ${e(apc(x.s.from)||x.s.from)} → ${e(apc(x.s.to)||x.s.to)}</small>`:'<small>—</small>';
- const nightsN=hg.reduce((a,L)=>a+nights(L[0]),0);
- const dash=`<nav class="jump" aria-label="各區">${secs.map(([k,ic,l,,c])=>`<a href="#${k}"><span>${ic}</span>${l}<small>${c}</small></a>`).join('')}</nav>`;
- const V=o=>Object.entries(o).map(([k,v])=>`--${k}:${v}`).join(';');
- const body=`<header><div class="w"><span class="brand">STOB</span><h1>${e(pl&&pl.title||nm)}</h1><p>${wkF(t.start)} – ${wkF(t.end)}・${days.length} 天</p>${ppl.length?`<p class="ppl">${e(whoN(ppl.map(m=>m.id)))}</p>`:''}</div></header>
-<main>${dash}${secs.map(([k,ic,l,h])=>`<section id="${k}"><h2><span aria-hidden="true">${ic}</span>${l}</h2>${h}</section>`).join('')}</main>
+ const tips=m.plan?m.plan.tips:[];const tipH=tips.length?`<article class="card"><ul class="tips">${tips.map(x=>`<li>${e(x)}</li>`).join('')}</ul></article>`:'';
+ const secs=[['fl','✈️','航班資訊',flH,m.flights.length+' 段'],['ht','🏨','飯店資訊',htH,m.hotels.length+' 間'],['tr','🚃','交通與票券',trH,m.trans.length+' 筆'],['plan','🗓','每日行程',planH,dayL.length+' 天'],['tips','💡','注意事項・小提醒',tipH,tips.length+' 則']].filter(s=>s[3]);
+ const nav=`<nav class="jump" aria-label="各區">${secs.map(([k,ic,l,,c])=>`<a href="#${k}"><span>${ic}</span>${l}<small>${c}</small></a>`).join('')}</nav>`;
+ const title=(m.plan&&m.plan.title)||nm;
+ const body=`<header><div class="w"><span class="brand">STOB</span><h1>${e(title)}</h1><p>${wkF(t.start)} – ${wkF(t.end)}・${days.length} 天</p></div></header>
+<main>${nav}${secs.map(([k,ic,l,h])=>`<section id="${k}"><h2><span aria-hidden="true">${ic}</span>${l}</h2>${h}</section>`).join('')}</main>
 <footer>更新於 ${d(new Date().toLocaleDateString('sv-SE'))}・由 STOB 旅遊訂單產生<br><button type="button" data-act="open">全部展開</button><button type="button" data-act="print">列印</button></footer>`;
- const pb=safe?body.replace(/<(p|div) class="ppl">[^<]*<\/\1>/g,'').replace(/<div class="sub"><\/div>/g,''):body;
- return {C,nm,title:(pl&&pl.title)||nm,short:pubShort(nm),body:pb}}
+ return {C,nm,title,short:pubShort(nm),body,hits:pubScan(M0)}}
 const pubShort=nm=>{nm=String(nm||'行程').replace(/\s+/g,'');return nm.length<=4?nm+'行程':nm.slice(0,6)};
 const PUB_ACT="document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act]');if(!b)return;document.querySelectorAll('details.day').forEach(function(x){x.open=true});if(b.getAttribute('data-act')=='print')print()});";
 /* 主畫面圖示：用網頁的配色＋旅程名稱前兩字（檢視頁 v.js 也用同樣畫法） */
@@ -225,12 +243,24 @@ function pubDoc(P,icon){const e=esc,V=o=>Object.entries(o).map(([k,v])=>`--${k}:
 <style>:root{${V(P.C.light)}}@media (prefers-color-scheme:dark){:root{${V(P.C.dark)}}}
 ${PUB_CSS}
 </style></head><body>${P.body}<script>${PUB_ACT}<\/script></body></html>`}
-function pubHtml(t){const P=pubParts(t,true);return pubDoc(P,pubIcon(P))}
+function pubHtml(t){const P=pubParts(t);return pubDoc(P,pubIcon(P))}
 
 
-async function plPub(){const tid=oneT(),t=T(tid);if(!tid||PL.pub)return;PL.pub=1;render();
- try{const html=pubHtml(t),name=t.name.replace(/^\d{6}/,'')+'-行程網頁.html';let dls=null;try{dls=await claude.use('downloads')}catch(e){}
+async function plPub(force){const tid=oneT(),t=T(tid);if(!tid||PL.pub)return;
+ if(!force){if(PL.pal)delete PL.pal[tid];let P;try{P=pubParts(t)}catch(e){tip('製作失敗');return}
+  if(P.hits.length){PL.chk={tid,hits:P.hits};render();return}}
+ PL.chk=null;PL.pub=1;render();
+ try{const html=pubHtml(t),name=t.name.replace(/^\d{6}/,'')+'-行程網頁.html';
+  const left=pubLeak(html);if(left.length){tip('檢查到疑似個資（'+left[0].kind+'），已停止下載');throw {code:'shown'}}
+  let dls=null;try{dls=await claude.use('downloads')}catch(e){}
   if(!dls){cpText(html,'無法下載，已複製網頁原始碼');throw {code:'shown'}}
   await dls.save({filename:name,data:html});tip('網頁檔已儲存，可以直接傳給同行的人')}
  catch(e){const k=e&&e.code;if(k&&k!='declined'&&k!='shown'){try{cpText(pubHtml(t),'無法下載，已複製網頁原始碼')}catch(_){tip('發佈失敗（'+k+'）')}}}
  PL.pub=null;render()}
+/* 最後一道：掃描完整網頁（去掉圖示的 data URL），確認個資字串都已遮蔽 */
+function pubLeak(html){const h=String(html).replace(/data:[^"')\s]+/g,'').toLowerCase(),out=[];pubTokens().forEach(t=>{if(h.includes(t.v.toLowerCase()))out.push(t)});return out}
+const PUB_CHK=()=>{const c=PL.chk;if(!c||c.tid!=oneT())return '';const g={};c.hits.forEach(x=>{const k=x.kind+'｜'+x.v;(g[k]=g[k]||{kind:x.kind,v:x.v,w:new Set()}).w.add(x.where||'內容')});
+ const mask=v=>v.length<=2?v[0]+'＊':v.slice(0,2)+'＊'.repeat(Math.min(6,v.length-2));
+ return `<div class="pubchk"><div class="font-medium">⚠ 行程內容裡找到 ${Object.keys(g).length} 項疑似個資</div><p class="text-xs mt-1">這些字出現在行程說明、交通重點或提醒裡。下載時會換成「＊＊」，原本的資料不會改。</p>
+ <ul>${Object.values(g).slice(0,12).map(x=>`<li><b>${esc(x.kind)}</b> ${esc(mask(x.v))}<small>${esc([...x.w].join('、'))}</small></li>`).join('')}</ul>
+ <div class="adbar"><button type="button" class="${BP}" onclick="plPub(1)">遮蔽後下載</button><button type="button" class="${BT}" onclick="PL.chk=null;render()">取消</button></div></div>`};
