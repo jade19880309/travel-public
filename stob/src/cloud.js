@@ -71,7 +71,7 @@ function vUp(){const warn=(CLD.st=='off'||CLD.st=='err')&&CLD.msg?`<div class="$
 VIEWS.up=vUp;
 function fabUpd(){let b=document.getElementById('upfab');if(!b){b=document.createElement('button');b.id='upfab';b.type='button';b.className='upfab';b.innerHTML='<span aria-hidden="true">＋</span>上傳訂單';b.onclick=()=>{ADS.res=ADS.res;go('up')};document.body.appendChild(b)}
  b.hidden=S.v=='up'||inCi()||!!document.getElementById('pdfv')}
-{const _r=render;render=function(k){_r(k);try{fabUpd()}catch(e){}try{if(typeof plLinkPrep=='function')plLinkPrep()}catch(e){}}}
+{const _r=render;render=function(k){_r(k);try{fabUpd()}catch(e){}}}
 
 /* ===== 上傳訂單 ===== */
 function adUp(){if(ADS.res)return adPreview();

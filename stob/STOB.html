@@ -1689,7 +1689,7 @@ function vUp(){const warn=(CLD.st=='off'||CLD.st=='err')&&CLD.msg?`<div class="$
 VIEWS.up=vUp;
 function fabUpd(){let b=document.getElementById('upfab');if(!b){b=document.createElement('button');b.id='upfab';b.type='button';b.className='upfab';b.innerHTML='<span aria-hidden="true">＋</span>上傳訂單';b.onclick=()=>{ADS.res=ADS.res;go('up')};document.body.appendChild(b)}
  b.hidden=S.v=='up'||inCi()||!!document.getElementById('pdfv')}
-{const _r=render;render=function(k){_r(k);try{fabUpd()}catch(e){}try{if(typeof plLinkPrep=='function')plLinkPrep()}catch(e){}}}
+{const _r=render;render=function(k){_r(k);try{fabUpd()}catch(e){}}}
 
 /* ===== 上傳訂單 ===== */
 function adUp(){if(ADS.res)return adPreview();
@@ -1968,8 +1968,8 @@ function vPlan(){const head=`<h2 class="sr">🗺 建議行程</h2>${tbar()}`;con
   <div class="text-xs text-stone-500 mt-2">已訂的航班、住宿、交通、門票會自動放進行程，不用另外填。</div></details>`;
  const gen=`<div class="flex gap-2 items-center flex-wrap mb-3">${pl?(PL.conf?`<button type="button" class="adyes" onclick="plGen()">確定重新產生整份</button><button type="button" class="${BT}" onclick="PL.conf=false;render()">取消</button>`:`<button type="button" class="${BT}" ${b||noAi?'disabled':''} onclick="PL.conf=true;render()">↻ 重新產生整份</button><button type="button" class="${BP}" ${PL.dl?'disabled':''} onclick="plPdf()">${PL.dl?'製作 PDF 中…':'📄 下載 PDF'}</button>${PL.delc?`<button type="button" class="adyes" onclick="plDel()">確定刪除整份行程</button><button type="button" class="${BT}" onclick="PL.delc=false;render()">取消</button>`:`<button type="button" class="${BD}" ${b?'disabled':''} onclick="PL.delc=true;render()">🗑 刪除行程</button>`}`):`<button type="button" class="${BP}" ${b||noAi?'disabled':''} onclick="plGen()">${b=='all'?'排行程中…':'✨ 產生建議行程'}</button>`}${b?`<button type="button" class="${BT}" onclick="plStop()">停止</button><span class="text-sm text-stone-500">${b=='all'?'整份行程約需 1–2 分鐘':'處理中…'}</span>`:''}</div>
   ${noAi&&CLD.st!='load'?'<div class="text-sm text-red-700 mb-2">這個畫面目前無法使用 Claude（需在 Claude 中開啟並允許使用）。</div>':''}${PL.err?`<div class="text-sm text-red-700 mb-2">${esc(PL.err)}</div>`:''}`;
- const pub=`<div class="${CC} plpub"><div class="min-w-0"><div class="font-bold">🌐 發佈成網頁</div><div class="text-sm text-stone-500">把${pl?'行程、':''}航班、住宿、交通時間做成網頁，可以下載成檔案，或複製連結貼到 LINE；對方不用 Claude 帳號，用 Safari 打開還能加入主畫面。</div><div class="text-xs text-stone-500 mt-1">🔒 不含個資：不放姓名、PNR、訂單編號、取票代碼和護照資料。</div></div><div class="plpubb"><button type="button" class="${BP}" ${PL.pub?'disabled':''} onclick="plPub()">${PL.pub?'製作中…':'⬇️ 下載網頁檔'}</button><button type="button" class="${BT}" id="lkbtn" ${PL.lk&&PL.lk.url?'':'disabled'} onclick="plLinkCopy()">${PL.lk&&PL.lk.err?'無法產生連結':PL.lk&&PL.lk.url?'🔗 複製連結':'連結準備中…'}</button>${PL.lk&&PL.lk.url?`<a class="${BT}" href="${esc('https://tinyurl.com/api-create.php?url='+encodeURIComponent(PL.lk.url))}" target="_blank" rel="noopener">✂️ 縮短網址</a>`:''}</div>
- ${PL.lk&&PL.lk.url?`<div class="pllk${PL.lk.url.length>5000?' long':''}">連結長度 ${PL.lk.url.length.toLocaleString()} 字${PL.lk.url.length>5000?'：超過 LINE 單則 5,000 字上限，建議改傳網頁檔，或分兩則傳':'・貼到 LINE 給同行的人，用 Safari 打開可「加入主畫面」'}<small>「縮短網址」會用 TinyURL 開一個新頁面，頁面上那行就是短網址，長按複製即可</small>${PL.lkShow?`<textarea class="${IN} adjs mt-1" rows="3" readonly onclick="this.select()">${esc(PL.lk.url)}</textarea><small>若沒複製成功，長按上面的文字全選後複製</small>`:''}</div>`:''}</div>`;
+ const pub=`<div class="${CC} plpub"><div class="min-w-0"><div class="font-bold">🌐 發佈成網頁</div><div class="text-sm text-stone-500">把${pl?'行程、':''}航班、住宿、交通時間做成網頁，下載成網頁檔後用 LINE 傳給同行的人，對方不用 Claude 帳號就能打開。</div><div class="text-xs text-stone-500 mt-1">🔒 不含個資：不放姓名、PNR、訂單編號、取票代碼和護照資料。</div></div><div class="plpubb"><button type="button" class="${BP}" ${PL.pub?'disabled':''} onclick="plPub()">${PL.pub?'製作中…':'⬇️ 下載網頁檔'}</button></div>
+</div>`;
  if(!pl)return head+prefs+gen+pub;
  const outline=`<div class="${CC} plo"><div class="font-bold text-lg">${esc(pl.title||t.name.replace(/^\d{6}/,''))}</div>${pl.summary?`<p class="text-sm text-stone-600 mt-1">${esc(pl.summary)}</p>`:''}
   <div class="plol">${pl.days.map((x,i)=>`<button type="button" class="plor" onclick="document.getElementById('pld${i}').open=true;document.getElementById('pld${i}').scrollIntoView({behavior:'smooth',block:'start'})"><span class="plod"><b>D${i+1}</b>${d(x.date).slice(5)}<small>${wkd(x.date)}</small></span><span class="plot"><b>${esc(x.title)}</b><small>${esc(x.items.map(y=>y.title).join(' → '))}</small></span></button>`).join('')}</div>
@@ -2117,16 +2117,7 @@ function pubDoc(P,icon){const e=esc,V=o=>Object.entries(o).map(([k,v])=>`--${k}:
 ${PUB_CSS}
 </style></head><body>${P.body}<script>${PUB_ACT}<\/script></body></html>`}
 function pubHtml(t){const P=pubParts(t,true);return pubDoc(P,pubIcon(P))}
-/* 複製連結：把網頁內容壓縮進網址 #後面，由共用檢視頁還原（資料不經過任何伺服器） */
-const PUB_VIEW='https://jade19880309.github.io/travel-public/stob/v.html';
-async function pubLink(t){const P=pubParts(t,true),js=JSON.stringify({v:1,t:P.title,n:P.nm,s:P.short,c:P.C,b:P.body});
- const cs=new Blob([js]).stream().pipeThrough(new CompressionStream('deflate-raw')),buf=new Uint8Array(await new Response(cs).arrayBuffer());
- let bin='';for(let i=0;i<buf.length;i+=32768)bin+=String.fromCharCode.apply(null,buf.subarray(i,i+32768));
- return PUB_VIEW+'#'+btoa(bin).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'')}
-function plLinkPrep(){const tid=oneT();if(!tid||S.v!='plan')return;const key=tid+'|'+JSON.stringify(plOf(tid).plan||'')+'|'+db.fl.length+db.ht.length+db.tr.length+db.ot.length;
- if(PL.lk&&PL.lk.key==key)return;PL.lk={key,url:''};if(typeof CompressionStream=='undefined'){PL.lk.err='這個瀏覽器不支援產生連結，請改用下載網頁';return}
- pubLink(T(tid)).then(u=>{if(PL.lk&&PL.lk.key==key){PL.lk.url=u;const b=document.getElementById('lkbtn');if(b){render()}}}).catch(()=>{if(PL.lk)PL.lk.err='連結產生失敗'})}
-function plLinkCopy(){const u=PL.lk&&PL.lk.url;if(!u)return;cpText(u,'已複製連結（'+u.length.toLocaleString()+' 字）');PL.lkShow=true;render()}
+
 
 async function plPub(){const tid=oneT(),t=T(tid);if(!tid||PL.pub)return;PL.pub=1;render();
  try{const html=pubHtml(t),name=t.name.replace(/^\d{6}/,'')+'-行程網頁.html';let dls=null;try{dls=await claude.use('downloads')}catch(e){}
