@@ -1,16 +1,16 @@
 /* ===== 偏航 DETOUR 雙主題：<html data-theme="romantic|navy">，只換 CSS 變數，DOM 與功能不變 ===== */
 :root,[data-theme="romantic"]{--s50:255 249 246;--s100:250 238 238;--s200:242 224 226;--s300:224 203 205;--s400:118 92 92;--s500:104 78 78;--s600:90 66 66;--s700:76 54 54;--s800:66 46 46;--s900:59 42 42;--s950:40 28 28;--card:255 252 250;
  --gold:122 31 44;--goldt:122 31 44;--fc:122 31 44;--fcon:255 249 246;--acc:122 31 44;--acc2:168 77 90;--tag:201 160 106;--tagt:70 46 14;--shd:90 30 40;
- --sun:247 230 232;--sunA:.75;--lav:247 230 232;--hero-bg:linear-gradient(125deg,#FFF9F6,#F7E6E8);--hero-text:#7A1F2C;--hero-sub:#6B4A4A;--hero-edge:rgb(201 160 106/.55);--hero-em:#B07A3A;
+ --sun:247 230 232;--sunA:.75;--lav:247 230 232;--hero-bg:linear-gradient(125deg,#FFF9F6,#F7E6E8);--hero-img:url(@@BANNER_R@@);--hero-veil:linear-gradient(90deg,rgb(255 249 246/.72),rgb(255 249 246/.25) 62%,transparent);--hero-text:#7A1F2C;--hero-sub:#6B4A4A;--hero-edge:rgb(201 160 106/.55);--hero-em:#B07A3A;
  --lg-bg:#7A1F2C;--lg-plane:#FFF9F6;--lg-arc:#C9A06A;--lg-star:#FFF1D8;--fl-arc:#C9A06A;--fl-1:#7A1F2C;--fl-2:#A84D5A;--sxh1:#7A1F2C;--sxh2:#A84D5A}
 [data-theme="navy"]{--s50:247 244 233;--s100:240 236 222;--s200:226 222 206;--s300:205 202 190;--s400:92 102 120;--s500:76 86 104;--s600:60 70 88;--s700:46 56 74;--s800:36 45 60;--s900:31 38 51;--s950:20 26 36;--card:252 250 243;
  --gold:13 43 82;--goldt:13 43 82;--fc:13 43 82;--fcon:247 244 233;--acc:13 43 82;--acc2:30 74 124;--tag:214 178 115;--tagt:60 42 10;--shd:13 43 82;
- --sun:214 178 115;--sunA:.22;--lav:30 74 124;--hero-bg:linear-gradient(125deg,#0D2B52,#1E4A7C);--hero-text:#F7F4E9;--hero-sub:#DCE3EE;--hero-edge:rgb(214 178 115/.6);--hero-em:#D6B273;
+ --sun:214 178 115;--sunA:.22;--lav:30 74 124;--hero-bg:linear-gradient(125deg,#0D2B52,#1E4A7C);--hero-img:url(@@BANNER_N@@);--hero-veil:linear-gradient(90deg,rgb(13 43 82/.55),rgb(13 43 82/.15) 62%,transparent);--hero-text:#F7F4E9;--hero-sub:#DCE3EE;--hero-edge:rgb(214 178 115/.6);--hero-em:#D6B273;
  --lg-bg:#0D2B52;--lg-plane:#F7F4E9;--lg-arc:#D6B273;--lg-star:#F7F4E9;--fl-arc:#D6B273;--fl-1:#F7F4E9;--fl-2:#D6B273;--sxh1:#0D2B52;--sxh2:#1E4A7C}
 @media (prefers-color-scheme: dark){
 :root,[data-theme="romantic"]{--s50:28 18 22;--s100:38 25 30;--s200:52 36 42;--s300:76 56 62;--s400:190 160 166;--s500:204 176 182;--s600:222 198 202;--s700:236 218 220;--s800:246 234 235;--s900:255 248 247;--s950:255 252 251;--card:40 27 32;
  --gold:232 160 172;--goldt:244 190 200;--fc:244 190 200;--fcon:28 18 22;--acc:232 160 172;--acc2:200 120 134;--tag:214 178 120;--tagt:52 36 12;--shd:0 0 0;--sun:122 31 44;--sunA:.4;--lav:90 30 44;
- --hero-bg:linear-gradient(125deg,#3A1820,#2A1519);--hero-text:#FFE3E0;--hero-sub:#E9CFCF;--hero-em:#E3BD85;--lg-bg:#7A1F2C}
+ --hero-bg:linear-gradient(125deg,#3A1820,#2A1519);--hero-img:none;--hero-veil:none;--hero-text:#FFE3E0;--hero-sub:#E9CFCF;--hero-em:#E3BD85;--lg-bg:#7A1F2C}
 [data-theme="navy"]{--s50:10 21 38;--s100:15 30 52;--s200:24 43 70;--s300:42 64 96;--s400:150 168 194;--s500:168 184 206;--s600:190 203 222;--s700:210 220 234;--s800:228 234 244;--s900:247 244 233;--s950:252 250 243;--card:16 32 56;
  --gold:148 184 228;--goldt:176 204 238;--fc:176 204 238;--fcon:10 21 38;--acc:148 184 228;--acc2:120 160 210;--tag:214 178 115;--tagt:50 34 8;--shd:0 0 0;--sun:30 74 124;--sunA:.5;--lav:30 74 124}
 }
@@ -44,9 +44,9 @@ h2.sr::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,rgb(v
 @media (prefers-color-scheme: dark){.stw small em{color:rgb(var(--tag));background:rgb(var(--tag)/.16)}}
 
 /* 首頁標語卡 */
-.dtr-hero{position:relative;overflow:hidden;margin:.3rem 0 1.1rem;padding:1.35rem 1.2rem 1.3rem;border-radius:1.4rem;background:var(--hero-bg);border:1px solid var(--hero-edge);box-shadow:0 18px 36px -24px rgb(var(--shd)/.55)}
+.dtr-hero{position:relative;overflow:hidden;margin:.3rem 0 1.1rem;padding:1.35rem 1.2rem 1.3rem;border-radius:1.4rem;background:var(--hero-veil),var(--hero-img) right bottom/cover no-repeat,var(--hero-bg);min-height:15.5rem;padding-bottom:4.2rem;border:1px solid var(--hero-edge);box-shadow:0 18px 36px -24px rgb(var(--shd)/.55)}
 .dtr-hero>*{position:relative}
-.dtr-fl{position:absolute!important;right:.5rem;top:.55rem;width:40%;max-width:13rem;height:auto;pointer-events:none}
+.dtr-fl{display:none;position:absolute!important;right:.5rem;top:.55rem;width:40%;max-width:13rem;height:auto;pointer-events:none}
 .dtr-fl svg{display:block;width:100%;height:auto}
 .dtr-g{display:inline-block;padding-left:.6rem;border-left:2px solid rgb(var(--tag));font-size:.82rem;line-height:1.2;letter-spacing:.1em;color:var(--hero-sub)}
 .dtr-t{margin:.95rem 0 .6rem;font-family:"Noto Serif TC","Songti TC",serif;font-weight:600;font-size:1.5rem;line-height:1.5;letter-spacing:.04em;color:var(--hero-text)}
@@ -84,3 +84,6 @@ h2.sr::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,rgb(v
 .dtr-vr summary:focus-visible{outline:2px solid rgb(var(--gold));outline-offset:2px}
 .dtr-vr ul ul,.dtr-vr details>ul{list-style:disc}
 .dtr-vr details>ul>li{margin:.15rem 0}
+@media (prefers-color-scheme: dark){[data-theme="romantic"] .dtr-fl,:root:not([data-theme]) .dtr-fl{display:block}}
+.stm.dtl img{display:block;width:100%;height:100%;border-radius:22%}
+.dtr-hero .dtr-g,.dtr-hero .dtr-en{text-shadow:0 0 .6rem rgb(255 255 255/.0)}

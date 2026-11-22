@@ -15,6 +15,18 @@ VER = V['current']
 
 s = STOB.read_text(encoding='utf-8')
 
+import base64
+
+
+def b64(n, mime):
+    return 'data:%s;base64,%s' % (mime, base64.b64encode((HERE / 'assets' / n).read_bytes()).decode())
+
+
+MARK = ('<span class="th-r"><img alt="" src="' + b64('icon-romantic-hdr.png', 'image/png') + '"></span>'
+        '<span class="th-n"><img alt="" src="' + b64('icon-navy-hdr.png', 'image/png') + '"></span>')
+ICON_R, ICON_N = b64('icon-romantic-home.png', 'image/png'), b64('icon-navy-home.png', 'image/png')
+
+
 
 def rep(old, new):
     global s
@@ -28,13 +40,12 @@ rep('content="STOB 旅遊訂單"', 'content="偏航 DETOUR"')
 rep('<meta name="theme-color" content="#f3f6f5" media="(prefers-color-scheme: light)"><meta name="theme-color" content="#101719" media="(prefers-color-scheme: dark)">',
     '<meta name="theme-color" content="#F9F2ED" media="(prefers-color-scheme: light)"><meta name="theme-color" content="#1A1521" media="(prefers-color-scheme: dark)">')
 rep('family=Noto+Sans+TC:wght@400;500;700&display=swap', 'family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@500;600&family=Cormorant+Garamond:wght@500;600&family=Playfair+Display:ital,wght@1,500&display=swap')
-rep('<title>STOB 旅遊訂單</title>', '<title>偏航 DETOUR</title>\n<script>(function(){var t="romantic";try{var v=localStorage.getItem("detour-theme");if(v==="navy"||v==="romantic")t=v}catch(e){}document.documentElement.setAttribute("data-theme",t);var m=t==="navy"?["#F7F4E9","#0A1526"]:["#FFF9F6","#1C1216"],q=document.querySelectorAll("meta[name=theme-color]");for(var i=0;i<q.length;i++)q[i].setAttribute("content",/dark/.test(q[i].getAttribute("media")||"")?m[1]:m[0])})()</script>')
+rep('<title>STOB 旅遊訂單</title>', '<title>偏航 DETOUR</title>\n<link rel="apple-touch-icon" id="dtr-ati" href="' + ICON_R + '">\n<script>(function(){var t="romantic";try{var v=localStorage.getItem("detour-theme");if(v==="navy"||v==="romantic")t=v}catch(e){}document.documentElement.setAttribute("data-theme",t);var ai=document.getElementById("dtr-ati");if(ai&&t==="navy")ai.setAttribute("href","'+ICON_N+'");var m=t==="navy"?["#F7F4E9","#0A1526"]:["#FFF9F6","#1C1216"],q=document.querySelectorAll("meta[name=theme-color]");for(var i=0;i<q.length;i++)q[i].setAttribute("content",/dark/.test(q[i].getAttribute("media")||"")?m[1]:m[0])})()</script>')
 
 def svg(n):
     return (HERE / 'assets' / n).read_text(encoding='utf-8').strip()
 
 
-MARK = '<span class="th-r">' + svg('logo-romantic.svg') + '</span><span class="th-n">' + svg('logo-navy.svg') + '</span>'
 # 頁首標誌（svg 航線）與名稱，副標帶版本號
 rep('<span class="stm" role="button" tabindex="0" aria-label="回到頁首"', '<span class="stm dtl" role="button" tabindex="0" aria-label="偏航 DETOUR，回到頁首"')
 rep('<i></i>STOB</span><span class="stw"><b>旅遊訂單</b><small>Share Travel Order Book</small></span>',
@@ -54,8 +65,9 @@ rep("x.fillText('STOB',90,165)", "x.fillText('DTR.',90,165)")
 rep('不像是 STOB 的備份', '不像是偏航的備份')
 
 # 附加樣式與程式
-css = (HERE / 'detour.css').read_text(encoding='utf-8')
+css = (HERE / 'detour.css').read_text(encoding='utf-8').replace('@@BANNER_R@@', b64('banner-romantic.webp', 'image/webp')).replace('@@BANNER_N@@', b64('banner-navy.webp', 'image/webp'))
 js = (HERE / 'detour.js').read_text(encoding='utf-8').replace('/*VERSIONS*/null', json.dumps(V, ensure_ascii=False))
+js = js.replace('@@ICON_R@@', ICON_R).replace('@@ICON_N@@', ICON_N)
 js = js.replace('@@FLIGHT_ROMANTIC@@', svg('flight-romantic.svg')).replace('@@FLIGHT_NAVY@@', svg('flight-navy.svg'))
 js = js.replace('</', '<\\/')
 partA, partB = js.split('/*PART2*/')

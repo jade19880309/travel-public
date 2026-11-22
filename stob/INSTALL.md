@@ -6,7 +6,7 @@
    ```
    curl -fsSL -o DETOUR.html https://raw.githubusercontent.com/jade19880309/travel-public/main/stob/DETOUR.html
    ```
-   下載後確認：檔案約 360–390 KB、開頭是 `<!DOCTYPE html>`、裡面有 `DETOUR`。
+   下載後確認：檔案約 約 650–700 KB、開頭是 `<!DOCTYPE html>`、裡面有 `DETOUR`。
    - 下載不到（沒有程式碼執行、網路被擋、檔案不對）的話，請使用者打開 `https://jade19880309.github.io/travel-public/stob/`，按「下載 DETOUR.html」，再把檔案附加到這個對話，然後用附加的檔案繼續。
 2. 把這個檔案**原封不動**發佈成使用者的新網頁（artifact），標題用「偏航 DETOUR」，入口檔名 `index.html`。
 3. 幫這個網頁開啟（declare）以下功能，完整設定如下：
