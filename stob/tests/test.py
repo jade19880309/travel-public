@@ -26,7 +26,9 @@ MOCK = """
 (()=>{const store={};const mk=p=>({id:p.split('/').pop(),path:p,
  get:async()=>({exists:p in store,data:()=>store[p]&&JSON.parse(JSON.stringify(store[p]))}),
  set:async d=>{if(JSON.stringify(d).length>256*1024)throw {code:'invalid_argument'};store[p]=JSON.parse(JSON.stringify(d))},
- delete:async()=>{delete store[p]}});
+ delete:async()=>{delete store[p]},
+ acquire:async({holder,ttlMs})=>{const L=leases[p],now=Date.now();if(L&&L.until>now&&L.holder!==holder)return {acquired:false,expiresAt:new Date(L.until).toISOString()};const t=Math.min(600000,Math.max(1000,ttlMs||30000));leases[p]={holder,until:now+t};return {acquired:true,version:1,expiresAt:new Date(now+t).toISOString(),holder}}});
+ const leases={};window.__leases=leases;
  window.__store=store;
  const dbx={doc:mk,collection:c=>({doc:id=>mk(c+'/'+id)})};
  const sample=async()=>({text:'x'});sample.json=async(p,o)=>{window.__lastPrompt=p;window.__lastImgs=(o&&o.images||[]).length;return CANNED};sample.limits=async()=>({images:{maxCount:8}});

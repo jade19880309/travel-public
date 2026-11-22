@@ -60,13 +60,16 @@ TOB 原有的畫面（清單、未付款、個人單、確認信、店家報到�
 ## 資料
 
 - 存在 Claude artifact 的 `db` capability：`data/users/<user.id()>/tob`（JSON 字串分段存，每段 6 萬字）、訂單截圖 `data/users/<id>/img_<訂單編號>`（WebP data URL，<185KB）。每人只看得到自己的。
-- **雲端格式 v2**（2026-11-22 起）：主文件 `tob` = `{v:2, rev, n, len, h, t, by, s}`，`s` 是第 1 段；第 2 段起存 `tob_r<rev>_p<i>`（每版一份，先寫分段、最後才寫主文件，寫完刪掉上一版的分段）。`len`＋`h`（FNV-1a 雜湊）是檢查碼。
+- **雲端格式 v2**（2026-11-22 起）：主文件 `tob` = `{v:2, rev, n, len, h, pk, t, by, s}`，`s` 是第 1 段；第 2 段起存 `<pk><i>`，`pk`＝`tob_r<rev>_<寫入者 sid 前 10 碼>_p`（每版、每個寫入者各一份，避免鎖過期時互相蓋到分段）。先寫分段、最後才寫主文件，寫完再讀一次主文件確認是自己寫的，才刪上一版分段。`len`＋`h`（FNV-1a 雜湊）是檢查碼。讀取用 `partPre(o)`：有 `pk` 用 `pk`；沒有 `pk` 的 v2 用 `tob_r<rev>_p`；舊格式用 `tob_p`。
   - 舊格式（主文件沒有 `rev`，分段叫 `tob_p<i>`）仍可讀；第一次儲存就升級成 v2 並刪掉舊分段。
-  - 儲存前先用 `tob_lock` 的 `acquire` 拿 lease（沒有 acquire 就跳過），再讀主文件的 `rev`；和本機 `CLD.rev` 不同＝別的裝置改過 → `CLD.lock='conflict'`，不覆蓋。
+  - 寫入鎖只用 Claude db 的 `acquire`（cooperative lease，沒有交易 API）：`tob_lock` 文件、holder＝`CLD.sid`、ttl 10 秒。**拿不到鎖就不寫**（busy → 4 秒後重試）；不支援 acquire → `CLD.lock='nolease'` 暫停儲存；acquire 網路錯誤 → 當斷線處理、指數退避重試，`online` 事件會立即補存。每次 `set` 前 `keepLease()` 確認剩餘 >4 秒，否則續約，續不到就中止（主文件不會被寫）。
+  - 拿到鎖後讀主文件 `rev`；和本機 `CLD.rev` 不同＝別的裝置改過 → `CLD.lock='conflict'`。例外：`CLD.pend` 記著上次寫主文件的 rev/h，如果主文件正是自己上次寫的（回應遺失），直接接手。
+  - 寫完主文件再讀一次，`rev/by/h` 不是自己的（被沒用鎖的舊版覆蓋）→ 鎖定。
+  - 「重新讀取」要先在 `#lockbar` 確認（`CLD.rconf`），並提供「先複製目前資料」；`cloudReload(1)` 才真的載入。`CLD.dirty` 表示有沒存上雲端的修改。
   - 讀取失敗（段落缺、檢查碼不符、解析錯、網路錯）先重試一次，仍失敗 → `CLD.lock='read'`。
   - 鎖定時：頂端 `#lockbar` 顯示原因與「重新讀取」；`cloudSave` 不寫；所有寫入入口先過 `canWrite()`。**新增任何會改 `db` 的函式都要先呼叫 `canWrite()`**。
 - **備份格式**：「複製全部資料」輸出 `{stob:1, format:1, at, db}`；還原同時接受這個格式與舊的直接 `db` JSON。還原流程 `bkCheck` → 顯示比較 → 勾選確認 → `bkRestore`（`ADS.undo` 可復原，重新整理後失效）。
-- **公開網頁個資**：`plan.js` 的 `pubModel` 只取白名單欄位（不取姓名、PNR、票號、訂單編號、代碼、付款連結、護照、生日）；`pubScan` 用 `pubTokens()`（全部成員與訂單的個資字串）＋`PUB_RX`（卡號末四碼、疑似卡號、Email）掃自由文字，有比對到就顯示 `.pubchk` 讓使用者選「遮蔽後下載」；下載前 `pubLeak` 再掃一次完整 HTML，仍有就停止下載。
+- **公開網頁個資**：`plan.js` 的 `pubModel` 只取白名單欄位（不取姓名、PNR、票號、訂單編號、代碼、付款連結、護照、生日）；`pubScan` 用 `pubTokens()`（全部成員與訂單的個資字串）比對所有欄位，再用 `pubFind()`（`PUB_DET`：電話〔台灣手機／市話、日本、國際 +碼、或前面有「電話／Tel」等字〕、身分證〔含檢查碼〕、卡號〔Luhn＋分組〕、卡號末四碼、Email）掃 `PUB_NOD` 以外的欄位（日期、時間、航班編號等結構欄位不掃）。有比對到就顯示 `.pubchk` 讓使用者選「遮蔽後下載」。`plPub` 產生一次 HTML → `pubLeak`（原始碼比對個資字串＋畫面文字格式偵測）→ 存在 `PL.out` → `plPubSave()` 下載；失敗時「再試一次」與「複製網頁原始碼」都用同一份 `PL.out.html`；檢查不過就不輸出。正規式不用 lookbehind（舊 iOS Safari 不支援）。
 - **AI 修改**：`aiCheck` 逐項逐欄位用 `vField` 驗證（欄位中文名在 `FLD`），驗證不過的不能勾；刪除預設不勾；`aiApply` 只套用 `ADS.aiSel` 勾選的。
 - **截圖失敗**：`imgSave` 失敗記在 `ADS.imgFail`（只在這次使用期間），上傳頁頂端顯示卡片可重試。
 - `db` 物件：`members[]`（id, zh, last, first, sex, dob, pp, ppExp, grp）、`trips[]`（id, name＝YYYYMM＋名稱, start, end, note, curs, fam, nosplit, web）、`fl[]` 機票（segs[], pax{成員:金額}, pp{成員:{pnr,tkt,kind}}）、`ht[]` 飯店（rooms[{type,bf,price,members[]}], cin, cout, cancelBy, payDate, rep）、`tr[]` 交通（含 `camp:{cin,cout,zh}` 的露營車／郵輪＝交通兼住宿）、`ot[]` 其他、`imgs[]`、`plans{旅程id:{prefs,plan}}`、`rates{}`。
@@ -103,6 +106,7 @@ pip install playwright --break-system-packages   # 第一次
 CHROME=/usr/bin/google-chrome python3 tests/test.py     # 基本流程：上傳 → 存入 → 各頁 → 重新載入
 CHROME=/usr/bin/google-chrome python3 tests/t8.py       # 建議行程、單日重排、一句話修改、發佈網頁、PDF、刪除
 CHROME=/usr/bin/google-chrome python3 tests/t_full.py   # 所有頁面淺／深色＋手機寬度溢出、管理頁、備份還原、400 筆分段、未登入
+CHROME=/usr/bin/google-chrome python3 tests/t_r2.py     # 多分頁同時儲存、拿不到鎖、不支援鎖、斷線（拿鎖／分段／回應遺失）、被舊版覆蓋、重新讀取確認、下載失敗、個資偵測正反例（38/38）
 CHROME=/usr/bin/google-chrome python3 tests/t_v2.py     # 版本衝突鎖定、讀取失敗鎖定、舊格式升級、截圖失敗、AI 驗證、公開網頁遮蔽、手機表單（印出 32/32 passed）
 ```
 

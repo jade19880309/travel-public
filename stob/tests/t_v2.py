@@ -24,12 +24,12 @@ async def main():
     n0=await pg.evaluate("db.trips.length");await pg.evaluate("go('add');adGo('trip');ADS.tf={name:'x',start:'2027-01-01'};tripSave()")
     ok('鎖定中不能新增旅程',await pg.evaluate("db.trips.length")==n0)
     # 重新讀取 → 解鎖（因為檢查碼沒變，只改 rev，資料仍可讀）
-    await pg.evaluate("cloudReload()");await pg.wait_for_timeout(2500)
+    await pg.evaluate("cloudReload(1)");await pg.wait_for_timeout(2500)
     ok('重新讀取後解鎖',await pg.evaluate("CLD.lock")=='' ,await pg.evaluate("CLD.msg"))
     ok('解鎖後可再儲存',await pg.evaluate("(async()=>{db.trips[0].note='ok2';cloudFlush();await CLD.q;return window.__store['data/users/u1/tob'].rev==CLD.rev&&CLD.st=='ok'})()"))
     # 2) 檢查碼錯誤 → 讀取鎖定，並且不寫入
     await pg.evaluate("window.__store['data/users/u1/tob'].s='{\"trips\":[]}'")
-    await pg.evaluate("cloudReload()");await pg.wait_for_timeout(4000)
+    await pg.evaluate("cloudReload(1)");await pg.wait_for_timeout(4000)
     ok('檢查碼不符時鎖定',await pg.evaluate("CLD.lock")=='read',await pg.evaluate("CLD.msg"))
     snap=await pg.evaluate("JSON.stringify(window.__store)")
     await pg.evaluate("cloudSave()");await pg.wait_for_timeout(2500)

@@ -1578,6 +1578,9 @@ button[disabled]{opacity:.55}
 .pubchk li{padding:.2rem 0;border-top:1px dashed rgb(253 230 138)}
 .pubchk li b{margin-right:.4rem}
 .pubchk li small{display:block;color:rgb(146 64 14/.8)}
+.lockbar{flex-wrap:wrap}
+.lockbtn{display:flex;flex-wrap:wrap;gap:.4rem;flex-basis:100%}
+.lockbar button.ghost{background:#fff;color:rgb(153 27 27);border:1px solid rgb(252 165 165)}
 
 /* ===== STOB 視覺：霧白底、港灣藍綠、行李吊牌金黃（與 TOB 的米色棕金區隔） ===== */
 :root{--s50:243 246 245;--s100:233 239 238;--s200:218 227 226;--s300:196 209 208;--s400:108 124 128;--s500:96 112 117;--s600:78 92 97;--s700:58 71 76;--s800:40 51 56;--s900:28 37 41;--s950:16 22 25;--card:255 255 255;--a100:253 240 214;--a800:150 98 18;--a900:110 70 10;
@@ -1693,47 +1696,76 @@ const PART=60000;
 const uref=k=>CLD.db.collection('data/users/'+CLD.uid).doc(k);
 const fnv=s=>{let h=0x811c9dc5;for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619)}return (h>>>0).toString(16)};
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
-CLD.rev=0;CLD.prevN=1;CLD.legacy=false;CLD.lock='';CLD.sid=uid()+uid();CLD.imgMiss=0;
+CLD.rev=0;CLD.prevN=1;CLD.legacy=false;CLD.lock='';CLD.sid=uid()+uid();CLD.imgMiss=0;CLD.pk='tob_p';CLD.pend=null;CLD.dirty=false;CLD.retry=0;CLD.rconf=false;CLD.leaseUntil=0;
 function cloudBadge(){const m={load:'讀取中…',ok:'',save:'儲存中…',err:'⚠ 未儲存',off:'⚠ 未登入',lock:'⚠ 已暫停儲存'}[CLD.lock?'lock':CLD.st]||'';return `<span class="cldb ${CLD.lock?'err':CLD.st}"${m?'':' hidden'}>${m}</span>`}
 /* 只更新標籤，不整頁重畫（避免清掉正在填的表單） */
 function badgeUpd(){const e=document.querySelector('.cldb');if(e)e.outerHTML=cloudBadge();lockUpd()}
 function lockUpd(){let b=document.getElementById('lockbar');const show=!!CLD.lock;if(!b){if(!show)return;b=document.createElement('div');b.id='lockbar';b.className='lockbar';b.setAttribute('role','alert');document.body.appendChild(b)}
- b.hidden=!show;if(show)b.innerHTML=`<span>${esc(CLD.msg)}</span><button type="button" onclick="cloudReload()">重新讀取</button>`}
+ b.hidden=!show;if(!show){CLD.rconf=false;return}
+ b.innerHTML=CLD.rconf?`<span><b>確定要重新讀取嗎？</b>會改用雲端上的最新資料，${CLD.dirty?'這台裝置<b>還沒存上雲端的修改會遺失</b>':'這台裝置若有沒存上雲端的修改會遺失'}。不確定的話，先複製一份目前資料。</span><div class="lockbtn"><button type="button" class="ghost" onclick="cpText(bkPack(),'已複製目前資料，可貼到記事本保存')">先複製目前資料</button><button type="button" onclick="cloudReload(1)">確定重新讀取</button><button type="button" class="ghost" onclick="CLD.rconf=false;lockUpd()">取消</button></div>`
+  :`<span>${esc(CLD.msg)}</span><button type="button" onclick="cloudReload()">重新讀取</button>`}
 /* 寫入前的守門：鎖定或沒有登入時不讓改，也不在畫面上假裝改好了 */
 function canWrite(){if(CLD.lock){tip('目前暫停儲存，請先按上方「重新讀取」');lockUpd();return false}if(!CLD.db||!CLD.uid){tip(CLD.msg||'請先登入 Claude');return false}return true}
-function cloudSave(){famCalc();campCalc();if(!CLD.db||!CLD.uid){CLD.st='off';return}if(CLD.lock){badgeUpd();return}CLD.st='save';badgeUpd();clearTimeout(CLD.timer);CLD.timer=setTimeout(cloudFlush,500)}
+function cloudSave(){famCalc();campCalc();CLD.dirty=true;if(!CLD.db||!CLD.uid){CLD.st='off';return}if(CLD.lock){badgeUpd();return}CLD.st='save';badgeUpd();clearTimeout(CLD.timer);CLD.timer=setTimeout(cloudFlush,500)}
 async function readMain(){const s=await uref('tob').get();return s.exists?(s.data()||{}):null}
-async function takeLease(){const r=uref('tob_lock');if(typeof r.acquire!='function')return true;for(let i=0;i<3;i++){try{const a=await r.acquire({holder:CLD.sid,ttlMs:15000});if(a&&a.acquired)return true}catch(e){return true}await sleep(1200)}return false}
+/* 分段文件的前綴：新格式寫在主文件 pk；沒有 pk 的 v2 用 tob_r<rev>_p；舊格式用 tob_p */
+const partPre=o=>{const p=o&&o.pk;if(typeof p=='string'&&/^tob_[A-Za-z0-9_]{1,80}$/.test(p))return p;return o&&o.rev?'tob_r'+o.rev+'_p':'tob_p'};
+/* 寫入鎖：只用 Claude db 提供的 acquire（cooperative lease，所有 STOB 寫入者都先取得它）。
+   沒拿到就不寫；不支援 acquire 就暫停儲存，不再「當作成功」。 */
+const LEASE_MS=10000,LEASE_MIN=4000;
+async function leaseTry(){const r=uref('tob_lock');if(typeof r.acquire!='function')throw {code:'nolease'};
+ const t0=Date.now();let a;try{a=await r.acquire({holder:CLD.sid,ttlMs:LEASE_MS})}catch(e){const c=e&&e.code;if(c=='capability_removed'||c=='capability_disabled')throw {code:'nolease'};throw e}
+ if(a&&a.acquired){CLD.leaseUntil=t0+LEASE_MS;return {ok:true}}
+ const ex=a&&a.expiresAt?Date.parse(a.expiresAt)-Date.now():NaN;return {ok:false,wait:isFinite(ex)?Math.min(4000,Math.max(300,ex+200)):1200}}
+async function takeLease(){for(let i=0;i<4;i++){let r;try{r=await leaseTry()}catch(e){if(e&&e.code=='unavailable'&&i<3){await sleep(600+Math.random()*900);continue}throw e}
+  if(r.ok)return;await sleep(r.wait)}
+ throw {code:'busy'}}
+/* 每次寫入前確認鎖還夠用（剩不到 4 秒就續約；續不到就中止，主文件不會被寫） */
+async function keepLease(){if(CLD.leaseUntil-Date.now()>LEASE_MIN)return;const r=await leaseTry();if(!r.ok)throw {code:'lease_lost'}}
 function cloudFlush(){
  CLD.q=CLD.q.then(async()=>{if(CLD.lock)return;
-  if(!await takeLease())throw {code:'busy'};
-  const m=await readMain(),remote=m?(+m.rev||0):0;
-  if(remote!==CLD.rev)throw {code:'conflict'};
-  const js=JSON.stringify(db),parts=[];for(let i=0;i<js.length;i+=PART)parts.push(js.slice(i,i+PART));if(!parts.length)parts.push('{}');
-  const rev=remote+1;
-  for(let i=1;i<parts.length;i++)await uref('tob_r'+rev+'_p'+i).set({s:parts[i]});
-  await uref('tob').set({v:2,rev,n:parts.length,len:js.length,h:fnv(js),t:Date.now(),by:CLD.sid,s:parts[0]});
-  const oldRev=CLD.rev,oldN=CLD.prevN,wasLegacy=CLD.legacy;CLD.rev=rev;CLD.prevN=parts.length;CLD.legacy=false;
-  for(let i=1;i<oldN;i++)uref(wasLegacy?'tob_p'+i:'tob_r'+oldRev+'_p'+i).delete().catch(()=>{});
-  CLD.st='ok';CLD.noWrite=false;badgeUpd()})
- .catch(e=>{const c=e&&e.code;
-  if(c=='conflict'){CLD.lock='conflict';CLD.st='err';CLD.msg='這份資料在其他裝置或分頁更新過。為了不覆蓋，已暫停儲存；請按「重新讀取」載入最新資料（這台裝置剛才沒存到的修改會放棄）。';badgeUpd();render();return}
-  if(c=='busy'){CLD.st='err';CLD.msg='另一台裝置正在儲存，稍後自動重試…';badgeUpd();clearTimeout(CLD.timer);CLD.timer=setTimeout(cloudFlush,4000);return}
+  await takeLease();
+  const m=await readMain(),remote=m?(+m.rev||0):0,P=CLD.pend;
+  if(remote!==CLD.rev){
+   /* 上次寫主文件時斷線、其實已寫入：主文件是自己寫的同一份 → 接手，不算衝突 */
+   if(P&&m&&m.by===CLD.sid&&remote===P.rev&&m.h===P.h){CLD.rev=P.rev;CLD.prevN=P.n;CLD.legacy=false;const op=CLD.pk;CLD.pk=P.pk;CLD.pend=null;for(let i=1;i<P.oldN;i++)uref(op+i).delete().catch(()=>{})}
+   else throw {code:'conflict'}}
+  const js=JSON.stringify(db),h=fnv(js);
+  if(m&&!CLD.legacy&&m.h===h&&+m.len===js.length){CLD.dirty=false;CLD.retry=0;CLD.st='ok';badgeUpd();return}
+  const parts=[];for(let i=0;i<js.length;i+=PART)parts.push(js.slice(i,i+PART));if(!parts.length)parts.push('{}');
+  const rev=CLD.rev+1,pk='tob_r'+rev+'_'+CLD.sid.slice(0,10)+'_p';
+  for(let i=1;i<parts.length;i++){await keepLease();await uref(pk+i).set({s:parts[i]})}
+  await keepLease();
+  CLD.pend={rev,h,n:parts.length,pk,oldN:CLD.prevN};
+  await uref('tob').set({v:2,rev,n:parts.length,len:js.length,h,pk,t:Date.now(),by:CLD.sid,s:parts[0]});
+  /* 寫完再讀一次：如果被沒用鎖的舊版本覆蓋，立刻發現並鎖定 */
+  const v=await readMain();if(!v||+v.rev!==rev||v.by!==CLD.sid||v.h!==h)throw {code:'conflict'};
+  const op=CLD.pk,oldN=CLD.prevN;CLD.rev=rev;CLD.prevN=parts.length;CLD.legacy=false;CLD.pk=pk;CLD.pend=null;
+  for(let i=1;i<oldN;i++)uref(op+i).delete().catch(()=>{});
+  CLD.dirty=JSON.stringify(db)!==js;CLD.retry=0;CLD.st='ok';CLD.noWrite=false;badgeUpd()})
+ .catch(e=>{const c=e&&e.code;clearTimeout(CLD.timer);
+  if(c=='conflict'){CLD.lock='conflict';CLD.st='err';CLD.msg='這份資料在其他裝置或分頁更新過。為了不覆蓋，已暫停儲存；請按「重新讀取」載入最新資料。';badgeUpd();render();return}
+  if(c=='nolease'){CLD.lock='nolease';CLD.st='err';CLD.msg='目前的 Claude 版本不支援儲存鎖定，為了避免多台裝置互相覆蓋，已暫停儲存。請更新 Claude App 後重新開啟這個頁面。';badgeUpd();render();return}
+  if(c=='busy'||c=='lease_lost'){CLD.st='err';CLD.msg='另一台裝置或分頁正在儲存，稍後自動重試…';badgeUpd();CLD.timer=setTimeout(cloudFlush,4000);return}
+  if(c=='unavailable'||c=='resource_exhausted'||!c){CLD.retry=Math.min((CLD.retry||0)+1,5);CLD.st='err';CLD.msg='網路不穩，修改還沒存到雲端；恢復連線後會自動重試。';badgeUpd();if(CLD.retry==1)tip(CLD.msg);CLD.timer=setTimeout(cloudFlush,Math.min(60000,2500*2**CLD.retry));return}
   CLD.st='err';CLD.noWrite=c=='invalid_argument';CLD.msg=c=='quota_exceeded'?'雲端空間已滿，請刪除一些截圖或訂單。':CLD.noWrite?'你目前沒有儲存權限：請分享這個頁面的人把你設為「編輯者」。':'儲存失敗，請確認網路後再改一次（下次修改會再嘗試儲存）。';badgeUpd();tip(CLD.msg)})}
+addEventListener('online',()=>{if(CLD.dirty&&!CLD.lock&&CLD.db&&CLD.uid){clearTimeout(CLD.timer);CLD.retry=0;cloudFlush()}});
 async function cloudLoad(){const o=await readMain();
- if(!o){applyDb({});CLD.rev=0;CLD.prevN=1;CLD.legacy=false;return}
- const legacy=!o.rev,n=Math.max(1,+o.n||1);let js=String(o.s||'');
- for(let i=1;i<n;i++){const p=await uref(legacy?'tob_p'+i:'tob_r'+o.rev+'_p'+i).get();if(!p.exists)throw {code:'part_missing'};js+=String((p.data()||{}).s||'')}
+ if(!o){applyDb({});CLD.rev=0;CLD.prevN=1;CLD.legacy=false;CLD.pk='tob_p';return}
+ const legacy=!o.rev,n=Math.max(1,+o.n||1),pre=partPre(o);let js=String(o.s||'');
+ for(let i=1;i<n;i++){const p=await uref(pre+i).get();if(!p.exists)throw {code:'part_missing'};js+=String((p.data()||{}).s||'')}
  if(!legacy&&(js.length!==+o.len||fnv(js)!==o.h))throw {code:'checksum'};
  let d;try{d=JSON.parse(js||'{}')}catch(e){throw {code:'parse'}}
  if(!d||typeof d!='object'||Array.isArray(d))throw {code:'parse'};
- applyDb(d);CLD.rev=legacy?0:+o.rev;CLD.prevN=n;CLD.legacy=legacy;
+ applyDb(d);CLD.rev=legacy?0:+o.rev;CLD.prevN=n;CLD.legacy=legacy;CLD.pk=pre;CLD.pend=null;CLD.dirty=false;
  CLD.imgMiss=0;for(const k of db.imgs){try{const p=await uref('img_'+ikey(k)).get();if(p.exists)ORDIMG[k]=String((p.data()||{}).d||'');else CLD.imgMiss++}catch(e){CLD.imgMiss++}}}
 const LOADERR={part_missing:'資料不完整（可能另一台裝置正在儲存）',checksum:'資料檢查碼不符',parse:'資料格式損壞'};
 async function loadSafe(){for(let i=0;i<2;i++){try{await cloudLoad();CLD.lock='';return true}catch(e){if(i==0){await sleep(1500);continue}
   CLD.lock='read';CLD.st='err';CLD.msg='讀取雲端資料失敗（'+(LOADERR[e&&e.code]||'網路或服務暫時無法使用')+'）。為了避免覆蓋你的資料，已暫停儲存；請按「重新讀取」。';return false}}}
-async function cloudReload(){CLD.st='load';CLD.lock='';badgeUpd();lockUpd();clearTimeout(CLD.timer);
- Object.keys(ORDIMG).forEach(k=>delete ORDIMG[k]);const ok=await loadSafe();if(ok){CLD.st='ok';tip('已載入最新資料')}badgeUpd();render()}
+/* 重新讀取前先確認：會放棄這台裝置沒存上雲端的修改 */
+async function cloudReload(ok){if(!ok){CLD.rconf=true;lockUpd();return}
+ CLD.rconf=false;CLD.st='load';CLD.lock='';badgeUpd();lockUpd();clearTimeout(CLD.timer);await CLD.q.catch(()=>{});
+ Object.keys(ORDIMG).forEach(k=>delete ORDIMG[k]);const okk=await loadSafe();if(okk){CLD.st='ok';CLD.retry=0;tip('已載入最新資料')}badgeUpd();render()}
 const ikey=k=>String(k).replace(/[^A-Za-z0-9_\-.~:@+]/g,'_').slice(0,150)||'x';
 /* 訂單截圖：失敗要讓使用者知道，並可重試 */
 function imgSave(k,dataUrl){if(!k)return;if(!dataUrl){imgFail(k,'',"截圖太大，壓縮後仍超過上限");return}
@@ -2072,7 +2104,7 @@ const PUB_CSS="*{box-sizing:border-box}html{background:var(--bg);scroll-behavior
    建議行程：依訂單（航班、住宿、交通、門票）＋偏好，由 Claude 排出每日大綱＋細項；
    可單日重排、一句話修改，存在雲端；可匯出 A4 PDF 列印存檔
    ===================================================================== */
-const PL={busy:'',err:'',ctl:null,ask:{},conf:false,edit:'',dl:null,chk:null,pal:{}};
+const PL={busy:'',err:'',ctl:null,ask:{},conf:false,edit:'',dl:null,chk:null,pal:{},out:null};
 SUB.splice(SUB.length-1,0,['plan','行程']);
 const PACE=['輕鬆（每天 2–3 個點）','適中','緊湊（想多跑一些）'];
 const addD=(x,n)=>{const t=pd(x);t.setDate(t.getDate()+n);return t.toLocaleDateString('sv-SE')};
@@ -2148,7 +2180,7 @@ function vPlan(){const head=`<h2 class="sr">🗺 建議行程</h2>${tbar()}`;con
  const gen=`<div class="flex gap-2 items-center flex-wrap mb-3">${pl?(PL.conf?`<button type="button" class="adyes" onclick="plGen()">確定重新產生整份</button><button type="button" class="${BT}" onclick="PL.conf=false;render()">取消</button>`:`<button type="button" class="${BT}" ${b||noAi?'disabled':''} onclick="PL.conf=true;render()">↻ 重新產生整份</button><button type="button" class="${BP}" ${PL.dl?'disabled':''} onclick="plPdf()">${PL.dl?'製作 PDF 中…':'📄 下載 PDF'}</button>${PL.delc?`<button type="button" class="adyes" onclick="plDel()">確定刪除整份行程</button><button type="button" class="${BT}" onclick="PL.delc=false;render()">取消</button>`:`<button type="button" class="${BD}" ${b?'disabled':''} onclick="PL.delc=true;render()">🗑 刪除行程</button>`}`):`<button type="button" class="${BP}" ${b||noAi?'disabled':''} onclick="plGen()">${b=='all'?'排行程中…':'✨ 產生建議行程'}</button>`}${b?`<button type="button" class="${BT}" onclick="plStop()">停止</button><span class="text-sm text-stone-500">${b=='all'?'整份行程約需 1–2 分鐘':'處理中…'}</span>`:''}</div>
   ${noAi&&CLD.st!='load'?'<div class="text-sm text-red-700 mb-2">這個畫面目前無法使用 Claude（需在 Claude 中開啟並允許使用）。</div>':''}${PL.err?`<div class="text-sm text-red-700 mb-2">${esc(PL.err)}</div>`:''}`;
  const pub=`<div class="${CC} plpub"><div class="min-w-0"><div class="font-bold">🌐 發佈成網頁</div><div class="text-sm text-stone-500">把${pl?'行程、':''}航班、住宿、交通時間做成網頁，下載成網頁檔後用 LINE 傳給同行的人，對方不用 Claude 帳號就能打開。</div><div class="text-xs text-stone-500 mt-1">🔒 不含個資：不放姓名、PNR、訂單編號、取票代碼和護照資料。</div></div><div class="plpubb"><button type="button" class="${BP}" ${PL.pub?'disabled':''} onclick="plPub()">${PL.pub?'製作中…':'⬇️ 下載網頁檔'}</button></div>
-${PUB_CHK()}</div>`;
+${PUB_CHK()}${PUB_OUT()}</div>`;
  if(!pl)return head+prefs+gen+pub;
  const outline=`<div class="${CC} plo"><div class="font-bold text-lg">${esc(pl.title||t.name.replace(/^\d{6}/,''))}</div>${pl.summary?`<p class="text-sm text-stone-600 mt-1">${esc(pl.summary)}</p>`:''}
   <div class="plol">${pl.days.map((x,i)=>`<button type="button" class="plor" onclick="document.getElementById('pld${i}').open=true;document.getElementById('pld${i}').scrollIntoView({behavior:'smooth',block:'start'})"><span class="plod"><b>D${i+1}</b>${d(x.date).slice(5)}<small>${wkd(x.date)}</small></span><span class="plot"><b>${esc(x.title)}</b><small>${esc(x.items.map(y=>y.title).join(' → '))}</small></span></button>`).join('')}</div>
@@ -2269,16 +2301,39 @@ function pubTokens(){const T=[],add=(v,kind,min)=>{v=String(v||'').trim();if(v.l
  [...db.fl,...db.ht,...db.tr,...db.ot].forEach(x=>{add(x.orderNo,'訂單編號',4);add(x.pnr,'訂位代碼',5);add(x.ticketNo,'機票號碼',6);add(x.code,'取票代碼',4);
   Object.values(obj(x.pp)).forEach(p=>{add(p&&p.pnr,'訂位代碼',5);add(p&&p.tkt,'機票號碼',6)});arr(x.segs).forEach(s=>add(s.pnr,'訂位代碼',5));arr(x.pays).forEach(q=>add(q&&q.url,'付款連結',8))});
  return T}
-const PUB_RX=[[/末四碼\s*[:：]?\s*\d{4}/g,'信用卡末四碼'],[/\b(?:\d[ -]?){13,19}\b/g,'疑似卡號'],[/[\w.+-]+@[\w-]+\.[\w.-]+/g,'電子郵件']];
+/* 自由文字的格式偵測：電話、身分證字號、卡號、Email、卡號末四碼。
+   每種都有驗證（位數、Luhn、身分證檢查碼、不像日期），避免把航班編號、日期、時間、地址、郵遞區號、金額當成個資。
+   不用 lookbehind（舊版 iOS Safari 不支援）。日期、時間、航班編號等結構欄位不做格式偵測（PUB_NOD）。 */
+const PUB_NOD=new Set(['date','dep','arr','no','cin','cout','cancelBy','payDate','start','end','time','air','dir','nights','days','bf','booked']);
+const pDig=s=>String(s).replace(/\D/g,'');
+const pDate=v=>/(?:19|20)\d{2}\s*[-/.年]\s*\d{1,2}\s*[-/.月]\s*\d{1,2}/.test(v)||/(?:^|\D)\d{1,2}[-/.]\d{1,2}[-/.](?:19|20)\d{2}(?!\d)/.test(v);
+const pLuhn=n=>{let s=0,alt=false;for(let i=n.length-1;i>=0;i--){let d=+n[i];if(alt){d*=2;if(d>9)d-=9}s+=d;alt=!alt}return s%10==0};
+const pTwId=v=>{const c='ABCDEFGHJKLMNPQRSTUVXYWZIO'.indexOf(v[0]);if(c<0)return false;const n=c+10;let s=Math.floor(n/10)+(n%10)*9;for(let i=1;i<9;i++)s+=(+v[i])*(9-i);return (s+(+v[9]))%10==0};
+const pCard=v=>{const d=pDig(v);return d.length>=13&&d.length<=19&&!pDate(v)&&pLuhn(d)&&(/^\d+$/.test(v)||/^\d{4}([ -])\d{4}\1\d{4}\1\d{1,7}$/.test(v)||/^\d{4}([ -])\d{6}\1\d{4,5}$/.test(v))};
+const pPhone=v=>{const n=pDig(v).length;if(pDate(v))return false;return v.trim()[0]=='+'?n>=8&&n<=15:n>=9&&n<=11};
+const PUB_DET=[
+ {k:'信用卡末四碼',re:/()(末(?:四|4)碼\s*[:：]?\s*\d{4})/g},
+ {k:'電子郵件',re:/()([\w.+-]+@[\w-]+(?:\.[\w-]+)+)/g},
+ {k:'身分證字號',re:/(^|[^A-Za-z0-9])([A-Z][1289]\d{8})(?![A-Za-z0-9])/g,ok:pTwId},
+ {k:'疑似卡號',re:/(^|[^\w\-/.:])(\d(?:[ -]?\d){12,18})(?![\w/:]|[-.]\d)/g,ok:pCard},
+ {k:'電話號碼',re:/(^|[^\w+\-/.:])((?:\+\d{1,3}[ -]?(?:\(0?\d{1,4}\)[ -]?)?|\(0\d{1,4}\)[ -]?|0)\d{1,4}(?:[ -]?\d{2,4}){1,3})(?![\w/:]|[-.]\d)/g,ok:pPhone},
+ {k:'電話號碼',re:/((?:聯絡電話|行動電話|電話|手機|聯絡|Tel|TEL|tel|Phone|phone|PHONE|☎️?|📞)\s*[:：]?\s*)(\+?[\d(][\d ()-]{5,}\d)/g,ok:v=>{const n=pDig(v).length;return n>=7&&n<=15&&!pDate(v)}}];
+function pubFind(s){s=String(s||'');const out=[];
+ PUB_DET.forEach(d=>{d.re.lastIndex=0;let m;while((m=d.re.exec(s))){const v=m[2],i=m.index+m[1].length;if(!d.ok||d.ok(v))out.push({kind:d.k,v,i,e:i+v.length});if(!m[0].length)d.re.lastIndex++}});
+ out.sort((a,b)=>a.i-b.i||b.e-a.e);const r=[];out.forEach(x=>{const L=r[r.length-1];if(L&&x.i<L.e){if(x.e>L.e){L.e=x.e;L.v=s.slice(L.i,L.e)}return}r.push(x)});return r}
 function pubWalk(m,fn){const go=(o,path)=>{if(typeof o=='string')return fn(o,path);if(Array.isArray(o))return o.map((v,i)=>go(v,path.concat(i)));if(o&&typeof o=='object'){const r={};for(const k in o)r[k]=go(o[k],path.concat(k));return r}return o};return go(m,[])}
-const PUBWHERE={flights:'航班',hotels:'飯店',trans:'交通',plan:'行程',nights:'住宿',name:'旅程名稱',tips:'提醒',days:'每日',items:'項目',lines:'重點',detail:'說明',title:'標題',summary:'摘要',move:'移動',cost:'費用',q:'地圖搜尋',addr:'地址',type:'類型',rooms:'房型'};
+const pFree=path=>!PUB_NOD.has(path.filter(p=>typeof p=='string').pop());
+const PUBWHERE={flights:'航班',hotels:'飯店',trans:'交通',plan:'行程',nights:'住宿',name:'旅程名稱',tips:'提醒',days:'每日',items:'項目',lines:'重點',detail:'說明',title:'標題',summary:'摘要',move:'移動',cost:'費用',q:'地圖搜尋',addr:'地址',type:'類型',rooms:'房型',zh:'名稱',en:'英文名',ori:'當地名稱',company:'公司',area:'地區',hotel:'住宿',from:'出發地',to:'目的地'};
+const pWhere=path=>path.filter(p=>typeof p=='string').map(p=>PUBWHERE[p]||'').filter(Boolean).join('・');
+const pEsc=v=>v.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
 function pubScan(m){const T=pubTokens(),hits=[];
- pubWalk(m,(s,path)=>{if(!s)return s;const low=s.toLowerCase();
-  T.forEach(t=>{if(low.includes(t.v.toLowerCase()))hits.push({kind:t.kind,v:t.v,where:path.filter(p=>typeof p=='string').map(p=>PUBWHERE[p]||'').filter(Boolean).join('・')})});
-  PUB_RX.forEach(([re,kind])=>{(s.match(re)||[]).forEach(v=>hits.push({kind,v,where:path.filter(p=>typeof p=='string').map(p=>PUBWHERE[p]||'').filter(Boolean).join('・')}))});return s});
+ pubWalk(m,(s,path)=>{if(!s)return s;const low=s.toLowerCase(),w=pWhere(path);
+  T.forEach(t=>{if(low.includes(t.v.toLowerCase()))hits.push({kind:t.kind,v:t.v,where:w})});
+  if(pFree(path))pubFind(s).forEach(x=>hits.push({kind:x.kind,v:x.v,where:w}));return s});
  return hits}
 function pubMask(m){const T=pubTokens().sort((a,b)=>b.v.length-a.v.length);
- return pubWalk(m,s=>{if(!s)return s;let r=s;T.forEach(t=>{const re=new RegExp(t.v.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'),'gi');r=r.replace(re,'＊＊')});PUB_RX.forEach(([re])=>{r=r.replace(re,'＊＊')});return r})}
+ return pubWalk(m,(s,path)=>{if(!s)return s;let r=s;T.forEach(t=>{r=r.replace(new RegExp(pEsc(t.v),'gi'),'＊＊')});
+  if(pFree(path))pubFind(r).reverse().forEach(x=>{r=r.slice(0,x.i)+'＊＊'+r.slice(x.e)});return r})}
 function pubParts(t){const e=esc,M0=pubModel(t),m=pubMask(M0),C=PL.pal&&PL.pal[t.id]||((PL.pal=PL.pal||{})[t.id]=pubPalette());
  const days=tDays(t),dayOf=x=>days.indexOf(x)+1,nm=m.name;
  const flH=m.flights.map(s=>`<article class="card"><div class="ch"><span class="tag">${e(s.dir||'航班')}</span><span class="dt">${wkF(s.date)}</span></div><h3>${e(s.air)} ${e(s.no)}</h3>
@@ -2316,19 +2371,30 @@ ${PUB_CSS}
 function pubHtml(t){const P=pubParts(t);return pubDoc(P,pubIcon(P))}
 
 
-async function plPub(force){const tid=oneT(),t=T(tid);if(!tid||PL.pub)return;
- if(!force){if(PL.pal)delete PL.pal[tid];let P;try{P=pubParts(t)}catch(e){tip('製作失敗');return}
+/* 下載與「複製原始碼」都用同一份已通過 pubLeak 的 HTML（PL.out.html）；檢查不過就什麼都不輸出 */
+async function plPub(force){const tid=oneT(),t=T(tid);if(!tid||PL.pub)return;PL.out=null;
+ if(!force){if(PL.pal)delete PL.pal[tid];let P;try{P=pubParts(t)}catch(e){tip('製作失敗');render();return}
   if(P.hits.length){PL.chk={tid,hits:P.hits};render();return}}
- PL.chk=null;PL.pub=1;render();
- try{const html=pubHtml(t),name=t.name.replace(/^\d{6}/,'')+'-行程網頁.html';
-  const left=pubLeak(html);if(left.length){tip('檢查到疑似個資（'+left[0].kind+'），已停止下載');throw {code:'shown'}}
-  let dls=null;try{dls=await claude.use('downloads')}catch(e){}
-  if(!dls){cpText(html,'無法下載，已複製網頁原始碼');throw {code:'shown'}}
-  await dls.save({filename:name,data:html});tip('網頁檔已儲存，可以直接傳給同行的人')}
- catch(e){const k=e&&e.code;if(k&&k!='declined'&&k!='shown'){try{cpText(pubHtml(t),'無法下載，已複製網頁原始碼')}catch(_){tip('發佈失敗（'+k+'）')}}}
- PL.pub=null;render()}
-/* 最後一道：掃描完整網頁（去掉圖示的 data URL），確認個資字串都已遮蔽 */
-function pubLeak(html){const h=String(html).replace(/data:[^"')\s]+/g,'').toLowerCase(),out=[];pubTokens().forEach(t=>{if(h.includes(t.v.toLowerCase()))out.push(t)});return out}
+ PL.chk=null;let html='';try{html=pubHtml(t)}catch(e){html=''}
+ if(!html){tip('製作失敗，沒有輸出');render();return}
+ const left=pubLeak(html);if(left.length){html='';tip('最後檢查仍發現疑似個資（'+left[0].kind+'），已停止輸出');render();return}
+ PL.out={tid,html,name:t.name.replace(/^\d{6}/,'')+'-行程網頁.html',fail:''};await plPubSave()}
+async function plPubSave(){const O=PL.out;if(!O||PL.pub)return;PL.pub=1;render();let dls=null,res='fail';
+ try{dls=await claude.use('downloads')}catch(e){}
+ if(dls){try{const r=await dls.save({filename:O.name,data:O.html}),st=r&&r.status;res=!st||st=='saved'?'ok':st=='declined'||st=='cancelled'?'declined':'fail'}catch(e){res=e&&e.code=='declined'?'declined':'fail'}}
+ PL.pub=null;
+ if(res=='ok'){PL.out=null;tip('網頁檔已儲存，可以直接傳給同行的人')}
+ else if(res=='declined'){PL.out=null}
+ else{O.fail=dls?'下載失敗':'這裡不能下載檔案';tip(O.fail+'，可以改用「複製網頁原始碼」')}
+ render()}
+const PUB_OUT=()=>{const O=PL.out;if(!O||!O.fail||O.tid!=oneT())return '';
+ return `<div class="pubchk"><div class="font-medium">⚠ ${esc(O.fail)}</div><p class="text-xs mt-1">可以再試一次，或複製網頁原始碼（和要下載的檔案是同一份、已通過個資檢查），貼到記事本另存成 .html。</p>
+ <div class="adbar"><button type="button" class="${BP}" onclick="plPubSave()">再試一次下載</button><button type="button" class="${BT}" onclick="cpText(PL.out.html,'已複製網頁原始碼')">複製網頁原始碼</button><button type="button" class="${BT}" onclick="PL.out=null;render()">關閉</button></div></div>`};
+/* 最後一道：整份網頁再掃一次。個資字串比對原始碼（去掉圖示 data URL）；格式偵測比對畫面上看得到的文字 */
+const pubText=html=>String(html).replace(/<script[\s\S]*?<\/script>/gi,' ').replace(/<style[\s\S]*?<\/style>/gi,' ').replace(/data:[^"')\s]+/g,' ').replace(/<[^>]+>/g,'\n').replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&quot;/g,'"').replace(/&#39;/g,"'").replace(/&amp;/g,'&');
+function pubLeak(html){const raw=String(html).replace(/data:[^"')\s]+/g,'').toLowerCase(),out=[];
+ pubTokens().forEach(t=>{if(raw.includes(t.v.toLowerCase()))out.push(t)});
+ pubText(html).split('\n').forEach(l=>pubFind(l).forEach(x=>out.push({kind:x.kind,v:x.v})));return out}
 const PUB_CHK=()=>{const c=PL.chk;if(!c||c.tid!=oneT())return '';const g={};c.hits.forEach(x=>{const k=x.kind+'｜'+x.v;(g[k]=g[k]||{kind:x.kind,v:x.v,w:new Set()}).w.add(x.where||'內容')});
  const mask=v=>v.length<=2?v[0]+'＊':v.slice(0,2)+'＊'.repeat(Math.min(6,v.length-2));
  return `<div class="pubchk"><div class="font-medium">⚠ 行程內容裡找到 ${Object.keys(g).length} 項疑似個資</div><p class="text-xs mt-1">這些字出現在行程說明、交通重點或提醒裡。下載時會換成「＊＊」，原本的資料不會改。</p>

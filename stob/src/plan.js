@@ -2,7 +2,7 @@
    建議行程：依訂單（航班、住宿、交通、門票）＋偏好，由 Claude 排出每日大綱＋細項；
    可單日重排、一句話修改，存在雲端；可匯出 A4 PDF 列印存檔
    ===================================================================== */
-const PL={busy:'',err:'',ctl:null,ask:{},conf:false,edit:'',dl:null,chk:null,pal:{}};
+const PL={busy:'',err:'',ctl:null,ask:{},conf:false,edit:'',dl:null,chk:null,pal:{},out:null};
 SUB.splice(SUB.length-1,0,['plan','行程']);
 const PACE=['輕鬆（每天 2–3 個點）','適中','緊湊（想多跑一些）'];
 const addD=(x,n)=>{const t=pd(x);t.setDate(t.getDate()+n);return t.toLocaleDateString('sv-SE')};
@@ -78,7 +78,7 @@ function vPlan(){const head=`<h2 class="sr">🗺 建議行程</h2>${tbar()}`;con
  const gen=`<div class="flex gap-2 items-center flex-wrap mb-3">${pl?(PL.conf?`<button type="button" class="adyes" onclick="plGen()">確定重新產生整份</button><button type="button" class="${BT}" onclick="PL.conf=false;render()">取消</button>`:`<button type="button" class="${BT}" ${b||noAi?'disabled':''} onclick="PL.conf=true;render()">↻ 重新產生整份</button><button type="button" class="${BP}" ${PL.dl?'disabled':''} onclick="plPdf()">${PL.dl?'製作 PDF 中…':'📄 下載 PDF'}</button>${PL.delc?`<button type="button" class="adyes" onclick="plDel()">確定刪除整份行程</button><button type="button" class="${BT}" onclick="PL.delc=false;render()">取消</button>`:`<button type="button" class="${BD}" ${b?'disabled':''} onclick="PL.delc=true;render()">🗑 刪除行程</button>`}`):`<button type="button" class="${BP}" ${b||noAi?'disabled':''} onclick="plGen()">${b=='all'?'排行程中…':'✨ 產生建議行程'}</button>`}${b?`<button type="button" class="${BT}" onclick="plStop()">停止</button><span class="text-sm text-stone-500">${b=='all'?'整份行程約需 1–2 分鐘':'處理中…'}</span>`:''}</div>
   ${noAi&&CLD.st!='load'?'<div class="text-sm text-red-700 mb-2">這個畫面目前無法使用 Claude（需在 Claude 中開啟並允許使用）。</div>':''}${PL.err?`<div class="text-sm text-red-700 mb-2">${esc(PL.err)}</div>`:''}`;
  const pub=`<div class="${CC} plpub"><div class="min-w-0"><div class="font-bold">🌐 發佈成網頁</div><div class="text-sm text-stone-500">把${pl?'行程、':''}航班、住宿、交通時間做成網頁，下載成網頁檔後用 LINE 傳給同行的人，對方不用 Claude 帳號就能打開。</div><div class="text-xs text-stone-500 mt-1">🔒 不含個資：不放姓名、PNR、訂單編號、取票代碼和護照資料。</div></div><div class="plpubb"><button type="button" class="${BP}" ${PL.pub?'disabled':''} onclick="plPub()">${PL.pub?'製作中…':'⬇️ 下載網頁檔'}</button></div>
-${PUB_CHK()}</div>`;
+${PUB_CHK()}${PUB_OUT()}</div>`;
  if(!pl)return head+prefs+gen+pub;
  const outline=`<div class="${CC} plo"><div class="font-bold text-lg">${esc(pl.title||t.name.replace(/^\d{6}/,''))}</div>${pl.summary?`<p class="text-sm text-stone-600 mt-1">${esc(pl.summary)}</p>`:''}
   <div class="plol">${pl.days.map((x,i)=>`<button type="button" class="plor" onclick="document.getElementById('pld${i}').open=true;document.getElementById('pld${i}').scrollIntoView({behavior:'smooth',block:'start'})"><span class="plod"><b>D${i+1}</b>${d(x.date).slice(5)}<small>${wkd(x.date)}</small></span><span class="plot"><b>${esc(x.title)}</b><small>${esc(x.items.map(y=>y.title).join(' → '))}</small></span></button>`).join('')}</div>
@@ -199,16 +199,39 @@ function pubTokens(){const T=[],add=(v,kind,min)=>{v=String(v||'').trim();if(v.l
  [...db.fl,...db.ht,...db.tr,...db.ot].forEach(x=>{add(x.orderNo,'訂單編號',4);add(x.pnr,'訂位代碼',5);add(x.ticketNo,'機票號碼',6);add(x.code,'取票代碼',4);
   Object.values(obj(x.pp)).forEach(p=>{add(p&&p.pnr,'訂位代碼',5);add(p&&p.tkt,'機票號碼',6)});arr(x.segs).forEach(s=>add(s.pnr,'訂位代碼',5));arr(x.pays).forEach(q=>add(q&&q.url,'付款連結',8))});
  return T}
-const PUB_RX=[[/末四碼\s*[:：]?\s*\d{4}/g,'信用卡末四碼'],[/\b(?:\d[ -]?){13,19}\b/g,'疑似卡號'],[/[\w.+-]+@[\w-]+\.[\w.-]+/g,'電子郵件']];
+/* 自由文字的格式偵測：電話、身分證字號、卡號、Email、卡號末四碼。
+   每種都有驗證（位數、Luhn、身分證檢查碼、不像日期），避免把航班編號、日期、時間、地址、郵遞區號、金額當成個資。
+   不用 lookbehind（舊版 iOS Safari 不支援）。日期、時間、航班編號等結構欄位不做格式偵測（PUB_NOD）。 */
+const PUB_NOD=new Set(['date','dep','arr','no','cin','cout','cancelBy','payDate','start','end','time','air','dir','nights','days','bf','booked']);
+const pDig=s=>String(s).replace(/\D/g,'');
+const pDate=v=>/(?:19|20)\d{2}\s*[-/.年]\s*\d{1,2}\s*[-/.月]\s*\d{1,2}/.test(v)||/(?:^|\D)\d{1,2}[-/.]\d{1,2}[-/.](?:19|20)\d{2}(?!\d)/.test(v);
+const pLuhn=n=>{let s=0,alt=false;for(let i=n.length-1;i>=0;i--){let d=+n[i];if(alt){d*=2;if(d>9)d-=9}s+=d;alt=!alt}return s%10==0};
+const pTwId=v=>{const c='ABCDEFGHJKLMNPQRSTUVXYWZIO'.indexOf(v[0]);if(c<0)return false;const n=c+10;let s=Math.floor(n/10)+(n%10)*9;for(let i=1;i<9;i++)s+=(+v[i])*(9-i);return (s+(+v[9]))%10==0};
+const pCard=v=>{const d=pDig(v);return d.length>=13&&d.length<=19&&!pDate(v)&&pLuhn(d)&&(/^\d+$/.test(v)||/^\d{4}([ -])\d{4}\1\d{4}\1\d{1,7}$/.test(v)||/^\d{4}([ -])\d{6}\1\d{4,5}$/.test(v))};
+const pPhone=v=>{const n=pDig(v).length;if(pDate(v))return false;return v.trim()[0]=='+'?n>=8&&n<=15:n>=9&&n<=11};
+const PUB_DET=[
+ {k:'信用卡末四碼',re:/()(末(?:四|4)碼\s*[:：]?\s*\d{4})/g},
+ {k:'電子郵件',re:/()([\w.+-]+@[\w-]+(?:\.[\w-]+)+)/g},
+ {k:'身分證字號',re:/(^|[^A-Za-z0-9])([A-Z][1289]\d{8})(?![A-Za-z0-9])/g,ok:pTwId},
+ {k:'疑似卡號',re:/(^|[^\w\-/.:])(\d(?:[ -]?\d){12,18})(?![\w/:]|[-.]\d)/g,ok:pCard},
+ {k:'電話號碼',re:/(^|[^\w+\-/.:])((?:\+\d{1,3}[ -]?(?:\(0?\d{1,4}\)[ -]?)?|\(0\d{1,4}\)[ -]?|0)\d{1,4}(?:[ -]?\d{2,4}){1,3})(?![\w/:]|[-.]\d)/g,ok:pPhone},
+ {k:'電話號碼',re:/((?:聯絡電話|行動電話|電話|手機|聯絡|Tel|TEL|tel|Phone|phone|PHONE|☎️?|📞)\s*[:：]?\s*)(\+?[\d(][\d ()-]{5,}\d)/g,ok:v=>{const n=pDig(v).length;return n>=7&&n<=15&&!pDate(v)}}];
+function pubFind(s){s=String(s||'');const out=[];
+ PUB_DET.forEach(d=>{d.re.lastIndex=0;let m;while((m=d.re.exec(s))){const v=m[2],i=m.index+m[1].length;if(!d.ok||d.ok(v))out.push({kind:d.k,v,i,e:i+v.length});if(!m[0].length)d.re.lastIndex++}});
+ out.sort((a,b)=>a.i-b.i||b.e-a.e);const r=[];out.forEach(x=>{const L=r[r.length-1];if(L&&x.i<L.e){if(x.e>L.e){L.e=x.e;L.v=s.slice(L.i,L.e)}return}r.push(x)});return r}
 function pubWalk(m,fn){const go=(o,path)=>{if(typeof o=='string')return fn(o,path);if(Array.isArray(o))return o.map((v,i)=>go(v,path.concat(i)));if(o&&typeof o=='object'){const r={};for(const k in o)r[k]=go(o[k],path.concat(k));return r}return o};return go(m,[])}
-const PUBWHERE={flights:'航班',hotels:'飯店',trans:'交通',plan:'行程',nights:'住宿',name:'旅程名稱',tips:'提醒',days:'每日',items:'項目',lines:'重點',detail:'說明',title:'標題',summary:'摘要',move:'移動',cost:'費用',q:'地圖搜尋',addr:'地址',type:'類型',rooms:'房型'};
+const pFree=path=>!PUB_NOD.has(path.filter(p=>typeof p=='string').pop());
+const PUBWHERE={flights:'航班',hotels:'飯店',trans:'交通',plan:'行程',nights:'住宿',name:'旅程名稱',tips:'提醒',days:'每日',items:'項目',lines:'重點',detail:'說明',title:'標題',summary:'摘要',move:'移動',cost:'費用',q:'地圖搜尋',addr:'地址',type:'類型',rooms:'房型',zh:'名稱',en:'英文名',ori:'當地名稱',company:'公司',area:'地區',hotel:'住宿',from:'出發地',to:'目的地'};
+const pWhere=path=>path.filter(p=>typeof p=='string').map(p=>PUBWHERE[p]||'').filter(Boolean).join('・');
+const pEsc=v=>v.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
 function pubScan(m){const T=pubTokens(),hits=[];
- pubWalk(m,(s,path)=>{if(!s)return s;const low=s.toLowerCase();
-  T.forEach(t=>{if(low.includes(t.v.toLowerCase()))hits.push({kind:t.kind,v:t.v,where:path.filter(p=>typeof p=='string').map(p=>PUBWHERE[p]||'').filter(Boolean).join('・')})});
-  PUB_RX.forEach(([re,kind])=>{(s.match(re)||[]).forEach(v=>hits.push({kind,v,where:path.filter(p=>typeof p=='string').map(p=>PUBWHERE[p]||'').filter(Boolean).join('・')}))});return s});
+ pubWalk(m,(s,path)=>{if(!s)return s;const low=s.toLowerCase(),w=pWhere(path);
+  T.forEach(t=>{if(low.includes(t.v.toLowerCase()))hits.push({kind:t.kind,v:t.v,where:w})});
+  if(pFree(path))pubFind(s).forEach(x=>hits.push({kind:x.kind,v:x.v,where:w}));return s});
  return hits}
 function pubMask(m){const T=pubTokens().sort((a,b)=>b.v.length-a.v.length);
- return pubWalk(m,s=>{if(!s)return s;let r=s;T.forEach(t=>{const re=new RegExp(t.v.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'),'gi');r=r.replace(re,'＊＊')});PUB_RX.forEach(([re])=>{r=r.replace(re,'＊＊')});return r})}
+ return pubWalk(m,(s,path)=>{if(!s)return s;let r=s;T.forEach(t=>{r=r.replace(new RegExp(pEsc(t.v),'gi'),'＊＊')});
+  if(pFree(path))pubFind(r).reverse().forEach(x=>{r=r.slice(0,x.i)+'＊＊'+r.slice(x.e)});return r})}
 function pubParts(t){const e=esc,M0=pubModel(t),m=pubMask(M0),C=PL.pal&&PL.pal[t.id]||((PL.pal=PL.pal||{})[t.id]=pubPalette());
  const days=tDays(t),dayOf=x=>days.indexOf(x)+1,nm=m.name;
  const flH=m.flights.map(s=>`<article class="card"><div class="ch"><span class="tag">${e(s.dir||'航班')}</span><span class="dt">${wkF(s.date)}</span></div><h3>${e(s.air)} ${e(s.no)}</h3>
@@ -246,19 +269,30 @@ ${PUB_CSS}
 function pubHtml(t){const P=pubParts(t);return pubDoc(P,pubIcon(P))}
 
 
-async function plPub(force){const tid=oneT(),t=T(tid);if(!tid||PL.pub)return;
- if(!force){if(PL.pal)delete PL.pal[tid];let P;try{P=pubParts(t)}catch(e){tip('製作失敗');return}
+/* 下載與「複製原始碼」都用同一份已通過 pubLeak 的 HTML（PL.out.html）；檢查不過就什麼都不輸出 */
+async function plPub(force){const tid=oneT(),t=T(tid);if(!tid||PL.pub)return;PL.out=null;
+ if(!force){if(PL.pal)delete PL.pal[tid];let P;try{P=pubParts(t)}catch(e){tip('製作失敗');render();return}
   if(P.hits.length){PL.chk={tid,hits:P.hits};render();return}}
- PL.chk=null;PL.pub=1;render();
- try{const html=pubHtml(t),name=t.name.replace(/^\d{6}/,'')+'-行程網頁.html';
-  const left=pubLeak(html);if(left.length){tip('檢查到疑似個資（'+left[0].kind+'），已停止下載');throw {code:'shown'}}
-  let dls=null;try{dls=await claude.use('downloads')}catch(e){}
-  if(!dls){cpText(html,'無法下載，已複製網頁原始碼');throw {code:'shown'}}
-  await dls.save({filename:name,data:html});tip('網頁檔已儲存，可以直接傳給同行的人')}
- catch(e){const k=e&&e.code;if(k&&k!='declined'&&k!='shown'){try{cpText(pubHtml(t),'無法下載，已複製網頁原始碼')}catch(_){tip('發佈失敗（'+k+'）')}}}
- PL.pub=null;render()}
-/* 最後一道：掃描完整網頁（去掉圖示的 data URL），確認個資字串都已遮蔽 */
-function pubLeak(html){const h=String(html).replace(/data:[^"')\s]+/g,'').toLowerCase(),out=[];pubTokens().forEach(t=>{if(h.includes(t.v.toLowerCase()))out.push(t)});return out}
+ PL.chk=null;let html='';try{html=pubHtml(t)}catch(e){html=''}
+ if(!html){tip('製作失敗，沒有輸出');render();return}
+ const left=pubLeak(html);if(left.length){html='';tip('最後檢查仍發現疑似個資（'+left[0].kind+'），已停止輸出');render();return}
+ PL.out={tid,html,name:t.name.replace(/^\d{6}/,'')+'-行程網頁.html',fail:''};await plPubSave()}
+async function plPubSave(){const O=PL.out;if(!O||PL.pub)return;PL.pub=1;render();let dls=null,res='fail';
+ try{dls=await claude.use('downloads')}catch(e){}
+ if(dls){try{const r=await dls.save({filename:O.name,data:O.html}),st=r&&r.status;res=!st||st=='saved'?'ok':st=='declined'||st=='cancelled'?'declined':'fail'}catch(e){res=e&&e.code=='declined'?'declined':'fail'}}
+ PL.pub=null;
+ if(res=='ok'){PL.out=null;tip('網頁檔已儲存，可以直接傳給同行的人')}
+ else if(res=='declined'){PL.out=null}
+ else{O.fail=dls?'下載失敗':'這裡不能下載檔案';tip(O.fail+'，可以改用「複製網頁原始碼」')}
+ render()}
+const PUB_OUT=()=>{const O=PL.out;if(!O||!O.fail||O.tid!=oneT())return '';
+ return `<div class="pubchk"><div class="font-medium">⚠ ${esc(O.fail)}</div><p class="text-xs mt-1">可以再試一次，或複製網頁原始碼（和要下載的檔案是同一份、已通過個資檢查），貼到記事本另存成 .html。</p>
+ <div class="adbar"><button type="button" class="${BP}" onclick="plPubSave()">再試一次下載</button><button type="button" class="${BT}" onclick="cpText(PL.out.html,'已複製網頁原始碼')">複製網頁原始碼</button><button type="button" class="${BT}" onclick="PL.out=null;render()">關閉</button></div></div>`};
+/* 最後一道：整份網頁再掃一次。個資字串比對原始碼（去掉圖示 data URL）；格式偵測比對畫面上看得到的文字 */
+const pubText=html=>String(html).replace(/<script[\s\S]*?<\/script>/gi,' ').replace(/<style[\s\S]*?<\/style>/gi,' ').replace(/data:[^"')\s]+/g,' ').replace(/<[^>]+>/g,'\n').replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&quot;/g,'"').replace(/&#39;/g,"'").replace(/&amp;/g,'&');
+function pubLeak(html){const raw=String(html).replace(/data:[^"')\s]+/g,'').toLowerCase(),out=[];
+ pubTokens().forEach(t=>{if(raw.includes(t.v.toLowerCase()))out.push(t)});
+ pubText(html).split('\n').forEach(l=>pubFind(l).forEach(x=>out.push({kind:x.kind,v:x.v})));return out}
 const PUB_CHK=()=>{const c=PL.chk;if(!c||c.tid!=oneT())return '';const g={};c.hits.forEach(x=>{const k=x.kind+'｜'+x.v;(g[k]=g[k]||{kind:x.kind,v:x.v,w:new Set()}).w.add(x.where||'內容')});
  const mask=v=>v.length<=2?v[0]+'＊':v.slice(0,2)+'＊'.repeat(Math.min(6,v.length-2));
  return `<div class="pubchk"><div class="font-medium">⚠ 行程內容裡找到 ${Object.keys(g).length} 項疑似個資</div><p class="text-xs mt-1">這些字出現在行程說明、交通重點或提醒裡。下載時會換成「＊＊」，原本的資料不會改。</p>

@@ -137,3 +137,6 @@ button[disabled]{opacity:.55}
 .pubchk li{padding:.2rem 0;border-top:1px dashed rgb(253 230 138)}
 .pubchk li b{margin-right:.4rem}
 .pubchk li small{display:block;color:rgb(146 64 14/.8)}
+.lockbar{flex-wrap:wrap}
+.lockbtn{display:flex;flex-wrap:wrap;gap:.4rem;flex-basis:100%}
+.lockbar button.ghost{background:#fff;color:rgb(153 27 27);border:1px solid rgb(252 165 165)}

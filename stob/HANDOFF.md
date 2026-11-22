@@ -13,7 +13,8 @@
 - **安裝頁流程**：朋友的 Claude 能不能照 `INSTALL.md` 自己抓到 `raw.githubusercontent.com` 上的 `STOB.html` 並宣告 capabilities；免費方案能不能建立／發佈網頁（官方文件沒寫清楚）。安裝頁 https://jade19880309.github.io/travel-public/stob/ 是否已上線也沒在沙盒確認過。
 - **iPhone 排版修正**：拿掉 `viewport-fit=cover`（避免被 Claude App 頂部按鈕蓋住）、日期欄位不撐寬（`theme.css`）——只在 Chrome 模擬過。
 - **iPhone 下載 PDF／網頁檔**：`downloads.save` 在 Claude iOS App 的表現；失敗時會改成圖片顯示（PDF）或複製原始碼（網頁）。
-- **雲端版本保護（v2 格式）**：只在假 db 測過；真實 Claude db 的 `acquire` 回傳格式若不同，`takeLease` 會當作成功（不會卡住，但少一層保護）。兩台手機同時改同一份資料的實際情況待使用者試。
+- **雲端版本保護（v2 格式＋寫入鎖）**：只在假 db 測過（依官方 `acquire` 文件模擬）。如果真實環境 `acquire` 不存在或回報 capability_removed，頁面會暫停儲存並請使用者更新 App——若使用者回報「已暫停儲存（不支援儲存鎖定）」，先查這裡。
+- **今天稍早發佈的版本**（沒有 `pk` 的 v2）讀到新版寫的資料會因分段找不到而暫停儲存（安全失敗）；請確認大家都換到新版。
 - **手機長表單**：底部固定按鈕列（`.adbar`，含 safe-area）與 16px 輸入框只在 Chrome 模擬過。
 - **發佈網頁加入主畫面**：網頁檔內的 data URL 圖示、全螢幕設定在 iOS 是否生效（網頁檔要先放到有網址的地方才能加入主畫面）。
 
