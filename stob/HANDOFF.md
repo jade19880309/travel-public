@@ -8,7 +8,7 @@
 - 使用者自己的「偏航 DETOUR」是 STOB 加品牌圖層（附件 DETOUR.html，原本只存在使用者的 Claude，repo 裡沒有）。2026-11-22 已把它納入原始檔：`stob/src/detour.py`（讀 `stob/STOB.html` 套用，不需要 travel-private）＋`detour.css`＋`detour.js`＋`versions.json`，產生 `stob/DETOUR.html`。
 - 改版本：只改 `src/versions.json`（current、date、history 最上面一筆）→ `cd stob/src && python3 detour.py`，會同步 App（頁首、首頁底部、管理›關於）與 `guide.html` 的「版本歷程」頁。
 - 目前 v1.3.0 雙主題：`<html data-theme="romantic|navy">`（預設浪漫；localStorage 鍵 `detour-theme`，head 內小腳本先套用避免閃爍），變數寫在 `detour.css` 開頭；切換在「管理 › 外觀設定」。素材來自使用者的 DETOUR_Claude_ThemePack（logo、飛行弧線已內嵌成吃 CSS 變數的 SVG）。標語卡文字固定三句，已移除 v1.2 的時段問候與倒數；參考圖的山景刻意沒做（規格說不要厚重山景）。深藍主題採象牙白底（依 theme.css），參考圖是整頁深藍，如要整頁深藍需另改。兩主題都保留系統深色模式的變體。測試用 `APP=DETOUR.html python3 tests/xxx.py`：test/t8/t_v2/t_r2 通過；`t_full.py` 在 STOB.html 上同樣會在後段報 `Cannot read properties of null (reading 'value')`，非本次造成，未查。
-- **沒做／待決定**：①DETOUR.html 尚未發佈到使用者的 Claude（需用使用者本人的 Claude 以 index.html 覆蓋他的偏航 artifact）。②安裝頁 `index.html`、`INSTALL.md`、下載檔名仍是 STOB（朋友流程未動）；要不要整個改名偏航請使用者決定。③Claude Docs 版使用說明未更新版本歷程。④v1.0.0／v1.1.0 的日期與內容是依現況推估，請使用者確認。⑤配色只在 Chrome 手機尺寸看過，iPhone 與加入主畫面未測。⑥規格寫「不修改版本號」，我仍把版本升到 1.3.0（不是參考圖的 v2.7.0），不要請改回請使用者說。
+- **沒做／待決定**：①已在這個帳號發佈新的偏航 artifact（https://claude.ai/artifact/496uU5hwcxG7zLQtdfd1P1，資料是空的；舊偏航資料需備份後還原）。②安裝頁 `index.html`、`INSTALL.md`、`guide.html` 已改成偏航 DETOUR（下載 `DETOUR.html`）；`STOB.html` 仍保留給舊 artifact，不再更新。朋友的安裝流程（Claude 自己抓檔、發佈）未實測。③Claude Docs 版使用說明未更新版本歷程。④v1.0.0／v1.1.0 的日期與內容是依現況推估，請使用者確認。⑤配色只在 Chrome 手機尺寸看過，iPhone 與加入主畫面未測。⑥規格寫「不修改版本號」，我仍把版本升到 1.3.0（不是參考圖的 v2.7.0），不要請改回請使用者說。
 - 踩坑：附加的 JS 必須插在 `(async function boot(){` 之前（第一次 render 會用到 `dtrHero`），頁首 svg 要寫死在模板裡，不能用後面才定義的變數。
 
 ## 還沒實測（需要使用者用手機或朋友的帳號試）
