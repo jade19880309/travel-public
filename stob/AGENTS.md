@@ -23,7 +23,7 @@
 | TOB 旅遊訂單 | 私人 repo `jade19880309/travel-private`（`index.html` 單一檔，資料寫死在檔案裡），線上網址 travel942booking.jade19880309.workers.dev | 使用者自己的訂單系統，含全家個資。改法見 `travel-private/AGENTS.md` |
 | STOB 旅遊訂單（分享版） | 這個資料夾 `travel-public/stob/`；發佈在 Claude：https://claude.ai/artifact/4ohzsuWP61yy6PtJfYY85a（artifact slug `1ed0e52e-f8f4-478b-81d0-3ac419a90c4d`） | 給朋友用的空白版，資料存在每個人自己的 Claude 帳號 |
 | 安裝頁 | `stob/index.html` → https://jade19880309.github.io/travel-public/stob/ | 給朋友的三步驟安裝說明；朋友複製一句話給自己的 Claude，Claude 照 `INSTALL.md` 發佈 |
-| 使用說明文件 | Claude Docs：https://claude.ai/artifact/9Dv1bnvUdRabStL49e5DfY | 給朋友看的操作說明與注意事項（使用者擁有，可匯出 PDF） |
+| 使用說明網頁 | `stob/guide.html` → https://jade19880309.github.io/travel-public/stob/guide.html（安裝頁底部有連結） | 給朋友看的完整操作說明；內容與 Claude Docs 版（https://claude.ai/artifact/Pkxx1Nq5XwNLAnUHYrGoQv，2026-11-22 重新排版）相同，改功能時兩份都要更新 |
 | 各旅程行程網站 | `travel-public` 根目錄（index.html、tokyo.html…） | 與 STOB 無關，規則見根目錄 `README.md`、`HANDOFF.md` |
 
 ## STOB 怎麼做出來的
