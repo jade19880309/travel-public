@@ -4,31 +4,31 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
-<meta name="theme-color" content="#0f4c52">
-<title>STOB 使用說明</title>
+<meta name="theme-color" content="#4B3A52">
+<title>偏航 DETOUR 使用說明</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Huninn&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Huninn&family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@500;600&family=Cormorant+Garamond:wght@500;600&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#f3f6f5;--card:#fff;--ink:#1c2529;--mut:#5f7075;--line:#dce6e6;--acc:#146c72;--hd:#0f4c52;--tag:#e8a93a;--tagt:#3a2806;--warn:#9a3412;--warnbg:#fff7ed}
-@media (prefers-color-scheme:dark){:root{--bg:#101719;--card:#182124;--ink:#ecf2f3;--mut:#9cadb1;--line:#2a373b;--acc:#5ec2c0;--hd:#0f4c52;--warn:#fdba74;--warnbg:#2a1d12}}
+:root{--bg:#F9F2ED;--card:#FFFBF8;--ink:#2C232F;--mut:#6C5C67;--line:#E9DCD5;--acc:#8F5468;--hd:#4B3A52;--tag:#E0C496;--tagt:#4A3414;--warn:#9a3412;--warnbg:#fff7ed}
+@media (prefers-color-scheme:dark){:root{--bg:#1A1521;--card:#241E2E;--ink:#F7F2F8;--mut:#B6A9BC;--line:#3A3048;--acc:#E8AABA;--hd:#2B2240;--warn:#fdba74;--warnbg:#2a1d12}}
 *{box-sizing:border-box}
 html{background:var(--bg);scroll-behavior:smooth;scroll-padding-top:4rem}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 body{margin:0;font:16px/1.75 "Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;color:var(--ink);background:var(--bg);-webkit-text-size-adjust:100%}
-header{background:var(--hd);color:#f3f6f5;padding:2.2rem 1.25rem 2rem}
+header{background:linear-gradient(135deg,var(--hd),#6B4560);color:#F9F2ED;padding:2.2rem 1.25rem 2rem}
 .w{max-width:640px;margin:0 auto}
 .brand{display:flex;align-items:center;gap:.8rem}
 .tag{position:relative;display:inline-flex;align-items:center;justify-content:center;width:4.2rem;height:2.5rem;padding-left:1.25rem;background:var(--tag);color:var(--tagt);font-family:"Huninn","Noto Sans TC",sans-serif;font-size:.78rem;letter-spacing:.08em;clip-path:polygon(28% 0,100% 0,100% 100%,28% 100%,0 50%);border-radius:.35rem;transform:rotate(-7deg)}
 .tag i{position:absolute;left:.72rem;top:50%;width:.44rem;height:.44rem;margin-top:-.22rem;border-radius:50%;background:var(--hd)}
-h1{margin:0;font-family:"Huninn","Noto Sans TC",sans-serif;font-weight:400;font-size:1.75rem;line-height:1.25;letter-spacing:.05em}
-header p{margin:.9rem 0 0;color:#cfe2e1;font-size:.95rem}
+h1{margin:0;font-family:"Noto Serif TC","Songti TC",serif;font-weight:600;font-size:1.75rem;line-height:1.25;letter-spacing:.05em}
+header p{margin:.9rem 0 0;color:#EBD9E0;font-size:.95rem}
 nav{position:sticky;top:0;z-index:5;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
 nav .w{display:flex;gap:.4rem;overflow-x:auto;padding:.55rem 1.1rem;scrollbar-width:none}
 nav .w::-webkit-scrollbar{display:none}
 nav a{flex:none;padding:.35rem .8rem;border-radius:999px;border:1px solid var(--line);background:var(--card);color:var(--ink);text-decoration:none;font-size:.86rem;white-space:nowrap}
 main{padding:1.2rem 1.1rem 3rem}
 section{background:var(--card);border:1px solid var(--line);border-radius:1.1rem;padding:1.15rem 1.2rem;margin-bottom:.95rem}
-h2{margin:0 0 .5rem;font-size:1.22rem;font-family:"Huninn","Noto Sans TC",sans-serif;font-weight:400;letter-spacing:.03em;color:var(--acc)}
+h2{margin:0 0 .5rem;font-size:1.22rem;font-family:"Noto Serif TC","Songti TC",serif;font-weight:600;letter-spacing:.03em;color:var(--acc)}
 h3{margin:1.2rem 0 .35rem;font-size:1.02rem}
 p{margin:.45rem 0}
 ul,ol{padding-left:1.35rem;margin:.45rem 0}
@@ -74,21 +74,30 @@ main.pager::-webkit-scrollbar{display:none}
 .pgnav button[hidden]{display:block;visibility:hidden}
 .pgn{max-width:640px;margin:.5rem auto 0;text-align:center;color:var(--mut);font-size:.8rem}
 @media print{html,body{height:auto;overflow:visible;display:block}main.pager{display:block;overflow:visible}.pg{overflow:visible;padding:0}.pgnav,.pgn{display:none}nav{display:none}header{background:none;color:var(--ink);padding:0 0 1rem}header p{color:var(--mut)}section{break-inside:avoid;border:0;padding:0 0 1rem}}
+.gv{margin-left:.5rem;padding:.05rem .55rem;border-radius:99px;background:rgba(224,196,150,.3);color:#F4DFC0;font:600 .72rem "Cormorant Garamond","Noto Serif TC",serif;letter-spacing:.12em;vertical-align:.2em}
+section{box-shadow:0 14px 30px -22px rgba(96,52,74,.45)}
+.vr{list-style:none;margin:.8rem 0 0;padding:0 0 0 0;border-left:1px solid var(--tag)}
+.vr>li{position:relative;margin:0 0 1.1rem;padding-left:1.1rem}
+.vr>li::before{content:"";position:absolute;left:-.34rem;top:.55rem;width:.62rem;height:.62rem;border-radius:50%;background:var(--tag);box-shadow:0 0 0 3px var(--card)}
+.vr>li.cur::before{background:var(--acc)}
+.vr>li>b{font-family:"Cormorant Garamond","Noto Serif TC",serif;font-size:1.15rem;color:var(--acc);margin-right:.5rem}
+.vr small{margin-left:.5rem;color:var(--mut)}
+.vr ul{margin:.3rem 0 0;font-size:.92rem}
 </style>
 </head>
 <body>
 <header><div class="w">
- <div class="brand"><span class="tag"><i></i>STOB</span><h1>使用說明</h1></div>
+ <div class="brand"><span class="tag"><i></i>DTR.</span><h1>偏航 DETOUR 使用說明<span class="gv">v1.2.0</span></h1></div>
  <p>把旅遊訂單交給自己的 Claude 整理成行程，再做成 PDF 或網頁給同行的人。</p>
 </div></header>
 <nav aria-label="章節"><div class="w">
- <a href="#what">是什麼</a><a href="#start">第一次使用</a><a href="#upload">上傳訂單</a><a href="#view">看行程</a><a href="#plan">行程・PDF・網頁</a><a href="#manage">管理與備份</a><a href="#save">儲存狀態</a><a href="#faq">隱私與問答</a>
+ <a href="#what">是什麼</a><a href="#start">第一次使用</a><a href="#upload">上傳訂單</a><a href="#view">看行程</a><a href="#plan">行程・PDF・網頁</a><a href="#manage">管理與備份</a><a href="#save">儲存狀態</a><a href="#faq">隱私與問答</a><a href="#ver">版本歷程</a>
 </div></nav>
 <main class="pager" id="pager" aria-label="使用說明（左右滑動切換章節）">
 
 <div class="pg"><section id="what">
- <h2>STOB 是什麼</h2>
- <p class="lead">STOB 是放在你自己 Claude 帳號裡的旅遊訂單本：把機票、飯店、交通的確認信或截圖丟進去，它會自動整理成行程表，還能排建議行程、做成 PDF 或網頁分享給同行的人。</p>
+ <h2>偏航 DETOUR 是什麼</h2>
+ <p class="lead">偏航 DETOUR（前身是 STOB 旅遊訂單；安裝頁與下載檔名暫時仍叫 STOB）是放在你自己 Claude 帳號裡的旅遊訂單本：把機票、飯店、交通的確認信或截圖丟進去，它會自動整理成行程表，還能排建議行程、做成 PDF 或網頁分享給同行的人。</p>
  <ul>
   <li><b>資料只在你的帳號</b>：訂單和成員資料存在你自己的 Claude 帳號，別人（包括給你檔案的人）都看不到。</li>
   <li><b>用你自己的 Claude 額度</b>：讀訂單、排行程都是你的 Claude 在做，不會傳到其他服務。</li>
@@ -218,7 +227,7 @@ main.pager::-webkit-scrollbar{display:none}
  <h2>隱私、注意事項與常見問題</h2>
  <h3>隱私</h3>
  <ul>
-  <li>訂單、成員、護照只存在你自己的 Claude 帳號。把 STOB 網頁分享給別人，對方打開看到的是他自己的空白資料，不是你的。</li>
+  <li>訂單、成員、護照只存在你自己的 Claude 帳號。把這個網頁分享給別人，對方打開看到的是他自己的空白資料，不是你的。</li>
   <li>會帶個資的只有：個人單圖片、備份文字。這兩樣只私下傳給本人。</li>
   <li>發佈的網頁和 PDF 不含個資，可以丟群組。</li>
   <li>「勾選採用」、個人單選項、確認信狀態存在各台裝置，不會跨裝置同步。</li>
@@ -230,12 +239,18 @@ main.pager::-webkit-scrollbar{display:none}
   <dt>讀出來的資料不對？</dt>
   <dd>預覽時先改；已存入就到「管理」用一句話修改，或在「訂單」分頁編輯。</dd>
   <dt>換手機或用電腦開？</dt>
-  <dd>用同一個 Claude 帳號打開同一個 STOB 網頁，資料就在。不要重新安裝一份，那會是空的。</dd>
+  <dd>用同一個 Claude 帳號打開同一個網頁，資料就在。不要重新安裝一份，那會是空的。</dd>
   <dt>頁面一直顯示「已暫停儲存」？</dt>
   <dd>照「重新讀取」的步驟做；讀取還是失敗，先確認網路，稍後再試。這時雲端上的資料沒有被動到。</dd>
   <dt>下載的網頁檔怎麼開？</dt>
   <dd>對方在手機或電腦點兩下用瀏覽器開就好，不用上網也看得到內容；地圖連結需要網路。</dd>
  </dl>
+</section></div>
+
+<div class="pg"><section id="ver">
+ <h2>版本歷程</h2>
+ <p class="mut">目前版本在 App 頁首名稱下方、首頁底部，以及「管理 › 關於」都看得到。</p>
+ <!--VER:START--><ul class="vr"><li class="cur"><b>v1.2.0</b>浪漫改版<small>2026-11-22</small><ul><li>配色改為「暮光玫瑰」：暖霧粉米底、乾燥玫瑰主色、香檳金點綴；深色模式是夜空紫</li><li>首頁換成暮色天空卡片：依早晨、午後、傍晚、夜裡換問候語，有出發日的旅程會顯示倒數</li><li>標題與數字改用襯線字體，區塊標題加上金色細線，卡片陰影改為柔光</li><li>標誌與頁首、頁尾加上星點與航線</li><li>畫面上標明版本號，「管理 › 關於」可看更新歷程，說明頁新增「版本歷程」</li></ul></li><li><b>v1.1.0</b>更名偏航 DETOUR<small>2026-11-22</small><ul><li>品牌由 STOB 旅遊訂單改為「偏航 DETOUR」，新標誌與頁首</li><li>首頁品牌區塊、結尾台詞「一切都安排好了，現在可以亂來了。」</li><li>存入訂單、建立旅程、產生行程時的提示改成更有溫度的句子</li></ul></li><li><b>v1.0.0</b>STOB 旅遊訂單（分享版）<small>2026-11</small><ul><li>上傳訂單截圖、PDF、確認信，由 Claude 讀出旅程、成員與訂單</li><li>建議行程、單日重排、一句話修改；PDF 與發佈網頁（不含個資）</li><li>雲端 v2 儲存格式與寫入鎖、備份與還原</li></ul></li></ul><!--VER:END-->
 </section></div>
 
 </main>
@@ -246,7 +261,7 @@ main.pager::-webkit-scrollbar{display:none}
  pages.forEach(function(pg,i){var d=document.createElement('div');d.className='pgnav';
   d.innerHTML='<button type="button" class="pv"'+(i?'':' hidden')+'>← '+(i?links[i-1].textContent:'')+'</button><button type="button" class="nx"'+(i<n-1?'':' hidden')+'>'+(i<n-1?links[i+1].textContent:'')+' →</button>';
   d.querySelector('.pv').onclick=function(){go(i-1)};d.querySelector('.nx').onclick=function(){go(i+1)};pg.appendChild(d);
-  var c=document.createElement('p');c.className='pgn';c.textContent=(i+1)+' / '+n+(i==n-1?'・更新於 2026/11/22':'・左右滑動切換');pg.appendChild(c)});
+  var c=document.createElement('p');c.className='pgn';c.textContent=(i+1)+' / '+n+(i==n-1?'・更新於 2026/11/22・v1.2.0':'・左右滑動切換');pg.appendChild(c)});
  function mark(i){if(i<0||i>=n)return;cur=i;links.forEach(function(a,j){a.setAttribute('aria-current',j==i?'true':'false')});var a=links[i],w=a.parentNode;w.scrollTo({left:a.offsetLeft-(w.clientWidth-a.offsetWidth)/2,behavior:'smooth'});
   var id=pages[i].querySelector('section').id;if(history.replaceState)history.replaceState(null,'','#'+id)}
  function go(i,inst){if(i<0||i>=n)return;P.scrollTo({left:i*P.clientWidth,behavior:inst?'auto':'smooth'});mark(i)}

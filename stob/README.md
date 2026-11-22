@@ -13,3 +13,5 @@
   - `plan.js`：建議行程、PDF、一鍵發佈成網頁
   - `cloud.css`、`theme.css`：STOB 的版面與配色
   - `pub.css`：發佈網頁的樣式
+
+- `DETOUR.html`：偏航 DETOUR（STOB 更名＋浪漫改版），由 `src/detour.py` 以 `STOB.html` 為底產生；版本號與歷程在 `src/versions.json`，同步寫入 `guide.html`。

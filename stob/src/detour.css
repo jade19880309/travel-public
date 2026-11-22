@@ -1,0 +1,66 @@
+/* ===== 偏航 DETOUR v1.2「暮光玫瑰」：暖霧粉米、乾燥玫瑰、香檳金、薰衣草暮色；深色是夜空紫 ===== */
+:root{--s50:249 242 237;--s100:243 233 227;--s200:233 220 213;--s300:214 199 194;--s400:122 106 116;--s500:108 92 103;--s600:92 77 88;--s700:74 61 72;--s800:58 47 58;--s900:44 35 47;--s950:30 24 33;--card:255 251 248;
+ --gold:143 84 104;--goldt:122 66 86;--fc:122 66 86;--fcon:255 248 244;--acc:143 84 104;--acc2:118 62 82;--tag:224 196 150;--tagt:74 52 20;--shd:96 52 74;
+ --sun:236 196 192;--lav:208 196 226;--sage:170 183 173;--hero1:#F1E4EC;--hero2:#F7E6E2;--hero3:#F6E7CF;--glow:255 226 190}
+@media (prefers-color-scheme: dark){:root{--s50:26 21 33;--s100:34 28 43;--s200:46 39 57;--s300:68 58 80;--s400:166 152 172;--s500:182 169 188;--s600:204 192 208;--s700:222 212 226;--s800:236 228 238;--s900:247 242 248;--s950:252 249 253;--card:36 30 46;
+ --gold:232 170 186;--goldt:242 196 208;--fc:242 196 208;--fcon:26 21 33;--acc:232 170 186;--acc2:208 140 160;--tag:226 198 152;--tagt:52 36 12;--shd:0 0 0;
+ --sun:150 104 134;--lav:120 104 160;--sage:170 183 173;--hero1:#2B2240;--hero2:#3A2640;--hero3:#4A3140;--glow:255 205 160}}
+
+/* 底色：頂端一抹暮光 */
+html{background-color:rgb(var(--s50))!important;background-image:radial-gradient(120% 46% at 50% -8%,rgb(var(--sun)/.5),transparent 70%),radial-gradient(70% 30% at 100% 0,rgb(var(--lav)/.32),transparent 70%)!important;background-repeat:no-repeat!important}
+@media (prefers-color-scheme: dark){html{background-image:radial-gradient(120% 40% at 50% -8%,rgb(var(--sun)/.28),transparent 70%),radial-gradient(70% 28% at 100% 0,rgb(var(--lav)/.22),transparent 70%)!important}}
+
+/* 字體：標題與數字用襯線 */
+h1,h2,.text-2xl,.sr{font-family:"Noto Serif TC","Songti TC","Source Han Serif TC",serif!important}
+.adhero h3,.adsteps b,.pldn{font-family:"Noto Serif TC","Songti TC",serif!important;font-weight:600}
+h2.sr{display:flex;align-items:center;gap:.7rem;letter-spacing:.05em}
+h2.sr::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,rgb(var(--tag)),rgb(var(--tag)/0))}
+
+/* 卡片、按鈕：柔光 */
+.bg-card{border-color:rgb(var(--s200))!important;border-radius:1.15rem!important;box-shadow:0 1px 2px rgb(var(--shd)/.05),0 16px 32px -20px rgb(var(--shd)/.38)!important}
+.bg-stone-700{box-shadow:0 8px 18px -10px rgb(var(--gold)/.7)}
+.upfab{background:linear-gradient(135deg,#BE7A8A,#8F5468)!important;color:#fff8f4!important;box-shadow:0 12px 26px -10px rgb(143 84 104/.65)!important}
+.sx-h{background:linear-gradient(135deg,#4B3A52,#6B4560)!important}
+.plbk{background:rgb(var(--tag)/.3)!important}
+
+/* 頁首標誌 */
+.stm.dtl{width:2.9rem;height:2.9rem;padding:0;background:linear-gradient(145deg,#4B3A52,#7A4A62);border-radius:1rem;clip-path:none;transform:none;filter:none;box-shadow:0 8px 16px -8px rgb(122 74 98/.75)}
+.stm.dtl svg{width:100%;height:100%;display:block}
+.stw b{font-family:"Noto Serif TC","Songti TC",serif!important;font-weight:600;font-size:1.7rem;letter-spacing:.18em;color:rgb(var(--s900))}
+.stw small{margin-top:.28rem;font-family:"Cormorant Garamond","Noto Serif TC",serif;font-weight:600;font-size:.78rem;letter-spacing:.26em;color:rgb(var(--goldt));opacity:1;text-transform:uppercase}
+.stw small em{font-style:normal;letter-spacing:.12em;margin-left:.45em;padding:0 .4em;border-radius:99px;background:rgb(var(--tag)/.38);color:rgb(var(--tagt));font-size:.7rem;text-transform:none}
+@media (prefers-color-scheme: dark){.stw small em{color:rgb(var(--tag));background:rgb(var(--tag)/.16)}}
+
+/* 首頁：暮色天空 */
+.dtr-hero{position:relative;overflow:hidden;margin:.3rem 0 1.1rem;padding:1.25rem 1.2rem 1.15rem;border-radius:1.4rem;background:linear-gradient(160deg,var(--hero1) 0%,var(--hero2) 55%,var(--hero3) 100%);border:1px solid rgb(var(--tag)/.55);box-shadow:0 18px 36px -22px rgb(var(--shd)/.5)}
+.dtr-hero::before{content:"";position:absolute;right:-2.2rem;bottom:-3.4rem;width:11rem;height:11rem;border-radius:50%;background:radial-gradient(circle,rgb(var(--glow)/.85) 0%,rgb(var(--glow)/.35) 38%,transparent 68%);pointer-events:none}
+.dtr-hero>*{position:relative}
+.dtr-stars{position:absolute;inset:0;pointer-events:none}
+.dtr-stars i{position:absolute;width:3px;height:3px;border-radius:50%;background:rgb(var(--tag));box-shadow:0 0 6px 1px rgb(var(--tag)/.8);animation:dtr-tw 3.6s ease-in-out infinite}
+.dtr-stars i:nth-child(1){left:12%;top:16%}.dtr-stars i:nth-child(2){left:36%;top:9%;animation-delay:.9s;width:2px;height:2px}.dtr-stars i:nth-child(3){left:58%;top:20%;animation-delay:1.7s}.dtr-stars i:nth-child(4){left:76%;top:10%;animation-delay:2.4s;width:2px;height:2px}.dtr-stars i:nth-child(5){left:90%;top:30%;animation-delay:.4s}
+@keyframes dtr-tw{0%,100%{opacity:.25}50%{opacity:1}}
+@media (prefers-reduced-motion: reduce){.dtr-stars i{animation:none;opacity:.7}}
+.dtr-g{font-size:.82rem;letter-spacing:.1em;color:rgb(var(--s600))}
+.dtr-t{margin:.35rem 0 .2rem;padding-right:3.4rem;font-family:"Noto Serif TC","Songti TC",serif;font-weight:600;font-size:1.28rem;line-height:1.55;letter-spacing:.04em;color:rgb(var(--s900));text-wrap:balance}
+.dtr-en{font-family:"Cormorant Garamond",serif;font-style:italic;font-weight:600;font-size:1.08rem;letter-spacing:.05em;color:rgb(var(--goldt))}
+.dtr-rt{position:absolute!important;right:.7rem;top:.6rem;width:3.2rem;height:3.2rem;opacity:.95}
+.dtr-cd{display:inline-flex;align-items:center;gap:.4rem;margin-top:.85rem;padding:.3rem .8rem;border-radius:99px;background:rgb(var(--card)/.7);border:1px solid rgb(var(--tag)/.7);font-size:.82rem;letter-spacing:.04em;color:rgb(var(--s700))}
+.dtr-cd b{font-family:"Cormorant Garamond","Noto Serif TC",serif;font-size:1.15rem;font-weight:600;color:rgb(var(--goldt))}
+
+/* 頁尾：星、台詞、版本 */
+.dtr-foot{margin:1.9rem 0 .4rem;text-align:center;color:rgb(var(--s500))}
+.dtr-foot svg{width:1.1rem;height:1.1rem;display:block;margin:0 auto .4rem}
+.dtr-foot p{margin:0;font-family:"Noto Serif TC","Songti TC",serif;font-size:.92rem;letter-spacing:.08em}
+.dtr-ver{display:inline-block;margin-top:.7rem;padding:.2rem .8rem;border:1px solid rgb(var(--tag)/.8);border-radius:99px;background:transparent;font:600 .82rem "Cormorant Garamond","Noto Serif TC",serif;letter-spacing:.14em;color:rgb(var(--goldt));cursor:pointer}
+.dtr-alt{margin-top:.4rem;text-align:right;font-family:"Noto Serif TC","Songti TC",serif;font-size:.78rem;letter-spacing:.06em;color:rgb(var(--s500))}
+
+/* 管理 › 關於 */
+.dtr-ab h3{margin:0;font-family:"Noto Serif TC","Songti TC",serif;font-size:1.3rem;letter-spacing:.12em}
+.dtr-ab .en{font-family:"Cormorant Garamond",serif;font-style:italic;font-weight:600;color:rgb(var(--goldt));letter-spacing:.06em}
+.dtr-vr{margin:1rem 0 0;padding:0;list-style:none;border-left:1px solid rgb(var(--tag))}
+.dtr-vr>li{position:relative;margin:0 0 1rem;padding-left:1.1rem}
+.dtr-vr>li::before{content:"";position:absolute;left:-.34rem;top:.5rem;width:.62rem;height:.62rem;border-radius:50%;background:rgb(var(--tag));box-shadow:0 0 0 3px rgb(var(--card))}
+.dtr-vr>li.cur::before{background:rgb(var(--gold))}
+.dtr-vr b{font-family:"Cormorant Garamond","Noto Serif TC",serif;font-size:1.1rem;color:rgb(var(--goldt))}
+.dtr-vr small{margin-left:.5rem;color:rgb(var(--s500))}
+.dtr-vr ul{margin:.3rem 0 0;padding-left:1.1rem;font-size:.88rem;line-height:1.6;color:rgb(var(--s700))}

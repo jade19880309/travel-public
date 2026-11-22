@@ -1,6 +1,6 @@
 import pathlib as _pl, os as _os
 HERE=_pl.Path(__file__).resolve().parent
-STOB_URL=(HERE.parent/'STOB.html').as_uri()
+STOB_URL=(HERE.parent/__import__('os').environ.get('APP','STOB.html')).as_uri()
 CHROME=_os.environ.get('CHROME','/usr/bin/google-chrome')
 import json, asyncio
 from playwright.async_api import async_playwright

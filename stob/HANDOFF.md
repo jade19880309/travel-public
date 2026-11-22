@@ -1,11 +1,15 @@
 # STOB 交接紀錄（給下一位 AI）
 
 > 只記「還沒做完／還沒確認」的事；做完就刪掉。系統說明在 `AGENTS.md`。
-> 最後更新：2026-11-22
+> 最後更新：2026-11-22（偏航 v1.2.0）
 
-## 進行中
+## 進行中：偏航 DETOUR（STOB 的更名＋浪漫改版）
 
-目前沒有做到一半的工作。
+- 使用者自己的「偏航 DETOUR」是 STOB 加品牌圖層（附件 DETOUR.html，原本只存在使用者的 Claude，repo 裡沒有）。2026-11-22 已把它納入原始檔：`stob/src/detour.py`（讀 `stob/STOB.html` 套用，不需要 travel-private）＋`detour.css`＋`detour.js`＋`versions.json`，產生 `stob/DETOUR.html`。
+- 改版本：只改 `src/versions.json`（current、date、history 最上面一筆）→ `cd stob/src && python3 detour.py`，會同步 App（頁首、首頁底部、管理›關於）與 `guide.html` 的「版本歷程」頁。
+- 目前 v1.2.0「暮光玫瑰」：粉米底、乾燥玫瑰、香檳金、夜空紫；首頁暮色天空卡（依時段問候、出發倒數）。測試用 `APP=DETOUR.html python3 tests/xxx.py`：test/t8/t_v2/t_r2 通過；`t_full.py` 在 STOB.html 上同樣會在後段報 `Cannot read properties of null (reading 'value')`，非本次造成，未查。
+- **沒做／待決定**：①DETOUR.html 尚未發佈到使用者的 Claude（需用使用者本人的 Claude 以 index.html 覆蓋他的偏航 artifact）。②安裝頁 `index.html`、`INSTALL.md`、下載檔名仍是 STOB（朋友流程未動）；要不要整個改名偏航請使用者決定。③Claude Docs 版使用說明未更新版本歷程。④v1.0.0／v1.1.0 的日期與內容是依現況推估，請使用者確認。⑤改版配色只在 Chrome 手機尺寸看過，iPhone 未測。
+- 踩坑：附加的 JS 必須插在 `(async function boot(){` 之前（第一次 render 會用到 `dtrHero`），頁首 svg 要寫死在模板裡，不能用後面才定義的變數。
 
 ## 還沒實測（需要使用者用手機或朋友的帳號試）
 
