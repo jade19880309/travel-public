@@ -87,7 +87,7 @@ section{box-shadow:0 14px 30px -22px rgba(96,52,74,.45)}
 </head>
 <body>
 <header><div class="w">
- <div class="brand"><span class="tag"><i></i>DTR.</span><h1>偏航 DETOUR 使用說明<span class="gv">v1.2.0</span></h1></div>
+ <div class="brand"><span class="tag"><i></i>DTR.</span><h1>偏航 DETOUR 使用說明<span class="gv">v1.3.0</span></h1></div>
  <p>把旅遊訂單交給自己的 Claude 整理成行程，再做成 PDF 或網頁給同行的人。</p>
 </div></header>
 <nav aria-label="章節"><div class="w">
@@ -174,7 +174,8 @@ section{box-shadow:0 14px 30px -22px rgba(96,52,74,.45)}
 
 <div class="pg"><section id="manage">
  <h2>管理與備份</h2>
- <p>「管理」頁最上面是「用一句話修改」，下面四個分頁：旅程、成員、訂單、備份。</p>
+ <p>「管理」頁最上面是「用一句話修改」，下面六個分頁：旅程、成員、訂單、備份、外觀設定、關於。</p>
+ <p>「外觀設定」可在「浪漫」（酒紅、奶油白）與「深藍」（海軍藍、象牙白）之間切換，預設浪漫；只記在這支裝置的瀏覽器，不會同步到帳號。「關於」看版本號與更新歷程。</p>
  <h3>用一句話修改</h3>
  <p>直接打想改的事，例如「京都那間飯店改成已付款」「把小明加到東京所有訂單」。Claude 會列出每一項「哪筆資料・哪個欄位：舊值 → 新值」。</p>
  <ul>
@@ -250,7 +251,7 @@ section{box-shadow:0 14px 30px -22px rgba(96,52,74,.45)}
 <div class="pg"><section id="ver">
  <h2>版本歷程</h2>
  <p class="mut">目前版本在 App 頁首名稱下方、首頁底部，以及「管理 › 關於」都看得到。</p>
- <!--VER:START--><ul class="vr"><li class="cur"><b>v1.2.0</b>浪漫改版<small>2026-11-22</small><ul><li>配色改為「暮光玫瑰」：暖霧粉米底、乾燥玫瑰主色、香檳金點綴；深色模式是夜空紫</li><li>首頁換成暮色天空卡片：依早晨、午後、傍晚、夜裡換問候語，有出發日的旅程會顯示倒數</li><li>標題與數字改用襯線字體，區塊標題加上金色細線，卡片陰影改為柔光</li><li>標誌與頁首、頁尾加上星點與航線</li><li>畫面上標明版本號，「管理 › 關於」可看更新歷程，說明頁新增「版本歷程」</li></ul></li><li><b>v1.1.0</b>更名偏航 DETOUR<small>2026-11-22</small><ul><li>品牌由 STOB 旅遊訂單改為「偏航 DETOUR」，新標誌與頁首</li><li>首頁品牌區塊、結尾台詞「一切都安排好了，現在可以亂來了。」</li><li>存入訂單、建立旅程、產生行程時的提示改成更有溫度的句子</li></ul></li><li><b>v1.0.0</b>STOB 旅遊訂單（分享版）<small>2026-11</small><ul><li>上傳訂單截圖、PDF、確認信，由 Claude 讀出旅程、成員與訂單</li><li>建議行程、單日重排、一句話修改；PDF 與發佈網頁（不含個資）</li><li>雲端 v2 儲存格式與寫入鎖、備份與還原</li></ul></li></ul><!--VER:END-->
+ <!--VER:START--><ul class="vr"><li class="cur"><b>v1.3.0</b>雙主題<small>2026-11-22</small><ul><li>新增「浪漫」（酒紅、奶油白、玫瑰粉、香檳金）與「深藍」（海軍藍、象牙白、暖金）兩種主題，可隨時切換</li><li>切換位置：管理 › 外觀設定；預設浪漫，只記在這支裝置的瀏覽器（localStorage 鍵 detour-theme），不同步帳號</li><li>新標誌：圓角方形加紙飛機、偏航曲線與一顆星，兩個主題各一個顏色</li><li>首頁標語卡改成細緻飛行弧線加靠右的紙飛機，文字固定為三句標語，拿掉時段問候與倒數</li></ul></li><li><b>v1.2.0</b>浪漫改版<small>2026-11-22</small><ul><li>配色改為「暮光玫瑰」：暖霧粉米底、乾燥玫瑰主色、香檳金點綴；深色模式是夜空紫</li><li>首頁換成暮色天空卡片：依早晨、午後、傍晚、夜裡換問候語，有出發日的旅程會顯示倒數</li><li>標題與數字改用襯線字體，區塊標題加上金色細線，卡片陰影改為柔光</li><li>標誌與頁首、頁尾加上星點與航線</li><li>畫面上標明版本號，「管理 › 關於」可看更新歷程，說明頁新增「版本歷程」</li></ul></li><li><b>v1.1.0</b>更名偏航 DETOUR<small>2026-11-22</small><ul><li>品牌由 STOB 旅遊訂單改為「偏航 DETOUR」，新標誌與頁首</li><li>首頁品牌區塊、結尾台詞「一切都安排好了，現在可以亂來了。」</li><li>存入訂單、建立旅程、產生行程時的提示改成更有溫度的句子</li></ul></li><li><b>v1.0.0</b>STOB 旅遊訂單（分享版）<small>2026-11</small><ul><li>上傳訂單截圖、PDF、確認信，由 Claude 讀出旅程、成員與訂單</li><li>建議行程、單日重排、一句話修改；PDF 與發佈網頁（不含個資）</li><li>雲端 v2 儲存格式與寫入鎖、備份與還原</li></ul></li></ul><!--VER:END-->
 </section></div>
 
 </main>
@@ -261,7 +262,7 @@ section{box-shadow:0 14px 30px -22px rgba(96,52,74,.45)}
  pages.forEach(function(pg,i){var d=document.createElement('div');d.className='pgnav';
   d.innerHTML='<button type="button" class="pv"'+(i?'':' hidden')+'>← '+(i?links[i-1].textContent:'')+'</button><button type="button" class="nx"'+(i<n-1?'':' hidden')+'>'+(i<n-1?links[i+1].textContent:'')+' →</button>';
   d.querySelector('.pv').onclick=function(){go(i-1)};d.querySelector('.nx').onclick=function(){go(i+1)};pg.appendChild(d);
-  var c=document.createElement('p');c.className='pgn';c.textContent=(i+1)+' / '+n+(i==n-1?'・更新於 2026/11/22・v1.2.0':'・左右滑動切換');pg.appendChild(c)});
+  var c=document.createElement('p');c.className='pgn';c.textContent=(i+1)+' / '+n+(i==n-1?'・更新於 2026/11/22・v1.3.0':'・左右滑動切換');pg.appendChild(c)});
  function mark(i){if(i<0||i>=n)return;cur=i;links.forEach(function(a,j){a.setAttribute('aria-current',j==i?'true':'false')});var a=links[i],w=a.parentNode;w.scrollTo({left:a.offsetLeft-(w.clientWidth-a.offsetWidth)/2,behavior:'smooth'});
   var id=pages[i].querySelector('section').id;if(history.replaceState)history.replaceState(null,'','#'+id)}
  function go(i,inst){if(i<0||i>=n)return;P.scrollTo({left:i*P.clientWidth,behavior:inst?'auto':'smooth'});mark(i)}

@@ -27,10 +27,10 @@ def rep(old, new):
 rep('content="STOB 旅遊訂單"', 'content="偏航 DETOUR"')
 rep('<meta name="theme-color" content="#f3f6f5" media="(prefers-color-scheme: light)"><meta name="theme-color" content="#101719" media="(prefers-color-scheme: dark)">',
     '<meta name="theme-color" content="#F9F2ED" media="(prefers-color-scheme: light)"><meta name="theme-color" content="#1A1521" media="(prefers-color-scheme: dark)">')
-rep('family=Noto+Sans+TC:wght@400;500;700&display=swap', 'family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@500;600&family=Cormorant+Garamond:wght@500;600&display=swap')
-rep('<title>STOB 旅遊訂單</title>', '<title>偏航 DETOUR</title>')
+rep('family=Noto+Sans+TC:wght@400;500;700&display=swap', 'family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@500;600&family=Cormorant+Garamond:wght@500;600&family=Playfair+Display:ital,wght@1,500&display=swap')
+rep('<title>STOB 旅遊訂單</title>', '<title>偏航 DETOUR</title>\n<script>(function(){var t="romantic";try{var v=localStorage.getItem("detour-theme");if(v==="navy"||v==="romantic")t=v}catch(e){}document.documentElement.setAttribute("data-theme",t);var m=t==="navy"?["#F7F4E9","#0A1526"]:["#FFF9F6","#1C1216"],q=document.querySelectorAll("meta[name=theme-color]");for(var i=0;i<q.length;i++)q[i].setAttribute("content",/dark/.test(q[i].getAttribute("media")||"")?m[1]:m[0])})()</script>')
 
-MARK = '<svg viewBox="0 0 48 48" aria-hidden="true"><path d="M10 35 L36 13" fill="none" stroke="#E7C9D2" stroke-width="1.6" stroke-linecap="round" stroke-dasharray="2 3.6" opacity=".8"/><path d="M10 35C13 22 22 38 29 27S36 19 37 14" fill="none" stroke="#E0C496" stroke-width="2.7" stroke-linecap="round"/><circle cx="10" cy="35" r="2.3" fill="#E7C9D2"/><path d="M37.5 6.2l1.4 4 4 1.4-4 1.4-1.4 4-1.4-4-4-1.4 4-1.4z" fill="#F4DFC0"/></svg>'
+MARK = '<svg viewBox="0 0 256 256" aria-hidden="true"><rect class="lb" width="256" height="256" rx="52"/><path class="lp" d="M45 196 103 149 86 181 117 165 45 196Z"/><path class="la" d="M105 164C149 151 180 113 198 66" stroke-width="6" stroke-linecap="round"/><path class="ls" d="m200 37 7 19 19 7-19 7-7 19-7-19-19-7 19-7Z"/></svg>'
 # 頁首標誌（svg 航線）與名稱，副標帶版本號
 rep('<span class="stm" role="button" tabindex="0" aria-label="回到頁首"', '<span class="stm dtl" role="button" tabindex="0" aria-label="偏航 DETOUR，回到頁首"')
 rep('<i></i>STOB</span><span class="stw"><b>旅遊訂單</b><small>Share Travel Order Book</small></span>',
