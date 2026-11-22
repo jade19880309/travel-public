@@ -74,6 +74,22 @@ const AMI='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5a6.5 6.5 
  if(HT.price&&$('#price'))$('#price').insertAdjacentHTML('beforeend',HT.price);
  if(HT.tips&&$('#tips'))$('#tips .grid').insertAdjacentHTML('afterbegin',HT.tips);
  if(HT.apps&&$('#apps'))$('#apps').insertAdjacentHTML('beforeend',HT.apps);
+
+ // Workman 專區（東京）：TRIP.workman，整區折疊；地圖用 Leaflet＋OpenStreetMap，第一次打開才載入，沒網路時請用每間的 Google 地圖按鈕
+ const WM=TRIP.workman;
+ if(WM&&$('#workman')){let no=0;const all=[];
+  const gm=q=>'https://www.google.com/maps/search/?api=1&query='+enc(q);
+  const gH=(WM.groups||[]).map(g=>`<details class="wmg"><summary><b>${esc(g.name)}</b><small>${esc(g.hint||'')}・${g.stores.length} 間</small></summary>${g.stores.map(o=>{no++;all.push({no,o});return `<div class="blk wms"><div class="wmh"><span class="wmno">${no}</span><b>${esc(o.n)}</b>${spB(o.ja)}<span class="wmt">${esc(o.type)}</span></div><div>${esc(o.acc)}</div>${o.tip?`<small>${esc(o.tip)}</small>`:''}<div class="btns"><a class="b g" target="_blank" rel="noopener" href="${gm(o.q||o.ja||o.n)}">Google 地圖</a></div></div>`}).join('')}</details>`).join('');
+  $('#workman').insertAdjacentHTML('beforeend',`${WM.intro?`<p class="rate">${esc(WM.intro)}</p>`:''}<details class="card fold wm"><summary>🧥 ${esc(WM.title||'Workman 店家')}（${all.length} 間）・點開看</summary><div class="wmin">${WM.note?`<p class="wmn">${esc(WM.note)}</p>`:''}<div class="btns" style="margin:0 0 12px"><a class="b g" target="_blank" rel="noopener" href="${gm(WM.search||'ワークマン')}">Google 地圖搜尋附近</a></div><details class="wmg wmmapd"><summary><b>🗺 看地圖</b><small>全部店家一次看（需要網路）</small></summary><div class="wm-map" id="wmmap"></div><p class="wmn" id="wmmsg" hidden></p></details>${gH}</div></details>`);
+  const mapd=$('.wmmapd');let mp=null;
+  const loadLF=()=>window.L?Promise.resolve():new Promise((ok,no2)=>{const c=document.createElement('link');c.rel='stylesheet';c.href='https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css';document.head.appendChild(c);const j=document.createElement('script');j.src='https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js';j.onload=ok;j.onerror=no2;document.head.appendChild(j)});
+  mapd.addEventListener('toggle',()=>{if(!mapd.open)return;
+   if(mp){setTimeout(()=>mp.invalidateSize(),50);return}
+   loadLF().then(()=>{const L=window.L;mp=L.map('wmmap',{scrollWheelZoom:false}).setView([35.69,139.76],11);
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:18,attribution:'© OpenStreetMap'}).addTo(mp);
+    const pts=all.map(({no:n,o})=>{L.marker([o.lat,o.lon],{icon:L.divIcon({className:'',html:`<span class="wmpin">${n}</span>`,iconSize:[28,28],iconAnchor:[14,14]})}).addTo(mp).bindPopup(`<b>${esc(o.n)}</b><br>${esc(o.type)}<br><a target="_blank" rel="noopener" href="${gm(o.q||o.ja||o.n)}">Google 地圖</a>`);return [o.lat,o.lon]});
+    mp.fitBounds(pts,{padding:[24,24]});setTimeout(()=>mp.invalidateSize(),80)
+   }).catch(()=>{$('#wmmsg').hidden=false;$('#wmmsg').textContent='地圖載入失敗（可能沒有網路）。請用每間店的「Google 地圖」按鈕。'})})}
  // 美食景點、韓語
  const FD=TRIP.food||{};
  if(FD.seg){const b=$('#seg').children;b[0].innerHTML=FD.seg[0];b[1].innerHTML=FD.seg[1]}

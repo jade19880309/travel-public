@@ -41,6 +41,15 @@
 
 - 首爾「廣藏市場」美食分頁 8 家：價格與營業時間多數來自 funliday 2026 整理（標「依來源」），僅富村生拌牛肉的地址與時段對照過米其林指南；艾草姊妹糖餅營業時間未查到。2/4（四）出發前請再確認。
 
+## Workman 專區（東京，2026/11/22 新增，sw v133）
+- 做法：`trips/tokyo-2027.json` 的 `workman`（`groups[].stores[]`，欄位 `n/ja/type/acc/tip/q/lat/lon`）＋ `nav`、`titles`；`tokyo.html` 有 `<section id="workman">`；`app.js` 在 `HT.apps` 那行後面渲染；樣式在 `style.css` 最後（`.wm*`）。整區與每個分區都是 `<details>` 預設折疊；地圖是 Leaflet 1.9.4（cdnjs）＋OpenStreetMap，**打開「看地圖」才載入**，沒網路顯示提示、用各店 Google 地圖按鈕。
+- 要加店：在對應 `groups[].stores` 加一筆即可（編號、地圖圖釘自動算）；別的旅程要用，只要加 `workman` 資料、`nav` 與 HTML 的 `<section id="workman">`。
+- **資料來源與未查證**：5 間店（ソラマチ、錦糸町 Arkakit、銀座イグジットメルサ、池袋サンシャイン Alpa、吉祥寺東急）取自 FUN! JAPAN 2026/7/16 文章「全國 14 間免稅店」名單（店型 Colors／女子也是照該文）。**沒有**逐店查證：地址、樓層、營業時間、電話。銀座營業時間 11:00～20:00 來自 2022 年舊文，且該店已改裝成 Workman Colors。
+- **地圖座標 `lat/lon` 是憑記憶估的車站附近位置（誤差可能數百公尺）**，只用來畫圖釘；導航請用各店的 Google 地圖按鈕（以店名搜尋）。
+- 沒做到的「所有店家」：東京一般 Workman／Workman Plus（路邊店，約數十間）沒有逐一列出——沙盒連不上官方店舖查詢，搜尋引擎也查不到可靠清單。目前用「Google 地圖搜尋附近（ワークマン）」按鈕代替。若要補，請從官方店舖查詢整理後加進新分區。
+- 踩到的坑：沙盒連不到 cdnjs／OSM，地圖實測是用 `npm i leaflet` 加 Playwright `route` 攔截替代（圖磚空白屬正常）；`http.server` 在背景啟動後下一次指令會被收掉，要和測試放同一個指令裡。
+- 未在實機確認：手機上的地圖手勢（單指拖曳會捲動頁面還是地圖）。
+
 ## 已知待辦／未解
 - `jade19880309/travel-private` 的舊分支 `add-trip-web-links` 刪除失敗（連線中斷），不影響功能，可日後 `git push origin --delete add-trip-web-links`。
 - 京阪 9/11（嵐山・金閣寺，週六）未依人潮調整；若要調整可另議。
