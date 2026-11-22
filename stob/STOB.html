@@ -2179,7 +2179,7 @@ function vPlan(){const head=`<h2 class="sr">🗺 建議行程</h2>${tbar()}`;con
   <div class="text-xs text-stone-500 mt-2">已訂的航班、住宿、交通、門票會自動放進行程，不用另外填。</div></details>`;
  const gen=`<div class="flex gap-2 items-center flex-wrap mb-3">${pl?(PL.conf?`<button type="button" class="adyes" onclick="plGen()">確定重新產生整份</button><button type="button" class="${BT}" onclick="PL.conf=false;render()">取消</button>`:`<button type="button" class="${BT}" ${b||noAi?'disabled':''} onclick="PL.conf=true;render()">↻ 重新產生整份</button><button type="button" class="${BP}" ${PL.dl?'disabled':''} onclick="plPdf()">${PL.dl?'製作 PDF 中…':'📄 下載 PDF'}</button>${PL.delc?`<button type="button" class="adyes" onclick="plDel()">確定刪除整份行程</button><button type="button" class="${BT}" onclick="PL.delc=false;render()">取消</button>`:`<button type="button" class="${BD}" ${b?'disabled':''} onclick="PL.delc=true;render()">🗑 刪除行程</button>`}`):`<button type="button" class="${BP}" ${b||noAi?'disabled':''} onclick="plGen()">${b=='all'?'排行程中…':'✨ 產生建議行程'}</button>`}${b?`<button type="button" class="${BT}" onclick="plStop()">停止</button><span class="text-sm text-stone-500">${b=='all'?'整份行程約需 1–2 分鐘':'處理中…'}</span>`:''}</div>
   ${noAi&&CLD.st!='load'?'<div class="text-sm text-red-700 mb-2">這個畫面目前無法使用 Claude（需在 Claude 中開啟並允許使用）。</div>':''}${PL.err?`<div class="text-sm text-red-700 mb-2">${esc(PL.err)}</div>`:''}`;
- const pub=`<div class="${CC} plpub"><div class="min-w-0"><div class="font-bold">🌐 發佈成網頁</div><div class="text-sm text-stone-500">把${pl?'行程、':''}航班、住宿、交通時間做成網頁，下載成網頁檔後用 LINE 傳給同行的人，對方不用 Claude 帳號就能打開。</div><div class="text-xs text-stone-500 mt-1">🔒 不含個資：不放姓名、PNR、訂單編號、取票代碼和護照資料。</div></div><div class="plpubb"><button type="button" class="${BP}" ${PL.pub?'disabled':''} onclick="plPub()">${PL.pub?'製作中…':'⬇️ 下載網頁檔'}</button></div>
+ const pub=`<div class="${CC} plpub"><div class="min-w-0"><div class="font-bold">🌐 發佈成網頁</div><div class="text-sm text-stone-500">把${pl?'行程、':''}航班、住宿、交通時間做成網頁，下載成網頁檔傳給同行的人，對方不用 Claude 帳號就能打開。LINE 不能傳網頁檔，請用 AirDrop、Email 或雲端硬碟；只能用 LINE 的話，改傳上方的 PDF。</div><div class="text-xs text-stone-500 mt-1">🔒 不含個資：不放姓名、PNR、訂單編號、取票代碼和護照資料。</div></div><div class="plpubb"><button type="button" class="${BP}" ${PL.pub?'disabled':''} onclick="plPub()">${PL.pub?'製作中…':'⬇️ 下載網頁檔'}</button></div>
 ${PUB_CHK()}${PUB_OUT()}</div>`;
  if(!pl)return head+prefs+gen+pub;
  const outline=`<div class="${CC} plo"><div class="font-bold text-lg">${esc(pl.title||t.name.replace(/^\d{6}/,''))}</div>${pl.summary?`<p class="text-sm text-stone-600 mt-1">${esc(pl.summary)}</p>`:''}
@@ -2383,7 +2383,7 @@ async function plPubSave(){const O=PL.out;if(!O||PL.pub)return;PL.pub=1;render()
  try{dls=await claude.use('downloads')}catch(e){}
  if(dls){try{const r=await dls.save({filename:O.name,data:O.html}),st=r&&r.status;res=!st||st=='saved'?'ok':st=='declined'||st=='cancelled'?'declined':'fail'}catch(e){res=e&&e.code=='declined'?'declined':'fail'}}
  PL.pub=null;
- if(res=='ok'){PL.out=null;tip('網頁檔已儲存，可以直接傳給同行的人')}
+ if(res=='ok'){PL.out=null;tip('網頁檔已儲存，可用 AirDrop、Email 或雲端硬碟傳給同行的人')}
  else if(res=='declined'){PL.out=null}
  else{O.fail=dls?'下載失敗':'這裡不能下載檔案';tip(O.fail+'，可以改用「複製網頁原始碼」')}
  render()}
