@@ -51,7 +51,29 @@ a{color:var(--acc)}
 :focus-visible{outline:2px solid var(--acc);outline-offset:2px}
 footer{text-align:center;color:var(--mut);font-size:.82rem;padding:0 1rem 2.5rem}
 @media (max-width:600px){.tw{overflow:visible;margin:.6rem 0}table{min-width:0}thead{display:none}tr{display:block;padding:.6rem 0;border-bottom:1px solid var(--line)}td{display:block;border:0;padding:.1rem 0}td:first-child{font-size:1rem;white-space:normal}td[data-l]:not(:first-child)::before{content:attr(data-l)"　";color:var(--mut);font-size:.8rem}}
-@media print{nav{display:none}header{background:none;color:var(--ink);padding:0 0 1rem}header p{color:var(--mut)}section{break-inside:avoid;border:0;padding:0 0 1rem}}
+
+/* ---- 左右滑動切換：標題＋章節列固定在上方，每一章一頁 ---- */
+html,body{height:100%}
+body{display:flex;flex-direction:column;height:100vh;height:100dvh;overflow:hidden}
+header{flex:none;padding:.7rem 1.1rem calc(.7rem + env(safe-area-inset-top,0px) * 0)}
+header .brand{gap:.65rem}
+header .tag{width:3.6rem;height:2.1rem;font-size:.7rem;padding-left:1.05rem}
+header h1{font-size:1.3rem}
+header p{display:none}
+nav{flex:none;position:static}
+nav a{transition:background .15s,color .15s}
+nav a[aria-current="true"]{background:var(--acc);border-color:var(--acc);color:var(--card)}
+main.pager{flex:1;min-height:0;display:flex;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain;scrollbar-width:none;padding:0;max-width:none;scroll-behavior:smooth}
+main.pager::-webkit-scrollbar{display:none}
+@media (prefers-reduced-motion:reduce){main.pager{scroll-behavior:auto}}
+.pg{flex:0 0 100%;width:100%;scroll-snap-align:start;scroll-snap-stop:always;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior-y:contain;padding:1rem 1.1rem calc(2rem + env(safe-area-inset-bottom))}
+.pg>section{max-width:640px;margin:0 auto}
+.pgnav{max-width:640px;margin:.9rem auto 0;display:flex;justify-content:space-between;gap:.6rem}
+.pgnav button{flex:1;min-height:46px;border-radius:999px;border:1.5px solid var(--acc);background:transparent;color:var(--acc);font:inherit;font-weight:700;font-size:.92rem;cursor:pointer}
+.pgnav button.nx{background:var(--acc);color:var(--card)}
+.pgnav button[hidden]{display:block;visibility:hidden}
+.pgn{max-width:640px;margin:.5rem auto 0;text-align:center;color:var(--mut);font-size:.8rem}
+@media print{html,body{height:auto;overflow:visible;display:block}main.pager{display:block;overflow:visible}.pg{overflow:visible;padding:0}.pgnav,.pgn{display:none}nav{display:none}header{background:none;color:var(--ink);padding:0 0 1rem}header p{color:var(--mut)}section{break-inside:avoid;border:0;padding:0 0 1rem}}
 </style>
 </head>
 <body>
@@ -62,9 +84,9 @@ footer{text-align:center;color:var(--mut);font-size:.82rem;padding:0 1rem 2.5rem
 <nav aria-label="章節"><div class="w">
  <a href="#what">是什麼</a><a href="#start">第一次使用</a><a href="#upload">上傳訂單</a><a href="#view">看行程</a><a href="#plan">行程・PDF・網頁</a><a href="#manage">管理與備份</a><a href="#save">儲存狀態</a><a href="#faq">隱私與問答</a>
 </div></nav>
-<main class="w">
+<main class="pager" id="pager" aria-label="使用說明（左右滑動切換章節）">
 
-<section id="what">
+<div class="pg"><section id="what">
  <h2>STOB 是什麼</h2>
  <p class="lead">STOB 是放在你自己 Claude 帳號裡的旅遊訂單本：把機票、飯店、交通的確認信或截圖丟進去，它會自動整理成行程表，還能排建議行程、做成 PDF 或網頁分享給同行的人。</p>
  <ul>
@@ -72,9 +94,9 @@ footer{text-align:center;color:var(--mut);font-size:.82rem;padding:0 1rem 2.5rem
   <li><b>用你自己的 Claude 額度</b>：讀訂單、排行程都是你的 Claude 在做，不會傳到其他服務。</li>
   <li><b>分享出去的不含個資</b>：發佈給同行的人的網頁和 PDF，不會放姓名、護照、PNR、訂單編號、電話等資料。</li>
  </ul>
-</section>
+</section></div>
 
-<section id="start">
+<div class="pg"><section id="start">
  <h2>第一次使用</h2>
  <p>安裝只要做一次，之後從 Claude 的網頁列表打開就好。手機、電腦都可以，資料會自動同步。</p>
  <ol>
@@ -86,9 +108,9 @@ footer{text-align:center;color:var(--mut);font-size:.82rem;padding:0 1rem 2.5rem
  </ol>
  <p class="mut">LINE 不能傳 .html 檔，要給別人安裝時，傳安裝頁網址就好。</p>
  <p><a class="btn" href="./">前往安裝頁</a></p>
-</section>
+</section></div>
 
-<section id="upload">
+<div class="pg"><section id="upload">
  <h2>上傳訂單</h2>
  <p>按右下角 <kbd>＋ 上傳訂單</kbd>，把確認信交給 Claude 讀，你確認後才會存入。一次通常 20–90 秒。</p>
  <ol>
@@ -102,9 +124,9 @@ footer{text-align:center;color:var(--mut);font-size:.82rem;padding:0 1rem 2.5rem
   <li>訂單截圖會一起存到雲端。如果沒存成功（例如空間滿了），上傳頁最上方會列出是哪張、為什麼，可以按「重試」。訂單資料本身已經存好。</li>
   <li>存入後發現有錯，到「管理」修改就好，不用重傳。</li>
  </ul>
-</section>
+</section></div>
 
-<section id="view">
+<div class="pg"><section id="view">
  <h2>看行程</h2>
  <p>底部五個分頁各管一件事。「清單」是給自己看的總表；「個人單」是給每位旅客本人的；要給全部同行的人看，用後面的「發佈成網頁」。</p>
  <div class="tw"><table>
@@ -119,9 +141,9 @@ footer{text-align:center;color:var(--mut);font-size:.82rem;padding:0 1rem 2.5rem
  </table></div>
  <p>右上角 <kbd>店家報到</kbd> 把航空、飯店、交通、餐廳門票的報到資料放大顯示，在櫃檯直接拿手機給工作人員看。</p>
  <p class="warn">個人單存圖：按存成圖片後，長按圖片選「儲存到相簿」或「分享」，再私訊傳給那位旅客。圖上有護照和 PNR，不要丟到群組。</p>
-</section>
+</section></div>
 
-<section id="plan">
+<div class="pg"><section id="plan">
  <h2>建議行程、PDF 與分享網頁</h2>
  <p>在「清單 › 行程」選一趟旅程，Claude 會根據已訂的航班、飯店、交通排出每天的建議行程，再做成 PDF 或網頁給同行的人。</p>
  <h3>排建議行程</h3>
@@ -139,9 +161,9 @@ footer{text-align:center;color:var(--mut);font-size:.82rem;padding:0 1rem 2.5rem
   <li><b>下載失敗時</b>：按「再試一次下載」，或「複製網頁原始碼」貼到記事本另存成 .html。兩者是同一份已檢查過的內容。</li>
   <li><b>怎麼傳</b>：LINE 不能傳 .html 檔。用 AirDrop、Email 或雲端硬碟傳網頁檔；只能用 LINE 的話，改傳 PDF。</li>
  </ul>
-</section>
+</section></div>
 
-<section id="manage">
+<div class="pg"><section id="manage">
  <h2>管理與備份</h2>
  <p>「管理」頁最上面是「用一句話修改」，下面四個分頁：旅程、成員、訂單、備份。</p>
  <h3>用一句話修改</h3>
@@ -167,9 +189,9 @@ footer{text-align:center;color:var(--mut);font-size:.82rem;padding:0 1rem 2.5rem
   <li>還原錯了，在同一頁按「↩︎ 復原到還原前」。重新整理頁面後就不能復原。</li>
  </ol>
  <p class="warn">備份裡有護照等個資，請存在自己的裝置，不要傳到群組。</p>
-</section>
+</section></div>
 
-<section id="save">
+<div class="pg"><section id="save">
  <h2>儲存狀態與「暫停儲存」</h2>
  <p>每次修改都會自動存到雲端，標題下方的小標籤告訴你有沒有存到；沒有標籤就代表已經存好。</p>
  <div class="tw"><table>
@@ -190,9 +212,9 @@ footer{text-align:center;color:var(--mut);font-size:.82rem;padding:0 1rem 2.5rem
   <li>按「確定重新讀取」，或「取消」維持原狀。</li>
  </ol>
  <p class="mut">提示寫「不支援儲存鎖定」時，是 Claude App 版本太舊，先更新 App 再打開。同一時間最好只在一台裝置修改。</p>
-</section>
+</section></div>
 
-<section id="faq">
+<div class="pg"><section id="faq">
  <h2>隱私、注意事項與常見問題</h2>
  <h3>隱私</h3>
  <ul>
@@ -214,10 +236,28 @@ footer{text-align:center;color:var(--mut);font-size:.82rem;padding:0 1rem 2.5rem
   <dt>下載的網頁檔怎麼開？</dt>
   <dd>對方在手機或電腦點兩下用瀏覽器開就好，不用上網也看得到內容；地圖連結需要網路。</dd>
  </dl>
-</section>
+</section></div>
 
 </main>
 <script>document.querySelectorAll('table').forEach(t=>{const h=[...t.querySelectorAll('th')].map(x=>x.textContent);t.querySelectorAll('tbody tr').forEach(r=>[...r.children].forEach((c,i)=>c.setAttribute('data-l',h[i]||'')))})</script>
-<footer>STOB 使用說明・更新於 2026/11/22</footer>
+
+<script>
+(function(){var P=document.getElementById('pager'),pages=[].slice.call(P.querySelectorAll('.pg')),links=[].slice.call(document.querySelectorAll('nav a')),n=pages.length,cur=0;
+ pages.forEach(function(pg,i){var d=document.createElement('div');d.className='pgnav';
+  d.innerHTML='<button type="button" class="pv"'+(i?'':' hidden')+'>← '+(i?links[i-1].textContent:'')+'</button><button type="button" class="nx"'+(i<n-1?'':' hidden')+'>'+(i<n-1?links[i+1].textContent:'')+' →</button>';
+  d.querySelector('.pv').onclick=function(){go(i-1)};d.querySelector('.nx').onclick=function(){go(i+1)};pg.appendChild(d);
+  var c=document.createElement('p');c.className='pgn';c.textContent=(i+1)+' / '+n+(i==n-1?'・更新於 2026/11/22':'・左右滑動切換');pg.appendChild(c)});
+ function mark(i){if(i<0||i>=n)return;cur=i;links.forEach(function(a,j){a.setAttribute('aria-current',j==i?'true':'false')});var a=links[i],w=a.parentNode;w.scrollTo({left:a.offsetLeft-(w.clientWidth-a.offsetWidth)/2,behavior:'smooth'});
+  var id=pages[i].querySelector('section').id;if(history.replaceState)history.replaceState(null,'','#'+id)}
+ function go(i,inst){if(i<0||i>=n)return;P.scrollTo({left:i*P.clientWidth,behavior:inst?'auto':'smooth'});mark(i)}
+ links.forEach(function(a,i){a.addEventListener('click',function(e){e.preventDefault();go(i)})});
+ var t;P.addEventListener('scroll',function(){clearTimeout(t);t=setTimeout(function(){var i=Math.round(P.scrollLeft/P.clientWidth);if(i!=cur)mark(i)},60)},{passive:true});
+ addEventListener('resize',function(){P.scrollTo({left:cur*P.clientWidth})});
+ document.addEventListener('keydown',function(e){if(e.key=='ArrowRight')go(cur+1);if(e.key=='ArrowLeft')go(cur-1)});
+ var h=location.hash.slice(1),k=0;pages.forEach(function(pg,i){if(pg.querySelector('section').id==h)k=i});
+ requestAnimationFrame(function(){go(k,1)});
+ [].slice.call(document.querySelectorAll('.pg a[href^="#"]')).forEach(function(a){a.addEventListener('click',function(e){var id=a.getAttribute('href').slice(1);pages.forEach(function(pg,i){if(pg.querySelector('section').id==id){e.preventDefault();go(i)}})})});
+})();
+</script>
 </body>
 </html>
