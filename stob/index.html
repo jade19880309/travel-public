@@ -79,9 +79,11 @@ footer{text-align:center;color:var(--mut);font-size:.8rem;padding:0 1rem 2.5rem}
 
  <section class="card">
   <details>
-   <summary>Claude 說拿不到檔案？</summary>
-   <p>按下面的按鈕把檔案存到手機，回到剛剛的 Claude 對話，用「＋」附加這個檔案再送出一次。</p>
+   <summary>Claude 說下載失敗、網路被關閉？（備用做法）</summary>
+   <p>有些對話的程式碼環境沒有網路，Claude 會抓不到檔案。改成自己附加檔案：先下載檔案，再開新對話，用「＋」附加它，並貼上下面這句（這句不需要上網就能照做）。</p>
    <a class="btn ghost" href="DETOUR.html" download="DETOUR.html">下載 DETOUR.html</a>
+   <div class="prompt" id="prompt2">請把我附加的 DETOUR.html 原封不動發佈成我的 Claude 網頁（artifact），標題「偏航 DETOUR」，入口檔名 index.html，不要修改檔案內容。發佈時幫這個網頁開啟（declare）這些功能：{"db":{"rules":[{"path":"","read":"admin","write":"admin"},{"path":"data/users/{self}","read":"interact","write":"interact"}]},"user":{},"sample":{"images":true},"downloads":true}。做完把網址給我；如果這個帳號不能建立網頁或開啟這些功能，請直接告訴我是哪一步做不到，不要改用其他方式。</div>
+   <button type="button" class="btn" id="copy2">複製這句話</button>
   </details>
   <details>
    <summary>要注意什麼？</summary>
@@ -98,6 +100,7 @@ footer{text-align:center;color:var(--mut);font-size:.8rem;padding:0 1rem 2.5rem}
 </main>
 <footer>偏航 DETOUR（分享版）</footer>
 <script>
+(function(){var b2=document.getElementById('copy2'),p2=document.getElementById('prompt2');if(b2)b2.addEventListener('click',function(){var t=p2.textContent.trim();function d(){b2.textContent='已複製'}function f(){var r=document.createRange();r.selectNodeContents(p2);var s=getSelection();s.removeAllRanges();s.addRange(r);try{if(document.execCommand('copy'))d()}catch(e){}}if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(d,f)}else f()})})();
 (function(){
  var b=document.getElementById('copy'),p=document.getElementById('prompt'),ok=document.getElementById('copied');
  function done(){b.textContent='已複製';b.classList.add('done');ok.hidden=false}
