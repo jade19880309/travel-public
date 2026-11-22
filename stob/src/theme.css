@@ -57,3 +57,17 @@ input[type=date]::-webkit-calendar-picker-indicator{opacity:.6}
 .adck input{flex:0 0 auto;width:1.2rem;height:1.2rem;margin-top:.1rem;accent-color:rgb(var(--gold))}
 /* 上傳按鈕縮小一點，少擋內容 */
 .upfab{padding:.6rem 1rem!important;font-size:.9rem!important}
+/* 採用合計列：金額與按鈕不重疊 */
+.selm{align-items:flex-start!important}
+.selm-a{flex:1 1 auto}
+.selm-d{white-space:normal!important;flex-basis:100%;line-height:1.5}
+.selm-b{margin-top:.15rem}
+/* 一般下拉選單與旅程選單同一種樣式 */
+select.w-full{-webkit-appearance:none;appearance:none;border-radius:999px!important;min-height:46px;padding:.55rem 2.4rem .55rem 1rem!important;font-weight:600;color:rgb(var(--s800));background-color:rgb(var(--card))!important;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%237a8b8f' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E")!important;background-repeat:no-repeat!important;background-position:right .9rem center!important;background-size:1.1rem!important}
+/* 首頁旅程卡：左側一條主色，讓卡片有重心 */
+.hc{position:relative;overflow:hidden}
+.hc::before{content:"";position:absolute;left:0;top:1rem;bottom:1rem;width:4px;border-radius:0 4px 4px 0;background:rgb(var(--gold))}
+.hc.opacity-70::before{background:rgb(var(--s300))}
+/* 區塊標題（日期分組）字距收一點 */
+section>h3{letter-spacing:.02em}
+.selm-d i{font-style:normal;white-space:nowrap;margin-right:.55rem}

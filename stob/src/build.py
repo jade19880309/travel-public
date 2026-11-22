@@ -79,6 +79,11 @@ rep('content="width=device-width, initial-scale=1, viewport-fit=cover"', 'conten
 rep("tIc=n=>/韓國|首爾/.test(n)?", "tIc=n=>/台灣|臺灣|台北|臺北|新北|基隆|桃園|新竹|苗栗|台中|臺中|彰化|南投|雲林|嘉義|台南|臺南|高雄|屏東|墾丁|宜蘭|花蓮|台東|臺東|澎湖|金門|馬祖|綠島|蘭嶼|日月潭|阿里山|小琉球/.test(n)?'🇹🇼 ':/韓國|首爾/.test(n)?")
 VT = (HERE / 'v.tpl.html').read_text(encoding='utf-8')
 (ROOT / 'stob' / 'v.html').write_text(VT.replace('/*PUB_CSS*/', PUBCSS), encoding='utf-8')
+# 美化：交通／其他卡片只選一趟旅程時不再重複旅程名；個人單改成 STOB 配色
+s = s.replace('<div class="text-xs text-stone-500 shrink-0">${esc(T(x.trip).name)}</div>', "${oneT()?'':`<div class=\"text-xs text-stone-500 shrink-0\">${esc(tShort(x.trip))}</div>`}")
+for _a,_b in [('#1c2e42','#0f4c52'),('#2a4560','#146c72'),('#b08c4a','#e8a93a'),('#8a6a2e','#146c72'),('#e2d7c0','#dce6e6'),('#e8e1d3','#dce6e6'),('#66625a','#5f7075'),('#1f2630','#1c2529'),('#f7f2e8','#eef4f3'),('#c8b27e','#9cc7c4'),('#fbf6ea','#f2f8f7'),('#7a5a20','#0f5c62'),('#ece5d6','#e3ecec'),('#e2dccd','#dce6e6'),('#efe4cc','#e6f0ef'),('#2a3442','#1c2529'),('#f6efe0','#f3f6f5'),('#e3d6bd','#cfe2e1'),('#8a857b','#7a8b8f'),('#ece4d5','#e3ecec'),('#6f6255','#5f7075'),('#fffaf1','#ffffff')]:
+    s = s.replace(_a, _b)
+rep('<span class="selm-d">✈️ ${n(f)}　🏨 ${n(h)}　🚃 ${n(t)}${o?\'　🎫 \'+n(o):\'\'}</span>', '<span class="selm-d"><i>✈️&nbsp;${n(f)}</i> <i>🏨&nbsp;${n(h)}</i> <i>🚃&nbsp;${n(t)}</i>${o?\' <i>🎫&nbsp;\'+n(o)+\'</i>\':\'\'}</span>')
 # privacy check
 bad = sorted(set(re.findall(r"mkP\('m\d+','([^']+)'", src) + re.findall(r"pp:'(\w{6,})'", src) + re.findall(r"orderNo:'(\d{6,})'", src)[:20]))
 hits = [w for w in bad if w in s]
