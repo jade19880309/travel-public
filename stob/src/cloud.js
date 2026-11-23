@@ -193,7 +193,7 @@ JSON 格式：
   {"kind":"fl","trip":"","img":[0],"platform":"訂票網站","orderNo":"","airline":"中文名 English Name","pnr":"","ticketNo":"","status":"已確認","paid":true,"cur":"TWD","total":0,"note":"",
    "segs":[{"dir":"去程 / 回程 / 其他","airline":"","no":"BR184","date":"","dep":"","arr":"","from":"桃園 TPE T2","to":"成田 NRT T1"}],
    "pax":{"成員id或ref":"該旅客票價或空字串"},"pp":{"成員id或ref":{"pnr":"","tkt":"機票號碼","kind":"成人 / 兒童 / 嬰兒","note":""}}},
-  {"kind":"ht","trip":"","img":[1],"zh":"飯店中文名","en":"English name","ori":"當地語言原名","addr":"","area":"城市・區域","platform":"","orderNo":"","cin":"","cout":"","status":"已確認","paid":false,"free":true,"cancelBy":"免費取消截止日","payDate":"付款／扣款日","rep":"訂房代表人 id或ref","cur":"JPY","total":0,"note":"",
+  {"kind":"ht","trip":"","img":[1],"zh":"飯店中文名","en":"English name","ori":"當地語言原名","addr":"","area":"城市・區域","platform":"","orderNo":"","cin":"","cout":"","status":"已確認","paid":false,"free":true,"cancelBy":"免費取消截止日","cxlAt":"status 為已取消才填：實際取消日","payDate":"付款／扣款日","rep":"訂房代表人 id或ref","cur":"JPY","total":0,"note":"",
    "rooms":[{"type":"房型","beds":"","bf":false,"price":"","members":["id或ref"],"note":""}]},
   {"kind":"tr","trip":"","img":[],"type":"高鐵 / 火車 / 巴士 / 渡輪 / 租車 / 接送 / 露營車 / 郵輪…","company":"","title":"簡短標題","platform":"","orderNo":"","code":"取票或預約代碼","no":"車次班次","date":"","dep":"","arr":"","from":"","to":"","status":"已確認","paid":false,"cur":"","total":0,"pax":{"id或ref":""},"note":"","lines":["取車／還車等重點，一行一點"],
    "pays":[{"l":"訂金 / 尾款","d":"付款期限","amt":0,"paid":"已付日期或空字串","url":""}],"camp":{"cin":"","cout":"","zh":""}},
@@ -260,12 +260,12 @@ const AIK=['members','trips',...COLL],CNAME={members:'成員',trips:'旅程',fl:
 const FLD={members:{zh:'中文姓名',last:'英文姓',first:'英文名',sex:'性別',dob:'生日',pp:'護照號碼',ppExp:'護照效期',nat:'國籍',grp:'分組',note:'備註'},
  trips:{name:'名稱',start:'出發',end:'回程',note:'備註',curs:'外幣',web:'旅程網頁',fam:'住宿按分組分攤',nosplit:'交通依每人金額'},
  fl:{trip:'旅程',grp:'分組',platform:'訂購平台',orderNo:'訂單編號',airline:'航空公司',pnr:'訂位代碼',ticketNo:'機票號碼',status:'狀態',paid:'已付款',cur:'幣別',total:'總額',note:'備註',segs:'航段',pax:'旅客金額',pp:'旅客訂位'},
- ht:{trip:'旅程',grp:'分組',zh:'飯店中文名',en:'英文名',ori:'當地名',addr:'地址',area:'區域',map:'地圖連結',platform:'訂購平台',orderNo:'訂單編號',cin:'入住',cout:'退房',status:'狀態',paid:'已付款',free:'可免費取消',cancelBy:'免費取消期限',payDate:'付款日',rep:'代表人',cur:'幣別',total:'總額',note:'備註',rooms:'房間'},
+ ht:{trip:'旅程',grp:'分組',zh:'飯店中文名',en:'英文名',ori:'當地名',addr:'地址',area:'區域',map:'地圖連結',platform:'訂購平台',orderNo:'訂單編號',cin:'入住',cout:'退房',status:'狀態',paid:'已付款',free:'可免費取消',cancelBy:'免費取消期限',cxlAt:'取消日',payDate:'付款日',rep:'代表人',cur:'幣別',total:'總額',note:'備註',rooms:'房間'},
  tr:{trip:'旅程',grp:'分組',type:'類型',company:'公司',title:'標題',platform:'訂購平台',orderNo:'訂單編號',code:'代碼',no:'班次',date:'日期',dep:'出發時間',arr:'抵達時間',from:'出發地',to:'目的地',status:'狀態',paid:'已付款',cur:'幣別',total:'總額',pax:'旅客金額',note:'備註',lines:'重點',pays:'分期付款',camp:'交通兼住宿'},
  ot:{trip:'旅程',grp:'分組',type:'類型',title:'標題',company:'公司',platform:'訂購平台',orderNo:'訂單編號',code:'代碼',date:'日期',dep:'時間',status:'狀態',paid:'已付款',cur:'幣別',total:'總額',pax:'旅客金額',note:'備註',lines:'重點'}};
 const RE_D=/^\d{4}-\d{2}-\d{2}$/,RE_T=/^\d{1,2}:\d{2}$/;
 const isMem=i=>db.members.some(m=>m.id==i),isTrip=i=>db.trips.some(t=>t.id==i);
-function vField(c,k,v){const D=['dob','ppExp','start','end','cin','cout','cancelBy','payDate','date'];
+function vField(c,k,v){const D=['dob','ppExp','start','end','cin','cout','cancelBy','cxlAt','payDate','date'];
  if(!FLD[c]||!(k in FLD[c]))return '不認得的欄位';
  const str=()=>typeof v=='string'||typeof v=='number';
  if(D.includes(k))return v===''||(typeof v=='string'&&RE_D.test(v))?'':'日期格式要是 YYYY-MM-DD';

@@ -1,13 +1,14 @@
 # STOB 交接紀錄（給下一位 AI）
 
 > 只記「還沒做完／還沒確認」的事；做完就刪掉。系統說明在 `AGENTS.md`。
-> 最後更新：2026-11-22（偏航 v1.2.0）
+> 最後更新：2026-11-23（偏航 v1.3.1）
 
 ## 進行中：偏航 DETOUR（STOB 的更名＋浪漫改版）
 
 - 使用者自己的「偏航 DETOUR」是 STOB 加品牌圖層（附件 DETOUR.html，原本只存在使用者的 Claude，repo 裡沒有）。2026-11-22 已把它納入原始檔：`stob/src/detour.py`（讀 `stob/STOB.html` 套用，不需要 travel-private）＋`detour.css`＋`detour.js`＋`versions.json`，產生 `stob/DETOUR.html`。
 - 改版本：只改 `src/versions.json`（current、date、history 最上面一筆）→ `cd stob/src && python3 detour.py`，會同步 App（頁首、首頁底部、管理›關於）與 `guide.html` 的「版本歷程」頁。
 - 目前 v1.3.0 雙主題：`<html data-theme="romantic|navy">`（預設浪漫；localStorage 鍵 `detour-theme`，head 內小腳本先套用避免閃爍），變數寫在 `detour.css` 開頭；切換在「管理 › 外觀設定」。素材：使用者的 4 個 SVG 放 `src/assets/`；後來又給了 6 張 PNG（app 圖示×2、橫幅×2、字標×2），圖示做成頁首圓角圖示（`icon-*-hdr.png`）與 apple-touch-icon（`icon-*-home.png`，data URL，iOS 是否生效未確認），橫幅縮成 840px webp 當標語卡背景（浪漫版橫幅有楓葉、櫻花、富士山，是使用者自己的圖）；浪漫版系統深色模式時不用橫幅、改回飛行弧線 SVG。兩張字標 PNG 的透明格紋是畫進圖裡的（非真透明），**沒用**，需要使用者提供真透明版。DETOUR.html 因內嵌圖約 670KB。標語卡文字固定三句，已移除 v1.2 的時段問候與倒數；參考圖的山景刻意沒做（規格說不要厚重山景）。深藍主題採象牙白底（依 theme.css），參考圖是整頁深藍，如要整頁深藍需另改。兩主題都保留系統深色模式的變體。測試用 `APP=DETOUR.html python3 tests/xxx.py`：test/t8/t_v2/t_r2 通過；`t_full.py` 在 STOB.html 上同樣會在後段報 `Cannot read properties of null (reading 'value')`，非本次造成，未查。
+- 2026-11-23（v1.3.1）從 TOB 移植三項，寫在 `src/build.py` 最後一段（`# ---- 2026-11-23 從 TOB 移植`，用精準字串取代，仍以 TOB `21ce4f8` 為底；重建需 `git fetch --unshallow` 取得完整歷史）：①飯店金額「當地貨幣 / TWD」（`byCur`，加總仍用台幣）與訂單卡總額移到付款日期上方；②`.tsk` 固定旅程選單＋子分頁列（`stkH()` 量頭部高度；`stkH` 必須放在 `function go(` 前，也就是主 script，放在後面附加的 script 會在第一次 render 時 `not defined`）；③已取消飯店訂單只放飯店清單最下方（`cxlHt`，整區摺疊、依飯店分組再摺疊、顯示取消日）。新增飯店欄位 `cxlAt`（取消日，`cloud.js` 的 FLD／vField／AI 範例已加）。只在 Chrome 手機尺寸用假資料測過，iPhone 與真實資料未測；機票／交通／其他清單目前沒有取消區（TOB 也只做飯店）。管理頁的訂單編輯表單沒有 `cxlAt` 輸入欄，要靠 AI 一句話修改或上傳訂單帶入。
 - **沒做／待決定**：①已在這個帳號發佈新的偏航 artifact（https://claude.ai/artifact/496uU5hwcxG7zLQtdfd1P1，資料是空的；舊偏航資料需備份後還原）。②安裝頁 `index.html`、`INSTALL.md`、`guide.html` 已改成偏航 DETOUR（下載 `DETOUR.html`）；`STOB.html` 仍保留給舊 artifact，不再更新。朋友的安裝流程（Claude 自己抓檔、發佈）未實測。③Claude Docs 版使用說明未更新版本歷程。④v1.0.0／v1.1.0 的日期與內容是依現況推估，請使用者確認。⑤配色只在 Chrome 手機尺寸看過，iPhone 與加入主畫面未測。⑥規格寫「不修改版本號」，我仍把版本升到 1.3.0（不是參考圖的 v2.7.0），不要請改回請使用者說。
 - 踩坑：附加的 JS 必須插在 `(async function boot(){` 之前（第一次 render 會用到 `dtrHero`），頁首 svg 要寫死在模板裡，不能用後面才定義的變數。
 
