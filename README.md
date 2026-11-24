@@ -6,6 +6,7 @@
 - 全部旅程總覽：`https://jade19880309.github.io/travel-public/home.html`（`home.html`，依 `trips/index.json` 自動列出每趟旅程，可左右滑動切換；主色寫在頁內 `ACC`、切換按鈕短名稱寫在 `SHORT`）
 - 港珠澳：`https://jade19880309.github.io/travel-public/hk.html`（分享到 LINE 請用這個網址，縮圖才會是港珠澳）
 - 東京：`https://jade19880309.github.io/travel-public/tokyo.html`（四套行程方案可切換；分享用這個網址）
+- 露營車行程提案（PLAN A-1，給業者確認路線與車宿用）：`https://jade19880309.github.io/travel-public/campervan.html`（**獨立單檔頁面**：內容、樣式、程式與兩張路線圖（中／日）都寫在 `campervan.html` 裡，不使用 `app.js`、`style.css`；**不放進 `trips/index.json`**，只從東京「方案一 露營車」的方案說明（`trips/tokyo-2027.json` 的 `plans[rv].desc`）連過來；已加 `noindex`）
 - 京阪（兩人旅）：`https://jade19880309.github.io/travel-public/keihan.html`（**獨立版型**：版面、樣式、程式都寫在 `keihan.html` 裡，只讀 `trips/keihan-2027.json`，不使用 `app.js`、`style.css`；**刻意不放進 `trips/index.json`**，總覽不會列出，只從私人訂單頁連過來；不顯示倒數。每天可有 `choice`（當日選項），預算會跟著選項自動加總）
 - `index.html`、`hk.html`、`tokyo.html`：各旅程的入口頁（名稱、圖示、主題寫死在網頁開頭，才能正確「加入主畫面」）
 - `style.css`：共用樣式；`app.js`：依旅程資料畫出所有區塊

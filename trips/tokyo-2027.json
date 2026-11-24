@@ -382,7 +382,7 @@
    "name": "方案一",
    "label": "露營車",
    "sub": "富士山＋輕井澤",
-   "desc": "三晚住露營車，每晚換地方：山中湖 → 本栖湖浩庵 → 西輕井澤。富士山和輕井澤都去得到，在富士山一帶待最久。",
+   "desc": "三晚住露營車，每晚換地方：山中湖 → 本栖湖浩庵 → 西輕井澤。富士山和輕井澤都去得到，在富士山一帶待最久。<br><a class='b' target='_blank' rel='noopener' href='campervan.html' style='margin-top:10px'>🚐 露營車行程提案（PLAN A-1）</a>",
    "days": [
     {
      "t": "7/2 五",
