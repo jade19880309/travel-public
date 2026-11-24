@@ -25,6 +25,8 @@ FR_EXTRA = r"""Object.assign(FR,{
   sub:(no,dt)=>`Xác nhận đặt chỗ${no?' – Mã đặt chỗ '+no:''}${dt?' – '+dt:''}`,dk:{hotel:'Nhận phòng ',car:'Nhận xe ',tix:''}},
  id:{hi:(n,k)=>k=='hotel'?'Yth. Tim Reservasi,':`Yth. Tim ${n},`,in:'Saya menulis untuk mengonfirmasi ulang reservasi berikut.',hd:'Detail reservasi:',rq:'Kami juga ingin mengajukan permintaan berikut:',ask:'Mohon bantuannya untuk mengonfirmasi hal di atas.',end:{hotel:'Terima kasih banyak. Kami menantikan untuk menginap di tempat Anda.',car:'Terima kasih banyak. Sampai jumpa.',tix:'Terima kasih banyak. Kami menantikan kunjungan kami.'},bye:s=>`Hormat kami,\n${s}`,
   sub:(no,dt)=>`Konfirmasi Ulang Reservasi${no?' – No. Pemesanan '+no:''}${dt?' – '+dt:''}`,dk:{hotel:'Check-in ',car:'Pengambilan ',tix:''}}});
+/* 主旨的訂單編號：只列第一組，其餘用「等 N 筆」帶過，避免標題太長 */
+const mNos=(a,L)=>{if(a.length<2)return a[0]||'';const n=a.length-1;return a[0]+({zht:` 等 ${n+1} 筆`,zhs:` 等 ${n+1} 笔`,en:` +${n} more`,ja:` 他${n}件`,ko:` 외 ${n}건`,th:` และอีก ${n}`,vi:` và ${n} mã khác`,id:` +${n} lainnya`}[L]||'')};
 function mMail(v,L,signer){"""
 
 PRX = r"""/* 泰文、越南文、印尼文的預設需求翻譯（依需求 id；用法同 PRE 的 t） */
@@ -86,7 +88,7 @@ PAIRS = [
     # 標籤、信件框架
     ("const siteN=(p,L)=>", LB_EXTRA),
     ("function mMail(v,L,signer){", FR_EXTRA),
-    ("nos.slice(0,3).join(L=='en'||L=='ko'?', ':'、')", "nos.slice(0,3).join(/^(en|ko|th|vi|id)$/.test(L)?', ':'、')"),
+    ("nos.slice(0,3).join(L=='en'||L=='ko'?', ':'、')", "mNos(nos,L)"),
     # 兒童年齡
     ("const AGE=(a,L)=>L=='en'?",
      "const AGE=(a,L)=>L=='th'?a.map(x=>x+' ขวบ').join(' และ '):L=='vi'?(a.length>1?a.slice(0,-1).join(', ')+' và '+a[a.length-1]:a[0])+' tuổi':L=='id'?(a.length>1?a.slice(0,-1).join(', ')+' dan '+a[a.length-1]:a[0])+' tahun':L=='en'?"),

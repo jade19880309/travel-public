@@ -1362,9 +1362,11 @@ Object.assign(FR,{
   sub:(no,dt)=>`Xác nhận đặt chỗ${no?' – Mã đặt chỗ '+no:''}${dt?' – '+dt:''}`,dk:{hotel:'Nhận phòng ',car:'Nhận xe ',tix:''}},
  id:{hi:(n,k)=>k=='hotel'?'Yth. Tim Reservasi,':`Yth. Tim ${n},`,in:'Saya menulis untuk mengonfirmasi ulang reservasi berikut.',hd:'Detail reservasi:',rq:'Kami juga ingin mengajukan permintaan berikut:',ask:'Mohon bantuannya untuk mengonfirmasi hal di atas.',end:{hotel:'Terima kasih banyak. Kami menantikan untuk menginap di tempat Anda.',car:'Terima kasih banyak. Sampai jumpa.',tix:'Terima kasih banyak. Kami menantikan kunjungan kami.'},bye:s=>`Hormat kami,\n${s}`,
   sub:(no,dt)=>`Konfirmasi Ulang Reservasi${no?' – No. Pemesanan '+no:''}${dt?' – '+dt:''}`,dk:{hotel:'Check-in ',car:'Pengambilan ',tix:''}}});
+/* 主旨的訂單編號：只列第一組，其餘用「等 N 筆」帶過，避免標題太長 */
+const mNos=(a,L)=>{if(a.length<2)return a[0]||'';const n=a.length-1;return a[0]+({zht:` 等 ${n+1} 筆`,zhs:` 等 ${n+1} 笔`,en:` +${n} more`,ja:` 他${n}件`,ko:` 외 ${n}건`,th:` และอีก ${n}`,vi:` và ${n} mã khác`,id:` +${n} lainnya`}[L]||'')};
 function mMail(v,L,signer){const F=FR[L],k=v.kind,xs=mOn(v),nos=[...new Set(xs.map(x=>x.orderNo||x.code).filter(Boolean))],ds=mDateTxt(v,L);
  const dt=ds?(F.dkAfter?ds+F.dk[k]:F.dk[k]+ds):'';
- const sub=F.sub(nos.slice(0,3).join(/^(en|ko|th|vi|id)$/.test(L)?', ':'、'),dt);
+ const sub=F.sub(mNos(nos,L),dt);
  const det=k=='hotel'?dHotel(v,L):dOther(v,L),rq=mReqs(v,L),oth=isZh(L)?String(MST.oth[v.k]||'').trim():'';
  if(oth)oth.split(/\n+/).map(s=>s.trim()).filter(Boolean).forEach(s=>rq.push(s));
  const bl=L=='ja'||isZh(L)?'・':'- ';
