@@ -17,7 +17,7 @@ ROOMS_FN = r"""const mAddD=(s,n)=>{const [y,m,d]=s.split('-').map(Number),t=new 
 function dRooms(hs,L){const B=LB[L],c=CL(L),cnt={};
  hs.forEach(h=>{if(!h.cin||!h.cout||h.cout<=h.cin)return;const n=(h.rooms||[]).length;for(let d=h.cin,i=0;d<h.cout&&i<400;d=mAddD(d,1),i++)cnt[d]=(cnt[d]||0)+n});
  const ds=Object.keys(cnt).sort();if(!ds.length)return [];
- const sh=s=>mDate(s,L,1).replace(/ \d{4}$/,''),runs=[];
+ const sh=s=>mDate(s,L,1).replace(/[ \/]\d{4}$/,''),runs=[];
  ds.forEach(d=>{const r=runs[runs.length-1];if(r&&r.n==cnt[d]&&mAddD(r.b,1)==d)r.b=d;else runs.push({a:d,b:d,n:cnt[d]})});
  const bl=L=='ja'||isZh(L)?'・':'- ';
  return ['',`${B.dr}${c}`.trim(),...runs.map(r=>`${bl}${r.a==r.b?sh(r.a):sh(r.a)+'–'+sh(r.b)}${c}${B.rms(r.n)}`)]}
@@ -26,7 +26,7 @@ function dRooms(hs,L){const B=LB[L],c=CL(L),cnt={};
 DATES_FN = r"""/* 主旨的入住日期：多個日期用「–」連成區間（首日–末日），避免訂單多時標題太長 */
 const mDates=v=>mOn(v).map(x=>{if(v.kind=='hotel')return x.cin;if(v.kind=='car'){const q=pLine(x.lines,'取車');return q&&q.d||x.date}return x.date}).filter(Boolean).sort();
 function mDateTxt(v,L){const a=mDates(v);if(!a.length)return '';const f=a[0],l=a[a.length-1];if(f==l)return mDate(f,L,1);
- let x=mDate(f,L,1);if(L=='en'&&f.slice(0,4)==l.slice(0,4))x=x.replace(/ \d{4}$/,'');return x+'–'+mDate(l,L,1)}
+ let x=mDate(f,L,1);if(/^(en|th|vi|id)$/.test(L)&&f.slice(0,4)==l.slice(0,4))x=x.replace(/[ \/]\d{4}$/,'');return x+'–'+mDate(l,L,1)}
 """
 
 PAIRS = [
@@ -48,7 +48,8 @@ PAIRS = [
 
 
 def apply(text, label=''):
-    for old, new in PAIRS:
+    import mail_lang
+    for old, new in PAIRS + mail_lang.PAIRS:
         n = text.count(old)
         if n != 1:
             raise SystemExit('%s: 對不到或不只一處(%d)：%s' % (label, n, old[:70]))

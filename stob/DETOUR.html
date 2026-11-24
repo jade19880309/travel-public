@@ -1165,10 +1165,10 @@ function route(){const h=location.hash.slice(1),i=h.indexOf('-'),v=i<0?h:h.slice
 const MST=(()=>{try{return JSON.parse(localStorage.getItem('stob_mail')||'{}')||{}}catch(e){return{}}})();
 ['sel','opt','oth','lang','sign','tab'].forEach(k=>{if(!MST[k]||typeof MST[k]!='object')MST[k]={}});
 const mSave=()=>{try{localStorage.setItem('stob_mail',JSON.stringify(MST))}catch(e){}};
-const MLN={ja:'日文',ko:'韓文',zhs:'簡體中文',zht:'繁體中文',en:'英文'};
+const MLN={ja:'日文',ko:'韓文',th:'泰文',vi:'越南文',id:'印尼文',zhs:'簡體中文',zht:'繁體中文',en:'英文'};
 const isZh=L=>L=='zht'||L=='zhs';
-const CL=L=>(L=='en'||L=='ko')?': ':'：';
-const PR=(L,s)=>(L=='en'||L=='ko')?` (${s})`:`・${s}`;
+const CL=L=>/^(en|ko|th|vi|id)$/.test(L)?': ':'：';
+const PR=(L,s)=>/^(en|ko|th|vi|id)$/.test(L)?` (${s})`:`・${s}`;
 
 /* 依店家分組：飯店依名稱、交通／其他依公司 */
 function mVendors(tid){const V=new Map(),add=(k,kind,x)=>{if(!V.has(k))V.set(k,{k,kind,cat:k[0],list:[]});V.get(k).list.push(x)};
@@ -1184,6 +1184,7 @@ function mLocal(v){const x=v.list[0],t=T(x.trip).name||'',s=[x.zh,x.en,x.ori,x.a
  if(/珠海|Zhuhai|廣州|广州|深圳|上海|北京|中國|中国|China|Guangdong/i.test(s))return 'zhs';
  if(x.cur=='JPY'||/日本|東京|京阪|大阪|京都|北海道|沖繩/.test(t))return 'ja';
  if(x.cur=='KRW'||/韓國|首爾|釜山/.test(t))return 'ko';
+ if(x.cur=='THB'||/泰國|泰国|曼谷|清邁|清迈|普吉|芭達雅|芭提雅|Thailand|Bangkok/i.test(t+' '+s))return 'th';if(x.cur=='VND'||/越南|河內|河内|胡志明|峴港|岘港|Vietnam/i.test(t+' '+s))return 'vi';if(x.cur=='IDR'||/印尼|峇里|巴厘|雅加達|雅加达|Indonesia|Bali|Jakarta/i.test(t+' '+s))return 'id';
  if(x.cur=='CNY')return 'zhs';
  if(x.cur=='HKD'||x.cur=='MOP'||/港珠澳|香港|澳門|台灣/.test(t))return 'zht';
  return 'en'}
@@ -1196,13 +1197,17 @@ const mWho=(m,L)=>!m?'':isZh(L)?`${m.zh||mEn(m)}（${mEn(m)}）`:mEn(m);
 const mSig=(m,L)=>!m?'':L=='ja'?`${mEn(m)}（${m.zh}）`:isZh(L)?`${m.zh}（${mEn(m)}）`:mEn(m);
 const noCJK=s=>String(s||'').replace(/[　-鿿＀-￯]+/g,' ').replace(/\s+/g,' ').trim();
 function hName(h,L){const z=h.zh||h.en||'',o=h.ori||'',e=h.en||noCJK(z)||o;
- return L=='en'?(e||z):L=='ja'?(o||z||e):L=='ko'?(o||e||z):L=='zhs'?(o&&/[一-鿿]/.test(o)&&!/[぀-ヿ가-힯]/.test(o)?o:z):(z||o||e)}
+ return L=='th'?(o||e||z):(L=='vi'||L=='id')?(e||o||z):L=='en'?(e||z):L=='ja'?(o||z||e):L=='ko'?(o||e||z):L=='zhs'?(o&&/[一-鿿]/.test(o)&&!/[぀-ヿ가-힯]/.test(o)?o:z):(z||o||e)}
 const vName=(v,L)=>{const x=v.list[0];if(v.kind=='hotel')return hName(x,L);const c=x.company||x.title||'';return isZh(L)?c:(noCJK(c)||c)};
 
 /* 日期 */
 const WDE=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'],MON=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const THM=['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'],THW=['อาทิตย์','จันทร์','อังคาร','พุธ','พฤหัสบดี','ศุกร์','เสาร์'],VIW=['Chủ nhật','Thứ Hai','Thứ Ba','Thứ Tư','Thứ Năm','Thứ Sáu','Thứ Bảy'],IDM=['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'],IDW=['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
 function mDate(s,L,short){if(!s)return '';const [y,m,dd]=s.split('-').map(Number),w=new Date(y,m-1,dd).getDay();
  if(L=='en')return short?`${dd} ${MON[m-1]} ${y}`:`${WDE[w]}, ${dd} ${MON[m-1]} ${y}`;
+ if(L=='th')return short?`${dd} ${THM[m-1]} ${y}`:`วัน${THW[w]}ที่ ${dd} ${THM[m-1]} ${y}`;
+ if(L=='vi')return short?`${dd}/${m}/${y}`:`${VIW[w]}, ${dd}/${m}/${y}`;
+ if(L=='id')return short?`${dd} ${IDM[m-1]} ${y}`:`${IDW[w]}, ${dd} ${IDM[m-1]} ${y}`;
  if(L=='ja')return short?`${m}月${dd}日`:`${y}年${m}月${dd}日（${'日月火水木金土'[w]}）`;
  if(L=='ko')return short?`${m}월 ${dd}일`:`${y}년 ${m}월 ${dd}일 (${'일월화수목금토'[w]})`;
  return short?`${m}月${dd}日`:`${y}年${m}月${dd}日（${L=='zhs'?'周':'週'}${WD[w]}）`}
@@ -1220,6 +1225,10 @@ const LB={
  ko:{hotel:'호텔명',co:'업체명',site:'예약 사이트',direct:'공식 홈페이지',no:'예약번호',code:'예약 코드',cin:'체크인',cout:'체크아웃',nt:n=>`${n}박`,room:i=>`객실 ${i}`,guest:'투숙객',gs:n=>`${n}명`,bf1:'조식 포함',bf0:'조식 불포함',ord:i=>`예약 ${i}`,pick:'픽업',ret:'반납',date:'날짜',time:'시간',pax:'인원',ppl:n=>`${n}명`,rn:'예약자',dr:'일별 총 객실 수',rms:n=>`${n}실`},
  zht:{hotel:'飯店',co:'公司',site:'訂房網站',direct:'官網',no:'訂單編號',code:'預約代碼',cin:'入住',cout:'退房',nt:n=>`${n} 晚`,room:i=>`房間 ${i}`,guest:'入住代表人',gs:n=>`${n} 人`,bf1:'含早餐',bf0:'不含早餐',ord:i=>`訂單 ${i}`,pick:'取車',ret:'還車',date:'日期',time:'時間',pax:'人數',ppl:n=>`${n} 人`,rn:'預約人',dr:'每日總房間數',rms:n=>`${n} 間`},
  zhs:{hotel:'酒店',co:'公司',site:'预订网站',direct:'官网',no:'订单编号',code:'预约代码',cin:'入住',cout:'退房',nt:n=>`${n} 晚`,room:i=>`房间 ${i}`,guest:'入住代表人',gs:n=>`${n} 人`,bf1:'含早餐',bf0:'不含早餐',ord:i=>`订单 ${i}`,pick:'取车',ret:'还车',date:'日期',time:'时间',pax:'人数',ppl:n=>`${n} 人`,rn:'预约人',dr:'每日总房间数',rms:n=>`${n} 间`}};
+Object.assign(LB,{
+ th:{hotel:'โรงแรม',co:'บริษัท',site:'จองผ่าน',direct:'เว็บไซต์ทางการ',no:'เลขที่การจอง',code:'รหัสการจอง',cin:'เช็คอิน',cout:'เช็คเอาท์',nt:n=>`${n} คืน`,room:i=>`ห้อง ${i}`,guest:'ชื่อผู้เข้าพัก',gs:n=>`${n} ท่าน`,bf1:'รวมอาหารเช้า',bf0:'ไม่รวมอาหารเช้า',ord:i=>`การจอง ${i}`,pick:'รับรถ',ret:'คืนรถ',date:'วันที่',time:'เวลา',pax:'จำนวนคน',ppl:n=>`${n} ท่าน`,rn:'ชื่อผู้จอง',dr:'จำนวนห้องรวมต่อวัน',rms:n=>`${n} ห้อง`},
+ vi:{hotel:'Khách sạn',co:'Công ty',site:'Đặt qua',direct:'Website chính thức',no:'Mã đặt chỗ',code:'Mã đặt chỗ',cin:'Nhận phòng',cout:'Trả phòng',nt:n=>`${n} đêm`,room:i=>`Phòng ${i}`,guest:'Tên khách',gs:n=>`${n} khách`,bf1:'gồm bữa sáng',bf0:'không gồm bữa sáng',ord:i=>`Đặt chỗ ${i}`,pick:'Nhận xe',ret:'Trả xe',date:'Ngày',time:'Giờ',pax:'Số người',ppl:n=>`${n} người`,rn:'Tên người đặt',dr:'Tổng số phòng mỗi ngày',rms:n=>`${n} phòng`},
+ id:{hotel:'Hotel',co:'Perusahaan',site:'Dipesan melalui',direct:'Situs resmi',no:'No. Pemesanan',code:'Kode reservasi',cin:'Check-in',cout:'Check-out',nt:n=>`${n} malam`,room:i=>`Kamar ${i}`,guest:'Nama tamu',gs:n=>`${n} tamu`,bf1:'termasuk sarapan',bf0:'tidak termasuk sarapan',ord:i=>`Pemesanan ${i}`,pick:'Pengambilan',ret:'Pengembalian',date:'Tanggal',time:'Waktu',pax:'Jumlah orang',ppl:n=>`${n} orang`,rn:'Nama pemesan',dr:'Total kamar per hari',rms:n=>`${n} kamar`}});
 const siteN=(p,L)=>p=='官網'?LB[L].direct:p;
 
 const mAddD=(s,n)=>{const [y,m,d]=s.split('-').map(Number),t=new Date(y,m-1,d+n);return t.getFullYear()+'-'+String(t.getMonth()+1).padStart(2,'0')+'-'+String(t.getDate()).padStart(2,'0')};
@@ -1227,7 +1236,7 @@ const mAddD=(s,n)=>{const [y,m,d]=s.split('-').map(Number),t=new Date(y,m-1,d+n)
 function dRooms(hs,L){const B=LB[L],c=CL(L),cnt={};
  hs.forEach(h=>{if(!h.cin||!h.cout||h.cout<=h.cin)return;const n=(h.rooms||[]).length;for(let d=h.cin,i=0;d<h.cout&&i<400;d=mAddD(d,1),i++)cnt[d]=(cnt[d]||0)+n});
  const ds=Object.keys(cnt).sort();if(!ds.length)return [];
- const sh=s=>mDate(s,L,1).replace(/ \d{4}$/,''),runs=[];
+ const sh=s=>mDate(s,L,1).replace(/[ \/]\d{4}$/,''),runs=[];
  ds.forEach(d=>{const r=runs[runs.length-1];if(r&&r.n==cnt[d]&&mAddD(r.b,1)==d)r.b=d;else runs.push({a:d,b:d,n:cnt[d]})});
  const bl=L=='ja'||isZh(L)?'・':'- ';
  return ['',`${B.dr}${c}`.trim(),...runs.map(r=>`${bl}${r.a==r.b?sh(r.a):sh(r.a)+'–'+sh(r.b)}${c}${B.rms(r.n)}`)]}
@@ -1252,7 +1261,7 @@ function dOther(v,L){const B=LB[L],c=CL(L),xs=mOn(v),o=[`${B.co}${c}${vName(v,L)
  return o}
 
 /* 預設需求（已翻好五種語言）；p：time 時間、ages 兒童年齡、num 數字、bed 床型 */
-const AGE=(a,L)=>L=='en'?(a.length>1?a.slice(0,-1).join(', ')+' and '+a[a.length-1]:a[0]):L=='ja'?a.map(x=>x+'歳').join('と'):L=='ko'?a.map(x=>x+'세').join(', '):a.map(x=>x+(L=='zhs'?'岁':'歲')).join('、');
+const AGE=(a,L)=>L=='th'?a.map(x=>x+' ขวบ').join(' และ '):L=='vi'?(a.length>1?a.slice(0,-1).join(', ')+' và '+a[a.length-1]:a[0])+' tuổi':L=='id'?(a.length>1?a.slice(0,-1).join(', ')+' dan '+a[a.length-1]:a[0])+' tahun':L=='en'?(a.length>1?a.slice(0,-1).join(', ')+' and '+a[a.length-1]:a[0]):L=='ja'?a.map(x=>x+'歳').join('と'):L=='ko'?a.map(x=>x+'세').join(', '):a.map(x=>x+(L=='zhs'?'岁':'歲')).join('、');
 const BEDN={twin:{zh:'兩張單人床',en:'twin beds',ja:'ツイン',ko:'트윈',zht:'兩張單人床',zhs:'两张单人床'},dbl:{zh:'一張雙人床',en:'a double bed',ja:'ダブル',ko:'더블',zht:'一張雙人床',zhs:'一张双人床'}};
 const PRE={
  hotel:[
@@ -1290,9 +1299,44 @@ const PRE={
   {id:'get',g:'確認',zh:'取票方式',t:{en:'Could you please let us know how and where to collect the tickets?',ja:'チケットの受け取り方法と場所を教えていただけますでしょうか。',ko:'티켓 수령 방법과 장소를 알려 주시겠어요?',zht:'請問要如何、在哪裡取票？',zhs:'请问要如何、在哪里取票？'}},
   {id:'strl',g:'同行',zh:'嬰兒車',t:{en:'May we bring a baby stroller?',ja:'ベビーカーの持ち込みは可能でしょうか。',ko:'유모차를 가지고 들어갈 수 있나요?',zht:'請問可以帶嬰兒車嗎？',zhs:'请问可以带婴儿车吗？'}},
   {id:'kchr',g:'同行',zh:'兒童椅',t:{en:'Could you please prepare a child chair?',ja:'お子様用の椅子をご用意いただけますでしょうか。',ko:'아이용 의자를 준비해 주실 수 있나요?',zht:'請問可以準備兒童椅嗎？',zhs:'请问可以准备儿童椅吗？'}}]};
+/* 泰文、越南文、印尼文的預設需求翻譯（依需求 id；用法同 PRE 的 t） */
+const BTX={twin:{th:'ทวิน (เตียงเดี่ยวสองเตียง)',vi:'hai giường đơn',id:'dua tempat tidur terpisah (twin)'},dbl:{th:'ดับเบิล (เตียงใหญ่หนึ่งเตียง)',vi:'một giường đôi',id:'satu tempat tidur ganda'}};
+const PRX={
+ arr:{th:v=>`คาดว่าจะถึงประมาณ ${v} น.`,vi:v=>`Chúng tôi dự kiến đến khoảng ${v}.`,id:v=>`Kami perkirakan tiba sekitar pukul ${v}.`},
+ flt:{th:v=>`เราเดินทางด้วยเที่ยวบิน ${v[0]}${v[1]?' (กำหนดถึงเวลา '+v[1]+' น.)':''} จึงจะเช็คอินล่าช้า กรุณาเก็บห้องพักไว้ให้เราด้วย`,vi:v=>`Chúng tôi đi chuyến bay ${v[0]}${v[1]?' (dự kiến hạ cánh lúc '+v[1]+')':''} nên sẽ nhận phòng muộn. Xin vui lòng giữ phòng cho chúng tôi.`,id:v=>`Kami menumpang penerbangan ${v[0]}${v[1]?' (dijadwalkan tiba pukul '+v[1]+')':''}, sehingga akan check-in terlambat. Mohon tetap simpankan kamar untuk kami.`},
+ late:{th:'เราอาจเดินทางถึงล่าช้า กรุณาเก็บห้องพักไว้ให้เราด้วย',vi:'Chúng tôi có thể đến muộn, xin vui lòng giữ phòng cho chúng tôi.',id:'Kami mungkin tiba terlambat, mohon tetap simpankan kamar untuk kami.'},
+ nosmk:{th:'หากเป็นไปได้ ขอห้องปลอดบุหรี่',vi:'Nếu có thể, chúng tôi muốn phòng không hút thuốc.',id:'Jika memungkinkan, kami mohon kamar bebas rokok.'},
+ high:{th:'หากมีห้องว่าง ขอห้องชั้นสูง',vi:'Nếu còn phòng, chúng tôi muốn phòng ở tầng cao.',id:'Jika tersedia, kami mohon kamar di lantai yang lebih tinggi.'},
+ adj:{th:'เราเดินทางมาด้วยกันเป็นกลุ่ม จึงขอห้องที่อยู่ติดกันหรืออยู่ชั้นเดียวกัน',vi:'Vì đi cùng nhóm, chúng tôi mong được xếp các phòng liền kề hoặc cùng tầng.',id:'Karena kami bepergian bersama, kami mohon kamar yang bersebelahan atau di lantai yang sama.'},
+ merge:{th:'เนื่องจากเราจองต่อเนื่องกัน ขอสอบถามว่าสามารถรวมการจองให้เราพักห้องเดิมตลอดช่วงที่เข้าพัก โดยไม่ต้องย้ายห้อง ได้หรือไม่',vi:'Vì chúng tôi đặt phòng liên tiếp, xin hỏi khách sạn có thể gộp các đặt phòng để chúng tôi ở cùng một phòng suốt thời gian lưu trú mà không phải đổi phòng được không?',id:'Karena pemesanan kami berurutan, apakah memungkinkan untuk menggabungkan pemesanan agar kami dapat menginap di kamar yang sama selama masa menginap tanpa berpindah kamar?'},
+ bed:{th:v=>`ขอเป็นเตียง${BTX[v].th}`,vi:v=>`Chúng tôi muốn ${BTX[v].vi}.`,id:v=>`Kami lebih memilih ${BTX[v].id}.`},
+ kids:{th:v=>`เราเดินทางมากับเด็กอายุ ${v} กรุณาแจ้งหากมีค่าใช้จ่ายเพิ่มเติม`,vi:v=>`Chúng tôi đi cùng trẻ em ${v}. Vui lòng cho biết nếu có phụ phí.`,id:v=>`Kami bepergian bersama anak-anak berusia ${v}. Mohon informasikan jika ada biaya tambahan.`},
+ crib:{th:'ขอเตียงเด็กอ่อนได้หรือไม่',vi:'Khách sạn có thể cung cấp cũi cho em bé được không?',id:'Apakah Anda dapat menyediakan tempat tidur bayi?'},
+ xbed:{th:'สามารถเสริมเตียงได้หรือไม่ หากมีค่าใช้จ่าย กรุณาแจ้งให้ทราบ',vi:'Có thể kê thêm giường không? Nếu có phụ phí, xin vui lòng cho biết.',id:'Apakah memungkinkan menambah tempat tidur ekstra? Mohon informasikan biayanya, jika ada.'},
+ bagin:{th:'เราอาจถึงก่อนเวลาเช็คอิน ขอฝากสัมภาระไว้ที่เคาน์เตอร์ได้หรือไม่',vi:'Chúng tôi có thể đến trước giờ nhận phòng. Chúng tôi có thể gửi hành lý tại quầy lễ tân được không?',id:'Kami mungkin tiba sebelum jam check-in. Bolehkah kami menitipkan bagasi di meja resepsionis?'},
+ bagout:{th:'หลังเช็คเอาท์ ขอฝากสัมภาระไว้ที่โรงแรมได้หรือไม่',vi:'Sau khi trả phòng, chúng tôi có thể gửi hành lý lại khách sạn được không?',id:'Bolehkah kami menitipkan bagasi di hotel setelah check-out?'},
+ bagmid:{th:v=>`หลังเช็คเอาท์วันที่ ${v[0]} เราจะกลับมาพักอีกครั้งตั้งแต่วันที่ ${v[1]} ขอฝากสัมภาระไว้ที่โรงแรมในช่วงระหว่างนั้นได้หรือไม่`,vi:v=>`Sau khi trả phòng ngày ${v[0]}, chúng tôi sẽ quay lại lưu trú từ ngày ${v[1]}. Chúng tôi có thể gửi hành lý tại khách sạn trong thời gian giữa hai lần ở được không?`,id:v=>`Setelah check-out pada ${v[0]}, kami akan menginap lagi mulai ${v[1]}. Bolehkah kami menitipkan bagasi di hotel selama jeda tersebut?`},
+ parcel:{th:'เราอาจส่งพัสดุมาที่โรงแรมก่อนวันเข้าพัก โดยระบุชื่อผู้จอง ขอรบกวนรับและเก็บรักษาไว้จนกว่าเราจะเช็คอินได้หรือไม่',vi:'Chúng tôi có thể gửi một bưu kiện đến khách sạn trước ngày đến, ghi tên người đặt phòng. Khách sạn có thể nhận và giữ giúp đến khi chúng tôi nhận phòng được không?',id:'Kami mungkin mengirim paket ke hotel sebelum kedatangan kami, atas nama pemesan. Mohon bantuannya untuk menerima dan menyimpannya hingga kami check-in.'},
+ park:{th:'เราจะเดินทางด้วยรถยนต์ มีที่จอดรถหรือไม่ และมีค่าบริการเท่าไร',vi:'Chúng tôi sẽ đi bằng ô tô. Khách sạn có chỗ đậu xe không và phí là bao nhiêu?',id:'Kami akan datang dengan mobil. Apakah tersedia tempat parkir, dan berapa biayanya?'},
+ shut:{th:'โรงแรมมีบริการรถรับ-ส่งสนามบินหรือไม่ กรุณาแจ้งรายละเอียดและค่าบริการ',vi:'Khách sạn có dịch vụ đưa đón sân bay không? Xin vui lòng cho biết chi tiết và chi phí.',id:'Apakah Anda menyediakan layanan antar-jemput bandara? Mohon informasikan detail dan biayanya.'},
+ bfq:{th:'กรุณายืนยันว่ารวมอาหารเช้าหรือไม่',vi:'Xin vui lòng xác nhận giá phòng có bao gồm bữa sáng hay không.',id:'Mohon konfirmasi apakah sarapan sudah termasuk.'},
+ ptime:{th:v=>`เราวางแผนจะมารับรถประมาณ ${v} น.`,vi:v=>`Chúng tôi dự kiến nhận xe vào khoảng ${v}.`,id:v=>`Kami berencana mengambil mobil sekitar pukul ${v}.`},
+ rtime:{th:v=>`เราวางแผนจะคืนรถประมาณ ${v} น.`,vi:v=>`Chúng tôi dự kiến trả xe vào khoảng ${v}.`,id:v=>`Kami berencana mengembalikan mobil sekitar pukul ${v}.`},
+ seat:{th:v=>`ขอคาร์ซีทสำหรับเด็กอายุ ${v}`,vi:v=>`Chúng tôi cần ghế ngồi ô tô cho trẻ em ${v}.`,id:v=>`Kami membutuhkan kursi anak untuk anak berusia ${v}.`},
+ drv:{th:v=>`ขอเพิ่มผู้ขับขี่อีก ${v} ท่าน`,vi:v=>`Chúng tôi muốn thêm ${v} tài xế.`,id:v=>`Kami ingin menambah ${v} pengemudi.`},
+ lic:{th:'เราถือใบขับขี่ไต้หวัน กรุณาแจ้งเอกสารที่ต้องใช้ตอนรับรถ (เช่น ใบขับขี่ ฉบับแปล หรือใบขับขี่สากล)',vi:'Chúng tôi có giấy phép lái xe Đài Loan. Xin vui lòng cho biết cần chuẩn bị giấy tờ nào khi nhận xe (bằng lái, bản dịch hoặc giấy phép lái xe quốc tế).',id:'Kami memiliki SIM Taiwan. Mohon informasikan dokumen yang diperlukan saat pengambilan (misalnya SIM, terjemahan, atau SIM Internasional).'},
+ etc:{th:'ขอเช่าบัตร ETC สำหรับจ่ายค่าทางด่วน',vi:'Chúng tôi muốn thuê thẻ ETC để đi đường thu phí.',id:'Kami ingin menyewa kartu ETC untuk jalan tol.'},
+ ins:{th:'กรุณายืนยันความคุ้มครองประกันภัยที่รวมอยู่ในราคา',vi:'Xin vui lòng xác nhận các loại bảo hiểm được bao gồm.',id:'Mohon konfirmasi cakupan asuransi yang sudah termasuk.'},
+ ptx:{th:'มีรถรับ-ส่งจากสถานีหรือสนามบินไปยังสาขาหรือไม่',vi:'Có dịch vụ đưa đón từ nhà ga hoặc sân bay đến văn phòng không?',id:'Apakah ada antar-jemput dari stasiun atau bandara ke kantor Anda?'},
+ dt:{th:'กรุณายืนยันวันที่และเวลาของการจอง',vi:'Xin vui lòng xác nhận ngày và giờ đặt chỗ của chúng tôi.',id:'Mohon konfirmasi tanggal dan jam pemesanan kami.'},
+ kidt:{th:v=>`เรามีเด็กอายุ ${v} กรุณายืนยันว่าใช้ตั๋วประเภทใด`,vi:v=>`Chúng tôi có trẻ em ${v}. Xin vui lòng cho biết loại vé áp dụng.`,id:v=>`Kami membawa anak berusia ${v}. Mohon konfirmasi jenis tiket yang berlaku.`},
+ snr:{th:'มีส่วนลดสำหรับผู้สูงอายุหรือไม่',vi:'Có giảm giá cho người cao tuổi không?',id:'Apakah ada diskon untuk lansia?'},
+ get:{th:'กรุณาแจ้งวิธีและสถานที่รับตั๋ว',vi:'Xin vui lòng cho biết cách thức và địa điểm nhận vé.',id:'Mohon informasikan cara dan lokasi pengambilan tiket.'},
+ strl:{th:'นำรถเข็นเด็กเข้าไปได้หรือไม่',vi:'Chúng tôi có thể mang theo xe đẩy em bé không?',id:'Bolehkah kami membawa kereta dorong bayi?'},
+ kchr:{th:'ขอเก้าอี้สำหรับเด็กได้หรือไม่',vi:'Xin vui lòng chuẩn bị ghế dành cho trẻ em.',id:'Mohon siapkan kursi anak.'}};
 const ageArr=s=>String(s||'').split(/[^\d]+/).filter(Boolean).map(Number).filter(n=>n<=17);
-function mReqs(v,L){const o=MST.opt[v.k]||{};return PRE[v.kind].filter(p=>p.id in o).map(p=>{const val=o[p.id],f=p.t[L];
- if(!p.p)return f;if(p.p=='ages'){const a=ageArr(val);return a.length?f(AGE(a,L)):''}if(p.p=='num'){const n=parseInt(val,10);return n>0?f(n):''}if(p.p=='bed')return BEDN[val]?f(val):'';if(p.p=='flight'){const [a,b]=String(val||'').split('|');return a?f([a.trim().toUpperCase(),(b||'').trim()]):''}if(p.p=='range'){const [a,b]=String(val||'').split('|');return a&&b?f([a,b].map(x=>mDate(x,L,1).replace(/ \d{4}$/,''))):''}return val?f(val):''}).filter(Boolean)}
+function mReqs(v,L){const o=MST.opt[v.k]||{};return PRE[v.kind].filter(p=>p.id in o).map(p=>{const val=o[p.id],f=p.t[L]||(PRX[p.id]||{})[L];if(!f)return '';
+ if(!p.p)return f;if(p.p=='ages'){const a=ageArr(val);return a.length?f(AGE(a,L)):''}if(p.p=='num'){const n=parseInt(val,10);return n>0?f(n):''}if(p.p=='bed')return BEDN[val]?f(val):'';if(p.p=='flight'){const [a,b]=String(val||'').split('|');return a?f([a.trim().toUpperCase(),(b||'').trim()]):''}if(p.p=='range'){const [a,b]=String(val||'').split('|');return a&&b?f([a,b].map(x=>mDate(x,L,1).replace(/[ \/]\d{4}$/,''))):''}return val?f(val):''}).filter(Boolean)}
 
 /* 信件框架 */
 const FR={
@@ -1309,11 +1353,18 @@ const FR={
 /* 主旨的入住日期：多個日期用「–」連成區間（首日–末日），避免訂單多時標題太長 */
 const mDates=v=>mOn(v).map(x=>{if(v.kind=='hotel')return x.cin;if(v.kind=='car'){const q=pLine(x.lines,'取車');return q&&q.d||x.date}return x.date}).filter(Boolean).sort();
 function mDateTxt(v,L){const a=mDates(v);if(!a.length)return '';const f=a[0],l=a[a.length-1];if(f==l)return mDate(f,L,1);
- let x=mDate(f,L,1);if(L=='en'&&f.slice(0,4)==l.slice(0,4))x=x.replace(/ \d{4}$/,'');return x+'–'+mDate(l,L,1)}
+ let x=mDate(f,L,1);if(/^(en|th|vi|id)$/.test(L)&&f.slice(0,4)==l.slice(0,4))x=x.replace(/[ \/]\d{4}$/,'');return x+'–'+mDate(l,L,1)}
 const mFirstDate=v=>{const x=mOn(v)[0];if(!x)return '';if(v.kind=='hotel')return x.cin;if(v.kind=='car'){const q=pLine(x.lines,'取車');return q&&q.d||x.date}return x.date};
+Object.assign(FR,{
+ th:{hi:(n,k)=>k=='hotel'?'เรียน ฝ่ายสำรองห้องพัก':`เรียน ทีมงาน ${n}`,in:'ขอยืนยันรายละเอียดการจองดังต่อไปนี้ค่ะ/ครับ',hd:'รายละเอียดการจอง:',rq:'และขอความช่วยเหลือเพิ่มเติมดังนี้:',ask:'รบกวนช่วยยืนยันข้อมูลข้างต้นด้วยค่ะ/ครับ',end:{hotel:'ขอบคุณมากค่ะ/ครับ รอเข้าพักกับทางโรงแรมนะคะ/ครับ',car:'ขอบคุณมากค่ะ/ครับ แล้วพบกันนะคะ/ครับ',tix:'ขอบคุณมากค่ะ/ครับ รอเยี่ยมชมนะคะ/ครับ'},bye:s=>`ขอแสดงความนับถือ\n${s}`,
+  sub:(no,dt)=>`ขอยืนยันการจอง${no?' – เลขที่การจอง '+no:''}${dt?' – '+dt:''}`,dk:{hotel:'เช็คอิน ',car:'รับรถ ',tix:''}},
+ vi:{hi:(n,k)=>k=='hotel'?'Kính gửi Bộ phận Đặt phòng,':`Kính gửi ${n},`,in:'Tôi xin xác nhận lại đặt chỗ sau:',hd:'Thông tin đặt chỗ:',rq:'Chúng tôi cũng xin gửi một số yêu cầu sau:',ask:'Rất mong quý vị xác nhận giúp thông tin trên.',end:{hotel:'Xin chân thành cảm ơn. Chúng tôi rất mong được đến lưu trú.',car:'Xin chân thành cảm ơn. Hẹn gặp quý vị.',tix:'Xin chân thành cảm ơn. Chúng tôi rất mong được ghé thăm.'},bye:s=>`Trân trọng,\n${s}`,
+  sub:(no,dt)=>`Xác nhận đặt chỗ${no?' – Mã đặt chỗ '+no:''}${dt?' – '+dt:''}`,dk:{hotel:'Nhận phòng ',car:'Nhận xe ',tix:''}},
+ id:{hi:(n,k)=>k=='hotel'?'Yth. Tim Reservasi,':`Yth. Tim ${n},`,in:'Saya menulis untuk mengonfirmasi ulang reservasi berikut.',hd:'Detail reservasi:',rq:'Kami juga ingin mengajukan permintaan berikut:',ask:'Mohon bantuannya untuk mengonfirmasi hal di atas.',end:{hotel:'Terima kasih banyak. Kami menantikan untuk menginap di tempat Anda.',car:'Terima kasih banyak. Sampai jumpa.',tix:'Terima kasih banyak. Kami menantikan kunjungan kami.'},bye:s=>`Hormat kami,\n${s}`,
+  sub:(no,dt)=>`Konfirmasi Ulang Reservasi${no?' – No. Pemesanan '+no:''}${dt?' – '+dt:''}`,dk:{hotel:'Check-in ',car:'Pengambilan ',tix:''}}});
 function mMail(v,L,signer){const F=FR[L],k=v.kind,xs=mOn(v),nos=[...new Set(xs.map(x=>x.orderNo||x.code).filter(Boolean))],ds=mDateTxt(v,L);
  const dt=ds?(F.dkAfter?ds+F.dk[k]:F.dk[k]+ds):'';
- const sub=F.sub(nos.slice(0,3).join(L=='en'||L=='ko'?', ':'、'),dt);
+ const sub=F.sub(nos.slice(0,3).join(/^(en|ko|th|vi|id)$/.test(L)?', ':'、'),dt);
  const det=k=='hotel'?dHotel(v,L):dOther(v,L),rq=mReqs(v,L),oth=isZh(L)?String(MST.oth[v.k]||'').trim():'';
  if(oth)oth.split(/\n+/).map(s=>s.trim()).filter(Boolean).forEach(s=>rq.push(s));
  const bl=L=='ja'||isZh(L)?'・':'- ';
