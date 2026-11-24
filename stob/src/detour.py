@@ -64,6 +64,10 @@ rep("onclick=\"plDay(${i})\">${b=='d'+i?'重排中…':'↻ 換一個建議'}</b
 rep("x.fillText('STOB',90,165)", "x.fillText('DTR.',90,165)")
 rep('不像是 STOB 的備份', '不像是偏航的備份')
 
+# 確認信模板（2026-11-24）：併房選項、主旨入住日期區間、每日總房間數（與 TOB 共用 mail_patch.py）
+import mail_patch
+s = mail_patch.apply(s, 'DETOUR')
+
 # 附加樣式與程式
 css = (HERE / 'detour.css').read_text(encoding='utf-8').replace('@@BANNER_R@@', b64('banner-romantic.webp', 'image/webp')).replace('@@BANNER_N@@', b64('banner-navy.webp', 'image/webp'))
 js = (HERE / 'detour.js').read_text(encoding='utf-8').replace('/*VERSIONS*/null', json.dumps(V, ensure_ascii=False))

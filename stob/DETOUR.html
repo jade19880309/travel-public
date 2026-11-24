@@ -1215,13 +1215,22 @@ function rType(t,L){t=String(t||'').replace(/([一-鿿])\s*[A-D]$/,'$1').trim();
  return /Room|Suite/.test(s)?s:s+' Room'}
 
 const LB={
- en:{hotel:'Hotel',co:'Company',site:'Booked via',direct:'Official website',no:'Booking No.',code:'Reservation code',cin:'Check-in',cout:'Check-out',nt:n=>`${n} night${n>1?'s':''}`,room:i=>`Room ${i}`,guest:'guest name',gs:n=>`${n} guest${n>1?'s':''}`,bf1:'breakfast included',bf0:'breakfast not included',ord:i=>`Booking ${i}`,pick:'Pick-up',ret:'Return',date:'Date',time:'Time',pax:'Number of people',ppl:n=>`${n}`,rn:'Name on reservation'},
- ja:{hotel:'ホテル名',co:'会社名',site:'予約サイト',direct:'公式サイト',no:'予約番号',code:'予約コード',cin:'チェックイン',cout:'チェックアウト',nt:n=>`${n}泊`,room:i=>`部屋${i}`,guest:'代表者',gs:n=>`${n}名`,bf1:'朝食付き',bf0:'朝食なし',ord:i=>`予約${i}`,pick:'お受け取り',ret:'ご返却',date:'日付',time:'時間',pax:'人数',ppl:n=>`${n}名`,rn:'予約者名'},
- ko:{hotel:'호텔명',co:'업체명',site:'예약 사이트',direct:'공식 홈페이지',no:'예약번호',code:'예약 코드',cin:'체크인',cout:'체크아웃',nt:n=>`${n}박`,room:i=>`객실 ${i}`,guest:'투숙객',gs:n=>`${n}명`,bf1:'조식 포함',bf0:'조식 불포함',ord:i=>`예약 ${i}`,pick:'픽업',ret:'반납',date:'날짜',time:'시간',pax:'인원',ppl:n=>`${n}명`,rn:'예약자'},
- zht:{hotel:'飯店',co:'公司',site:'訂房網站',direct:'官網',no:'訂單編號',code:'預約代碼',cin:'入住',cout:'退房',nt:n=>`${n} 晚`,room:i=>`房間 ${i}`,guest:'入住代表人',gs:n=>`${n} 人`,bf1:'含早餐',bf0:'不含早餐',ord:i=>`訂單 ${i}`,pick:'取車',ret:'還車',date:'日期',time:'時間',pax:'人數',ppl:n=>`${n} 人`,rn:'預約人'},
- zhs:{hotel:'酒店',co:'公司',site:'预订网站',direct:'官网',no:'订单编号',code:'预约代码',cin:'入住',cout:'退房',nt:n=>`${n} 晚`,room:i=>`房间 ${i}`,guest:'入住代表人',gs:n=>`${n} 人`,bf1:'含早餐',bf0:'不含早餐',ord:i=>`订单 ${i}`,pick:'取车',ret:'还车',date:'日期',time:'时间',pax:'人数',ppl:n=>`${n} 人`,rn:'预约人'}};
+ en:{hotel:'Hotel',co:'Company',site:'Booked via',direct:'Official website',no:'Booking No.',code:'Reservation code',cin:'Check-in',cout:'Check-out',nt:n=>`${n} night${n>1?'s':''}`,room:i=>`Room ${i}`,guest:'guest name',gs:n=>`${n} guest${n>1?'s':''}`,bf1:'breakfast included',bf0:'breakfast not included',ord:i=>`Booking ${i}`,pick:'Pick-up',ret:'Return',date:'Date',time:'Time',pax:'Number of people',ppl:n=>`${n}`,rn:'Name on reservation',dr:'Total rooms per day',rms:n=>n==1?'1 room':`${n} rooms`},
+ ja:{hotel:'ホテル名',co:'会社名',site:'予約サイト',direct:'公式サイト',no:'予約番号',code:'予約コード',cin:'チェックイン',cout:'チェックアウト',nt:n=>`${n}泊`,room:i=>`部屋${i}`,guest:'代表者',gs:n=>`${n}名`,bf1:'朝食付き',bf0:'朝食なし',ord:i=>`予約${i}`,pick:'お受け取り',ret:'ご返却',date:'日付',time:'時間',pax:'人数',ppl:n=>`${n}名`,rn:'予約者名',dr:'日ごとの合計部屋数',rms:n=>`${n}室`},
+ ko:{hotel:'호텔명',co:'업체명',site:'예약 사이트',direct:'공식 홈페이지',no:'예약번호',code:'예약 코드',cin:'체크인',cout:'체크아웃',nt:n=>`${n}박`,room:i=>`객실 ${i}`,guest:'투숙객',gs:n=>`${n}명`,bf1:'조식 포함',bf0:'조식 불포함',ord:i=>`예약 ${i}`,pick:'픽업',ret:'반납',date:'날짜',time:'시간',pax:'인원',ppl:n=>`${n}명`,rn:'예약자',dr:'일별 총 객실 수',rms:n=>`${n}실`},
+ zht:{hotel:'飯店',co:'公司',site:'訂房網站',direct:'官網',no:'訂單編號',code:'預約代碼',cin:'入住',cout:'退房',nt:n=>`${n} 晚`,room:i=>`房間 ${i}`,guest:'入住代表人',gs:n=>`${n} 人`,bf1:'含早餐',bf0:'不含早餐',ord:i=>`訂單 ${i}`,pick:'取車',ret:'還車',date:'日期',time:'時間',pax:'人數',ppl:n=>`${n} 人`,rn:'預約人',dr:'每日總房間數',rms:n=>`${n} 間`},
+ zhs:{hotel:'酒店',co:'公司',site:'预订网站',direct:'官网',no:'订单编号',code:'预约代码',cin:'入住',cout:'退房',nt:n=>`${n} 晚`,room:i=>`房间 ${i}`,guest:'入住代表人',gs:n=>`${n} 人`,bf1:'含早餐',bf0:'不含早餐',ord:i=>`订单 ${i}`,pick:'取车',ret:'还车',date:'日期',time:'时间',pax:'人数',ppl:n=>`${n} 人`,rn:'预约人',dr:'每日总房间数',rms:n=>`${n} 间`}};
 const siteN=(p,L)=>p=='官網'?LB[L].direct:p;
 
+const mAddD=(s,n)=>{const [y,m,d]=s.split('-').map(Number),t=new Date(y,m-1,d+n);return t.getFullYear()+'-'+String(t.getMonth()+1).padStart(2,'0')+'-'+String(t.getDate()).padStart(2,'0')};
+/* 每日總房間數：把勾選的訂單逐晚加總，連續且房數相同的日子併成一段 */
+function dRooms(hs,L){const B=LB[L],c=CL(L),cnt={};
+ hs.forEach(h=>{if(!h.cin||!h.cout||h.cout<=h.cin)return;const n=(h.rooms||[]).length;for(let d=h.cin,i=0;d<h.cout&&i<400;d=mAddD(d,1),i++)cnt[d]=(cnt[d]||0)+n});
+ const ds=Object.keys(cnt).sort();if(!ds.length)return [];
+ const sh=s=>mDate(s,L,1).replace(/ \d{4}$/,''),runs=[];
+ ds.forEach(d=>{const r=runs[runs.length-1];if(r&&r.n==cnt[d]&&mAddD(r.b,1)==d)r.b=d;else runs.push({a:d,b:d,n:cnt[d]})});
+ const bl=L=='ja'||isZh(L)?'・':'- ';
+ return ['',`${B.dr}${c}`.trim(),...runs.map(r=>`${bl}${r.a==r.b?sh(r.a):sh(r.a)+'–'+sh(r.b)}${c}${B.rms(r.n)}`)]}
 function dHotel(v,L){const B=LB[L],c=CL(L),hs=mOn(v),h0=hs[0],same=hs.every(h=>h.cin==h0.cin&&h.cout==h0.cout),o=[`${B.hotel}${c}${hName(h0,L)}`];
  const dt=h=>[h.cin?`${B.cin}${c}${mDate(h.cin,L)}`:'',h.cout?`${B.cout}${c}${mDate(h.cout,L)}${PR(L,B.nt(nights(h)))}`:''].filter(Boolean);
  if(same)o.push(...dt(h0));
@@ -1229,7 +1238,7 @@ function dHotel(v,L){const B=LB[L],c=CL(L),hs=mOn(v),h0=hs[0],same=hs.every(h=>h
   if(h.platform)o.push(`${B.site}${c}${siteN(h.platform,L)}`);if(h.orderNo)o.push(`${B.no}${c}${h.orderNo}`);
   h.rooms.forEach((r,j)=>{const m=M(r.members.includes(h.rep)?h.rep:r.members.find(M)),n=r.members.filter(M).length;
    o.push(`${B.room(j+1)}${c}${[rType(r.type,L),n?B.gs(n):'',r.bf?B.bf1:B.bf0].filter(Boolean).join(' / ')}`)})});
- return o}
+ o.push(...dRooms(hs,L));return o}
 const pLine=(ls,k)=>{const s=(ls||[]).find(t=>t.startsWith(k));if(!s)return null;const m=s.match(/(\d{4})\/(\d{1,2})\/(\d{1,2})(?:\s+(\d{1,2}:\d{2}))?/),p=s.split('・').slice(1).join('・');
  return {d:m?`${m[1]}-${m[2].padStart(2,'0')}-${m[3].padStart(2,'0')}`:'',t:m&&m[4]||'',p}};
 function dOther(v,L){const B=LB[L],c=CL(L),xs=mOn(v),o=[`${B.co}${c}${vName(v,L)}`];
@@ -1253,6 +1262,7 @@ const PRE={
   {id:'nosmk',g:'房間',zh:'禁菸房',t:{en:'We would like non-smoking rooms, if possible.',ja:'可能であれば、禁煙のお部屋を希望いたします。',ko:'가능하다면 금연 객실로 부탁드립니다.',zht:'如可以，希望安排禁菸房。',zhs:'如可以，希望安排无烟房。'}},
   {id:'high',g:'房間',zh:'高樓層',t:{en:'We would appreciate a room on a higher floor, if available.',ja:'可能であれば、高層階のお部屋を希望いたします。',ko:'가능하다면 높은 층 객실을 희망합니다.',zht:'如有空房，希望安排較高樓層。',zhs:'如有空房，希望安排较高楼层。'}},
   {id:'adj',g:'房間',zh:'相鄰房／同樓層',t:{en:'As we are travelling together, we would appreciate adjacent rooms or rooms on the same floor.',ja:'同じグループのため、隣同士または同じ階のお部屋をご用意いただけますと幸いです。',ko:'일행이므로 가능하다면 옆방 또는 같은 층으로 배정해 주시면 감사하겠습니다.',zht:'我們是同行旅客，希望能安排相鄰或同一樓層的房間。',zhs:'我们是同行旅客，希望能安排相邻或同一楼层的房间。'}},
+  {id:'merge',g:'房間',zh:'連續訂單併房（不換房）',t:{en:'As we have consecutive bookings, would it be possible to merge them so that we can stay in the same room(s) throughout without changing rooms?',ja:'ご予約が連続しておりますので、お部屋を移動せずに同じお部屋に連泊できるよう、ご予約をまとめていただくことは可能でしょうか。',ko:'예약이 연속되어 있으므로, 객실을 옮기지 않고 같은 객실에서 계속 투숙할 수 있도록 예약을 합쳐 주실 수 있을까요?',zht:'因為我們是連續訂房，請問可以併房（合併訂單），讓我們連續入住同一間房、不用換房嗎？',zhs:'因为我们是连续订房，请问可以并房（合并订单），让我们连续入住同一间房、不用换房吗？'}},
   {id:'bed',g:'房間',zh:'床型',p:'bed',t:{en:v=>`We would prefer ${BEDN[v].en}.`,ja:v=>`ベッドは${BEDN[v].ja}を希望いたします。`,ko:v=>`${BEDN[v].ko} 침대로 부탁드립니다.`,zht:v=>`床型希望為${BEDN[v].zht}。`,zhs:v=>`床型希望为${BEDN[v].zhs}。`}},
   {id:'kids',g:'房間',zh:'兒童同住',p:'ages',t:{en:v=>`We are travelling with children aged ${v}. Please let us know if any additional charge applies.`,ja:v=>`${v}の子どもが同行いたします。追加料金がかかる場合はお知らせください。`,ko:v=>`${v} 아이가 동반합니다. 추가 요금이 있다면 알려 주세요.`,zht:v=>`同行有 ${v} 兒童，如需另外收費煩請告知。`,zhs:v=>`同行有 ${v} 儿童，如需另外收费烦请告知。`}},
   {id:'crib',g:'房間',zh:'嬰兒床',t:{en:'Could you please provide a baby cot?',ja:'ベビーベッドのご用意をお願いできますでしょうか。',ko:'아기 침대를 준비해 주실 수 있을까요?',zht:'請問可以提供嬰兒床嗎？',zhs:'请问可以提供婴儿床吗？'}},
@@ -1296,8 +1306,12 @@ const FR={
   sub:(no,dt)=>`訂單確認${no||dt?'（'+[no?'訂單編號 '+no:'',dt].filter(Boolean).join('／')+'）':''}`,dk:{hotel:'入住',car:'取車',tix:''},dkAfter:1},
  zhs:{hi:n=>`${n} 您好：`,in:'我们想确认以下订单内容：',hd:'【订单内容】',rq:'【其他需求】',ask:'麻烦协助确认，谢谢！',end:{hotel:'期待入住，感谢您的协助。',car:'感谢您的协助。',tix:'期待到访，感谢您的协助。'},bye:s=>s,
   sub:(no,dt)=>`订单确认${no||dt?'（'+[no?'订单编号 '+no:'',dt].filter(Boolean).join('／')+'）':''}`,dk:{hotel:'入住',car:'取车',tix:''},dkAfter:1}};
+/* 主旨的入住日期：多個日期用「–」連成區間（首日–末日），避免訂單多時標題太長 */
+const mDates=v=>mOn(v).map(x=>{if(v.kind=='hotel')return x.cin;if(v.kind=='car'){const q=pLine(x.lines,'取車');return q&&q.d||x.date}return x.date}).filter(Boolean).sort();
+function mDateTxt(v,L){const a=mDates(v);if(!a.length)return '';const f=a[0],l=a[a.length-1];if(f==l)return mDate(f,L,1);
+ let x=mDate(f,L,1);if(L=='en'&&f.slice(0,4)==l.slice(0,4))x=x.replace(/ \d{4}$/,'');return x+'–'+mDate(l,L,1)}
 const mFirstDate=v=>{const x=mOn(v)[0];if(!x)return '';if(v.kind=='hotel')return x.cin;if(v.kind=='car'){const q=pLine(x.lines,'取車');return q&&q.d||x.date}return x.date};
-function mMail(v,L,signer){const F=FR[L],k=v.kind,xs=mOn(v),nos=[...new Set(xs.map(x=>x.orderNo||x.code).filter(Boolean))],fd=mFirstDate(v),ds=mDate(fd,L,1);
+function mMail(v,L,signer){const F=FR[L],k=v.kind,xs=mOn(v),nos=[...new Set(xs.map(x=>x.orderNo||x.code).filter(Boolean))],ds=mDateTxt(v,L);
  const dt=ds?(F.dkAfter?ds+F.dk[k]:F.dk[k]+ds):'';
  const sub=F.sub(nos.slice(0,3).join(L=='en'||L=='ko'?', ':'、'),dt);
  const det=k=='hotel'?dHotel(v,L):dOther(v,L),rq=mReqs(v,L),oth=isZh(L)?String(MST.oth[v.k]||'').trim():'';
