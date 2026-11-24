@@ -19,6 +19,8 @@
 - 推送用：`git -c push.negotiate=true push origin main`；每次推送前把 `sw.js` 的 `VERSION` 加 1。
 - 營業時間、價格皆來自網路整理，標了「依來源／需確認」的不要寫成確定事實。
 - `keihan.html` 是獨立版型：旅程資料 `T` 只存在 `go(T)` 裡面，外層函式要用的話得先存成全域（例如語音用的 `HT`），否則整頁會顯示「行程資料載入失敗」。
+- 新工作階段取得 repo：先用 `add_repo` 掛上 `jade19880309/travel-public`（要 push 權限），再 `git clone --depth 1`（timeout 設 10 分鐘）；Bash 沒網路、不能 pip／npm，但 Playwright 已裝好，用 `python3 -I 腳本.py` 執行，腳本放暫存目錄不要放 repo。站內連結（`a[data-to]` 捲到卡片、`a[data-day]` 切換日期）可用 Playwright 直接點來驗證。
+- 純改 `HANDOFF.md`（沒動網頁、JSON、`app.js`）時不需要加 `sw.js` 的 `VERSION`，那只在網頁內容變動時才有意義。
 - 京阪每日圖示：有 `choice` 的日子，選項若沒寫 `stk` 要退回當天的 `stk`（曾因此抓 `ic-undefined.svg`，9/9 圖示消失）。圖示出問題先查檔名，不要先怪快取。
 
 ## 語音按鈕（目前做法，改版時參考）
@@ -60,7 +62,6 @@
 - 未在實機確認：手機上的地圖手勢（單指拖曳會捲動頁面還是地圖）。
 
 ## 已知待辦／未解
-- `jade19880309/travel-private` 的舊分支 `add-trip-web-links` 刪除失敗（連線中斷），不影響功能，可日後 `git push origin --delete add-trip-web-links`。
+- `jade19880309/travel-private` 的舊分支 `add-trip-web-links` 刪除失敗（連線中斷），不影響功能，可日後 `git push origin --delete add-trip-web-links`。（2026/11/24 的工作階段只掛了 travel-public，沒有 travel-private 的權限，所以沒動。）
 - 京阪 9/11（嵐山・金閣寺，週六）未依人潮調整；若要調整可另議。
-- 回程「明洞 → 仁川機場」價格卡尚未與首爾 Day 6 行程互連。
 - 語音按鈕新版（v100）未在 iPhone 實機確認；使用者需完整關閉主畫面 App 後重開兩次才會換新版。
