@@ -1,0 +1,17 @@
+/* v3 補強：依範例稿加入景點剪影、雪花、行事曆圖示（素材皆裁自範例稿）。不改動 journal-v3.css。 */
+.entry-main{z-index:1}.entry>.subtrip{position:relative;z-index:1}
+.sil{position:absolute;z-index:0;right:8px;bottom:0;width:30%;max-height:48px;object-fit:contain;object-position:right bottom;opacity:.85;pointer-events:none}
+.entry.t-hk .sil{width:34%;max-height:56px}.entry.t-tokyo .sil{width:16%;max-height:50px;right:14%}
+.entry.t-hk .en{display:block;margin:0 0 0 2px;font-size:16px;white-space:nowrap}
+.snow{position:absolute;z-index:0;top:-4px;right:46px;width:12%;max-width:46px;opacity:.9;pointer-events:none}
+.date{display:flex;align-items:center;gap:5px}.cal{width:16px;height:auto;flex:none}
+.info h2{display:inline-block}.en{display:inline-block;margin-left:7px;font-family:'Snell Roundhand','Segoe Script','Apple Chancery',Georgia,serif;font-size:19px}
+.subtrip{min-height:56px;padding:6px 12px 6px 8px;font-size:15px;border-radius:16px}.subtrip img{width:84px;height:46px}.subtrip small{font-size:12px}
+.status{font-size:13px;padding:4px 12px 4px 10px}
+@media(min-width:760px){
+ header{background-size:auto 100%;background-position:right center}
+ header:before{background:linear-gradient(90deg,#142e49 0%,#142e49 46%,#142e49cc 56%,#142e4933 80%,transparent)}
+ .cover-copy{max-width:50%}
+ .sil{width:34%;max-height:64px;right:40px}.entry.t-hk .sil{width:36%;max-height:70px}.entry.t-tokyo .sil{width:18%;max-height:90px;right:60px}.snow{top:auto;bottom:84px;right:70px;width:9%}
+ .entry-main{padding-bottom:4px}
+}
