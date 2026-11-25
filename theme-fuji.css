@@ -300,3 +300,18 @@ html.th-fuji{
 .th-fuji .plb button:nth-child(1).on::after{background:#fff;color:var(--seal)}
 @media (max-width:360px){.th-fuji .plb{gap:5px}.th-fuji .plb button span{font-size:13.5px}.th-fuji .plb button .pic{width:34px;height:34px}}
 .th-fuji #hotel .bnr figcaption{top:10px;bottom:auto}
+
+/* Storybook travel theme — Tokyo only */
+html.th-fuji{--bg:#f8f2e3;--card:#fffdf5;--ink:#344b3e;--sub:#626d59;--line:#d7cfb7;--soft:#efe8d5;--red:#527b59;--red2:#6f9471;--green:#527b59;--gold:#b58a43;--goldl:#f5e5bd;--seal:#a45f45;--sky:#729da4;--skyl:#e3efeb;--mint:#e8eedc;--pink:#f3e0d3;--pop:0 5px 12px #344b3e18;--pop2:0 2px 5px #344b3e20}
+.th-fuji body{background:radial-gradient(ellipse at top,#e0ece0,transparent 650px),repeating-linear-gradient(105deg,#bca77b08 0 1px,transparent 1px 6px),var(--bg)}
+.th-fuji header,.th-fuji .dock{background:#f8f2e3f5;border-color:#b7bca3}
+.th-fuji header nav a,.th-fuji .plb button,.th-fuji .tabs button{border-width:1.5px;border-color:#87987c;box-shadow:var(--pop2)}
+.th-fuji header nav a.on,.th-fuji .plb button.on{background:#527b59;color:#fff}
+.th-fuji .card,.th-fuji .dy,.th-fuji .bnr,.th-fuji .hero.bare .cd div{border:1.5px solid #b7bca3;box-shadow:var(--pop);background:var(--card)}
+.th-fuji h2,.th-fuji .dp h3{font-family:var(--serif);letter-spacing:.06em}
+.th-fuji h2::after{border-top:1px dashed #a9ad8f}
+.th-fuji .hero.bare{background:linear-gradient(#e3efeb,var(--bg));border-color:#b7bca3}
+.th-fuji .hero.bare::before{content:"";display:block;width:100%;height:clamp(85px,23vw,175px);background:url(images/tokyo-2027/storybook-landscape.svg) center/cover no-repeat}
+.th-fuji .hero.bare .hero-bg{border-color:#b7bca3}
+.th-fuji .hero .go{background:#527b59;border:1.5px solid #344b3e;box-shadow:var(--pop)}
+.th-fuji .note{background:#f5e8c9;border-color:#b58a43}
