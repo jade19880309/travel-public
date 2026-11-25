@@ -170,7 +170,7 @@ let day=-1,ab='A'; // 預設全部折疊；旅程期間打開網頁時，下面�
 const dbox=$('#days');
 dbox.innerHTML=D.map((d,k)=>{const p=d.t.split(' ');
  if(d.go&&k>0&&D[k-1].go)return `<div class="dy" id="dy${k}" hidden></div>`; // 連續的外連日子併成一張卡（例：東京方案一 7/2～7/4 → 露營車頁）
- if(d.gc){const ks=[];for(let i=k;i<D.length&&D[i].go;i++)ks.push(i);return `<div class="dy gcard" id="dy${k}"><button class="dr go" data-k="${k}">${d.ic?`<img class="dic" src="${TRIP.icBase||''}${d.ic}.svg" alt="">`:''}<b>${d.gc.t}</b><span class="ds">${d.gc.s} <i class="gol">↗</i></span></button><div class="gdays">${ks.map(i=>{const q=D[i].t.split(' ');return `<a href="${D[i].go}"><b>${q[0]} ${q[1]}</b><span>${D[i].s}</span><i>↗</i></a>`}).join('')}</div></div>`}
+ if(d.gc)return `<div class="dy gcard" id="dy${k}"><button class="dr go" data-k="${k}">${d.ic?`<img class="dic" src="${TRIP.icBase||''}${d.ic}.svg" alt="">`:''}<b>${d.gc.t}</b><span class="ds"><span class="gbtn">🚐 ${d.gc.s} ↗</span></span></button></div>`;
  return `<div class="dy" id="dy${k}"><button class="dr${d.go?' go':''}" data-k="${k}">${d.ic?`<img class="dic" src="${TRIP.icBase||''}${d.ic}.svg" alt="">`:''}<b>${p[0]} ${p[1]}</b><span class="ds">${d.s}</span>${d.g?`<span class="tg"><span class="pill">${d.g[0]}</span>${d.g[1]?`<span class="pill tw">${d.g[1]}</span>`:''}${d.go?`<span class="pill gol">${TRIP.goLabel||'看詳細行程'} ↗</span>`:''}</span>`:''}</button><div class="dp" hidden></div></div>`}).join('');
 function panel(k){
  const d=D[k],items=d.ab?d[ab]:d.i,im=DI[d.ab?k+ab:k],abL=d.abL||['A 方案','B 方案'];
