@@ -23,6 +23,12 @@
 - 純改 `HANDOFF.md`（沒動網頁、JSON、`app.js`）時不需要加 `sw.js` 的 `VERSION`，那只在網頁內容變動時才有意義。
 - 京阪每日圖示：有 `choice` 的日子，選項若沒寫 `stk` 要退回當天的 `stk`（曾因此抓 `ic-undefined.svg`，9/9 圖示消失）。圖示出問題先查檔名，不要先怪快取。
 
+## 森林手帳風主題（2026/11/26）
+- `theme-forest-journal.css` 只由 `tokyo.html`、`campervan.html` 載入（`<link id="theme-forest">`，在 `</head>` 前、原本樣式之後），覆蓋東京的 `theme-fuji.css` 與露營車頁內嵌樣式；原版檔案都沒改。其他旅程頁面不載入。
+- 恢復原版：網址加 `?theme=classic`（存 localStorage，該手機之後都用原版）；`?theme=forest` 改回。永久拿掉＝刪兩個頁面的那個 link 與緊接的 script。
+- 東京頁規則要加 `html.th-fuji` 前綴才蓋得過 theme-fuji.css（有些原規則是 `.th-fuji .hero.bare .go` 這種四層，要對應寫）。主要色票：苔綠 `--moss`、葉綠 `--leaf`、橡實棕 `--acorn`、邊框 `--edge`。
+- 已加進 `sw.js` 的 CORE；改這個 CSS 記得加 VERSION。
+
 ## 東京方案一 ↔ 關東露營車頁（2026/11/25）
 - `trips/tokyo-2027.json` 方案一（`plans[0]`，id `rv`）的 7/2～7/4 三天加了 `"go": "campervan.html#d1..d3"`：點日期列或下方日期按鈕會直接開 `campervan.html` 對應 DAY，不再展開東京自己的行程（原本的 `i`/`x`/`n` 資料還留著，只是不顯示）。連續有 `go` 的日子在列表上併成一張卡（第一天的 `gc`：`t` 日期、`s` 標題、`href` 卡片本身連到哪），卡片只有一顆「關東露營車行程」按鈕（不列各天）；其餘天留空的隱藏 `.dy` 佔位，讓索引對齊。下方日期按鈕仍是每天一顆。方案一說明裡原本的「露營車行程」按鈕已刪。`app.js` 的 `.dr.go` 處理，其他旅程沒有 `go` 不受影響。
 - 露營車行程內容只在 `campervan.html`（`const D`）維護；改這三天請改那邊。
