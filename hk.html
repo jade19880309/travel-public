@@ -18,7 +18,7 @@
 <link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="theme-bay.css">
 <link id="theme-hzm-retro" rel="stylesheet" href="theme-hzm-retro.css">
-<script>/* HZM Retro v1.0（港片復古風）：?theme=classic 恢復原版水墨風、?theme=retro 改回（記在這支手機） */window.HZMR=true;try{var tq=new URLSearchParams(location.search).get("theme");if(tq==="classic"||tq==="retro")localStorage.setItem("hzmTheme",tq);if(localStorage.getItem("hzmTheme")==="classic")window.HZMR=false}catch(e){}if(window.HZMR){document.documentElement.classList.add("hzm-retro");document.querySelector('meta[name="theme-color"]').setAttribute("content","#10292c")}else{document.getElementById("theme-hzm-retro").disabled=true}</script>
+<script>/* HZM Retro v1.1（港片復古風）：?theme=classic 恢復原版水墨風、?theme=retro 改回（記在這支手機） */window.HZMR=true;try{var tq=new URLSearchParams(location.search).get("theme");if(tq==="classic"||tq==="retro")localStorage.setItem("hzmTheme",tq);if(localStorage.getItem("hzmTheme")==="classic")window.HZMR=false}catch(e){}if(window.HZMR){document.documentElement.classList.add("hzm-retro");document.querySelector('meta[name="theme-color"]').setAttribute("content","#10292c")}else{document.getElementById("theme-hzm-retro").disabled=true}</script>
 </head>
 <body>
 <header id="hd"><div class="net" id="net" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 18h10.5a4 4 0 0 0 .6-7.95A6 6 0 0 0 6.6 9.1 4.5 4.5 0 0 0 7 18z"/><path d="m9.5 13.5 2 2 3.5-3.5"/></svg><span>目前沒有網路・行程已存在手機，可照常查看</span></div><nav></nav></header>
@@ -70,9 +70,19 @@
 (function(){
  var id='hk-2027'; // 這個入口頁固定是港珠澳
  function fail(m){document.body.insertAdjacentHTML('afterbegin','<p style="padding:16px;font:16px sans-serif">'+m+'</p>')}
+ // HZM Retro v1.1 手機版元件：封面改用直式海報、海報下方四個功能鍵、行程後的復古照片（電腦版由 CSS 隱藏）
+ function hzmMobile(){
+  var img=document.querySelector('#hero .hero-bg');
+  if(img&&!img.closest('picture')){var pic=document.createElement('picture'),so=document.createElement('source'),sd=document.createElement('source');so.media='(max-width:759px)';so.srcset='images/hk-2027/retro/hero-m.webp';sd.media='(min-width:760px)';sd.srcset='images/hk-2027/retro/hero.webp';img.before(pic);pic.append(so,sd,img)}
+  var K=[['plan','每日行程'],['hotel','住宿資訊'],['flight','航班資訊'],['food','美食景點']].filter(function(x){return document.getElementById(x[0])});
+  if(img&&K.length&&!document.querySelector('.hzm-keys')){var nv=document.createElement('nav');nv.className='hzm-keys';nv.setAttribute('aria-label','快速功能');
+   nv.innerHTML=K.map(function(x){return '<a href="#'+x[0]+'" data-k="'+x[0]+'">'+x[1]+'</a>'}).join('');(img.closest('picture')||img).after(nv)}
+  var pl=document.getElementById('plan');
+  if(pl&&!document.querySelector('.hzm-photos')){var ph=document.createElement('div');ph.className='hzm-photos';ph.setAttribute('aria-hidden','true');ph.innerHTML='<img src="images/hk-2027/retro/photos-m.webp" alt="" loading="lazy" width="897" height="224">';pl.after(ph)}
+ }
  fetch('trips/'+id+'.json',{cache:'no-cache'}).then(function(r){if(!r.ok)throw 0;return r.json()}).then(function(d){
-  if(window.HZMR&&d.hero){d.hero.img='images/hk-2027/retro/hero.webp';d.hero.alt='港珠澳之旅復古港片風封面：香港電車與霓虹招牌、維多利亞港夜景、大三巴牌坊與珠海漁女，三城一程・4 天 3 夜'}
-  window.TRIP=d;var s=document.createElement('script');s.src='app.js';s.onerror=function(){fail('程式載入失敗，請重新整理。')};document.body.appendChild(s)
+  if(window.HZMR&&d.hero){d.hero.img=(window.matchMedia&&matchMedia('(max-width:759px)').matches)?'images/hk-2027/retro/hero-m.webp':'images/hk-2027/retro/hero.webp';d.hero.alt='港珠澳之旅復古港片風封面：香港電車與霓虹招牌、維多利亞港夜景、大三巴牌坊與珠海漁女，三城一程・4 天 3 夜'}
+  window.TRIP=d;var s=document.createElement('script');s.src='app.js';s.onload=function(){if(window.HZMR)try{hzmMobile()}catch(e){}};s.onerror=function(){fail('程式載入失敗，請重新整理。')};document.body.appendChild(s)
  }).catch(function(){fail('行程資料載入失敗，請確認網路後重新整理。（直接開本機檔案無法讀取資料，請用網址開啟）')});
 })();
 </script>

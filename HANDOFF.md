@@ -23,12 +23,18 @@
 - 純改 `HANDOFF.md`（沒動網頁、JSON、`app.js`）時不需要加 `sw.js` 的 `VERSION`，那只在網頁內容變動時才有意義。
 - 京阪每日圖示：有 `choice` 的日子，選項若沒寫 `stk` 要退回當天的 `stk`（曾因此抓 `ic-undefined.svg`，9/9 圖示消失）。圖示出問題先查檔名，不要先怪快取。
 
-## HZM Retro v1.0：港珠澳港片復古風（2026/11/26）
+## HZM Retro v1.0／v1.1：港珠澳港片復古風（2026/11/26）
 - `theme-hzm-retro.css` 只由 `hk.html` 載入（`<link id="theme-hzm-retro">`，在 `theme-bay.css` 之後），規則都加 `html.th-bay.hzm-retro` 前綴；`theme-bay.css`、`app.js`、`style.css`、`trips/hk-2027.json` 都沒改。
 - 封面在 `hk.html` 載入資料後才換成 `images/hk-2027/retro/hero.webp`（JSON 的 `hero.img` 仍是水墨圖），分享縮圖 `og.jpg` 沒換。
 - 素材在 `images/hk-2027/retro/`；`day-1~4.webp` 只是日卡右側的裝飾背景（`#dy0`～`#dy3 .dr`），不是景點照片。
-- 恢復原版：`hk.html?theme=classic`（存 localStorage `hzmTheme`，和東京的 `theme` 分開）；`?theme=retro` 改回。永久拿掉＝刪 `hk.html` 那個 link 與緊接的 script。改版前備份分支：`backup/hzm-before-retro-v1.0`。
-- 未在 iPhone 實機確認（只用 Playwright 測 320／390／768／1440）。
+- 恢復原版：`hk.html?theme=classic`（存 localStorage `hzmTheme`，和東京的 `theme` 分開）；`?theme=retro` 改回。永久拿掉＝刪 `hk.html` 那個 link 與緊接的 script。改版前版本：commit `c62b53b`（備份分支 `backup/hzm-before-retro-v1.0` 使用者同意刪除，但沙盒無法刪遠端分支，需使用者手動刪）。
+- **v1.1（2026/11/26）手機版（≤759px）**：依使用者提供的手機示意圖改版，CSS 在 `theme-hzm-retro.css` 最後的 `@media (max-width:759px)`；電腦版維持 v1.0。
+  - 上方功能列（`header nav`）在手機改為**底部固定導覽列**（含 `env(safe-area-inset-*)`），上方只剩品牌列（`header::before/::after` 文字）；日期列 `.dock` 移到導覽列上方（`bottom:67px`＝導覽列高度，改導覽列高度要一起改，含 `#fs/#upd/#fxb/.fxp` 與 `body` 的 padding）。
+  - `hk.html` 的 `hzmMobile()`（app.js 載入後執行）：封面包成 `<picture>`（手機 `hero-m.webp`、電腦 `hero.webp`）、海報下方插入四個功能鍵 `.hzm-keys`（連到 `#plan/#hotel/#flight/#food`）、`#plan` 後插入裝飾照片 `.hzm-photos`。電腦版這兩個元件 `display:none`。
+  - `hero-m.webp`、`photos-m.webp` 是從使用者手機示意圖裁切的裝飾圖（不含個資）；日卡右側城市圖仍用素材包 `day-1~4.webp`；導覽列與功能鍵的小圖示是 CSS mask 線條圖示。
+  - 日卡票根：`#days` 用 CSS counter 顯示 D1～D4；票根缺口是 `.dr` 的 mask，展開時拿掉。
+  - 手機版字級下限 14px（只剩高德地圖「高」字圖示 13px）。
+- 未在 iPhone 實機確認（只用 Playwright 測 320／375／390／430／768／1440；安全區域 `env()` 在模擬器中是 0，未實測瀏海機）。
 
 ## 森林手帳風主題（2026/11/26，依使用者提供的素材包整合）
 - `theme-forest-journal.css`＝素材包原 CSS（上半，原樣保留）＋「整合補充」精確 selector（下半，蓋過 theme-fuji.css 與露營車內嵌樣式）。只由 `tokyo.html`、`campervan.html` 載入；兩頁 `<html>` 加了 `forest-journal` class。
