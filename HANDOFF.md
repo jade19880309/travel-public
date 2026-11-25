@@ -113,3 +113,29 @@
 - Day 1 候選的佐久南、雷電くるみの里在輕井澤更遠處，睡那邊 7/3 要折返；已在方案內註明，尚未決定要不要刪。
 - Workman 路線的說明文字（`workman.routes`）仍寫「富士五湖 → 中部橫斷道 → 輕井澤」，與新路線方向相反，尚未調整。
 - 御殿場蒸餾所（7/4 選項，2026/11/25 加進東京頁方案一 7/4 的行程、`x` 區塊與 `todo`，兩份 `days` 都有改）：資料只來自 gojapan.com.tw 2026/10 的文章，**沒對照麒麟官網**。未查證：導覽場次時間（文章沒寫）、7/4 場次是否 6/1 08:00 JST 開放（文章寫「參觀月前 1 個月的 1 日 08:00」，這是文章的規則、2027 年可能變）、小孩能否參加（文章兩處寫法矛盾：500 圓導覽寫 20 歲以上，FAQ 寫未滿 20 歲免費）、兩台露營車停車。露營車頁 `campervan.html` 原本就有這段，內容與文章一致，但「未滿 20 歲免費」那句同樣沒確認。
+
+## 公開首頁 `home.html`「家庭旅行手帖」v3 整合紀錄（2026/11/26，使用者提供 `family-journal-final.zip`、`family-journal-v3.zip` 與一張範例稿）
+**使用者要求**：美編素材與 CSS 都由使用者提供，不得自行重畫、替換圖片或簡化版面；保留首爾／港珠澳／東京三大旅程，露營車為東京子項目，京阪不列入總覽；DETOUR（`stob/`）、各旅程內頁、`trips/` 資料不得修改；保留倒數、離線、檢查更新；先備份舊首頁；手機與電腦都要實測。
+
+**已完成並推送到 `main`（`65f8dd5`、`4f3be8c`、`c689d72`）**
+- 備份：`backups/home-before-journal-20261126.html`（final 版整合前）、`backups/home-before-v3-20261126.html`（v3 整合前）。
+- 現行檔案：`home.html`、`journal-v3.css`（使用者提供，未改）、`journal-v3b.css`（我加的疊加層）、`images/journal-v3/`（使用者提供 7 張 webp + 我裁的 7 張 `deco-*.png`）。`home-journal.css` 與 `images/home-journal/` 是上一版（final）遺留，`sw.js` 仍在快取。
+- `home.html` 相對於包內版本**刻意補回**的原有功能（包內版缺少）：OG／Twitter／apple-touch metadata、`theme-color:#14110f`、倒數的 `cdStart/cdEnd` 邏輯、頁尾「離線查看」字樣、`sw.js` 註冊與 `upd.js`（檢查更新）。之後再換新包，這幾項要再補一次。
+- 倒數資料來自 `trips/index.json`（fetch 失敗時用 `fallback` 陣列，離線也能顯示三張卡）。
+- `journal-v3b.css`：依範例稿加景點剪影（`.sil`）、雪花（`.snow`）、行事曆圖示（`.cal`）、英文名同行、露營車按鈕放大。`deco-*.png` 是從範例稿用「飽和度去背」裁出，不是重畫；`.sil`／`.snow` 放在 `.entry-main` 的 `<a>` 內、`position:absolute`、`pointer-events:none`。
+- 桌機版 `.entry-main` 是 `1fr 30px` 單欄、`.stamp` 滿寬在上，剪影靠右下；手機版 40% 圖 + 資訊欄，剪影與倒數標籤同一排。
+- 實測（本機 `http.server` + Playwright）：320／390／768／1440 無水平溢出、圖片無 404、連結為 `./?t=seoul-2027`、`hk.html`、`tokyo.html`、`campervan.html`；檢查更新按鈕與離線重新整理正常。
+
+**與範例稿仍有的落差（缺素材，使用者未提供，不要自行重畫）**
+- 桌機版頁首左半是純深藍底（`hero.webp` 只有 434×270）；範例是滿版插畫（樹葉、露營車、人物）。需要無文字的滿版頁首圖。
+- 範例的毛筆標題、手寫字體、迴紋針、不同顏色紙膠帶未做（沒有素材／字體檔）。目前英文名用 `'Snell Roundhand','Segoe Script','Apple Chancery',Georgia`。
+
+**未驗證**
+- GitHub Pages 線上畫面與 `sw.js` 線上版本（沙盒連不到 github.io）；iPhone 實機 PWA 更新流程。
+
+**與上一節「五張行程插畫 Icon」的關係**：v3 首頁入口圖用的是 `images/journal-v3/*.webp`（使用者提供的另一套裁切圖），**不是** `images/home-journal/*.png` 的原 PNG。那一節的三選一仍待使用者決定；在使用者回覆前不要把 v3 入口圖換成 PNG。
+
+**踩到的坑**
+- 推送前必須 `git fetch`：這次 `sw.js` 與別的工作階段同時改（對方升 `VERSION` 並加了港珠澳圖）。處理方式是以 `origin/main` 的 `sw.js` 為底，再只加首頁資源並把 `VERSION` 再加 1，沒有覆蓋對方內容。
+- v3 包的 `.hero`／`.footer-art` 在 final 包時曾有 `max-height` 裁切導致文字被切；v3 已不是這寫法，但再換新包時要檢查標題與木牌有沒有被裁。
+- 範例稿的剪影旁邊有箭頭按鈕與文字殘影，去背時要用 `erase` 區塊遮掉，否則會帶出殘字（如 "Macau"）。
