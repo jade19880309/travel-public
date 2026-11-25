@@ -168,7 +168,7 @@ const tagH=x=>String(x||'').split(',').filter(k=>T[k]).map(k=>`<span class="tag"
 // ===== 每日行程 =====
 let day=-1,ab='A'; // 預設全部折疊；旅程期間打開網頁時，下面會自動展開「今天」
 const dbox=$('#days');
-dbox.innerHTML=D.map((d,k)=>{const p=d.t.split(' ');return `<div class="dy" id="dy${k}"><button class="dr" data-k="${k}">${d.ic?`<img class="dic" src="${TRIP.icBase||''}${d.ic}.svg" alt="">`:''}<b>${p[0]} ${p[1]}</b><span class="ds">${d.s}</span>${d.g?`<span class="tg"><span class="pill">${d.g[0]}</span>${d.g[1]?`<span class="pill tw">${d.g[1]}</span>`:''}</span>`:''}</button><div class="dp" hidden></div></div>`}).join('');
+dbox.innerHTML=D.map((d,k)=>{const p=d.t.split(' ');return `<div class="dy" id="dy${k}"><button class="dr${d.go?' go':''}" data-k="${k}">${d.ic?`<img class="dic" src="${TRIP.icBase||''}${d.ic}.svg" alt="">`:''}<b>${p[0]} ${p[1]}</b><span class="ds">${d.s}</span>${d.g?`<span class="tg"><span class="pill">${d.g[0]}</span>${d.g[1]?`<span class="pill tw">${d.g[1]}</span>`:''}${d.go?`<span class="pill gol">${TRIP.goLabel||'看詳細行程'} ↗</span>`:''}</span>`:''}</button><div class="dp" hidden></div></div>`}).join('');
 function panel(k){
  const d=D[k],items=d.ab?d[ab]:d.i,im=DI[d.ab?k+ab:k],abL=d.abL||['A 方案','B 方案'];
  const food=!!document.getElementById('food');
@@ -183,14 +183,14 @@ function panel(k){
   +`<div class="dn">${k>0?`<button data-go="${k-1}">← 前一天</button>`:''}${k<D.length-1?`<button data-go="${k+1}">下一天 →</button>`:''}</div>`;
 }
 const dbtn=$('#dbtn');
-D.forEach((d,k)=>{const b=document.createElement('button'),p=d.t.split(' ');b.innerHTML=p[0]+'<small>週'+p[1]+'</small>';b.setAttribute('aria-label',p[0]+' 週'+p[1]+' 行程');b.onclick=()=>{day=k;render(true)};dbtn.append(b)});
+D.forEach((d,k)=>{const b=document.createElement('button'),p=d.t.split(' ');b.innerHTML=p[0]+'<small>週'+p[1]+'</small>';b.setAttribute('aria-label',p[0]+' 週'+p[1]+' 行程');b.onclick=()=>{if(d.go){location.href=d.go;return}day=k;render(true)};dbtn.append(b)});
 function render(scroll){
  [...dbtn.children].forEach((b,k)=>b.classList.toggle('on',k===day));
  [...dbox.children].forEach((el,k)=>{const on=k===day,p=el.querySelector('.dp');el.classList.toggle('on',on);p.hidden=!on;p.innerHTML=on?panel(k):''});
  if(scroll&&day>=0)requestAnimationFrame(()=>$('#dy'+day).scrollIntoView({behavior:'smooth',block:'start'}));
 }
 dbox.addEventListener('click',e=>{
- const r=e.target.closest('.dr');if(r){const k=+r.dataset.k;day=day===k?-1:k;render(true);return}
+ const r=e.target.closest('.dr');if(r){const k=+r.dataset.k;if(D[k].go){location.href=D[k].go;return}day=day===k?-1:k;render(true);return}
  const v=e.target.closest('[data-v]');if(v){ab=v.dataset.v;render(false);return}
  const g=e.target.closest('[data-go]');if(g){day=+g.dataset.go;render(true);return}
  const im=e.target.closest('[data-img]');if(im){openLB(im.dataset.img);return}

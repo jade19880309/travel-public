@@ -377,10 +377,10 @@
    "name": "方案一",
    "label": "露營車",
    "sub": "富士山＋輕井澤",
-   "desc": "前兩晚睡露營車（道之驛・休息站車內過夜，不訂營地）：橫川 SA → 河口湖；7/4 去橫濱就住已預訂的膠囊旅館，不去的話第三晚也睡露營車。輕井澤和富士山都去，單台約 550～685 km。<br><a class='b' target='_blank' rel='noopener' href='campervan.html' style='margin-top:10px'>🚐 露營車行程提案（PLAN A-1）</a>",
+   "desc": "前兩晚睡露營車（道之驛・休息站車內過夜，不訂營地）：橫川 SA → 河口湖；7/4 去橫濱就住已預訂的膠囊旅館，不去的話第三晚也睡露營車。輕井澤和富士山都去，單台約 550～685 km。<br><a class='b' target='_blank' rel='noopener' href='campervan.html' style='margin-top:10px'>🚐 關東露營車行程</a>",
    "days": [
     {
-     "t": "7/2 五",
+     "t": "7/2 五", "go": "campervan.html#d1",
      "s": "桃園 → 成田取露營車 → 橫川 SA",
      "g": [
       "露營車第 1 晚"
@@ -446,7 +446,7 @@
      "ic": "van"
     },
     {
-     "t": "7/3 六",
+     "t": "7/3 六", "go": "campervan.html#d2",
      "s": "橫川 → 輕井澤 → 八岳高原 → 河口湖",
      "g": [
       "露營車第 2 晚"
@@ -515,7 +515,7 @@
      "ic": "forest"
     },
     {
-     "t": "7/4 日",
+     "t": "7/4 日", "go": "campervan.html#d3",
      "s": "河口湖 → 忍野八海 → 山中湖 →（橫濱）",
      "g": [
       "露營車第 3 晚或膠囊旅館",
@@ -1931,6 +1931,7 @@
   "plan": "<figure class='bnr'><img src='images/tokyo-2027/banner-fuji.svg' alt='富士山、湖與露營車的插圖' width='800' height='300'><figcaption><b>富士山</b><span>山中湖・河口湖・本栖湖</span></figcaption></figure>",
   "hotel": "<figure class='bnr'><img src='images/tokyo-2027/banner-kaminarimon.svg' alt='淺草雷門大燈籠與晴空塔的插圖' width='800' height='300' loading='lazy'><figcaption><b>淺草</b><span>雷門・每個方案都住這一帶</span></figcaption></figure>"
  },
+ "goLabel": "關東露營車行程",
  "icBase": "images/tokyo-2027/ic-",
  "planHead": "選擇方案（只記在這支手機）",
  "hotels": [

@@ -23,6 +23,12 @@
 - 純改 `HANDOFF.md`（沒動網頁、JSON、`app.js`）時不需要加 `sw.js` 的 `VERSION`，那只在網頁內容變動時才有意義。
 - 京阪每日圖示：有 `choice` 的日子，選項若沒寫 `stk` 要退回當天的 `stk`（曾因此抓 `ic-undefined.svg`，9/9 圖示消失）。圖示出問題先查檔名，不要先怪快取。
 
+## 東京方案一 ↔ 關東露營車頁（2026/11/25）
+- `trips/tokyo-2027.json` 方案一（`plans[0]`，id `rv`）的 7/2～7/4 三天加了 `"go": "campervan.html#d1..d3"`：點日期列或下方日期按鈕會直接開 `campervan.html` 對應 DAY，不再展開東京自己的行程（原本的 `i`/`x`/`n` 資料還留著，只是不顯示）。標籤文字是 JSON 的 `goLabel`。`app.js` 的 `.dr.go` 處理，其他旅程沒有 `go` 不受影響。
+- 露營車行程內容只在 `campervan.html`（`const D`）維護；改這三天請改那邊。
+- `campervan.html` 的「參考」分頁＝RV Park／酒藏巡禮兩個切換按鈕（`rvSub`）。RV Park 卡片是 `<details>` 折疊。
+- 未查證：西湖ノーム 是否另收人頭費、有無電源、能否 16:00 後晚到；河口湖クラフトパーク 車中泊官網更新日期不明、能否 17:00 後晚到、BUS CAMP 2027 是否恢復（なっぷ標示 2023/9 關閉）。
+
 ## 語音按鈕（目前做法，改版時參考）
 - 樣式：`keihan.html` 用 `.sp`，`app.js`／`style.css` 用 `.vo`（**不能用 `.sp`**：共用頁的美食詳情抽屜本身就是 `#sheet .sp`，撞名會讓抽屜縮成一條）；線條喇叭圖示、無底色，顏色跟主題（京阪 `--ai`，其他頁 `--red2`）；圖示字串 `SPI` 在 `keihan.html` 與 `app.js` 各一份。
 - 點擊統一由 `[data-say]` 的 capture 監聽處理（不會觸發外層 `<summary>` 或行程列）。

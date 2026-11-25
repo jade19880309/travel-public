@@ -141,6 +141,8 @@ details[open].card>summary::after{transform:rotate(-135deg);top:31px}
 .dr::after{content:"";position:absolute;right:20px;top:26px;width:10px;height:10px;border-right:2px solid var(--gold);border-bottom:2px solid var(--gold);transform:rotate(45deg);transition:transform .2s}
 .dy.on .dr{background:linear-gradient(135deg,var(--red),var(--red2));color:#fff}
 .dy.on .dr b{color:#fff}
+.dr.go::after{content:"";width:10px;height:10px;border-right:2px solid var(--gold);border-bottom:2px solid var(--gold);transform:rotate(-45deg);top:28px}
+.dr .pill.gol{background:var(--green);color:#fff;border-color:var(--green)}
 .dy.on .dr::after{border-color:#fff;transform:rotate(-135deg);top:30px}
 .dy.on .dr .pill{background:#fff;color:var(--red)}.dy.on .dr .pill.tw{color:var(--green)}
 .dp{padding:16px}.dp[hidden]{display:none}
