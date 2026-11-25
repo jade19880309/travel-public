@@ -167,6 +167,16 @@ ul{margin:0;padding:8px 0 8px 20px}li{margin:7px 0;font-size:15px}li::marker{col
  h3{font-size:18px}
 }
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.tabs button,.pn button,.lk a{transition:none}}
+
+/* Shared pastoral storybook palette */
+:root{--bg:#f8f2e3;--card:#fffdf5;--ink:#344b3e;--sub:#626d59;--line:#d7cfb7;--soft:#efe8d5;--green:#527b59;--gold:#b58a43;--goldl:#f5e5bd;--seal:#a45f45;--sky:#729da4;--skyl:#e3efeb;--mint:#e8eedc;--note:#f5e8c9;--pop:0 5px 12px #344b3e18;--pop2:0 2px 5px #344b3e20}
+body{background:radial-gradient(ellipse at top,#e0ece0,transparent 650px),repeating-linear-gradient(105deg,#bca77b08 0 1px,transparent 1px 6px),var(--bg)}
+.bar{background:#f8f2e3f5;border-color:#b7bca3}
+.tabs button,.lang,.upd,.lk a,.pn button{border-color:#87987c;box-shadow:var(--pop2)}
+.card,.bnr,.spec-grid article,.vehicle-tile,.stay,.stats>div{border-color:#b7bca3;box-shadow:var(--pop);border-width:1.5px}
+.hero::before{content:"";display:block;height:clamp(85px,23vw,175px);margin:0 0 14px;border-radius:16px;background:url(images/tokyo-2027/storybook-landscape.svg) center/cover no-repeat;border:1px solid #b7bca3}
+h1,h3,.ph h2{font-family:"Noto Serif TC","Songti TC",serif;letter-spacing:.06em}
+h3::after{border-top:1px dashed #a9ad8f}
 </style></head><body>
 <div class="bar"><div class="wrap"><nav class="tabs" id="tabs"></nav><button class="upd" data-upd type="button" aria-label="檢查更新" title="檢查更新"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 11a8 8 0 0 0-14.3-4.9L4 8"/><path d="M4 3.5V8h4.5"/><path d="M4 13a8 8 0 0 0 14.3 4.9L20 16"/><path d="M20 20.5V16h-4.5"/></svg></button><div class="lang"><button data-l="zh">中文</button><button data-l="ja">日本語</button></div></div></div>
 <div class="wrap"><header class="hero"><span class="dpill">2027.07.02–07.05｜4 DAYS｜2 CAMPERS</span><figure class="bnr"><img src="images/tokyo-2027/banner-campervan.svg" alt=""><figcaption><b>PLAN A-1</b>JAPAN CAMPER ROAD TRIP</figcaption></figure><h1 id="ti"></h1><div class="sub" id="su"></div><div class="desc" id="de" hidden></div></header>
