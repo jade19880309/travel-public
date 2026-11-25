@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-Hant" class="th-fuji">
+<html lang="zh-Hant" class="th-fuji forest-journal">
 <head>
 <meta charset="utf-8">
 <meta name="robots" content="noindex,nofollow">
@@ -18,7 +18,7 @@
 <link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="theme-fuji.css">
 <link id="theme-forest" rel="stylesheet" href="theme-forest-journal.css">
-<script>/* 森林手帳風：?theme=classic 恢復原版、?theme=forest 改回（記在這支手機） */try{var tq=new URLSearchParams(location.search).get("theme");if(tq==="classic"||tq==="forest")localStorage.setItem("theme",tq);if(localStorage.getItem("theme")==="classic")document.getElementById("theme-forest").disabled=true}catch(e){}</script>
+<script>/* 森林手帳風：?theme=classic 恢復原版、?theme=forest 改回（記在這支手機） */try{var tq=new URLSearchParams(location.search).get("theme");if(tq==="classic"||tq==="forest")localStorage.setItem("theme",tq);if(localStorage.getItem("theme")==="classic"){document.getElementById("theme-forest").disabled=true;document.documentElement.classList.remove("forest-journal");document.head.insertAdjacentHTML("beforeend","<style>.forest-scene,.forest-footer{display:none}</style>")}}catch(e){}</script>
 </head>
 <body>
 <header id="hd"><div class="net" id="net" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 18h10.5a4 4 0 0 0 .6-7.95A6 6 0 0 0 6.6 9.1 4.5 4.5 0 0 0 7 18z"/><path d="m9.5 13.5 2 2 3.5-3.5"/></svg><span>目前沒有網路・行程已存在手機，可照常查看</span></div><nav></nav></header>
@@ -60,6 +60,7 @@
 <section id="phr"><h2>🗣 常用語句</h2><p class="rate">點任一句會放大成全螢幕，直接給司機或店員看。</p><div class="tabs" id="ptabs"></div><div class="pl" id="plist"></div></section>
 <section id="apps"><h2>📱 常用 App</h2></section>
 <footer></footer>
+<img class="forest-footer" src="images/forest-journal/tokyo-footer.webp" alt="" aria-hidden="true" loading="lazy" width="580" height="216">
 </main>
 
 <div id="sheet"><div class="sbd"></div><div class="sp" role="dialog" aria-modal="true"><button class="sx" aria-label="關閉">✕</button><div id="sbody"></div></div></div>

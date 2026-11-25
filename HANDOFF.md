@@ -30,11 +30,11 @@
 - 恢復原版：`hk.html?theme=classic`（存 localStorage `hzmTheme`，和東京的 `theme` 分開）；`?theme=retro` 改回。永久拿掉＝刪 `hk.html` 那個 link 與緊接的 script。改版前備份分支：`backup/hzm-before-retro-v1.0`。
 - 未在 iPhone 實機確認（只用 Playwright 測 320／390／768／1440）。
 
-## 森林手帳風主題（2026/11/26）
-- `theme-forest-journal.css` 只由 `tokyo.html`、`campervan.html` 載入（`<link id="theme-forest">`，在 `</head>` 前、原本樣式之後），覆蓋東京的 `theme-fuji.css` 與露營車頁內嵌樣式；原版檔案都沒改。其他旅程頁面不載入。
-- 恢復原版：網址加 `?theme=classic`（存 localStorage，該手機之後都用原版）；`?theme=forest` 改回。永久拿掉＝刪兩個頁面的那個 link 與緊接的 script。
-- 東京頁規則要加 `html.th-fuji` 前綴才蓋得過 theme-fuji.css（有些原規則是 `.th-fuji .hero.bare .go` 這種四層，要對應寫）。主要色票：苔綠 `--moss`、葉綠 `--leaf`、橡實棕 `--acorn`、邊框 `--edge`。
-- 已加進 `sw.js` 的 CORE；改這個 CSS 記得加 VERSION。
+## 森林手帳風主題（2026/11/26，依使用者提供的素材包整合）
+- `theme-forest-journal.css`＝素材包原 CSS（上半，原樣保留）＋「整合補充」精確 selector（下半，蓋過 theme-fuji.css 與露營車內嵌樣式）。只由 `tokyo.html`、`campervan.html` 載入；兩頁 `<html>` 加了 `forest-journal` class。
+- 插畫在 `images/forest-journal/`：`campervan-scene.webp`（露營車頁封面下方）、`tokyo-footer.webp`、`campervan-footer.webp`（頁尾裝飾）。素材包原圖有龍貓／小黑炭等吉卜力角色（非授權），所以兩張 footer 是裁掉角色、只留風景的版本；`tokyo-scene.webp` 整張以角色為主，沒有上傳也沒有使用。示意圖（reference.jpg／approved-reference.png）只供驗收，沒放進 repo。
+- 恢復原版：網址加 `?theme=classic`（停用樣式、移除 class、隱藏裝飾圖，記在該手機）；`?theme=forest` 改回。永久移除＝刪兩頁的 class、link＋script、`.forest-scene`／`.forest-footer` 圖，並把 sw.js CORE 裡這幾個檔案拿掉。
+- 改這個 CSS 或圖片記得加 sw.js 的 VERSION。
 
 ## 東京方案一 ↔ 關東露營車頁（2026/11/25）
 - `trips/tokyo-2027.json` 方案一（`plans[0]`，id `rv`）的 7/2～7/4 三天加了 `"go": "campervan.html#d1..d3"`：點日期列或下方日期按鈕會直接開 `campervan.html` 對應 DAY，不再展開東京自己的行程（原本的 `i`/`x`/`n` 資料還留著，只是不顯示）。連續有 `go` 的日子在列表上併成一張卡（第一天的 `gc`：`t` 日期、`s` 標題、`href` 卡片本身連到哪），卡片只有一顆「關東露營車行程」按鈕（不列各天）；其餘天留空的隱藏 `.dy` 佔位，讓索引對齊。下方日期按鈕仍是每天一顆。方案一說明裡原本的「露營車行程」按鈕已刪。`app.js` 的 `.dr.go` 處理，其他旅程沒有 `go` 不受影響。
