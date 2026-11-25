@@ -1,0 +1,136 @@
+/* ===== HZM Retro v1.0：港珠澳・三城一戲（90 年代港片復古風） =====
+   只由 hk.html 載入（<link id="theme-hzm-retro">，在 theme-bay.css 之後），
+   規則全部加 html.th-bay.hzm-retro 前綴，其他旅程頁面不受影響。
+   恢復原版（水墨風）：hk.html?theme=classic；改回：hk.html?theme=retro（記在這支手機）。
+   配色：深墨綠 #10292c、電影紅 #a93226、暖金 #e4bc77、復古米白 #f5e5c7。
+   素材：images/hk-2027/retro/（hero.webp 封面、filmstrip.svg 膠卷、grain.png 底片紋理、
+   neon-*.svg 城市霓虹、day-1~4.webp 日卡裝飾圖——僅裝飾，不是景點依據）。 */
+
+html.th-bay.hzm-retro{
+ --bg:#f5e5c7;--card:#fff2d8;--ink:#10292c;--sub:#5b5446;--line:#d8c39c;--soft:#f3e2bf;
+ --red:#a93226;--red2:#7c2219;--gold:#9c7232;--goldl:#f5e2b8;--gold2:#e4bc77;
+ --seal:#a93226;--teal:#10292c;--teal2:#1d4044;
+ --pink:#f6e0d6;--mint:#e3ecdf;--green:#2f5a4a;
+ --r:10px;--sh:0 1px 0 rgba(16,41,44,.06),0 8px 18px -10px rgba(16,41,44,.32);
+ --serif:"Noto Serif TC","Songti TC","PMingLiU",serif
+}
+
+/* 底：復古米白＋底片紋理＋四角暗角 */
+.th-bay.hzm-retro body{
+ background:
+  radial-gradient(120% 90% at 50% 40%,transparent 60%,rgba(16,41,44,.10)) fixed,
+  url("images/hk-2027/retro/grain.png"),
+  var(--bg);
+ color:var(--ink)}
+.th-bay.hzm-retro :focus-visible{outline:3px solid #d18a25;outline-offset:3px}
+
+/* ===== 上方導覽列：深墨綠底、電影紅底線，按鈕暖金細框 ===== */
+.th-bay.hzm-retro header{background:rgba(16,41,44,.97);border-bottom:3px solid var(--red);box-shadow:0 6px 16px -10px rgba(0,0,0,.6)}
+.th-bay.hzm-retro .net{background:var(--red)}
+.th-bay.hzm-retro header nav a{min-height:44px;background:rgba(255,242,216,.04);border:1px solid rgba(228,188,119,.55);color:#f5e5c7;border-radius:6px;font-family:var(--serif);font-weight:700;letter-spacing:.06em}
+.th-bay.hzm-retro header nav a.on{background:var(--red);border-color:var(--gold2);color:#fff5df;box-shadow:inset 0 -3px 0 var(--gold2),0 0 12px -2px rgba(239,89,71,.55)}
+
+/* ===== 區塊標題：明體電影紅＋暖金膠卷線 ===== */
+.th-bay.hzm-retro h2{font-family:var(--serif);font-weight:900;color:var(--red);letter-spacing:.08em;text-shadow:0 1px 0 rgba(255,245,223,.8)}
+.th-bay.hzm-retro h2::before{content:"";flex:none;width:8px;height:1.05em;border-radius:2px;background:var(--red);box-shadow:3px 3px 0 var(--ink);transform:skewX(-8deg)}
+.th-bay.hzm-retro h2::after{height:10px;opacity:.9;background:url("images/hk-2027/retro/filmstrip.svg") left center/32px 10px repeat-x;border-radius:2px;
+ -webkit-mask-image:linear-gradient(90deg,#000 40%,transparent);mask-image:linear-gradient(90deg,#000 40%,transparent)}
+.th-bay.hzm-retro .rate{color:var(--sub)}
+
+/* ===== 卡片與資訊區塊：泛黃紙卡、深色細框 ===== */
+.th-bay.hzm-retro .card{background:var(--card);border:1px solid #c9b088;box-shadow:var(--sh)}
+.th-bay.hzm-retro details.card>summary{font-weight:700}
+.th-bay.hzm-retro details.card>summary::after{border-color:var(--red)}
+.th-bay.hzm-retro .note{background:#f8e9c9;color:#3d3628;border-left:4px solid var(--red);border-radius:6px}
+.th-bay.hzm-retro .pill{background:#f3d6cf;color:var(--red)}
+.th-bay.hzm-retro .pill.tw{background:var(--mint);color:var(--green)}
+.th-bay.hzm-retro .est{background:var(--goldl);color:#6e4c14}
+
+/* ===== 封面：港片海報＋下緣膠卷 ===== */
+.th-bay.hzm-retro .hero{background:var(--ink)}
+.th-bay.hzm-retro .hero.bare{
+ padding:0 0 50px;color:#f5e5c7;border-bottom:0;border-radius:0 0 18px 18px;
+ background:url("images/hk-2027/retro/filmstrip.svg") center bottom 10px/77px 24px repeat-x,
+  radial-gradient(80% 60% at 50% 0,#1d4044,transparent 75%),var(--ink);
+ box-shadow:0 18px 30px -22px rgba(16,41,44,.75)}
+.th-bay.hzm-retro .hero.bare .hero-bg{-webkit-mask-image:linear-gradient(180deg,#000 86%,transparent);mask-image:linear-gradient(180deg,#000 86%,transparent)}
+.th-bay.hzm-retro .hero.bare>p:first-of-type{color:var(--gold2);font-weight:700;letter-spacing:.08em}
+.th-bay.hzm-retro .hero.bare p span{color:#f5e5c7}
+.th-bay.hzm-retro .hero.bare .cd div{background:rgba(16,41,44,.6);border:1px solid var(--gold2);border-radius:6px;box-shadow:inset 0 0 0 3px rgba(16,41,44,.9),0 0 0 1px rgba(169,50,38,.6)}
+.th-bay.hzm-retro .hero.bare .cd b{color:#fff2d8;text-shadow:0 0 10px rgba(239,89,71,.55)}
+.th-bay.hzm-retro .hero.bare .cd span{color:var(--gold2)}
+.th-bay.hzm-retro .hero.bare #cdnote{color:#e8d6b2}
+.th-bay.hzm-retro .hero .go{min-height:46px;background:var(--red);color:#fff5df;border:1px solid var(--gold2);border-radius:6px;box-shadow:inset 0 -3px 0 rgba(0,0,0,.25),0 0 16px -4px rgba(239,89,71,.7)}
+@media (min-width:760px){.th-bay.hzm-retro .hero.bare .hero-bg{max-width:980px}}
+
+/* ===== 按鈕 ===== */
+.th-bay.hzm-retro .b{min-height:44px}
+.th-bay.hzm-retro .b.bt.dk{background:var(--ink)}
+.th-bay.hzm-retro .b.bt.gd{background:var(--gold2);color:var(--ink)}
+.th-bay.hzm-retro .mi.g,.th-bay.hzm-retro .b.g{background:var(--ink)}
+.th-bay.hzm-retro .mi.g svg circle{fill:var(--ink)}
+.th-bay.hzm-retro .mi.a,.th-bay.hzm-retro .b.am{background:var(--gold2);color:var(--ink)}
+.th-bay.hzm-retro .seg button.on,.th-bay.hzm-retro .ab button.on{background:var(--red);border-color:var(--red);color:#fff5df}
+.th-bay.hzm-retro .tabs button{border-color:#c9b088;background:var(--card)}
+.th-bay.hzm-retro .tabs button.on{background:var(--ink);border-color:var(--ink);color:#f5e5c7;box-shadow:inset 0 -3px 0 var(--gold2)}
+
+/* ===== 每日行程卡片：左側紅色日期章、右側淡淡的場景圖（僅裝飾） ===== */
+.th-bay.hzm-retro .dy{background:var(--card);border:1px solid #c9b088;border-radius:var(--r);box-shadow:var(--sh)}
+.th-bay.hzm-retro .dy.on{border-color:var(--red)}
+.th-bay.hzm-retro .dr{min-height:74px;background-repeat:no-repeat;background-position:right center;background-size:auto 100%}
+.th-bay.hzm-retro .dr b{min-width:62px;padding:6px 6px;border-radius:5px;background:var(--red);color:#fff5df;font-family:var(--serif);font-weight:900;font-size:16px;text-align:center;line-height:1.25;box-shadow:2px 2px 0 var(--ink)}
+.th-bay.hzm-retro .dr .ds{font-weight:700;color:var(--ink)}
+.th-bay.hzm-retro .dr::after{border-color:var(--red)}
+.th-bay.hzm-retro #dy0 .dr{background-image:linear-gradient(90deg,var(--card) 58%,rgba(255,242,216,.82) 80%,rgba(255,242,216,.55)),url("images/hk-2027/retro/day-1.webp")}
+.th-bay.hzm-retro #dy1 .dr{background-image:linear-gradient(90deg,var(--card) 58%,rgba(255,242,216,.82) 80%,rgba(255,242,216,.55)),url("images/hk-2027/retro/day-2.webp")}
+.th-bay.hzm-retro #dy2 .dr{background-image:linear-gradient(90deg,var(--card) 58%,rgba(255,242,216,.82) 80%,rgba(255,242,216,.55)),url("images/hk-2027/retro/day-3.webp")}
+.th-bay.hzm-retro #dy3 .dr{background-image:linear-gradient(90deg,var(--card) 58%,rgba(255,242,216,.82) 80%,rgba(255,242,216,.55)),url("images/hk-2027/retro/day-4.webp")}
+/* 展開中：深墨綠片頭，日期章轉暖金 */
+.th-bay.hzm-retro .dy.on .dr{background-color:var(--ink);color:#f5e5c7}
+.th-bay.hzm-retro .dy.on .dr .ds{color:#f5e5c7}
+.th-bay.hzm-retro .dy.on .dr b{background:var(--gold2);color:var(--ink);box-shadow:2px 2px 0 var(--red)}
+.th-bay.hzm-retro .dy.on .dr::after{border-color:var(--gold2)}
+.th-bay.hzm-retro #dy0.on .dr{background-image:linear-gradient(90deg,var(--ink) 58%,rgba(16,41,44,.86) 80%,rgba(16,41,44,.62)),url("images/hk-2027/retro/day-1.webp")}
+.th-bay.hzm-retro #dy1.on .dr{background-image:linear-gradient(90deg,var(--ink) 58%,rgba(16,41,44,.86) 80%,rgba(16,41,44,.62)),url("images/hk-2027/retro/day-2.webp")}
+.th-bay.hzm-retro #dy2.on .dr{background-image:linear-gradient(90deg,var(--ink) 58%,rgba(16,41,44,.86) 80%,rgba(16,41,44,.62)),url("images/hk-2027/retro/day-3.webp")}
+.th-bay.hzm-retro #dy3.on .dr{background-image:linear-gradient(90deg,var(--ink) 58%,rgba(16,41,44,.86) 80%,rgba(16,41,44,.62)),url("images/hk-2027/retro/day-4.webp")}
+.th-bay.hzm-retro .dy.on .dr .pill{background:rgba(245,229,199,.92);color:var(--red)}
+/* 展開後的內容 */
+.th-bay.hzm-retro .dp h3{color:var(--red);font-weight:900}
+.th-bay.hzm-retro .tl::before{border-left:2px dashed #c9a86a}
+.th-bay.hzm-retro .tl .tm{background:var(--ink);color:var(--gold2);border:1px solid var(--ink);border-radius:4px;font-weight:700}
+
+/* ===== 機票：保留航空公司配色，只換印章色 ===== */
+.th-bay.hzm-retro #flight .fl big{color:var(--ink);border-color:var(--ink);background:#fff8e8}
+.th-bay.hzm-retro #flight .fl>div.r big{color:var(--red);border-color:var(--red)}
+.th-bay.hzm-retro #flight .fl .mid::before{border-top-color:var(--red)}
+.th-bay.hzm-retro #flight .bp small::before,.th-bay.hzm-retro #flight .bp small::after{background:var(--bg)}
+
+/* ===== 底部日期列、浮動按鈕、彈出視窗 ===== */
+.th-bay.hzm-retro .dock{background:rgba(16,41,44,.97);border-top:3px solid var(--red);box-shadow:0 -6px 16px -8px rgba(0,0,0,.5)}
+.th-bay.hzm-retro .dock .dl{color:var(--gold2)}
+.th-bay.hzm-retro .dock button{color:#f5e5c7;min-height:50px}
+.th-bay.hzm-retro .dock button small{color:#cdbb97}
+.th-bay.hzm-retro .dock button.on{background:var(--red);color:#fff5df;box-shadow:inset 0 -3px 0 var(--gold2)}
+.th-bay.hzm-retro .dock button.on small{color:#fbe3c4}
+.th-bay.hzm-retro #fs,.th-bay.hzm-retro #upd,.th-bay.hzm-retro #fxb{background:var(--ink);border:1px solid var(--gold2);color:#f5e5c7;min-width:48px;min-height:48px}
+.th-bay.hzm-retro #fs small,.th-bay.hzm-retro #upd small,.th-bay.hzm-retro #fxb small{color:var(--gold2)}
+.th-bay.hzm-retro #sheet .sp{background:var(--card)}
+.th-bay.hzm-retro #sheet .sx{background:var(--soft);color:var(--ink)}
+.th-bay.hzm-retro #big{background:var(--ink)}
+.th-bay.hzm-retro #big b{color:#fff2d8}
+.th-bay.hzm-retro #big small{color:var(--gold2)}
+
+/* ===== 頁尾：三城霓虹招牌＋膠卷 ===== */
+.th-bay.hzm-retro footer{color:var(--sub)}
+.th-bay.hzm-retro footer::before{content:"";display:block;width:min(300px,92%);height:50px;margin:0 auto 16px;
+ background:url("images/hk-2027/retro/neon-hk.svg") left center/96px 48px no-repeat,
+  url("images/hk-2027/retro/neon-mo.svg") center/96px 48px no-repeat,
+  url("images/hk-2027/retro/neon-zh.svg") right center/96px 48px no-repeat;
+ filter:drop-shadow(0 0 6px rgba(239,89,71,.45))}
+.th-bay.hzm-retro footer a{color:var(--red)}
+
+/* 減少動態效果 */
+@media (prefers-reduced-motion:reduce){
+ .th-bay.hzm-retro *{scroll-behavior:auto!important;animation:none!important;transition:none!important}
+}

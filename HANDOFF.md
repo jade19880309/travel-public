@@ -23,6 +23,13 @@
 - 純改 `HANDOFF.md`（沒動網頁、JSON、`app.js`）時不需要加 `sw.js` 的 `VERSION`，那只在網頁內容變動時才有意義。
 - 京阪每日圖示：有 `choice` 的日子，選項若沒寫 `stk` 要退回當天的 `stk`（曾因此抓 `ic-undefined.svg`，9/9 圖示消失）。圖示出問題先查檔名，不要先怪快取。
 
+## HZM Retro v1.0：港珠澳港片復古風（2026/11/26）
+- `theme-hzm-retro.css` 只由 `hk.html` 載入（`<link id="theme-hzm-retro">`，在 `theme-bay.css` 之後），規則都加 `html.th-bay.hzm-retro` 前綴；`theme-bay.css`、`app.js`、`style.css`、`trips/hk-2027.json` 都沒改。
+- 封面在 `hk.html` 載入資料後才換成 `images/hk-2027/retro/hero.webp`（JSON 的 `hero.img` 仍是水墨圖），分享縮圖 `og.jpg` 沒換。
+- 素材在 `images/hk-2027/retro/`；`day-1~4.webp` 只是日卡右側的裝飾背景（`#dy0`～`#dy3 .dr`），不是景點照片。
+- 恢復原版：`hk.html?theme=classic`（存 localStorage `hzmTheme`，和東京的 `theme` 分開）；`?theme=retro` 改回。永久拿掉＝刪 `hk.html` 那個 link 與緊接的 script。改版前備份分支：`backup/hzm-before-retro-v1.0`。
+- 未在 iPhone 實機確認（只用 Playwright 測 320／390／768／1440）。
+
 ## 森林手帳風主題（2026/11/26）
 - `theme-forest-journal.css` 只由 `tokyo.html`、`campervan.html` 載入（`<link id="theme-forest">`，在 `</head>` 前、原本樣式之後），覆蓋東京的 `theme-fuji.css` 與露營車頁內嵌樣式；原版檔案都沒改。其他旅程頁面不載入。
 - 恢復原版：網址加 `?theme=classic`（存 localStorage，該手機之後都用原版）；`?theme=forest` 改回。永久拿掉＝刪兩個頁面的那個 link 與緊接的 script。
