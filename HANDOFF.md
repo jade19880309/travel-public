@@ -55,6 +55,7 @@
 ## 森林手帳風主題（2026/11/26，依使用者提供的素材包整合）
 - `theme-forest-journal.css`＝素材包原 CSS（上半，原樣保留）＋「整合補充」精確 selector（下半，蓋過 theme-fuji.css 與露營車內嵌樣式）。只由 `tokyo.html`、`campervan.html` 載入；兩頁 `<html>` 加了 `forest-journal` class。
 - 插畫在 `images/forest-journal/`：`campervan-scene.webp`（露營車頁封面下方）、`tokyo-footer.webp`、`campervan-footer.webp`（頁尾裝飾）。素材包原圖有龍貓／小黑炭等吉卜力角色（非授權），所以兩張 footer 是裁掉角色、只留風景的版本；`tokyo-scene.webp` 整張以角色為主，沒有上傳也沒有使用。示意圖（reference.jpg／approved-reference.png）只供驗收，沒放進 repo。
+- 2026/11/26 第二版（依手機示意圖對齊）：CSS 末段新增「示意圖對齊」區塊——固定色票（#F6F1E5／#FFFDF6／#DCE5CF／#81966C／#536B49／#A8BFC8／#C7A384／#394638，小字橡實色改深一階 `--acorn-ink` 保對比）、東京封面圖移到頁首滿版、導覽改圓角紙卡、底部日期列圓角＋Safe Area、頁尾插畫滿版淡入、露營車封面插畫完整不裁切；每日行程橫幅用 CSS 把 banner-fuji.svg 換成 `campervan-footer.webp` 水彩湖景（JSON 沒改）；其餘貼紙圖降飽和。`leaf.webp`＝從 campervan-scene 樹葉裁出的去背葉片（標題裝飾）。
 - 恢復原版：網址加 `?theme=classic`（停用樣式、移除 class、隱藏裝飾圖，記在該手機）；`?theme=forest` 改回。永久移除＝刪兩頁的 class、link＋script、`.forest-scene`／`.forest-footer` 圖，並把 sw.js CORE 裡這幾個檔案拿掉。
 - 改這個 CSS 或圖片記得加 sw.js 的 VERSION。
 

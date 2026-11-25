@@ -82,3 +82,51 @@ html.forest-journal .mapcard figure img{border-color:var(--edge)!important}
 /* 裝飾插畫：頁面最下方的紙色留白 */
 html.forest-journal .forest-footer{max-width:760px;width:calc(100% - 32px)}
 html.forest-journal:not(.th-fuji) header.hero{background:none;border:0;box-shadow:none}
+
+/* ===== 示意圖對齊（2026/11/26 第二版）：固定色票、封面占比、導覽卡片、手繪葉片標題、故事書頁尾 =====
+   只加精確 selector；行程資料、HTML 結構、JS 都沒改。葉片 leaf.webp 是從素材包 campervan-scene.webp 樹葉裁出的去背小圖。 */
+html.forest-journal{--bg:#f6f1e5;--card:#fffdf6;--ink:#394638;--mint:#dce5cf;--leaf:#81966c;--moss:#536b49;--green:#536b49;--red:#536b49;
+ --sky:#a8bfc8;--skyl:#e9eff1;--acorn:#c7a384;--acorn-ink:#8a6748;--seal:#8a6748;--edge:#ddd3bd}
+/* 標題：明體＋水彩葉片 */
+html.forest-journal h2::before,html.th-fuji.forest-journal h2::before{content:"";flex:none;width:30px;height:22px;border-radius:0;transform:none;
+ background:url(images/forest-journal/leaf.webp) center/contain no-repeat}
+html.forest-journal h2{font-family:var(--serif);font-weight:700;letter-spacing:.08em}
+/* 東京頂部導覽：和紙底＋圓角紙卡（不是圓形貼紙） */
+html.th-fuji.forest-journal header{background:#f6f1e5f7;border-bottom:1px solid var(--edge);box-shadow:0 4px 14px #39463810}
+html.th-fuji.forest-journal header nav a{border-radius:12px;background:#fffdf6;border:1px solid var(--edge);box-shadow:0 2px 6px #46412d10;color:var(--ink);font-weight:600}
+html.th-fuji.forest-journal header nav a.on{background:var(--moss);border-color:var(--moss);color:#fff;box-shadow:0 3px 8px #536b4940}
+/* 東京封面：插畫移到最上方、滿版、完整構圖，下方接日期與倒數 */
+html.th-fuji.forest-journal .hero.bare{padding-top:0;background:linear-gradient(180deg,#f6f1e5 40%,#dce5cf66)}
+html.th-fuji.forest-journal .hero.bare .hero-bg{order:-1;width:100%;max-width:none;height:auto;aspect-ratio:16/9;object-fit:cover;object-position:center;
+ margin:0 0 16px;border:0;outline:0;border-radius:0 0 26px 26px;box-shadow:0 10px 24px -14px #39463866}
+@media(min-width:760px){html.th-fuji.forest-journal .hero.bare .hero-bg{max-width:760px;margin:16px auto;border-radius:24px}}
+html.th-fuji.forest-journal .hero.bare .cd div{background:#fffdf6;border:1px solid var(--edge)}
+/* 每日行程橫幅：原本高飽和的富士山貼紙圖改顯示素材包的水彩湖景（圖只換背景，文字標籤不動） */
+html.th-fuji.forest-journal #plan .bnr{background:#dce5cf url(images/forest-journal/campervan-footer.webp) center 62%/cover no-repeat;border:1px solid var(--edge)}
+html.th-fuji.forest-journal #plan .bnr img{opacity:0}
+/* 其餘沿用的貼紙圖（住宿雷門橫幅、每日小圖示、方案圖示、露營車頁標題圖示）降低飽和，貼近水彩色調 */
+html.forest-journal :is(.dic,.pic,.ph::before,h2::before,h3::before,.vehicle-photo){filter:saturate(.72) sepia(.08)}
+html.forest-journal .bnr img{filter:saturate(.6) sepia(.14) brightness(1.03)}
+/* 行程卡：16～20px 圓角、暖米白、細邊、柔影；左圖示右文字 */
+html.th-fuji.forest-journal .dy{border-radius:18px;background:#fffdf6;border:1px solid var(--edge);box-shadow:0 4px 14px #46412d12}
+html.th-fuji.forest-journal .dic{background:#f6f1e5;border-radius:14px}
+/* 日期、方案膠囊：森林綠選取、米白／淡綠未選 */
+html.th-fuji.forest-journal .plb button:not(.on){background:#fffdf6}
+html.th-fuji.forest-journal :is(.ab button,.tabs button):not(.on){background:#fffdf6;border:1px solid var(--edge)}
+/* 底部日期列：圓角紙卡、Safe Area */
+html.th-fuji.forest-journal .dock{background:#fbf8eff7;border-top:1px solid var(--edge);border-radius:22px 22px 0 0;box-shadow:0 -6px 18px #46412d14;padding-bottom:calc(env(safe-area-inset-bottom,0px) + 8px)}
+html.th-fuji.forest-journal .dock button{border-radius:14px}
+html.th-fuji.forest-journal .dock button.on{background:var(--moss);color:#fff;border:0;box-shadow:0 3px 8px #536b4940}
+/* 故事書頁尾：滿版、上緣淡入紙色 */
+html.forest-journal .forest-footer{width:100%;max-width:760px;margin:28px auto 0;border-radius:0;
+ -webkit-mask-image:linear-gradient(180deg,transparent,#000 28%);mask-image:linear-gradient(180deg,transparent,#000 28%)}
+/* 露營車頁：封面插畫完整構圖、足夠占比（不裁切） */
+html.forest-journal:not(.th-fuji) .forest-scene{max-height:none;width:100%;height:auto;object-fit:contain;border-radius:22px;margin:4px auto 18px;border:1px solid var(--edge);box-shadow:0 10px 24px -14px #39463866}
+@media(max-width:480px){html.forest-journal:not(.th-fuji) .forest-scene{max-height:none}}
+html.forest-journal:not(.th-fuji) .bar{background:#f6f1e5f7}
+html.forest-journal:not(.th-fuji) .tabs button{border-radius:12px}
+html.forest-journal:not(.th-fuji) .tabs button.on{background:var(--moss);border-color:var(--moss);color:#fff}
+html.forest-journal:not(.th-fuji) .ph{border-radius:18px;background:linear-gradient(135deg,#dce5cf,#f3f0e2)}
+/* 小字的橡實色改深一階，維持對比 */
+html.forest-journal :is(.spec-grid small,.ph .tag,.rv .tg,.pill,.stats div:nth-child(1) strong){color:var(--acorn-ink)}
+html.forest-journal .route-legend b{background:var(--acorn-ink)}
