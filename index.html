@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="robots" content="noindex,nofollow">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<link rel="manifest" id="mf" href="manifest.webmanifest"><meta name="theme-color" content="#8c1c2b"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" id="mt" content="首爾春節"><link rel="apple-touch-icon" id="ti" href="icon-180.png"><link rel="icon" id="fi" href="icon-192.png">
+<link rel="manifest" id="mf" href="manifest.webmanifest"><meta name="theme-color" content="#F5F0E7"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" id="mt" content="首爾春節"><link rel="apple-touch-icon" id="ti" href="icon-180.png"><link rel="icon" id="fi" href="icon-192.png">
 <title>2027 首爾春節自由行</title>
 <meta name="description" content="2/3～2/8・6 天 5 夜｜航班、住宿、每日行程、換匯與旅遊注意事項">
 <meta property="og:type" content="website"><meta property="og:site_name" content="家庭旅遊行程">
@@ -19,7 +19,7 @@
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@600;700&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="theme-han.css">
 </head>
@@ -75,7 +75,7 @@
  if(!/^[\w-]+$/.test(id))id='seoul-2027';
  function fail(m){document.body.insertAdjacentHTML('afterbegin','<p style="padding:16px;font:16px sans-serif">'+m+'</p>')}
  fetch('trips/'+id+'.json',{cache:'no-cache'}).then(function(r){if(!r.ok)throw 0;return r.json()}).then(function(d){
-  window.TRIP=d;var s=document.createElement('script');s.src='app.js';s.onerror=function(){fail('程式載入失敗，請重新整理。')};document.body.appendChild(s)
+  window.TRIP=d;var s=document.createElement('script');s.src='app.js';s.onload=function(){if(id==='seoul-2027'){var w=document.createElement('script');w.src='seoul-winter.js';document.body.appendChild(w)}};s.onerror=function(){fail('程式載入失敗，請重新整理。')};document.body.appendChild(s)
  }).catch(function(){fail('行程資料載入失敗，請確認網路後重新整理。（直接開本機檔案無法讀取資料，請用網址開啟）')});
 })();
 </script>

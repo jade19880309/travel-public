@@ -23,6 +23,13 @@
 - 純改 `HANDOFF.md`（沒動網頁、JSON、`app.js`）時不需要加 `sw.js` 的 `VERSION`，那只在網頁內容變動時才有意義。
 - 京阪每日圖示：有 `choice` 的日子，選項若沒寫 `stk` 要退回當天的 `stk`（曾因此抓 `ic-undefined.svg`，9/9 圖示消失）。圖示出問題先查檔名，不要先怪快取。
 
+## Seoul Winter：首爾冬日旅行手帳（2026/11/26，使用者提供 seoul-winter-kit 素材包＋手機版示意圖）
+- 做法：`index.html` 在 `app.js` 載入後，只有 `t=seoul-2027` 才載入 `seoul-winter.js`；它只搬動／包裝 app.js 畫好的元素（封面換 `hero-winter.webp`＋HTML 標題、功能列從頁首搬到封面下方並改 sticky 圖示鍵、倒數與日期移到 `.sw-top` 卡片、區塊標題去表情符號加小插畫、住宿卡插入 `hotel-2.jpg`、頁尾插畫），並在 `<html>` 加 `sw` class。樣式在 `theme-han.css` 最後的「Seoul Winter」區塊，全部以 `html.th-han.sw` 開頭。`app.js`、`style.css`、`trips/seoul-2027.json` 都沒改。
+- 每日行程卡圖片是 CSS 依 `#dy0`～`#dy5` 指定（飛機／廣藏小吃／冬季行李／景福宮／韓屋巷弄／行李箱），只是裝飾，不代表新增景點；日數變動要改這段。「Day N」用 CSS counter。
+- 恢復舊版：`?theme=classic`（存 localStorage `seoulTheme`），`?theme=winter` 改回。
+- 素材在 `images/seoul-2027/decor/`（`new-year.webp` 有上傳但沒用到）；示意圖沒有放進 repo。示意圖裡的人數、氣溫、行程細項、航班時間都是排版示意，**沒有寫進網站**。
+- 測試：Playwright 320／375／390／430／768／1280／1440 無橫向溢出、無 pageerror、無 404；展開日期、功能列跳轉、底部日期列、換匯、字體、待辦勾選、飯店相片、離線重新整理、`?theme=classic` 皆正常；其他旅程頁無錯誤。**未測**：GitHub Pages 線上畫面、iPhone 實機（含瀏海安全區域、毛筆／手寫字體在 iOS 的實際字型，`Seoul`／`Day N` 用的是 Snell Roundhand 等系統草寫字）。
+
 ## 旅程視覺素材（第四方案已執行並驗收，2026/11/26；規範見 `VISUAL-ASSET-GUIDELINES.md`）
 - 已核對 `main` 的 V3／V3b 首頁符合規範，**沒有改網頁、CSS、素材，所以沒加 `sw.js` 的 `VERSION`**：三張主卡（首爾、港珠澳、東京，依日期）、露營車是東京卡內子入口（`.subtrip`，高 60px）、京阪不在公開首頁；PNG（`images/home-journal/`）與 WebP（`images/journal-v3/`）兩套並存。Playwright 測 320／360／390／430／768／1280／1440：無水平溢出、無 pageerror、圖片全載入、四個連結正確、倒數正常、`[data-upd]` 更新鈕在、離線重新整理仍顯示三卡且無破圖。截圖在驗收當次的暫存目錄，沒放進 repo。
 - **未完成／待辦**

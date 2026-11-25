@@ -175,3 +175,202 @@ html.th-han{
 .th-han #flight .bp small::before{left:-26px}
 .th-han #flight .bp small::after{right:-26px}
 @media (prefers-reduced-motion:reduce){.th-han #flight .fl .mid::after{animation:none}}
+
+
+/* ===================================================================
+   Seoul Winter・首爾冬日旅行手帳（2026/11/26，依使用者提供的手機版示意圖與 seoul-winter-kit 素材）
+   只在 html.th-han.sw 生效（class 由 seoul-winter.js 加上；?theme=classic 時不加 → 回到上面的舊版）。
+   色票：奶油米白 #F5F0E7／暖雪白 #FFFDFA／柔霧粉 #E6C5B9／韓屋青綠 #A4B6AC／冬日霧藍 #A5B8CD／沉穩墨藍 #34465B
+   素材：images/seoul-2027/decor/（不得自行重畫）
+   =================================================================== */
+html.th-han.sw{--bg:#F5F0E7;--card:#FFFDFA;--ink:#34465B;--sub:#5E6B78;--line:#E4DED3;--soft:#EEF1F2;
+ --red:#34465B;--red2:#536E83;--gold:#6F86A0;--goldl:#E6ECF2;--seal:#B0695E;--rose:#E6C5B9;--roseD:#C4877B;
+ --pink:#F4E4DE;--mint:#E5ECE7;--green:#4E6B5C;--mist:#A5B8CD;--jade:#A4B6AC;
+ --r:18px;--sh:0 1px 2px rgba(52,70,91,.05),0 10px 24px -14px rgba(52,70,91,.28);
+ --sans:"Noto Sans TC","Noto Sans KR",system-ui,-apple-system,"PingFang TC",sans-serif;--serif:"Noto Serif TC","Songti TC",serif}
+html.th-han.sw body{font-family:var(--sans);color:var(--ink);
+ background:url('images/seoul-2027/decor/hanji-texture.webp') 0 0/512px 512px repeat,var(--bg)}
+html.th-han.sw [lang="ko"]{font-family:"Noto Sans KR",var(--sans)}
+html.th-han.sw header{background:transparent;border:0;box-shadow:none;pointer-events:none}
+html.th-han.sw header .net{pointer-events:auto}
+html.th-han.sw main{padding-top:0}
+html.th-han.sw main>section,html.th-han.sw .dy{scroll-margin-top:84px}
+html.th-han.sw .sw-deco{pointer-events:none;user-select:none;-webkit-user-select:none}
+
+/* ---------- 封面 ---------- */
+html.th-han.sw .hero.sw-hero{position:relative;display:block;min-height:0;height:clamp(380px,112vw,470px);padding:0;margin:0 -16px;border:0;border-radius:0 0 30px 30px;overflow:hidden;background:#e9e6ee;box-shadow:0 18px 28px -22px rgba(52,70,91,.45)}
+html.th-han.sw .hero.sw-hero::after{display:block;content:"";position:absolute;inset:0;pointer-events:none;
+ background:linear-gradient(180deg,rgba(250,247,250,.78) 0%,rgba(250,247,250,.42) 30%,rgba(250,247,250,0) 50%,rgba(245,240,231,0) 78%,rgba(245,240,231,.85) 100%)}
+html.th-han.sw .hero.sw-hero .hero-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:58% 60%;-webkit-mask-image:none;mask-image:none;max-width:none;margin:0}
+html.th-han.sw .sw-title{position:absolute;z-index:2;left:0;right:0;top:calc(env(safe-area-inset-top,0px) + 30px);text-align:center;color:var(--ink);padding:0 16px}
+html.th-han.sw .sw-title h1{display:flex;justify-content:center;align-items:flex-end;gap:6px;margin:0;font-family:var(--serif);font-weight:700;line-height:1;text-shadow:0 2px 0 #fff,0 0 22px rgba(255,255,255,.95)}
+html.th-han.sw .sw-zh{font-size:clamp(58px,19vw,84px);letter-spacing:.04em;color:#2E4058}
+html.th-han.sw .sw-title em{font-family:"Snell Roundhand","Segoe Script","Apple Chancery","Brush Script MT",cursive;font-style:italic;font-weight:600;font-size:clamp(30px,9.5vw,42px);color:#B3727A;margin-bottom:6px;letter-spacing:0}
+html.th-han.sw .sw-ko{position:absolute;left:50%;top:-14px;margin-left:clamp(52px,17vw,78px);font-size:clamp(20px,6vw,26px);font-weight:500;color:#B3727A;text-shadow:0 0 12px #fff}
+html.th-han.sw .sw-ribbon{display:table;margin:12px auto 0;padding:5px 22px 6px;font-family:var(--serif);font-weight:700;font-size:clamp(15px,4.6vw,19px);letter-spacing:.12em;color:#fff;
+ background:linear-gradient(90deg,transparent 0,#A9606B 12px,#A9606B calc(100% - 12px),transparent 100%);border-radius:4px;text-shadow:0 1px 0 rgba(80,30,40,.35)}
+html.th-han.sw .sw-en{margin-top:8px;font-size:11.5px;font-weight:500;letter-spacing:.32em;color:var(--ink);text-shadow:0 0 10px #fff,0 0 4px #fff}
+
+/* ---------- 功能選單：奶油白圓角按鈕＋墨藍線條圖示，可左右滑 ---------- */
+html.th-han.sw .sw-nav{position:sticky;top:0;z-index:40;display:flex;gap:8px;max-width:none;margin:-34px -16px 0;padding:calc(env(safe-area-inset-top,0px) + 8px) 16px 10px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;grid-template-columns:none;
+ background:linear-gradient(180deg,rgba(245,240,231,0) 0,rgba(245,240,231,.0) 30px,rgba(245,240,231,.97) 30px)}
+html.th-han.sw .sw-nav::-webkit-scrollbar{display:none}
+html.th-han.sw .sw-nav.stuck{background:rgba(245,240,231,.97);box-shadow:0 6px 14px -12px rgba(52,70,91,.5)}
+html.th-han.sw .sw-nav a{flex:0 0 auto;width:62px;min-height:62px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;padding:6px 2px;
+ background:var(--card);border:1px solid #E8E1D5;border-radius:16px;color:var(--ink);text-decoration:none;font-family:var(--sans);font-size:13px;font-weight:500;letter-spacing:.02em;box-shadow:0 4px 10px -6px rgba(52,70,91,.28)}
+html.th-han.sw .sw-nav a i{display:block;width:24px;height:24px;background:var(--ink);-webkit-mask:center/contain no-repeat;mask:center/contain no-repeat}
+html.th-han.sw .sw-nav a.on{background:var(--ink);border-color:var(--ink);color:#fff;box-shadow:0 6px 14px -8px rgba(52,70,91,.7)}
+html.th-han.sw .sw-nav a.on i{background:#fff}
+
+/* ---------- 倒數卡（福袋）、日期卡、天氣 ---------- */
+html.th-han.sw .sw-top{display:grid;gap:12px;margin-top:12px}
+html.th-han.sw .sw-top>.card{position:relative;margin:0;border:1px solid #EAE3D7;border-radius:20px;background:var(--card);box-shadow:var(--sh)}
+html.th-han.sw .sw-cd{display:grid;grid-template-columns:96px 1fr;align-items:center;gap:4px;padding:16px 14px 16px 6px;overflow:hidden}
+html.th-han.sw .sw-bok{width:104px;height:auto;margin-left:-6px;filter:drop-shadow(0 6px 8px rgba(52,70,91,.15))}
+html.th-han.sw .sw-plum{position:absolute;right:-18px;top:-12px;width:96px;opacity:.9;transform:rotate(-8deg)}
+html.th-han.sw .sw-cdin{display:flex;flex-direction:column;align-items:center;text-align:center;min-width:0;position:relative}
+html.th-han.sw .sw-cd #cdnote{margin:0 0 8px;font-size:15px;font-weight:700;letter-spacing:.08em;color:var(--ink);text-shadow:none}
+html.th-han.sw .sw-cd #cdnote::before{content:none}
+html.th-han.sw .sw-cd .cd{display:flex;gap:7px;margin:0;justify-content:center}
+html.th-han.sw .sw-cd .cd div{width:auto;min-width:48px;height:auto;padding:0;display:flex;flex-direction:column;align-items:center;background:none;border:0;box-shadow:none;overflow:visible}
+html.th-han.sw .sw-cd .cd div::before,html.th-han.sw .sw-cd .cd div::after{content:none}
+html.th-han.sw .sw-cd .cd b{display:block;min-width:48px;padding:6px 4px 5px;margin:0;border-radius:10px;background:linear-gradient(180deg,#D49C90,var(--roseD));color:#fff;font-family:var(--sans);font-size:24px;font-weight:700;line-height:1.1;font-variant-numeric:tabular-nums;text-shadow:0 1px 0 rgba(120,50,45,.3);box-shadow:inset 0 -2px 0 rgba(120,50,45,.12)}
+html.th-han.sw .sw-cd .cd span{margin-top:4px;font-size:12.5px;color:var(--sub);letter-spacing:.1em}
+html.th-han.sw .sw-wish{margin:10px 0 0;line-height:1.35}
+html.th-han.sw .sw-wish span{display:block;font-size:16px;font-weight:500;color:#B0695E;letter-spacing:.04em}
+html.th-han.sw .sw-wish small{display:inline-flex;align-items:center;gap:8px;font-size:13px;color:var(--sub);letter-spacing:.2em}
+html.th-han.sw .sw-wish small::before,html.th-han.sw .sw-wish small::after{content:"";width:22px;height:1px;background:#CBBFB0}
+html.th-han.sw .sw-cd .go{margin:12px 0 0;min-height:42px;padding:0 22px;border-radius:999px;background:var(--ink);color:#fff;font-family:var(--sans);font-weight:700;letter-spacing:.1em;box-shadow:0 8px 16px -10px rgba(52,70,91,.8)}
+html.th-han.sw .sw-info{display:flex;align-items:center;min-height:96px;padding:16px 120px 16px 16px;overflow:hidden}
+html.th-han.sw .sw-irow{display:flex;gap:12px;align-items:center;position:relative;z-index:1}
+html.th-han.sw .sw-ical{flex:none;width:34px;height:34px;background:var(--ink);-webkit-mask:center/contain no-repeat;mask:center/contain no-repeat}
+html.th-han.sw .sw-irow small{display:block;font-size:13px;color:var(--sub);letter-spacing:.08em}
+html.th-han.sw .sw-irow b{display:block;white-space:nowrap;font-size:17px;font-weight:700;color:var(--ink);font-variant-numeric:tabular-nums}
+html.th-han.sw .sw-irow span{display:inline-block;margin-top:4px;padding:1px 10px;border-radius:999px;background:var(--mint);color:var(--green);font-size:13px;font-weight:500}
+html.th-han.sw .sw-tower{position:absolute;right:-6px;bottom:-8px;width:138px;opacity:.95}
+html.th-han.sw .sw-top #wx{margin:0}
+
+/* ---------- 區塊標題：雪花＋右側小插畫 ---------- */
+html.th-han.sw h2{position:relative;font-family:var(--serif);font-size:22px;font-weight:700;letter-spacing:.08em;color:var(--ink)}
+html.th-han.sw h2::before{content:"";flex:none;width:24px;height:24px;border-radius:0;background:url('images/seoul-2027/decor/snowflake.png') center/contain no-repeat;transform:none}
+html.th-han.sw h2::after{background:linear-gradient(90deg,var(--mist),rgba(165,184,205,0));opacity:.9;height:1px}
+html.th-han.sw h2.sw-h{padding-right:66px}
+html.th-han.sw .sw-hd{position:absolute;right:0;top:50%;width:62px;height:auto;transform:translateY(-55%);opacity:.95}
+html.th-han.sw .card{background:var(--card);border:1px solid #EAE3D7;border-top:1px solid #EAE3D7;border-radius:var(--r);box-shadow:var(--sh)}
+html.th-han.sw .note{background:#F7ECE8;border-left:3px solid var(--rose);color:#5D4B4A}
+html.th-han.sw .pill{background:var(--pink);color:#9A5A50}
+html.th-han.sw .pill.tw{background:var(--mint);color:var(--green)}
+html.th-han.sw .est{background:var(--goldl);color:var(--ink)}
+html.th-han.sw .b.bt.gd{background:var(--gold);color:#fff}
+html.th-han.sw .b.bt.dk{background:var(--ink)}
+html.th-han.sw .tabs button{background:var(--card);border-color:#E3DCCF;color:var(--ink)}
+html.th-han.sw .tabs button.on,html.th-han.sw .seg button.on,html.th-han.sw .ab button.on{background:var(--ink);border-color:var(--ink);color:#fff}
+html.th-han.sw .tl .tm{background:var(--soft);color:var(--ink);border-color:#DDE3E8;font-family:var(--sans);font-weight:700}
+html.th-han.sw .tl::before{border-left:1.5px dashed var(--mist)}
+html.th-han.sw .dp h3{font-family:var(--serif);color:var(--ink)}
+html.th-han.sw .mi.g,html.th-han.sw .b.g{background:var(--red2)}
+
+/* ---------- 每日行程：柔和色系 Day 標籤＋水彩插畫卡 ---------- */
+html.th-han.sw #days{counter-reset:swd;display:grid;gap:14px}
+html.th-han.sw .dy{counter-increment:swd;position:relative;background:var(--card);border:1px solid #EAE3D7;border-top:1px solid #EAE3D7;border-radius:20px;box-shadow:var(--sh);overflow:hidden;
+ --tb:#F0D9D2;--tc:#A15E54;--im:none;--ib:#fff}
+html.th-han.sw .dy+.dy{margin-top:0}
+html.th-han.sw #dy0{--tb:#F2DCD5;--tc:#A15E54;--im:url('images/seoul-2027/decor/airplane.png');--ib:linear-gradient(180deg,#E3EAF3,#F6EEF0)}
+html.th-han.sw #dy1{--tb:#DCE5EF;--tc:#4B6886;--im:url('images/seoul-2027/decor/street-food.webp')}
+html.th-han.sw #dy2{--tb:#DCE8E0;--tc:#4A6B5A;--im:url('images/seoul-2027/decor/winter-travel.webp')}
+html.th-han.sw #dy3{--tb:#F3E4CD;--tc:#90672F;--im:url('images/seoul-2027/decor/palace.webp')}
+html.th-han.sw #dy4{--tb:#E6E0EF;--tc:#6A5888;--im:url('images/seoul-2027/decor/hanok-street.webp')}
+html.th-han.sw #dy5{--tb:#E2E8D8;--tc:#5A6B44;--im:url('images/seoul-2027/decor/suitcase.png');--ib:linear-gradient(180deg,#EEF2EA,#FBF8F2)}
+html.th-han.sw .dr,html.th-han.sw .dy.on .dr{display:grid;grid-template-columns:112px minmax(0,1fr);grid-template-rows:auto auto 1fr;column-gap:14px;row-gap:6px;align-items:start;
+ min-height:0;padding:0 14px 14px 0;background:none;color:var(--ink);text-align:left}
+html.th-han.sw .dr::before{content:"Day " counter(swd);grid-column:1;grid-row:1;justify-self:start;padding:5px 16px 4px 14px;border-radius:0 0 16px 0;background:var(--tb);color:var(--tc);
+ font-family:"Snell Roundhand","Segoe Script","Apple Chancery","Brush Script MT",cursive;font-style:italic;font-weight:700;font-size:21px;line-height:1.15;white-space:nowrap}
+html.th-han.sw .dr b,html.th-han.sw .dy.on .dr b{grid-column:2;grid-row:1;align-self:center;min-width:0;padding-top:6px;color:var(--tc);font-family:var(--sans);font-size:16px;font-weight:700;letter-spacing:.06em}
+html.th-han.sw .dr::after,html.th-han.sw .dy.on .dr::after{content:"";display:block;position:static;grid-column:1;grid-row:2/4;align-self:start;width:auto;height:84px;margin:2px 0 0 12px;border:0;border-radius:12px;transform:none;
+ background:var(--im) center/cover no-repeat,var(--ib);box-shadow:inset 0 0 0 1px rgba(52,70,91,.06)}
+html.th-han.sw #dy0 .dr::after,html.th-han.sw #dy5 .dr::after{background:var(--im) center/86% auto no-repeat,var(--ib)}
+html.th-han.sw .dr .ds{grid-column:2;grid-row:2;font-size:16px;font-weight:500;line-height:1.55;color:var(--ink)}
+html.th-han.sw .dr .tg,html.th-han.sw .dy.on .dr .tg{grid-column:2;grid-row:3;padding:0;display:flex;flex-wrap:wrap;gap:6px}
+html.th-han.sw .dr .pill,html.th-han.sw .dy.on .dr .pill{background:var(--pink);color:#9A5A50;border:0;font-size:12.5px}
+html.th-han.sw .dr .pill.tw,html.th-han.sw .dy.on .dr .pill.tw{background:var(--mint);color:var(--green)}
+html.th-han.sw .dy.on{border-color:var(--tc);box-shadow:0 0 0 1px var(--tc),var(--sh)}
+html.th-han.sw .dy.on .dp{border-top:1px dashed #E0D8CB}
+
+/* ---------- 航班：登機證 ---------- */
+html.th-han.sw #flight .bp{position:relative;padding:0 0 14px;border-radius:18px;overflow:hidden;background:var(--card)}
+html.th-han.sw #flight .bp .bph,html.th-han.sw #flight .bp[class*="al-"] .bph{position:relative;padding:12px 16px;background:linear-gradient(120deg,#34465B,#536E83);color:#fff;font-weight:700;letter-spacing:.04em}
+html.th-han.sw #flight .bp .bph .pill{background:#fff;color:var(--ink);border:0}
+html.th-han.sw #flight .bp .bph .al::before{background:var(--rose)}
+html.th-han.sw #flight .bp .fl{margin:14px 16px 8px}
+html.th-han.sw #flight .bp .fl big{font-family:var(--sans);color:var(--ink);font-weight:700}
+html.th-han.sw #flight .bp .fl .mid{border-top-color:var(--mist)}
+html.th-han.sw #flight .bp::after{content:"";position:absolute;right:10px;top:46px;width:86px;height:66px;background:url('images/seoul-2027/decor/airplane.png') center/contain no-repeat;opacity:.18;pointer-events:none}
+html.th-han.sw #flight .bp small{margin:0 16px;border-top:1.5px dashed #DCD4C6}
+
+/* ---------- 住宿：照片＋文字質感卡 ---------- */
+html.th-han.sw #hotel details.sw-hotel>summary{display:grid;grid-template-columns:118px minmax(0,1fr);gap:14px;align-items:start;padding:14px 40px 14px 14px}
+html.th-han.sw .sw-hpic{display:block;padding:0;border:0;border-radius:14px;overflow:hidden;background:#ddd;aspect-ratio:3/4;box-shadow:0 6px 14px -8px rgba(52,70,91,.5);cursor:zoom-in}
+html.th-han.sw .sw-hpic img{display:block;width:100%;height:100%;object-fit:cover}
+html.th-han.sw #hotel .hn{min-width:0}
+html.th-han.sw #hotel .hn .ko{font-family:"Noto Sans KR",var(--sans);font-size:18px;line-height:1.4;color:var(--ink)}
+html.th-han.sw #hotel .hn .zh{font-weight:700;color:var(--ink)}
+
+/* ---------- 底部日期列、浮動按鈕 ---------- */
+html.th-han.sw .dock{background:rgba(255,253,250,.97);border-top:1px solid #E8E1D5}
+html.th-han.sw .dock button{font-family:var(--sans)}
+html.th-han.sw .dock button.on{background:var(--ink);color:#fff;box-shadow:none}
+html.th-han.sw .dock button.on small{color:#DCE5EE}
+html.th-han.sw #fs,html.th-han.sw #upd,html.th-han.sw #fxb{background:var(--card);border:1px solid #E3DCCF;color:var(--ink);box-shadow:0 6px 14px -6px rgba(52,70,91,.35)}
+html.th-han.sw #big{background:#26354A}
+
+/* ---------- 頁尾插畫 ---------- */
+html.th-han.sw .sw-foot{position:relative;margin:34px -16px 0;height:170px;overflow:hidden}
+html.th-han.sw .sw-sky{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 62%;opacity:.85;
+ -webkit-mask-image:linear-gradient(180deg,transparent,#000 35%,#000 70%,transparent);mask-image:linear-gradient(180deg,transparent,#000 35%,#000 70%,transparent)}
+html.th-han.sw .sw-snacks{position:absolute;left:0;right:0;bottom:0;display:flex;justify-content:center;align-items:flex-end;gap:2px}
+html.th-han.sw .sw-snacks img{width:clamp(64px,21vw,96px);height:auto;filter:drop-shadow(0 4px 6px rgba(52,70,91,.15))}
+html.th-han.sw footer{color:var(--sub)}
+
+@media (max-width:359px){
+ html.th-han.sw .sw-en{font-size:10.5px;letter-spacing:.14em}
+ html.th-han.sw .sw-cd{grid-template-columns:70px 1fr;padding-left:2px}
+ html.th-han.sw .sw-bok{width:78px}
+ html.th-han.sw .sw-cd .cd{gap:5px}
+ html.th-han.sw .sw-cd .cd div,html.th-han.sw .sw-cd .cd b{min-width:42px}
+ html.th-han.sw .sw-cd .cd b{font-size:21px}
+ html.th-han.sw .dr,html.th-han.sw .dy.on .dr{grid-template-columns:92px minmax(0,1fr);column-gap:10px}
+ html.th-han.sw .sw-info{padding-right:96px}
+ html.th-han.sw .sw-tower{width:112px}
+}
+/* 平板、電腦 */
+@media (min-width:760px){
+ html.th-han.sw .hero.sw-hero{height:clamp(440px,52vw,560px);border-radius:0 0 34px 34px}
+ html.th-han.sw .hero.sw-hero .hero-bg{object-position:50% 58%}
+ html.th-han.sw .sw-title{top:48px}
+ html.th-han.sw .sw-nav{justify-content:center;flex-wrap:nowrap}
+ html.th-han.sw .sw-nav a{width:auto;flex:1 1 0;max-width:96px;min-height:66px}
+ html.th-han.sw .sw-top{grid-template-columns:1.25fr 1fr;align-items:stretch}
+ html.th-han.sw .sw-top #wx{grid-column:1/-1}
+ html.th-han.sw .sw-info{padding-right:150px}
+ html.th-han.sw .sw-tower{width:170px}
+ html.th-han.sw #days{grid-template-columns:1fr 1fr}
+ html.th-han.sw #days .dy.on{grid-column:1/-1}
+ html.th-han.sw .dr,html.th-han.sw .dy.on .dr{grid-template-columns:140px minmax(0,1fr)}
+ html.th-han.sw .dr::after,html.th-han.sw .dy.on .dr::after{height:96px}
+ html.th-han.sw #hotel details.sw-hotel>summary{grid-template-columns:200px minmax(0,1fr)}
+ html.th-han.sw .sw-hpic{aspect-ratio:4/3}
+ html.th-han.sw .sw-foot{height:230px;margin-left:0;margin-right:0;border-radius:24px}
+}
+@media (min-width:1100px){
+ html.th-han.sw #days{grid-template-columns:repeat(3,1fr)}
+}
+html.th-han.sw .sw-nav a[data-ic="flight"] i{-webkit-mask-image:url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"%3E%3Cpath d="M21 4 3 11l6.5 2.5L12 20l3-4.5 4.5 3.5z"/%3E%3Cpath d="M9.5 13.5 21 4"/%3E%3C/svg%3E');mask-image:url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"%3E%3Cpath d="M21 4 3 11l6.5 2.5L12 20l3-4.5 4.5 3.5z"/%3E%3Cpath d="M9.5 13.5 21 4"/%3E%3C/svg%3E')}
+html.th-han.sw .sw-nav a[data-ic="plan"] i{-webkit-mask-image:url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"%3E%3Crect x="3.5" y="5" width="17" height="15.5" rx="3"/%3E%3Cpath d="M3.5 10h17M8 3v4M16 3v4"/%3E%3Cpath d="M8 14h.01M12 14h.01M16 14h.01M8 17h.01M12 17h.01"/%3E%3C/svg%3E');mask-image:url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"%3E%3Crect x="3.5" y="5" width="17" height="15.5" rx="3"/%3E%3Cpath d="M3.5 10h17M8 3v4M16 3v4"/%3E%3Cpath d="M8 14h.01M12 14h.01M16 14h.01M8 17h.01M12 17h.01"/%3E%3C/svg%3E')}
+html.th-han.sw .sw-nav a[data-ic="hotel"] i{-webkit-mask-image:url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"%3E%3Cpath d="M3 6v14M3 16h18v4M21 16v-3.5a3 3 0 0 0-3-3h-7.5V16"/%3E%3Ccircle cx="6.8" cy="12.3" r="1.8"/%3E%3C/svg%3E');mask-image:url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"%3E%3Cpath d="M3 6v14M3 16h18v4M21 16v-3.5a3 3 0 0 0-3-3h-7.5V16"/%3E%3Ccircle cx="6.8" cy="12.3" r="1.8"/%3E%3C/svg%3E')}
+html.th-han.sw .sw-nav a[data-ic="phr"] i{-webkit-mask-image:url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"%3E%3Cpath d="M4.5 5h15a1.5 1.5 0 0 1 1.5 1.5v8.5a1.5 1.5 0 0 1-1.5 1.5H10l-5 4v-4h-.5A1.5 1.5 0 0 1 3 15V6.5A1.5 1.5 0 0 1 4.5 5z"/%3E%3Cpath d="M8 10.5h.01M12 10.5h.01M16 10.5h.01"/%3E%3C/svg%3E');mask-image:url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"%3E%3Cpath d="M4.5 5h15a1.5 1.5 0 0 1 1.5 1.5v8.5a1.5 1.5 0 0 1-1.5 1.5H10l-5 4v-4h-.5A1.5 1.5 0 0 1 3 15V6.5A1.5 1.5 0 0 1 4.5 5z"/%3E%3Cpath d="M8 10.5h.01M12 10.5h.01M16 10.5h.01"/%3E%3C/svg%3E')}
+html.th-han.sw .sw-nav a[data-ic="food"] i{-webkit-mask-image:url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"%3E%3Cpath d="M7 3v18M4.5 3v5a2.5 2.5 0 0 0 5 0V3"/%3E%3Cpath d="M17.5 21V3c-2.2 1.6-3 4.6-3 8.5h3"/%3E%3C/svg%3E');mask-image:url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"%3E%3Cpath d="M7 3v18M4.5 3v5a2.5 2.5 0 0 0 5 0V3"/%3E%3Cpath d="M17.5 21V3c-2.2 1.6-3 4.6-3 8.5h3"/%3E%3C/svg%3E')}
+html.th-han.sw .sw-nav a[data-ic="price"] i{-webkit-mask-image:url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"%3E%3Ccircle cx="12" cy="12" r="9"/%3E%3Cpath d="M7.5 8.5 9.2 15.5 12 9.5l2.8 6 1.7-7M6.8 12h10.4"/%3E%3C/svg%3E');mask-image:url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"%3E%3Ccircle cx="12" cy="12" r="9"/%3E%3Cpath d="M7.5 8.5 9.2 15.5 12 9.5l2.8 6 1.7-7M6.8 12h10.4"/%3E%3C/svg%3E')}
+html.th-han.sw .sw-nav a[data-ic="tips"] i{-webkit-mask-image:url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"%3E%3Ccircle cx="12" cy="12" r="9"/%3E%3Cpath d="M12 11v5.5M12 7.8h.01"/%3E%3C/svg%3E');mask-image:url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"%3E%3Ccircle cx="12" cy="12" r="9"/%3E%3Cpath d="M12 11v5.5M12 7.8h.01"/%3E%3C/svg%3E')}
+html.th-han.sw .sw-nav a[data-ic="todo"] i{-webkit-mask-image:url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"%3E%3Crect x="3.5" y="3.5" width="17" height="17" rx="3.5"/%3E%3Cpath d="m8 12.2 2.8 2.8 5.4-6"/%3E%3C/svg%3E');mask-image:url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"%3E%3Crect x="3.5" y="3.5" width="17" height="17" rx="3.5"/%3E%3Cpath d="m8 12.2 2.8 2.8 5.4-6"/%3E%3C/svg%3E')}
+html.th-han.sw .sw-nav a[data-ic="apps"] i{-webkit-mask-image:url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"%3E%3Crect x="4" y="4" width="6.5" height="6.5" rx="1.8"/%3E%3Crect x="13.5" y="4" width="6.5" height="6.5" rx="1.8"/%3E%3Crect x="4" y="13.5" width="6.5" height="6.5" rx="1.8"/%3E%3Crect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.8"/%3E%3C/svg%3E');mask-image:url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"%3E%3Crect x="4" y="4" width="6.5" height="6.5" rx="1.8"/%3E%3Crect x="13.5" y="4" width="6.5" height="6.5" rx="1.8"/%3E%3Crect x="4" y="13.5" width="6.5" height="6.5" rx="1.8"/%3E%3Crect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.8"/%3E%3C/svg%3E')}
+html.th-han.sw .sw-ical{-webkit-mask-image:url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"%3E%3Crect x="3.5" y="5" width="17" height="15.5" rx="3"/%3E%3Cpath d="M3.5 10h17M8 3v4M16 3v4"/%3E%3Cpath d="M8 14h.01M12 14h.01M16 14h.01M8 17h.01M12 17h.01"/%3E%3C/svg%3E');mask-image:url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"%3E%3Crect x="3.5" y="5" width="17" height="15.5" rx="3"/%3E%3Cpath d="M3.5 10h17M8 3v4M16 3v4"/%3E%3Cpath d="M8 14h.01M12 14h.01M16 14h.01M8 17h.01M12 17h.01"/%3E%3C/svg%3E')}
