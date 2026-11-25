@@ -23,6 +23,22 @@
 - 純改 `HANDOFF.md`（沒動網頁、JSON、`app.js`）時不需要加 `sw.js` 的 `VERSION`，那只在網頁內容變動時才有意義。
 - 京阪每日圖示：有 `choice` 的日子，選項若沒寫 `stk` 要退回當天的 `stk`（曾因此抓 `ic-undefined.svg`，9/9 圖示消失）。圖示出問題先查檔名，不要先怪快取。
 
+## 五張行程插畫 Icon 整合（2026/11/26，使用者提供 `icons.zip`；**首頁部分待使用者決定**）
+使用者原始要求：把 5 張 PNG（`seoul`、`hong-kong-zhuhai-macau`、`tokyo`、`kyoto-osaka`、`tokyo-camper`，各 512×512 RGBA，已是圓角＋透明邊的成品）依英文檔名對應各行程；**保留原插畫、色彩、圓角、比例，不重繪、不用 SVG／Emoji**；各入口 Icon 顯示尺寸統一；手機電腦都要能用；點 Icon 直接進行程；不動行程資料、功能與各頁主題；完成後確認路徑與連結。
+
+- 對應：`seoul`→`./?t=seoul-2027`、`hong-kong-zhuhai-macau`→`hk.html`、`tokyo`→`tokyo.html`、`kyoto-osaka`→`keihan.html`、`tokyo-camper`→`campervan.html`。
+- **已完成並推送**
+  - `images/home-journal/` 放了 5 張原檔（已用 `cmp` 確認與 zip 逐位元相同；`kyoto-osaka.png` 是這次新增）。
+  - `travel-private` 的 `index.html`（TOB 行程卡）：`TIC` 改指這些 PNG（t1 首爾、t2 港珠澳、t3 東京、t4 京阪），統一 52px；`.tic` 拿掉 `overflow:hidden`／`border-radius`／`box-shadow`（會裁掉 PNG 自帶的圓角），改用 `drop-shadow`；東京卡（t3）多一顆露營車入口（`TIX`），`sw.js` V 101→102。細節見該 repo 的 `HANDOFF.md`。
+- **未完成：公開首頁 `home.html`（卡在和平行工作階段的衝突）**
+  - 我做的版本（露營車從 42px 小圖 `.subtrip` 改成與其他行程同尺寸的獨立入口卡 `.entry`＋`.stamp`；總覽列 `01 — 04`；`home-journal.css` 的 `.journal` 桌面改 `repeat(auto-fit,minmax(250px,1fr))`；`sw.js` CORE 加 `kyoto-osaka.png`）基於 `65f8dd5`，**只在遠端分支 `icons-home-unified`**，沒進 `main`。
+  - 原因：我要推送時，`main` 已被另一個工作階段推了 3 個提交（「Update family travel journal home to v3 layout」、HZM Retro v1.1、「Refine home journal v3 to match reference mock」）。v3 的 `home.html`／`home-journal.css`／`journal-v3.css`／`journal-v3b.css` 大改，入口圖改用 `images/journal-v3/*.webp`（294×250、181×76 等**裁切過的另一份圖，不是使用者的 PNG**），所以 rebase 會衝突（`home.html`、`sw.js`），且直接疊上去會蓋掉 v3 版面。我沒有強推、沒有改 v3。
+  - **待使用者三選一**（尚未回覆）：① 保留 v3 版面，入口圖換回 `images/home-journal/*.png` 原圖、露營車與其他行程同尺寸（AI 建議，符合原始要求）；② 維持 v3 現況（首頁就不是使用者的 PNG）；③ 放棄 v3，改用 `icons-home-unified`。
+  - 若選①：v3 的 `.stamp` 版型是為非正方形 webp 設計的，換 PNG 時要改成 `aspect-ratio:1;object-fit:contain`，不能再裁切或加圓角遮罩；露營車要和其他卡同一個 `.stamp` 尺寸；`img src` 用 `images/home-journal/<檔名>.png`；`sw.js` 的 `VERSION` 加 1，CORE 補 `kyoto-osaka.png`（若首頁要用）。
+- **京阪不放公開首頁是刻意的**（本檔「新增旅程」與 README：`keihan.html` 不放進 `trips/index.json`，只從私人訂單頁連過來）。`kyoto-osaka.png` 因此只用在 TOB 卡，不要為了「五張都出現」就加進公開總覽，除非使用者明講。
+- 驗證方式：Playwright（`python3 -I`），首頁用 `http.server`；TOB 用 `file://` 開 `index.html`，並用 `context.route` 把 `https://jade19880309.github.io/travel-public/…` 對應到本機檔案（沙盒連不到外網）。檢查項：每張 `img.complete && naturalWidth>0`、各寬度（360／390／820／1280）`scrollWidth-clientWidth==0`、`pageerror` 為空、各連結 `href` 與目標檔存在。TOB 要先 `go('home')` 才有卡片。**沒有在 iPhone 實機確認。**
+- 踩到的坑：推送前務必 `git fetch`——這個 repo 常有別的工作階段同時推送（這次就撞到）；淺 clone 要 rebase 得 `git fetch --depth=50 origin main`；撞到時不要強推。
+
 ## HZM Retro v1.0／v1.1：港珠澳港片復古風（2026/11/26）
 - `theme-hzm-retro.css` 只由 `hk.html` 載入（`<link id="theme-hzm-retro">`，在 `theme-bay.css` 之後），規則都加 `html.th-bay.hzm-retro` 前綴；`theme-bay.css`、`app.js`、`style.css`、`trips/hk-2027.json` 都沒改。
 - 封面在 `hk.html` 載入資料後才換成 `images/hk-2027/retro/hero.webp`（JSON 的 `hero.img` 仍是水墨圖），分享縮圖 `og.jpg` 沒換。
