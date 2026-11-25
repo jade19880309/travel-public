@@ -315,3 +315,8 @@ html.th-fuji{--bg:#f8f2e3;--card:#fffdf5;--ink:#344b3e;--sub:#626d59;--line:#d7c
 .th-fuji .hero.bare .hero-bg{border-color:#b7bca3}
 .th-fuji .hero .go{background:#527b59;border:1.5px solid #344b3e;box-shadow:var(--pop)}
 .th-fuji .note{background:#f5e8c9;border-color:#b58a43}
+
+/* Original woodland charms */
+.th-fuji .hero.bare::after{content:"";display:block;position:static;width:min(240px,75%);height:72px;margin:12px auto 0;background:url(images/tokyo-2027/storybook-charms.svg) center/contain no-repeat;pointer-events:none}
+.th-fuji section h2::after{height:24px;min-width:48px;border:0;background:url(images/tokyo-2027/storybook-charms.svg) right center/80px auto no-repeat;opacity:.85}
+.th-fuji footer::before{content:"";display:block;height:72px;background:url(images/tokyo-2027/storybook-charms.svg) center/contain no-repeat;margin:8px auto}
