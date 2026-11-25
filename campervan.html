@@ -113,6 +113,10 @@ ul{margin:0;padding:8px 0 8px 20px}li{margin:7px 0;font-size:15px}li::marker{col
 .lk{display:flex;flex-wrap:wrap;gap:8px;padding:12px 0 4px}
 .lk a{display:inline-block;color:var(--ink);background:#fff;border:2px solid var(--ink);border-radius:999px;padding:5px 14px;font-size:14px;font-weight:500;text-decoration:none;box-shadow:var(--pop2);transition:transform .15s,box-shadow .15s}
 .mapcard .lk a{background:var(--green);color:#fff}
+.seg{display:grid;grid-template-columns:1fr 1fr;margin:0 0 16px;border:2px solid var(--ink);border-radius:999px;overflow:hidden;box-shadow:var(--pop2);background:#fff}
+.seg button{font:inherit;font-size:15px;font-weight:700;padding:11px 8px;border:0;background:#fff;color:var(--ink);cursor:pointer}
+.seg button+button{border-left:2px solid var(--ink)}
+.seg button.on{background:var(--green);color:#fff}
 .lk a[data-bf].on{background:var(--green);color:#fff}
 .route-legend{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px;padding:6px 0;font-size:12.5px}
 .route-legend a{display:inline-flex;align-items:center;gap:6px;color:var(--ink);background:#fff;border:1.5px solid var(--ink);border-radius:999px;padding:2px 10px 2px 3px;text-decoration:none}
@@ -179,7 +183,8 @@ const D={"zh": {"title": "關東露營車自駕旅行", "sub": "成田 → 輕�
 const ID=['ov','d1','d2','d3','d4','mp','rv'];
 const U={zh:{tabs:['總覽','DAY 1','DAY 2','DAY 3','DAY 4','里程・地圖','RV Park・酒藏'],stay:'今晚住宿',route:'路線資訊',sch:'行程',ntl:'小提醒',hint:'點圓點可標記「已確認」，只存在這個瀏覽器',zoom:'點地圖可放大',prev:'上一天',next:'下一天',ov:'基本資訊',fl:'航班',pr:'旅遊原則',nv:'車輛使用指南',map:'行車路線圖',ms:'里程估算',ok:'已確認'},
 ja:{tabs:['概要','DAY 1','DAY 2','DAY 3','DAY 4','距離・地図','RVパーク・酒蔵'],stay:'今夜の宿泊',route:'ルート情報',sch:'行程',ntl:'ちょっとした注意点',hint:'丸をタップすると「確認済み」になります（この端末のみ）',zoom:'地図をタップで拡大',prev:'前へ',next:'次へ',ov:'基本情報',fl:'フライト',pr:'旅行の方針',nv:'車両利用ガイド',map:'走行ルート概略図',ms:'走行距離の目安',ok:'確認済み'}};
-let lang='zh',cur='ov',done={};try{lang=localStorage.getItem('lg')||'zh';done=JSON.parse(localStorage.getItem('dn')||'{}')}catch(e){}
+let lang='zh',cur='ov',done={},rvSub='rv';try{rvSub=localStorage.getItem('rvs')||'rv'}catch(e){}
+function rvSet(v){rvSub=v;try{localStorage.setItem('rvs',v)}catch(e){}render();const t=document.querySelector('.seg');if(t&&t.getBoundingClientRect().top<0)t.scrollIntoView({block:'start'})}try{lang=localStorage.getItem('lg')||'zh';done=JSON.parse(localStorage.getItem('dn')||'{}')}catch(e){}
 const $=s=>document.querySelector(s),kv=r=>r.map(([a,b])=>`<div class="kv"><b>${a}</b><span>${b}</span></div>`).join('');
 const notes=(L,u,a)=>a&&a.length?`<h3>${u.ntl}</h3>${a.map(([k,v])=>`<div class="note"><b>${k}</b>${v}</div>`).join('')}`:'';
 const tbl=(h,r)=>`<div class="fw"><table class="tb"><tr>${h.map(x=>`<th>${x}</th>`).join('')}</tr>${r.map(a=>`<tr>${a.map(c=>`<td>${c}</td>`).join('')}</tr>`).join('')}</table></div>`;
@@ -202,7 +207,7 @@ function rv(L){let last='';return L.rv.map(r=>{const g=r.d!=last?(last=r.d,`<h3>
 function panel(L,u){switch(cur){
 case 'ov':return `<div class="stats"><div><strong>04</strong><small>${lang==='zh'?'旅行天數':'日間'}</small></div><div><strong>02</strong><small>${lang==='zh'?'露營車':'車両'}</small></div><div><strong>09</strong><small>${lang==='zh'?'同行人數':'人数'}</small></div><div><strong>550–685</strong><small>km / ${lang==='zh'?'每台粗估':'1台概算'}</small></div></div><h3>${u.ov}</h3><div class="card">${kv(L.basic)}</div>${vehicles()}<h3>${u.fl} <span class="pg">${lang==='zh'?'交接參考':'受取・返却の参考'}</span></h3><div class="card fw">${tbl(L.fh,L.frows)}</div><h3>${u.pr}</h3><div class="card"><ul>${L.princ.map(x=>`<li>${x}</li>`).join('')}</ul></div><h3>${u.nv}</h3><div class="spec-grid">${L.notes.ov.map(([k,v],i)=>`<article><small>0${i+1} / CAMPER GUIDE</small><h4>${k}</h4><p>${v}</p></article>`).join('')}</div>`;
 case 'mp':return `<h3 style="margin-top:0">${u.ms}</h3><div class="card">${tbl(L.mh,L.mrows)}</div><p class="hint">${L.mnote}</p>${routeMap("mp")}`;
-case 'rv':return `<div class="lk" style="padding-top:0;margin-bottom:10px"><a href="#" onclick="event.preventDefault();$('#rvp').scrollIntoView({behavior:'smooth',block:'start'})">🚐 RV Park</a><a href="#" onclick="event.preventDefault();$('#brew').scrollIntoView({behavior:'smooth',block:'start'})">🍶 ${lang==='zh'?'酒藏巡禮':'酒蔵めぐり'}</a></div><div class="ph" id="rvp"><span class="tag">RV PARK</span><h2>${L.rvt}</h2></div><p class="hint" style="margin-top:-8px">${L.rvs}</p>${rv(L)}<div style="height:22px"></div>${typeof breweries==='function'?breweries():'<p>Guide unavailable / 資料載入失敗</p>'}`;
+case 'rv':return `<div class="seg"><button type="button" class="${rvSub==='rv'?'on':''}" onclick="rvSet('rv')">🚐 RV Park</button><button type="button" class="${rvSub==='brew'?'on':''}" onclick="rvSet('brew')">🍶 ${lang==='zh'?'酒藏巡禮':'酒蔵めぐり'}</button></div>`+(rvSub==='brew'?(typeof breweries==='function'?breweries():'<p>Guide unavailable / 資料載入失敗</p>'):`<div class="ph" id="rvp"><span class="tag">RV PARK</span><h2>${L.rvt}</h2></div><p class="hint" style="margin-top:-8px">${L.rvs}</p>${rv(L)}`);
 default:return day(L,u,cur)}}
 function render(){const L=D[lang],u=U[lang],i=ID.indexOf(cur);document.documentElement.lang=lang=='ja'?'ja':'zh-Hant';document.body.dataset.p=cur;
 $('#ti').textContent=L.title;$('#su').textContent=L.sub;$('#de').textContent=L.desc;
@@ -239,7 +244,7 @@ addEventListener('keydown',e=>{if(e.key==='Escape')zmClose()});addEventListener(
 document.querySelectorAll('.lang button').forEach(b=>b.onclick=()=>{lang=b.dataset.l;try{localStorage.setItem('lg',lang)}catch(e){}render()});
 let sx,sy;addEventListener('touchstart',e=>{sx=e.touches[0].clientX;sy=e.touches[0].clientY},{passive:true});
 addEventListener('touchend',e=>{if($('#zm').style.display=='block'||e.target.closest('.fw,.tabs,.mapcard'))return;const dx=e.changedTouches[0].clientX-sx,dy=e.changedTouches[0].clientY-sy;if(Math.abs(dx)>80&&Math.abs(dy)<40){const i=ID.indexOf(cur)+(dx<0?1:-1);if(i>=0&&i<ID.length)go(ID[i])}},{passive:true});
-const h=location.hash.slice(1);if(ID.includes(h))cur=h;else if(h==='brew')cur='rv';render();if(h==='brew')setTimeout(()=>{const b=$('#brew');if(b)b.scrollIntoView()},50);
+const h=location.hash.slice(1);if(ID.includes(h))cur=h;else if(h==='brew'){cur='rv';rvSub='brew'}render();
 if('serviceWorker' in navigator&&/^https?:/.test(location.protocol))navigator.serviceWorker.register('sw.js').catch(()=>{});
 document.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest('.upd');if(b){b.classList.add('spin');setTimeout(()=>b.classList.remove('spin'),2800)}});
 </script><script src="upd.js"></script></body></html>
