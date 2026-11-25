@@ -180,7 +180,7 @@ h3::after{border-top:1px dashed #a9ad8f}
 
 .hero::after{content:"";display:block;height:72px;width:min(240px,75%);margin:12px auto 0;background:url(images/tokyo-2027/storybook-charms.svg) center/contain no-repeat;pointer-events:none}
 h3::after{height:24px;min-width:48px;border:0;background:url(images/tokyo-2027/storybook-charms.svg) right center/80px auto no-repeat;opacity:.85}
-</style></head><body>
+</style><style>.ghibli-still{margin:14px auto 20px;width:min(100%,680px);padding:8px 8px 6px;box-sizing:border-box;background:#fffdf5;color:#344b3e;border:1px solid #b7bca3;border-radius:13px;box-shadow:0 5px 14px #344b3e20;text-align:center}.ghibli-still a{display:block}.ghibli-still img{display:block;width:100%;height:auto;border-radius:7px}.ghibli-still img[hidden]{display:none}.ghibli-still figcaption{font-size:10px;line-height:1.5;padding:6px 2px 0;color:#626d59}.hero .ghibli-still{width:calc(100% - 24px);max-width:680px}</style></head><body>
 <div class="bar"><div class="wrap"><nav class="tabs" id="tabs"></nav><button class="upd" data-upd type="button" aria-label="檢查更新" title="檢查更新"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 11a8 8 0 0 0-14.3-4.9L4 8"/><path d="M4 3.5V8h4.5"/><path d="M4 13a8 8 0 0 0 14.3 4.9L20 16"/><path d="M20 20.5V16h-4.5"/></svg></button><div class="lang"><button data-l="zh">中文</button><button data-l="ja">日本語</button></div></div></div>
 <div class="wrap"><header class="hero"><span class="dpill">2027.07.02–07.05｜4 DAYS｜2 CAMPERS</span><figure class="bnr"><img src="images/tokyo-2027/banner-campervan.svg" alt=""><figcaption><b>PLAN A-1</b>JAPAN CAMPER ROAD TRIP</figcaption></figure><h1 id="ti"></h1><div class="sub" id="su"></div><div class="desc" id="de" hidden></div></header>
 <main id="m"></main><footer class="foot">PLAN A-1 &nbsp; / &nbsp; CAMPER FIELD NOTES &nbsp; / &nbsp; 2027</footer></div><div id="zm"><img alt=""></div>
@@ -233,4 +233,4 @@ addEventListener('touchend',e=>{if($('#zm').style.display=='block'||e.target.clo
 const h=location.hash.slice(1);if(ID.includes(h))cur=h;render();
 if('serviceWorker' in navigator&&/^https?:/.test(location.protocol))navigator.serviceWorker.register('sw.js').catch(()=>{});
 document.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest('.upd');if(b){b.classList.add('spin');setTimeout(()=>b.classList.remove('spin'),2800)}});
-</script><script src="upd.js"></script></body></html>
+</script><script src="upd.js"></script><script src="ghibli-travel.js"></script></body></html>
