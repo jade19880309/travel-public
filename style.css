@@ -142,6 +142,10 @@ details[open].card>summary::after{transform:rotate(-135deg);top:31px}
 .dy.on .dr{background:linear-gradient(135deg,var(--red),var(--red2));color:#fff}
 .dy.on .dr b{color:#fff}
 .dr.go::after{content:"";width:10px;height:10px;border-right:2px solid var(--gold);border-bottom:2px solid var(--gold);transform:rotate(-45deg);top:28px}
+.gcard .dr::after{display:none}.gcard .dr .ds{font-weight:700;color:var(--green)}.gcard .gol{font-style:normal;color:var(--gold)}
+.gdays{border-top:1px dashed var(--line);padding:4px 12px 8px}
+.gdays a{display:grid;grid-template-columns:62px 1fr 18px;gap:8px;align-items:center;padding:10px 4px;border-bottom:1px dotted var(--line);color:var(--ink);text-decoration:none;font-size:15px;line-height:1.45}
+.gdays a:last-child{border-bottom:0}.gdays a b{font-variant-numeric:tabular-nums}.gdays a i{font-style:normal;color:var(--gold);font-weight:700}
 .dr .pill.gol{background:var(--green);color:#fff;border-color:var(--green)}
 .dy.on .dr::after{border-color:#fff;transform:rotate(-135deg);top:30px}
 .dy.on .dr .pill{background:#fff;color:var(--red)}.dy.on .dr .pill.tw{color:var(--green)}
