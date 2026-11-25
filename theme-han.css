@@ -189,7 +189,7 @@ html.th-han.sw{--bg:#F5F0E7;--card:#FFFDFA;--ink:#34465B;--sub:#5E6B78;--line:#E
  --r:18px;--sh:0 1px 2px rgba(52,70,91,.05),0 10px 24px -14px rgba(52,70,91,.28);
  --sans:"Noto Sans TC","Noto Sans KR",system-ui,-apple-system,"PingFang TC",sans-serif;--serif:"Noto Serif TC","Songti TC",serif}
 html.th-han.sw body{font-family:var(--sans);color:var(--ink);
- background:url('images/seoul-2027/decor/hanji-texture.webp') 0 0/512px 512px repeat,var(--bg)}
+ background:url('images/seoul-2027/decor/hanji-texture.jpg') 0 0/512px 512px repeat,var(--bg)}
 html.th-han.sw [lang="ko"]{font-family:"Noto Sans KR",var(--sans)}
 html.th-han.sw header{background:transparent;border:0;box-shadow:none;pointer-events:none}
 html.th-han.sw header .net{pointer-events:auto}
@@ -276,10 +276,10 @@ html.th-han.sw .dy{counter-increment:swd;position:relative;background:var(--card
  --tb:#F0D9D2;--tc:#A15E54;--im:none;--ib:#fff}
 html.th-han.sw .dy+.dy{margin-top:0}
 html.th-han.sw #dy0{--tb:#F2DCD5;--tc:#A15E54;--im:url('images/seoul-2027/decor/airplane.png');--ib:linear-gradient(180deg,#E3EAF3,#F6EEF0)}
-html.th-han.sw #dy1{--tb:#DCE5EF;--tc:#4B6886;--im:url('images/seoul-2027/decor/street-food.webp')}
-html.th-han.sw #dy2{--tb:#DCE8E0;--tc:#4A6B5A;--im:url('images/seoul-2027/decor/winter-travel.webp')}
-html.th-han.sw #dy3{--tb:#F3E4CD;--tc:#90672F;--im:url('images/seoul-2027/decor/palace.webp')}
-html.th-han.sw #dy4{--tb:#E6E0EF;--tc:#6A5888;--im:url('images/seoul-2027/decor/hanok-street.webp')}
+html.th-han.sw #dy1{--tb:#DCE5EF;--tc:#4B6886;--im:url('images/seoul-2027/decor/street-food.jpg')}
+html.th-han.sw #dy2{--tb:#DCE8E0;--tc:#4A6B5A;--im:url('images/seoul-2027/decor/winter-travel.jpg')}
+html.th-han.sw #dy3{--tb:#F3E4CD;--tc:#90672F;--im:url('images/seoul-2027/decor/palace.jpg')}
+html.th-han.sw #dy4{--tb:#E6E0EF;--tc:#6A5888;--im:url('images/seoul-2027/decor/hanok-street.jpg')}
 html.th-han.sw #dy5{--tb:#E2E8D8;--tc:#5A6B44;--im:url('images/seoul-2027/decor/suitcase.png');--ib:linear-gradient(180deg,#EEF2EA,#FBF8F2)}
 html.th-han.sw .dr,html.th-han.sw .dy.on .dr{display:grid;grid-template-columns:112px minmax(0,1fr);grid-template-rows:auto auto 1fr;column-gap:14px;row-gap:6px;align-items:start;
  min-height:0;padding:0 14px 14px 0;background:none;color:var(--ink);text-align:left}

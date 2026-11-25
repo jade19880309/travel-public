@@ -15,7 +15,7 @@
  // ===== 封面：冬日韓屋插畫＋HTML 標題（標題文字取自行程資料） =====
  var hero=$('#hero'),bg=$('.hero-bg',hero);
  hero.classList.add('sw-hero');
- if(bg){bg.src=IMG+'hero-winter.webp';bg.alt=H.alt?'首爾封面：雪中的北村韓屋與南山首爾塔':'';bg.setAttribute('fetchpriority','high')}
+ if(bg){var old=bg.getAttribute('src');bg.onerror=function(){bg.onerror=null;bg.removeAttribute('srcset');bg.src=old};bg.sizes='(min-width:1000px) 1000px, 100vw';bg.srcset=IMG+'hero-winter-m.jpg 1000w, '+IMG+'hero-winter.jpg 1672w';bg.src=IMG+'hero-winter.jpg';bg.alt=H.alt?'首爾封面：雪中的北村韓屋與南山首爾塔':'';bg.setAttribute('fetchpriority','high')}
  var ttl=H.title||M.title||'';
  hero.insertAdjacentHTML('beforeend','<div class="sw-title"><span class="sw-ko" lang="ko">서울</span><h1><span class="sw-zh">首爾</span><em lang="en">Seoul</em></h1><p class="sw-ribbon">'+ttl+'</p>'+(H.eyebrow?'<p class="sw-en">'+H.eyebrow+'</p>':'')+'</div>');
 
@@ -59,5 +59,5 @@
 
  // ===== 頁尾：首爾街景與冬日小吃插畫 =====
  var ft=$('footer');
- if(ft)ft.insertAdjacentHTML('beforebegin','<div class="sw-foot" aria-hidden="true"><img class="sw-sky" src="'+IMG+'seoul-skyline.webp" alt="" loading="lazy"><div class="sw-snacks">'+deco('eomuk.png','',true)+deco('hotteok.png','',true)+deco('coffee.png','',true)+deco('mittens.png','',true)+'</div></div>');
+ if(ft)ft.insertAdjacentHTML('beforebegin','<div class="sw-foot" aria-hidden="true"><img class="sw-sky" src="'+IMG+'seoul-skyline.jpg" alt="" loading="lazy"><div class="sw-snacks">'+deco('eomuk.png','',true)+deco('hotteok.png','',true)+deco('coffee.png','',true)+deco('mittens.png','',true)+'</div></div>');
 })();

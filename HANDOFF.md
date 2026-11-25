@@ -27,6 +27,7 @@
 - 做法：`index.html` 在 `app.js` 載入後，只有 `t=seoul-2027` 才載入 `seoul-winter.js`；它只搬動／包裝 app.js 畫好的元素（封面換 `hero-winter.webp`＋HTML 標題、功能列從頁首搬到封面下方並改 sticky 圖示鍵、倒數與日期移到 `.sw-top` 卡片、區塊標題去表情符號加小插畫、住宿卡插入 `hotel-2.jpg`、頁尾插畫），並在 `<html>` 加 `sw` class。樣式在 `theme-han.css` 最後的「Seoul Winter」區塊，全部以 `html.th-han.sw` 開頭。`app.js`、`style.css`、`trips/seoul-2027.json` 都沒改。
 - 每日行程卡圖片是 CSS 依 `#dy0`～`#dy5` 指定（飛機／廣藏小吃／冬季行李／景福宮／韓屋巷弄／行李箱），只是裝飾，不代表新增景點；日數變動要改這段。「Day N」用 CSS counter。
 - 恢復舊版：`?theme=classic`（存 localStorage `seoulTheme`），`?theme=winter` 改回。
+- 2026/11/26 v170：使用者 iPhone 上封面 `hero-winter.webp` 顯示破圖（同資料夾的 PNG 正常）。原因未確認（可能該機 Safari 不解 WebP，例如鎖定模式），改用同圖轉出的 JPEG：封面 `hero-winter.jpg`／`hero-winter-m.jpg`（srcset），每日卡、頁尾、韓紙紋理也改 `.jpg`；封面載入失敗時退回舊的 `hero-snow.jpg`。WebP 原檔保留。**待使用者確認 iPhone 是否已正常**；首頁 `home.html` 的 `images/journal-v3/*.webp` 若在該機也破圖，原因相同。
 - 素材在 `images/seoul-2027/decor/`（`new-year.webp` 有上傳但沒用到）；示意圖沒有放進 repo。示意圖裡的人數、氣溫、行程細項、航班時間都是排版示意，**沒有寫進網站**。
 - 測試：Playwright 320／375／390／430／768／1280／1440 無橫向溢出、無 pageerror、無 404；展開日期、功能列跳轉、底部日期列、換匯、字體、待辦勾選、飯店相片、離線重新整理、`?theme=classic` 皆正常；其他旅程頁無錯誤。**未測**：GitHub Pages 線上畫面、iPhone 實機（含瀏海安全區域、毛筆／手寫字體在 iOS 的實際字型，`Seoul`／`Day N` 用的是 Snell Roundhand 等系統草寫字）。
 
