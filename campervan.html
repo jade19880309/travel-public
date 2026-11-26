@@ -177,6 +177,10 @@ ul{margin:0;padding:8px 0 8px 20px}li{margin:7px 0;font-size:15px}li::marker{col
 .onsen .tel{color:var(--seal);font-weight:500}
 .onsen .lk{padding:8px 0 2px}
 
+.osph{display:flex;gap:8px;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;margin:10px -2px 4px;padding:2px 2px 8px}
+.osph img{flex:0 0 auto;width:min(72%,260px);height:150px;object-fit:cover;border:2px solid var(--ink);border-radius:10px;box-shadow:var(--pop2);scroll-snap-align:start;cursor:zoom-in;background:var(--skyl)}
+.osph .osn{flex:0 0 auto;align-self:center;font-size:11px;color:var(--sub);writing-mode:horizontal-tb}
+.os-cap{margin:0 0 6px;font-size:11.5px;color:var(--sub)}
 /* 上一天／下一天 */
 .pn{display:flex;justify-content:space-between;gap:12px;margin-top:34px}
 .pn button{flex:1;font:inherit;font-size:15px;font-weight:500;color:var(--ink);background:#fff;border:2px solid var(--ink);border-radius:16px;box-shadow:var(--pop2);padding:12px 14px;cursor:pointer;transition:transform .15s,box-shadow .15s}
@@ -231,6 +235,7 @@ function routeMap(k){const z=lang==='zh',rs=GR[k];if(!rs)return '';const ids=[..
 const VEHICLE_PHOTOS={"WOHN": "images/campervan/van-wohn.jpg", "MARS": "images/campervan/van-mars.jpg"};
 function vehicles(){let z=lang==='zh';return `<h3>${z?'露營車介紹':'車両紹介'}</h3><div class="vehicle-grid">${['WOHN','MARS'].map(v=>`<div class="vehicle-tile"><img class="vehicle-photo" src="${VEHICLE_PHOTOS[v]}" alt="${v}"/><small>RENTAL CAMPERVAN</small><strong>${v}</strong><p class="hint">${z?'業者提供車輛照片':'レンタル会社提供の車両写真'}</p></div>`).join('')}</div><div class="lk"><a href="https://sites.google.com/y-machino.com/camper-japan-twhk/ホーム" target="_blank" rel="noopener">${z?'查看業者官方車輛介紹':'レンタル会社公式サイト'}</a></div>`}
 function prog(k,n){let c=0;for(let j=0;j<n;j++)if(done[k+j])c++;return c}
+const ONSEN_N={1:6,2:5,3:5,4:6,5:7,6:2};
 const ONSEN_HINT={d1:['7/2（五）輕井澤・佐久一帶，3 處備選。營業時間與費用為整理資料，出發前請再向各設施確認。','7/2（金）軽井沢・佐久エリア、3か所の候補。営業時間・料金は調査メモのため、出発前に各施設でご確認ください。'],d2:['7/3（六）富士山周邊，3 處備選（泰平館為備案）。營業時間與費用為整理資料，出發前請再向各設施確認。','7/3（土）富士山周辺、3か所の候補（泰平館は予備）。営業時間・料金は調査メモのため、出発前に各施設でご確認ください。']};
 const ONSEN={d1:[
 {n:1,q:'星野温泉 トンボの湯 軽井沢',zh:{t:'星野溫泉 蜻蜓之湯',a:'長野・輕井澤',c:[],r:['10:00–22:00（最終受付 21:15），無休','大人 <strong>¥1,550</strong>（4～11 月）','250 台，部分收費','源泉掛流、有三溫暖；刺青須貼專用貼紙遮蓋；借毛巾組 ¥350']},ja:{t:'星野温泉 トンボの湯',a:'長野・軽井沢',c:[],r:['10:00～22:00（最終受付 21:15）、無休','大人 <strong>¥1,550</strong>（4～11月）','250台（一部有料）','源泉かけ流し、サウナあり。タトゥーは専用シールで隠す必要あり。タオルセット貸出 ¥350']}},
@@ -240,8 +245,9 @@ d2:[
 {n:4,q:'富士眺望の湯 ゆらり 鳴沢村',zh:{t:'富士眺望之湯 ゆらり',a:'山梨・鳴澤村',c:[['夏季時間待確認','ck']],r:['10:00–22:00（最終入館 21:00）','大人 <strong>¥1,700</strong>（19 點後 ¥1,500），含浴巾和毛巾','130 台，免費','16 種浴池、可看富士山；夏季營業時間定義不明，出發前確認']},ja:{t:'富士眺望の湯 ゆらり',a:'山梨・鳴沢村',c:[['出発前に要確認','ck']],r:['10:00～22:00（最終入館 21:00）','大人 <strong>¥1,700</strong>（19時以降 ¥1,500）、バスタオル・タオル付き','130台・無料','16種類の浴槽、富士山が見える。夏季の営業時間は定義が不明確のため、出発前に要確認']}},
 {n:5,q:'富士山溶岩の湯 泉水 富士吉田',zh:{t:'富士山熔岩之湯 泉水',a:'山梨・富士吉田',c:[],r:['10:00–23:00（最終入館 22:30）；早風呂 6:00–9:00（週六有開）','大人 <strong>¥900</strong>','約 128 台，大型車可停，免費','有一份報告說是人工溫泉，露天可看富士山']},ja:{t:'富士山溶岩の湯 泉水',a:'山梨・富士吉田',c:[],r:['10:00～23:00（最終入館 22:30）。朝風呂 6:00～9:00（土曜は営業）','大人 <strong>¥900</strong>','約128台、大型車可、無料','人工温泉という報告が1件あり。露天から富士山が見える']}},
 {n:6,q:'泰平館 河口湖 日帰り温泉',zh:{t:'泰平館',a:'山梨・河口湖',c:[['備案','bk']],r:['13:00–19:00（受付到 18:00）','大人 <strong>¥1,100</strong>','有免費停車場，未確認能否停露營車','僅限電話詢問或預約 <a class="tel" href="tel:0555721849">0555-72-1849</a>；浴場看不到富士山']},ja:{t:'泰平館',a:'山梨・河口湖',c:[['予備候補','bk']],r:['13:00～19:00（受付は18:00まで）','大人 <strong>¥1,100</strong>','無料駐車場あり。キャンピングカーが停められるかは未確認','電話での問い合わせ・予約のみ <a class="tel" href="tel:0555721849">0555-72-1849</a>。浴場から富士山は見えない']}}]};
+function strip(n,t){return `<div class="osph">${Array.from({length:ONSEN_N[n]},(_,i)=>`<img src="images/campervan/onsen/o${n}-${i+1}.webp" alt="${t} ${i+1}" loading="lazy" onclick="zmOpen(this.src)">`).join('')}</div>`}
 function onsen(k){const list=ONSEN[k];if(!list)return '';const z=lang==='zh',lb=z?['時間','費用','停車','備註']:['時間','料金','駐車','備考'],g=q=>'https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(q+', Japan');
-return `<h3>${z?'日歸溫泉':'日帰り温泉'}</h3><p class="hint" style="margin-top:-6px">${ONSEN_HINT[k][z?0:1]}</p>`+list.map(o=>{const t=o[z?'zh':'ja'];return `<div class="card onsen"><div class="os-h"><b class="os-n">${o.n}</b><div><h4>${t.t}</h4><div class="os-m"><span>${t.a}</span>${t.c.map(([x,c])=>`<span class="${c}">${x}</span>`).join('')}</div></div></div>${kv(lb.map((l,i)=>[l,t.r[i]]))}<div class="lk"><a href="${g(o.q)}" target="_blank" rel="noopener">↗ Google Maps ${z?'導航':'ナビ'}</a></div></div>`}).join('')}
+return `<h3>${z?'日歸溫泉':'日帰り温泉'}</h3><p class="hint" style="margin-top:-6px">${ONSEN_HINT[k][z?0:1]}</p><p class="os-cap">${z?'📷 照片為參考圖，點擊可放大、左右滑動瀏覽':'📷 写真は参考画像です。タップで拡大、左右にスワイプ'}</p>`+list.map(o=>{const t=o[z?'zh':'ja'];return `<div class="card onsen"><div class="os-h"><b class="os-n">${o.n}</b><div><h4>${t.t}</h4><div class="os-m"><span>${t.a}</span>${t.c.map(([x,c])=>`<span class="${c}">${x}</span>`).join('')}</div></div></div>${strip(o.n,t.t)}${kv(lb.map((l,i)=>[l,t.r[i]]))}<div class="lk"><a href="${g(o.q)}" target="_blank" rel="noopener">↗ Google Maps ${z?'導航':'ナビ'}</a></div></div>`}).join('')}
 function day(L,u,k){const[t,rows,inf,note]=L[k],a=t.split('｜')[0],b=t.split('｜').slice(1).join('｜'),n=rows.length;
 return `<div class="ph"><span class="tag">${a}</span><h2>${b}</h2></div>${routeMap(k)}
 <h3>${u.sch}<span class="pg" id="pg">${prog(k,n)}/${n} ${u.ok}</span></h3><div class="card">${rows.map((r,j)=>`<div class="tl ${done[k+j]?'ok':''}" data-k="${k+j}" data-n="${k}"><i></i><span class="t">${r[0]}</span><span class="x">${r[1]}</span></div>`).join('')}</div><p class="hint">${u.hint}</p>
@@ -287,7 +293,7 @@ z.addEventListener('dblclick',e=>{ZM.s>ZM.b*1.1?zmFit():zmTo(ZM.b*2.5,e.clientX,
 addEventListener('keydown',e=>{if(e.key==='Escape')zmClose()});addEventListener('resize',()=>{if(z.style.display==='block')zmFit()})})();
 $('#lgb').onclick=()=>{lang=lang==='zh'?'ja':'zh';try{localStorage.setItem('lg',lang)}catch(e){}render()};
 let sx,sy;addEventListener('touchstart',e=>{sx=e.touches[0].clientX;sy=e.touches[0].clientY},{passive:true});
-addEventListener('touchend',e=>{if($('#zm').style.display=='block'||e.target.closest('.fw,.tabs,.mapcard'))return;const dx=e.changedTouches[0].clientX-sx,dy=e.changedTouches[0].clientY-sy;if(Math.abs(dx)>80&&Math.abs(dy)<40){const i=ID.indexOf(cur)+(dx<0?1:-1);if(i>=0&&i<ID.length)go(ID[i])}},{passive:true});
+addEventListener('touchend',e=>{if($('#zm').style.display=='block'||e.target.closest('.fw,.tabs,.mapcard,.osph'))return;const dx=e.changedTouches[0].clientX-sx,dy=e.changedTouches[0].clientY-sy;if(Math.abs(dx)>80&&Math.abs(dy)<40){const i=ID.indexOf(cur)+(dx<0?1:-1);if(i>=0&&i<ID.length)go(ID[i])}},{passive:true});
 const h=location.hash.slice(1);if(ID.includes(h))cur=h;else if(h==='brew'){cur='rv';rvSub='brew'}render();
 if('serviceWorker' in navigator&&/^https?:/.test(location.protocol))navigator.serviceWorker.register('sw.js').catch(()=>{});
 document.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest('.upd');if(b){b.classList.add('spin');setTimeout(()=>b.classList.remove('spin'),2800)}});
