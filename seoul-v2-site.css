@@ -57,14 +57,8 @@ html.th-han.sw.sv2 .sw-top .sw-info.info2{display:block;min-height:150px;padding
 html.th-han.sw.sv2 .sw-irow b{font-size:19px}
 html.th-han.sw.sv2 .sw-irow span{background:#f3e2df;color:#a84d59}
 
-/* 天氣＋工具 */
-html.th-han.sw.sv2 .sv2-wt #wx{margin:0;grid-column:auto}
-html.th-han.sw.sv2 .sv2-tools{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;align-content:stretch}
-html.th-han.sw.sv2 .sv2-tools :is(#fxb,#fs,#upd).sv2-tool{position:static;width:auto;height:auto;min-height:64px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:8px 4px;
+/* 天氣卡（整列）見下方 */
  border:1px solid #d9c6b0;border-radius:14px;background:#fffaf2 var(--hanji);background-blend-mode:multiply;color:var(--ink);font-size:20px;box-shadow:0 3px 6px #684c3220}
-html.th-han.sw.sv2 .sv2-tools :is(#fxb,#fs,#upd).sv2-tool small{font-size:13px;color:var(--ink)}
-html.th-han.sw.sv2 .sv2-tools :is(#fxb,#fs,#upd).sv2-tool.on{background:var(--navy);color:#fff}
-html.th-han.sw.sv2 .sv2-tools :is(#fxb,#fs,#upd).sv2-tool.on small{color:#fff}
 
 /* ---------- 區塊標題：水彩筆刷 brush2 ---------- */
 html.th-han.sw.sv2 main h2.sw-h{display:flex;align-items:center;gap:10px;padding-right:66px;margin-top:22px}
@@ -156,3 +150,53 @@ html.th-han.sw.sv2 #hotel details.sw-hotel.hotel2>summary{grid-template-columns:
 html.th-han.sw.sv2 #days .dy.day2 .dr{white-space:normal;border:0;border-radius:10px;box-shadow:none}
 html.th-han.sw.sv2 main :is(.pi,.b,.dn button,.ab button,.sw-hpic){white-space:normal}
 html.th-han.sw.sv2 .sw-hpic{min-height:0;padding:0;border:0}
+
+/* ---------- 左右滿版的橫滑列（分頁鈕、App 卡片）：配合 V2 的頁面左右留白（電腦 12px／手機 9px），
+   原本 style.css 是 -16px，會讓手機整頁比螢幕寬 7px（可左右晃、整頁被縮小） ---------- */
+html.th-han.sw.sv2{--gut:12px}
+html.th-han.sw.sv2 main .tabs{margin-left:calc(-1*var(--gut));margin-right:calc(-1*var(--gut));padding-left:var(--gut);padding-right:var(--gut);scroll-padding-left:var(--gut)}
+html.th-han.sw.sv2 main .swipe{margin-left:calc(-1*var(--gut));margin-right:calc(-1*var(--gut));padding-left:var(--gut);padding-right:var(--gut);scroll-padding-left:var(--gut)}
+@media (max-width:600px){html.th-han.sw.sv2{--gut:9px}}
+
+/* ---------- 手機細部（2026/11/26 手機實看後調整） ---------- */
+@media (max-width:600px){
+ /* 每日卡：收合時只留標題與標籤（路線小字與標題重複，展開後在詳細行程看得到） */
+ html.th-han.sw.sv2 #days .dy.day2:not(.on) .dr .ds{display:none}
+ html.th-han.sw.sv2 #days .day2 .sv2-dt{font-size:14.5px;margin-top:6px}
+ html.th-han.sw.sv2 #days .day2 .sv2-dn{font-size:17px;padding:2px 12px 3px 10px}
+ html.th-han.sw.sv2 #days .day2 .dr b{font-size:14px}
+ /* 倒數：梅枝縮小，不壓到標題 */
+ html.th-han.sw.sv2 .sw-top .sw-cd.count2{background-size:28% auto,13% auto,auto}
+ /* 底部日期列：總覽＋D1～D6 一排放得下（320px 以下才橫滑） */
+ html.th-han.sw.sv2 .dock2>div{gap:5px}
+ html.th-han.sw.sv2 .dock2 a.tile,html.th-han.sw.sv2 .dock2 #dbtn>button{flex:1 1 0;min-width:40px;padding:4px 2px}
+ html.th-han.sw.sv2 .dock2 a.sv2-all{flex:0 0 auto;min-width:60px;font-size:14px;gap:4px;padding:4px 8px}
+ html.th-han.sw.sv2 .dock2 #dbtn>button::before{font-size:15px}
+ html.th-han.sw.sv2 .dock2 #dbtn>button{font-size:11px}
+ /* 住宿卡：南山塔小一點，底部留白縮小 */
+ html.th-han.sw.sv2 #hotel details.sw-hotel.hotel2{padding-bottom:64px;background-size:64px auto,auto}
+}
+/* 其他內容卡（價格、待辦、注意事項、美食詳情等）也用韓紙紙卡，避免大片純白 */
+html.th-han.sw.sv2 main .card{background-color:#fffaf2;background-image:var(--hanji);background-blend-mode:multiply;border-color:var(--v2line);box-shadow:var(--v2sh)}
+@media (max-width:359px){html.th-han.sw.sv2 .sw-cd #cdnote{font-size:14px;letter-spacing:0;padding-right:4px}}
+
+/* ---------- 懸浮鈕（換算／字體／更新）：維持右側懸浮，改 V2 韓紙圓鈕 ---------- */
+html.th-han.sw.sv2 .sw-top #wx.sv2-wx{margin:10px 0 0;grid-column:auto;width:auto;max-width:none}
+html.th-han.sw.sv2 :is(#fxb,#fs,#upd){background:#fffaf2 var(--hanji);background-blend-mode:multiply;border:1px solid #d9c6b0;color:var(--ink);box-shadow:0 4px 10px rgba(104,76,50,.22);min-height:0;padding:0;white-space:normal}
+html.th-han.sw.sv2 :is(#fxb,#fs,#upd) small{color:var(--ink)}
+html.th-han.sw.sv2 #fxb.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+html.th-han.sw.sv2 #fxb.on small{color:#fff}
+
+/* ---------- seoul-v2.css 的通用 button 規則不套在小圖示鍵上（喇叭、地圖小圓鈕） ---------- */
+html.th-han.sw.sv2 main button.vo{min-height:0;padding:0;border:0;background:none;box-shadow:none;border-radius:50%}
+
+/* ---------- 手機：有一天展開時改成單欄清單（其他天變成「左圖右文」小卡，避免兩欄留下空洞） ---------- */
+@media (max-width:600px){
+ html.th-han.sw.sv2 #days.days2:has(.dy.on){grid-template-columns:1fr}
+ html.th-han.sw.sv2 #days.days2:has(.dy.on) .dy.day2:not(.on) .dr{display:grid;grid-template-columns:118px minmax(0,1fr);grid-template-areas:"img n" "img t" "img g";column-gap:10px;row-gap:2px;align-items:center}
+ html.th-han.sw.sv2 #days.days2:has(.dy.on) .dy.day2:not(.on) .sv2-dimg{grid-area:img;aspect-ratio:2;align-self:stretch;height:100%}
+ html.th-han.sw.sv2 #days.days2:has(.dy.on) .dy.day2:not(.on) .sv2-dn{grid-area:n;justify-self:start;margin:0}
+ html.th-han.sw.sv2 #days.days2:has(.dy.on) .dy.day2:not(.on) .dr b{grid-area:n;justify-self:end;float:none;padding:0 2px 0 0}
+ html.th-han.sw.sv2 #days.days2:has(.dy.on) .dy.day2:not(.on) .sv2-dt{grid-area:t;text-align:left;margin:2px 0 0}
+ html.th-han.sw.sv2 #days.days2:has(.dy.on) .dy.day2:not(.on) .dr .tg{grid-area:g;justify-content:flex-start;margin-top:2px}
+}

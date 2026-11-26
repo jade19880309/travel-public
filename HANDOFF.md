@@ -61,6 +61,7 @@
 - 現況：首頁（11/26 皮革手帳版）、京阪（V2）、首爾、港珠澳、東京都已是新版；**露營車 `campervan.html` 沒有 manifest 和圖示**（使用者這次沒要求，未處理）；偏航 `detour/` 動態圖示不動。
 - 已加到主畫面的 App 要刪掉重加才會換圖示；iPhone 實機顯示未驗證。
 ## 首爾 V2.1 韓系新春水彩手帳（2026/11/26，sw v193，使用者提供 seoul-winter-v2.1.zip）
+- **2026/11/26 手機調整（sw v195）**：①手機整頁比螢幕寬 7px（可左右晃、整頁被縮小）：style.css 的 `.tabs`／`.swipe` 用 -16px 滿版，但 V2 頁面左右留白是 9px（手機）／12px，改用 `--gut` 對齊，320／375／390／430 皆無橫向溢出。②換算／字體／更新**改回右側懸浮鈕**（使用者指定方便使用），只換成韓紙圓鈕外觀；天氣卡改整列。③每日卡手機收合時只顯示標題＋標籤（路線小字展開後才顯示）；有一天展開時改單欄清單，其他天變左圖右文小卡，不留空洞。④底部日期列總覽＋D1～D6 在 375px 一排放得下（320px 才橫滑）。⑤倒數梅枝縮小、320px 倒數標題改 14px 不斷行；住宿卡南山塔縮小；喇叭鍵去掉 seoul-v2.css 通用 button 的框；價格、待辦等其餘卡片也套韓紙紋理。下方「原本右下角三顆懸浮鈕搬進天氣旁的工具列」一段已作廢。
 - 素材包內容：`CLAUDE-INSTRUCTIONS.md`、`CHECKLIST.md`、`reference.html`、`seoul-v2.css`、`V2-design-reference.webp`（＋ `mobile-design-reference.webp`）、decor 素材。參考圖／參考 HTML **沒放進 repo**；`seoul-v2.css` 原樣放在根目錄（路徑本來就是相對根目錄，不用改）。
 - 新素材：`images/seoul-2027/decor/brush-{rose,blue,green,gold,violet}.png`、`day-1～6.webp`（原檔）＋ `day-1～6.jpg`（瀏覽器 canvas 同尺寸轉出，品質 0.92；比照 v170 iPhone WebP 破圖紀錄，網頁實際用 JPEG）。其他 decor 檔與包內相同（已逐檔比對）。day 圖是示意圖裁切，只有約 278×96，電腦版放大略糊（CHECKLIST 已註明非高解析原稿）。
 - 做法：沿用上一版的 `seoul-winter.js`（只搬動／包裝 app.js 畫好的元素），改成套 `reference.html` 的 class：`<html>` 加 `sw sv2`、`<body>` 加 `seoul-v2`；封面 `hero2`、功能列 `nav2`＋`tile`／`nav-icon`（沿用原本的功能線條圖示）、倒數 `panel2 count2`（`#cd` 加 `numbers`）、日期 `panel2 info2`、航班登機證 `flight2`、飯店卡 `panel2 hotel2`（照片仍是正式網站 `hotel-2.jpg`）、標題文字包 `span.brush2`（五色筆刷輪替）、`#days` 加 `days2`、每張 `.dy` 加 `day2`＋`--accent`、底部日期列 `dock2`、頁尾 `footer2`。所有原有 id、事件、資料都沒動。

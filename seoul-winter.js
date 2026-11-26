@@ -44,10 +44,8 @@
  var top=document.createElement('div');top.className='sw-top';
  var p1=document.createElement('div');p1.className='pair';p1.append(card,info);top.append(p1);
  nav?nav.after(top):hero.after(top);
- // 天氣＋工具列（換算／字體／更新：原本的懸浮鈕原樣搬進來，事件不變）
- var wx=$('#wx'),tools=document.createElement('div');tools.className='sv2-tools';tools.setAttribute('aria-label','工具');
- ['fxb','fs','upd'].forEach(function(id){var b=document.getElementById(id);if(b){b.classList.add('sv2-tool');tools.append(b)}});
- var p2=document.createElement('div');p2.className='pair sv2-wt';if(wx){wx.classList.add('panel2');p2.append(wx)}p2.append(tools);top.append(p2);
+ // 天氣卡（整列）；換算／字體／更新維持右側懸浮鈕（使用者指定，方便隨時點）
+ var wx=$('#wx');if(wx){wx.classList.add('panel2','sv2-wx');top.append(wx)}
 
  // ===== 區塊標題：去掉表情符號，文字放進水彩筆刷（brush2），右側放對應素材小插畫 =====
  var DECO={flight:'airplane.png',hotel:'suitcase.png',plan:'hanok-roof.png',phr:'hanok-window.png',food:'hotteok.png',price:'coffee.png',tips:'mittens.png',todo:'plum-branch.png',apps:'snowflake.png',fx:'coffee.png'};
