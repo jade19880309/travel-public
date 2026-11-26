@@ -61,7 +61,7 @@
 - 現況：首頁（11/26 皮革手帳版）、京阪（V2）、首爾、港珠澳、東京都已是新版；**露營車 `campervan.html` 沒有 manifest 和圖示**（使用者這次沒要求，未處理）；偏航 `detour/` 動態圖示不動。
 - 已加到主畫面的 App 要刪掉重加才會換圖示；iPhone 實機顯示未驗證。
 ## 首爾 V3 iPhone 修正（2026/11/26，sw v200）
-- 使用者回報 iPhone 讀不到（v199 上線後）。GitHub Pages 部署成功（run #208）；雲端環境連不到 github.io，也沒有 WebKit 可測，以下是依程式碼判斷的原因與修正，**尚待使用者在 iPhone 實機確認**。
+- 使用者回報 iPhone 讀不到（v199 上線後）。GitHub Pages 部署成功（run #208）；雲端環境連不到 github.io，也沒有 WebKit 可測，以下是依程式碼判斷的原因與修正；**使用者已在 iPhone 實機確認 v200 可正常開啟**。
 - 原因（推測）：v199 的 `.paper3`／`.sheet3`／展開日卡都用兩層 `filter:drop-shadow`，iOS Safari 會替每個元素開獨立合成圖層；高的卡片（展開日卡約 1000px、美食、價格區塊）一多就記憶體不足，分頁出現「重複發生問題」並不斷重新載入，或卡片整塊空白。
 - 修正：新增 `v3/paper-s.png`（paper.png 外加 10px 柔和陰影，烘進圖片），紙卡改用 `border-image: url(paper-s.png) 34 fill / 17px / 0 stretch` 九宮格繪製，四角與手撕邊不隨卡片高度變形；拿掉紙卡、紙卡區塊、展開日卡、福袋的 filter（展開日卡改為標題變主色）。只剩封面書法標題一個小 filter。
 - 測試：Chromium 375／390／768／1440 無溢出、無錯誤；功能 25 項通過。**之後若再加卡片陰影，不要用 filter，用 paper-s.png。**
