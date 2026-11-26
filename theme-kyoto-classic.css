@@ -1,0 +1,328 @@
+/* ==========================================================================
+   京都、慢日子。｜京町二人旅 —— 京阪頁專用主題（只由 keihan.html 載入）
+   所有規則都以 html.kyoto-theme 開頭；?theme=classic 時 <html> 不加此 class，整份不生效。
+   素材：images/keihan-2027/classic/（kyoto-design-kit 原始水彩，另轉 JPEG 供 iPhone 使用）
+   色票：和紙米白 #F4EDDF／京都朱紅 #962F36／日式苔綠 #56634C／古典金 #B49A65／墨茶黑 #302B28
+   ========================================================================== */
+html.kyoto-theme{
+ --paper:#f4eddf;--paper2:#ece3d0;--card:#fbf6ea;--ink:#302b28;--sub:#6b6156;--line:#dccdb0;
+ --sakura:#962f36;--sakura-l:#f2e2d9;--fuji:#56634c;--fuji-l:#e5e7d8;--ai:#56634c;--shu:#962f36;--kin:#b49a65;--matcha:#56634c;
+ --grad:linear-gradient(135deg,#a3363e,#86282f);
+ --sh:0 1px 2px rgba(73,57,28,.06),0 10px 24px -16px rgba(73,57,28,.38);
+ --wk:"Noto Serif TC","Songti TC","STSong","PMingLiU","MingLiU",serif;
+ --sans:"Noto Sans TC",system-ui,-apple-system,"PingFang TC","Microsoft JhengHei",sans-serif;
+ --moss:#414a36;--gold:#b49a65;--red:#962f36;--k-red-ink:#7e252c;
+ --wave:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='60' viewBox='0 0 120 60'%3E%3Cg fill='none' stroke='%23b49a65' stroke-width='1'%3E%3Cpath d='M0 60a30 30 0 0 1 60 0M60 60a30 30 0 0 1 60 0M-30 30a30 30 0 0 1 60 0M30 30a30 30 0 0 1 60 0M90 30a30 30 0 0 1 60 0M10 60a20 20 0 0 1 40 0M70 60a20 20 0 0 1 40 0M20 60a10 10 0 0 1 20 0M80 60a10 10 0 0 1 20 0'/%3E%3C/g%3E%3C/svg%3E");
+ --paper-tex:radial-gradient(rgba(150,118,62,.07) .7px,transparent 1.1px),radial-gradient(rgba(120,90,50,.05) .8px,transparent 1.3px),repeating-linear-gradient(97deg,rgba(160,130,80,.025) 0 1px,transparent 1px 9px),repeating-linear-gradient(8deg,rgba(255,255,255,.18) 0 1px,transparent 1px 13px);
+ --paper-tex-size:7px 7px,13px 11px,auto,auto;
+ background:var(--paper)
+}
+html.kyoto-theme.night{
+ --paper:#211e1b;--paper2:#2b2723;--card:#2a2622;--ink:#efe6d6;--sub:#bfb3a1;--line:#4a4237;
+ --sakura:#d9737b;--sakura-l:#3a2626;--fuji:#a8b598;--fuji-l:#2f3329;--ai:#b9c4a8;--shu:#e07a80;--kin:#cdb486;--matcha:#a8b598;
+ --grad:linear-gradient(135deg,#a3363e,#86282f);--sh:0 12px 28px -18px rgba(0,0,0,.7);--moss:#2c3226;
+ --paper-tex:radial-gradient(rgba(255,240,210,.035) .7px,transparent 1.1px);--paper-tex-size:7px 7px
+}
+html.kyoto-theme body{font-family:var(--sans);color:var(--ink);background-color:var(--paper);background-image:var(--paper-tex);background-size:var(--paper-tex-size);overflow-x:hidden}
+html.kyoto-theme body::before{background:var(--wave);opacity:.16}
+html.kyoto-theme.night body::before{opacity:.06}
+html.kyoto-theme :is(h1,h2,h3,h4){font-family:var(--wk);color:var(--ink)}
+html.kyoto-theme :is(button,a,input,select,summary,[tabindex]):focus-visible{outline:3px solid var(--red);outline-offset:3px}
+html.kyoto-theme .wrap{max-width:760px}
+
+/* ---------- 上方列：苔綠和紙條 ---------- */
+html.kyoto-theme header{background:var(--moss);border-bottom:2px solid var(--gold);-webkit-backdrop-filter:none;backdrop-filter:none;box-shadow:0 6px 18px -12px rgba(30,25,15,.6)}
+html.kyoto-theme .hb{max-width:760px;flex-wrap:wrap;gap:4px 8px;padding:6px 12px 6px 14px;padding-top:max(6px,env(safe-area-inset-top))}
+html.kyoto-theme .logo{display:none}
+html.kyoto-theme .kc-brand{display:flex;align-items:center;gap:8px;min-height:40px;color:#fbf3e2;text-decoration:none;font-family:var(--wk);font-weight:600;font-size:17px;letter-spacing:.14em;white-space:nowrap;order:0}
+html.kyoto-theme .kc-brand img{width:30px;height:24px;object-fit:contain;filter:drop-shadow(0 1px 0 rgba(0,0,0,.25))}
+html.kyoto-theme .sbadge{order:1;margin-left:auto;height:34px;background:rgba(251,243,226,.1);border:1px solid rgba(180,154,101,.7);color:#fbf3e2}
+html.kyoto-theme .sbadge span{color:#f2c7b5;border-color:#e3a08f}
+html.kyoto-theme .kc-nav{display:none;order:1}
+html.kyoto-theme .dch{order:2;flex:1 0 100%;gap:6px;padding:2px 0 4px}
+html.kyoto-theme .dch button{min-width:56px;min-height:44px;justify-content:center;padding:4px 8px;border-radius:10px;color:#d9cfb9;border:1px solid rgba(180,154,101,.35)}
+html.kyoto-theme .dch button b{font-family:var(--wk);font-weight:600;font-size:15px;color:#fbf3e2}
+html.kyoto-theme .dch button small{font-size:11px}
+html.kyoto-theme .dch button.on{background:var(--red);border-color:#c9a86a;color:#fbe9dc}
+html.kyoto-theme .dch button.td small{color:#f2b7a3}
+
+/* ---------- 封面：雙人和服背影＋書法標題 ---------- */
+html.kyoto-theme .cover,html.kyoto-theme .intro h1,html.kyoto-theme .intro .en,html.kyoto-theme .intro .chips,html.kyoto-theme .vt{display:none}
+html.kyoto-theme .kc-hero{position:relative;display:grid;grid-template-columns:1fr;max-width:1240px;margin:0 auto;isolation:isolate}
+html.kyoto-theme .kc-hero-art{position:relative;margin:0;order:2;margin-top:-14px;z-index:0}
+html.kyoto-theme .kc-hero-art img{width:100%;height:clamp(250px,72vw,420px);object-fit:cover;object-position:42% 60%;
+ -webkit-mask:linear-gradient(180deg,transparent 0,#000 22%,#000 86%,transparent 100%);mask:linear-gradient(180deg,transparent 0,#000 22%,#000 86%,transparent 100%)}
+html.kyoto-theme .kc-hero-copy{position:relative;order:1;z-index:1;padding:22px 20px 0 64px}
+html.kyoto-theme .kc-kicker{font-family:var(--wk);color:var(--shu);font-size:14px;letter-spacing:.24em;font-weight:600}
+html.kyoto-theme .kc-title{font-family:var(--wk);font-weight:700;font-size:clamp(44px,13vw,86px);line-height:1.12;letter-spacing:.04em;margin:.12em 0 .1em;color:var(--ink);text-shadow:0 1px 0 rgba(255,250,240,.6)}
+html.kyoto-theme .kc-title span{display:block;padding-left:.9em}
+html.kyoto-theme .kc-sub{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 12px;font-family:var(--wk);font-size:18px;font-weight:600;letter-spacing:.3em;color:var(--ink)}
+html.kyoto-theme .kc-sub span{font-size:13px;letter-spacing:.28em;color:var(--sub);font-weight:400}
+html.kyoto-theme .kc-date{display:inline-block;margin-top:10px;padding:5px 18px;font-family:var(--wk);font-size:16px;letter-spacing:.08em;color:var(--ink);
+ background:linear-gradient(90deg,transparent,rgba(180,154,101,.32) 12%,rgba(180,154,101,.32) 88%,transparent);border-top:1px solid rgba(180,154,101,.6);border-bottom:1px solid rgba(180,154,101,.6)}
+html.kyoto-theme .kc-lead{margin-top:10px;font-family:var(--wk);font-size:15px;letter-spacing:.18em;color:var(--ink)}
+html.kyoto-theme .kc-vtag{position:absolute;left:16px;top:22px;display:flex;flex-direction:row;align-items:center;gap:6px;padding:10px 6px 8px;writing-mode:vertical-rl;font-family:var(--wk);font-size:17px;font-weight:600;letter-spacing:.32em;color:var(--ink);border:1px solid var(--gold);outline:1px solid rgba(180,154,101,.45);outline-offset:3px;background:rgba(251,246,234,.7)}
+html.kyoto-theme .kc-vtag small{font-family:var(--sans);font-size:8px;letter-spacing:.2em;line-height:1.25;color:var(--sub)}
+html.kyoto-theme .kc-seal{position:absolute;right:18px;top:26px;display:grid;place-items:center;width:40px;padding:6px 0;writing-mode:vertical-rl;font-family:var(--wk);font-weight:700;font-size:17px;letter-spacing:.1em;color:#fff6ec;background:var(--red);border-radius:5px;box-shadow:inset 0 0 0 2px rgba(255,240,225,.35);transform:rotate(4deg)}
+
+/* 旅程資訊（日數／人數／晚數）—— 資料與原頁 chips 相同 */
+html.kyoto-theme .kc-stats{list-style:none;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));max-width:720px;margin:-6px auto 0;padding:10px 6px;position:relative;z-index:2;
+ background:rgba(251,246,234,.92);border-top:1px solid var(--gold);border-bottom:1px solid var(--gold);box-shadow:0 1px 0 rgba(180,154,101,.4) inset,0 -1px 0 rgba(180,154,101,.4) inset}
+html.kyoto-theme .kc-stats li{display:grid;grid-template-columns:auto auto;justify-content:center;align-items:center;column-gap:5px;text-align:left;padding:2px 4px;border-right:1px solid var(--line);min-width:0}
+html.kyoto-theme .kc-stats li:last-child{border-right:0}
+html.kyoto-theme .kc-stats svg{grid-row:1/3;width:24px;height:24px;color:var(--shu)}
+html.kyoto-theme .kc-stats b{font-family:var(--wk);font-weight:700;font-size:22px;line-height:1.1;color:var(--shu)}
+html.kyoto-theme .kc-stats b i{font-style:normal;font-size:13px;color:var(--ink);margin-left:2px;font-weight:600}
+html.kyoto-theme .kc-stats small{font-size:11.5px;color:var(--sub);letter-spacing:.06em;white-space:nowrap}
+
+/* 快捷入口：手機 2×2 */
+html.kyoto-theme .kc-quick{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;max-width:760px;margin:16px auto 0;padding:0 16px}
+html.kyoto-theme .kc-quick a{position:relative;display:grid;grid-template-columns:30px 1fr 10px;align-items:center;column-gap:8px;min-height:64px;padding:10px 10px 10px 12px;border-radius:12px;text-decoration:none;color:var(--ink);letter-spacing:.04em;font-size:inherit;
+ background:var(--card) var(--wave) right -30px bottom -26px/90px 45px no-repeat;border:1px solid var(--line);box-shadow:var(--sh),inset 0 0 0 3px var(--card),inset 0 0 0 4px rgba(180,154,101,.45);transition:transform .15s}
+html.kyoto-theme .kc-quick a:active{transform:scale(.97)}
+html.kyoto-theme .kc-quick a::after{content:"";width:8px;height:8px;border-top:1.6px solid var(--sub);border-right:1.6px solid var(--sub);transform:rotate(45deg)}
+html.kyoto-theme .kc-quick svg{width:28px;height:28px;color:var(--shu);fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+html.kyoto-theme .kc-quick b{display:block;font-family:var(--wk);font-weight:600;font-size:16px;line-height:1.3}
+html.kyoto-theme .kc-quick small{display:block;font-size:11.5px;color:var(--sub);line-height:1.35}
+html.kyoto-theme .kc-qmatcha{display:none}
+
+/* 原頁的蓋章進度與天氣：留在封面下方 */
+html.kyoto-theme .intro{margin-top:0;padding:6px 16px 0}
+html.kyoto-theme .prog{background:var(--card);border:1px solid var(--line);border-radius:12px;box-shadow:var(--sh)}
+html.kyoto-theme .prog p b{font-family:var(--wk);font-weight:600}
+html.kyoto-theme #rg{stroke:var(--red)}
+html.kyoto-theme .ring b{font-family:var(--wk);color:var(--shu)}
+html.kyoto-theme .wx span{background:var(--fuji-l);border:1px solid rgba(86,99,76,.25)}
+
+/* ---------- 區塊標題：朱印＋金線 ---------- */
+html.kyoto-theme section{padding-top:34px}
+html.kyoto-theme .sh{align-items:center;gap:10px;margin-bottom:16px}
+html.kyoto-theme .sh .no{writing-mode:horizontal-tb;display:grid;place-items:center;width:34px;height:34px;border-radius:6px;background:var(--red);color:#fff4ea;font-size:16px;font-weight:700;letter-spacing:0;box-shadow:inset 0 0 0 2px rgba(255,240,225,.3);transform:rotate(-4deg)}
+html.kyoto-theme .sh h2{font-weight:700;font-size:25px;letter-spacing:.16em}
+html.kyoto-theme .sh::after{height:0;border-top:1px solid var(--gold);box-shadow:0 3px 0 -2px rgba(180,154,101,.5);background:none;margin-bottom:0}
+html.kyoto-theme .sh p{font-family:var(--wk);color:var(--gold);letter-spacing:.24em;padding-bottom:0}
+html.kyoto-theme .card{background:var(--card);border:1px solid var(--line);border-radius:12px;box-shadow:var(--sh)}
+
+/* ---------- 每日行程：明信片 ---------- */
+html.kyoto-theme #plan{counter-reset:kd}
+html.kyoto-theme .strip{display:grid;grid-template-columns:1fr;gap:10px;overflow:visible;margin:0;padding:2px 0 14px;scroll-snap-type:none}
+html.kyoto-theme .tk{counter-increment:kd;position:relative;display:block;width:auto;min-height:104px;padding:12px 30px 12px 124px;text-align:left;border-radius:10px;scroll-snap-align:none;
+ background:var(--card);border:1px solid var(--line);box-shadow:var(--sh),inset 0 0 0 3px var(--card),inset 0 0 0 4px rgba(180,154,101,.35)}
+html.kyoto-theme .tk::after{content:"";position:absolute;right:14px;top:50%;width:8px;height:8px;margin-top:-4px;border-top:1.6px solid var(--sub);border-right:1.6px solid var(--sub);transform:rotate(45deg)}
+html.kyoto-theme .tk .kc-pic{position:absolute;left:8px;top:8px;bottom:8px;width:106px;display:block;border-radius:5px;overflow:hidden;
+ background:var(--paper2) var(--wave) center bottom/80px 40px repeat-x;box-shadow:inset 0 0 0 1px rgba(180,154,101,.4)}
+html.kyoto-theme .tk img{position:absolute;left:8px;top:8px;bottom:8px;width:106px;height:auto;margin:0;padding:22px 18px 10px;object-fit:contain;z-index:1;opacity:.9}
+html.kyoto-theme .tk.on img{transform:none}
+/* 有對應水彩的日子：明信片插畫蓋在原圖示上 */
+html.kyoto-theme .tk:is([data-id=d1],[data-id=d3],[data-id=d5]) img{visibility:hidden}
+html.kyoto-theme .tk[data-id=d1] .kc-pic{background:url("images/keihan-2027/classic/kyoto-tower.jpg") 100% 100%/122% auto no-repeat}
+html.kyoto-theme .tk[data-id=d3] .kc-pic{background:url("images/keihan-2027/classic/arashiyama.jpg") 100% 100%/126% auto no-repeat}
+html.kyoto-theme .tk[data-id=d5] .kc-pic{background:url("images/keihan-2027/classic/return.jpg") 100% 100%/158% auto no-repeat}
+/* 日期印章：D1 9/9 */
+html.kyoto-theme .tk::before{content:"D" counter(kd);position:absolute;left:12px;top:12px;z-index:2;width:44px;height:46px;padding-top:3px;border-radius:48% 52% 46% 54%/52% 46% 54% 48%;
+ background:var(--red);color:#fff6ec;font-family:var(--wk);font-weight:700;font-size:16px;line-height:1.15;text-align:center;box-shadow:0 2px 6px -2px rgba(80,20,20,.5);opacity:.94}
+html.kyoto-theme .tk .dt{position:absolute;left:12px;top:33px;z-index:3;width:44px;text-align:center;font-family:var(--wk);font-size:10.5px;font-weight:600;line-height:1;color:#fff6ec}
+html.kyoto-theme .tk .jp{position:static;display:inline;width:auto;height:auto;border:0;border-radius:0;font-size:12px;color:var(--shu);font-family:var(--wk);margin-right:6px;vertical-align:1px}
+html.kyoto-theme .tk .jp::after{content:"曜"}
+html.kyoto-theme .tk .dw{display:inline;font-size:12px;letter-spacing:.12em;text-indent:0;color:var(--sub)}
+html.kyoto-theme .tk .tt{display:block;min-height:0;margin-top:2px;padding-top:0;border-top:0;font-family:var(--wk);font-weight:700;font-size:18px;letter-spacing:.08em;color:var(--ink);text-wrap:pretty;text-align:left;justify-content:flex-start}
+html.kyoto-theme .tk .ts{display:block;margin-top:5px;padding-top:5px;border-top:1px dashed var(--line);font-size:12.5px;line-height:1.5;color:var(--sub);overflow-wrap:anywhere}
+html.kyoto-theme .tk .td{left:auto;right:12px;top:10px;bottom:auto;transform:none;background:var(--moss);font-size:11px}
+html.kyoto-theme .tk.on{transform:none;border:1.5px solid var(--red);background:var(--card);box-shadow:0 10px 22px -14px rgba(150,47,54,.6),inset 0 0 0 3px var(--card),inset 0 0 0 4px rgba(150,47,54,.35)}
+html.kyoto-theme .tk.on::after{border-color:var(--red)}
+
+/* 當日內容：明信片時間軸 */
+html.kyoto-theme .day{padding:20px 18px 18px;background:var(--card);border-radius:12px;box-shadow:var(--sh),inset 0 0 0 4px var(--card),inset 0 0 0 5px rgba(180,154,101,.5);scroll-margin-top:calc(var(--hh) + 10px)}
+html.kyoto-theme .dh{position:relative;align-items:flex-start;min-height:72px}
+html.kyoto-theme .seal{width:60px;height:62px;border:0;border-radius:48% 52% 46% 54%/52% 46% 54% 48%;background:var(--red);color:#fff6ec;transform:rotate(-3deg);box-shadow:0 3px 8px -3px rgba(80,20,20,.5)}
+html.kyoto-theme .seal b{font-weight:700}
+html.kyoto-theme .dh h3{font-weight:700;font-size:23px;letter-spacing:.1em}
+html.kyoto-theme .stay{background:var(--fuji-l);color:var(--fuji);border:1px solid rgba(86,99,76,.25)}
+html.kyoto-theme #plan:is(:has(.tk.on[data-id=d1]),:has(.tk.on[data-id=d3]),:has(.tk.on[data-id=d5])) .dh{padding-right:96px}
+html.kyoto-theme #plan:is(:has(.tk.on[data-id=d1]),:has(.tk.on[data-id=d3]),:has(.tk.on[data-id=d5])) .dh::after{content:"";position:absolute;right:0;top:-4px;width:86px;height:86px;border:4px solid #fffaf0;box-shadow:0 6px 14px -6px rgba(60,40,20,.45);transform:rotate(4deg);background:var(--paper2) 100% 100%/var(--ks,125%) auto no-repeat}
+html.kyoto-theme #plan:has(.tk.on[data-id=d1]) .dh::after{--ks:122%;background-image:url("images/keihan-2027/classic/kyoto-tower.jpg")}
+html.kyoto-theme #plan:has(.tk.on[data-id=d3]) .dh::after{--ks:128%;background-image:url("images/keihan-2027/classic/kinkakuji.jpg")}
+html.kyoto-theme #plan:has(.tk.on[data-id=d5]) .dh::after{--ks:158%;background-image:url("images/keihan-2027/classic/return.jpg")}
+html.kyoto-theme .tl::before{border-left:1.5px solid rgba(180,154,101,.7)}
+html.kyoto-theme .tl li::before{width:9px;height:9px;border-radius:1px;transform:rotate(45deg);background:var(--card);border:2px solid var(--red)}
+html.kyoto-theme .tl .tm{font-family:var(--wk);font-weight:600;color:var(--ink)}
+html.kyoto-theme .tl .tx{color:var(--ink)}
+html.kyoto-theme .mp{background:var(--sakura-l);color:var(--shu)}
+html.kyoto-theme .st{border-color:rgba(150,47,54,.55);color:rgba(150,47,54,.75)}
+html.kyoto-theme .st.on{border-color:var(--red);color:var(--shu);background:rgba(150,47,54,.08)}
+html.kyoto-theme .ch,html.kyoto-theme .xd{background:var(--paper2);border-radius:10px;border:1px solid var(--line)}
+html.kyoto-theme .chh button{color:var(--shu);border-color:rgba(150,47,54,.4)}
+html.kyoto-theme .seg button,html.kyoto-theme .op{background:var(--card);border-radius:10px}
+html.kyoto-theme .seg button.on{background:var(--red);border-color:var(--red)}
+html.kyoto-theme .op.on{background:var(--card);border:1.5px solid var(--red);box-shadow:0 10px 20px -14px rgba(150,47,54,.6)}
+html.kyoto-theme .op.on::after{background:var(--red)}
+html.kyoto-theme .dots i{color:var(--shu)}
+html.kyoto-theme .cmp tr.on td{background:var(--sakura-l)}
+html.kyoto-theme .note{background:var(--paper2);border-left:3px solid var(--red);border-radius:4px 10px 10px 4px}
+html.kyoto-theme .nav2 button{min-height:44px;color:var(--shu);border-color:var(--line);background:var(--card)}
+
+/* ---------- 交通・航班：日本鐵道車票 ---------- */
+html.kyoto-theme .bp{border-radius:8px;border:1px solid #b9c2a6;box-shadow:var(--sh);
+ background:#eef0e1 repeating-linear-gradient(135deg,rgba(86,99,76,.07) 0 1px,transparent 1px 7px)}
+html.kyoto-theme.night .bp{background:#2b2f26 repeating-linear-gradient(135deg,rgba(200,210,180,.05) 0 1px,transparent 1px 7px);border-color:#4b5340}
+html.kyoto-theme .bph{background:var(--moss);color:#fbf3e2;border-bottom:2px solid var(--gold)}
+html.kyoto-theme .bph b{font-family:var(--wk);font-weight:700}
+html.kyoto-theme .bph .al i{background:var(--red);box-shadow:0 0 0 2px rgba(251,243,226,.7)}
+html.kyoto-theme .route .ap big{font-family:var(--wk);font-weight:700;color:var(--ink)}
+html.kyoto-theme .route .pl{color:var(--shu)}
+html.kyoto-theme .bpd div b{font-family:var(--wk);font-weight:600}
+html.kyoto-theme .stub{background:rgba(251,246,234,.7);border-left:2px dashed #b9c2a6}
+html.kyoto-theme .stub::before,html.kyoto-theme .stub::after{background:var(--paper)}
+html.kyoto-theme .stub .no{font-weight:700;font-size:16px;letter-spacing:0;color:var(--shu)}
+html.kyoto-theme .stub .no::after{content:"";display:block;width:34px;height:34px;margin:8px auto 0;border-radius:50%;border:1.5px solid rgba(150,47,54,.6);background:radial-gradient(circle,transparent 52%,rgba(150,47,54,.15) 53%,transparent 60%)}
+
+/* ---------- 住宿：日式旅宿憑證 ---------- */
+html.kyoto-theme .pc{padding:0 16px 16px;border-radius:10px;background:var(--card);box-shadow:var(--sh),inset 0 0 0 4px var(--card),inset 0 0 0 5px rgba(180,154,101,.5)}
+html.kyoto-theme .pc .bd{display:inline-block;margin:0 0 0 -16px;padding:6px 16px 6px 14px;border-radius:0 0 10px 0;background:var(--red);color:#fff6ec;font-family:var(--wk);font-weight:700;font-size:15px;letter-spacing:.2em}
+html.kyoto-theme .pc .stp{top:14px;right:14px;width:82px;height:90px;border:2px dashed rgba(180,154,101,.8);background:#fffaf0}
+html.kyoto-theme .pc .stp div{background:var(--paper2) 100% 100%/var(--ks,125%) auto no-repeat}
+html.kyoto-theme .pc:nth-child(1) .stp div{--ks:122%;background-image:url("images/keihan-2027/classic/kyoto-tower.jpg")}
+html.kyoto-theme .pc:nth-child(2) .stp div{--ks:132%;background-image:url("images/keihan-2027/classic/osaka.jpg")}
+html.kyoto-theme .pc:is(:nth-child(1),:nth-child(2)) .stp img{visibility:hidden}
+html.kyoto-theme .pc .pm{top:84px;right:66px;border-color:rgba(150,47,54,.6);color:var(--shu);background:rgba(251,246,234,.6)}
+html.kyoto-theme .pc h3{font-weight:700;margin-top:12px}
+html.kyoto-theme .pc .ln{border-top:1px solid var(--gold);box-shadow:0 -3px 0 -2px rgba(180,154,101,.5)}
+html.kyoto-theme .pc .ln b{font-family:var(--wk);font-weight:600;color:var(--shu)}
+html.kyoto-theme .pc ul li::before{background:var(--gold);border-radius:1px;transform:rotate(45deg)}
+html.kyoto-theme .btns{padding-top:12px;border-top:1px dashed var(--line)}
+html.kyoto-theme .bt{min-height:44px;padding:8px 16px;border-radius:8px;background:var(--card);border-color:var(--line)}
+html.kyoto-theme .bt.p{background:var(--red);color:#fff6ec;border-color:var(--red)}
+html.kyoto-theme .alt{background:var(--paper2);border-radius:8px;border:1px dashed var(--line)}
+
+/* ---------- 旅の道具／交通預算：古典帳本 ---------- */
+html.kyoto-theme .tabs{gap:6px;padding-bottom:2px}
+html.kyoto-theme .tabs button{min-height:44px;border-radius:8px 8px 0 0;border:1px solid var(--line);border-bottom-color:transparent;background:var(--paper2);color:var(--sub);font-family:var(--wk);font-weight:600}
+html.kyoto-theme .tabs button.on{background:var(--red);color:#fff6ec;border-color:var(--red)}
+html.kyoto-theme .pane{border-radius:0 10px 10px 10px;border-top:3px double var(--gold);
+ background:var(--card) linear-gradient(90deg,transparent 30px,rgba(150,47,54,.35) 30px 31px,transparent 31px 34px,rgba(150,47,54,.35) 34px 35px,transparent 35px);padding-left:46px}
+html.kyoto-theme .br{border-bottom:1px solid rgba(180,154,101,.45)}
+html.kyoto-theme .br .d,html.kyoto-theme .br .v{font-family:var(--wk);font-weight:600;color:var(--ink)}
+html.kyoto-theme .br .d{color:var(--shu)}
+html.kyoto-theme .bsum{margin-top:6px;padding:12px 10px;border-radius:6px;background:linear-gradient(90deg,rgba(180,154,101,.22),rgba(180,154,101,.08));border-top:2px solid var(--gold)}
+html.kyoto-theme .bsum .big{font-family:var(--wk);font-weight:700;color:var(--shu)}
+html.kyoto-theme .tog button{min-height:40px}
+html.kyoto-theme .tog button.on{color:var(--shu)}
+html.kyoto-theme .fx input{border-radius:8px;font-family:var(--wk)}
+html.kyoto-theme .qk button,html.kyoto-theme .ph button{background:var(--paper2);border-radius:8px}
+html.kyoto-theme .pht button.on{border-color:var(--red);color:var(--shu);background:var(--sakura-l)}
+html.kyoto-theme .tdg input{border-color:var(--fuji)}
+html.kyoto-theme .tdg input:checked{background:var(--red)}
+html.kyoto-theme .tdg input:checked+span{text-decoration-color:var(--red)}
+html.kyoto-theme .tdg label,html.kyoto-theme .tp details{border-bottom:1px solid rgba(180,154,101,.4)}
+html.kyoto-theme .tdg h4{font-weight:700}
+html.kyoto-theme .kc-matcha{display:block;width:150px;height:auto;margin:18px auto 0;border-radius:50%/42%;
+ -webkit-mask:radial-gradient(ellipse 50% 50% at 50% 50%,#000 62%,transparent 100%);mask:radial-gradient(ellipse 50% 50% at 50% 50%,#000 62%,transparent 100%)}
+
+/* ---------- 頁尾：日式山水 ---------- */
+html.kyoto-theme footer{position:relative;padding:40px 18px calc(100px + env(safe-area-inset-bottom));font-family:var(--wk);color:var(--ink);font-weight:600;letter-spacing:.16em}
+html.kyoto-theme footer>img:not(.kc-foot){display:none}
+html.kyoto-theme .kc-foot{display:block;width:calc(100% + 36px);max-width:none;height:auto;aspect-ratio:1169/99;min-height:78px;object-fit:cover;object-position:center bottom;margin:18px -18px 0;opacity:1;
+ -webkit-mask:linear-gradient(180deg,transparent 0,transparent 22%,#000 52%);mask:linear-gradient(180deg,transparent 0,transparent 22%,#000 52%)}
+html.kyoto-theme.night .kc-foot,html.kyoto-theme.night .kc-hero-art img{filter:brightness(.82) saturate(.9)}
+
+/* ---------- 下方功能列、快捷、更新鍵 ---------- */
+html.kyoto-theme .bar{background:rgba(251,246,234,.94);border:1px solid var(--gold);border-radius:14px;box-shadow:0 12px 26px -14px rgba(60,40,20,.55)}
+html.kyoto-theme.night .bar{background:rgba(42,38,34,.94)}
+html.kyoto-theme .bar a{min-height:48px;justify-content:center;border-radius:10px;color:var(--sub);font-size:12px}
+html.kyoto-theme .bar a.on{color:var(--shu);background:var(--sakura-l)}
+html.kyoto-theme .bar a.on svg{color:var(--shu)}
+html.kyoto-theme .qb{background:var(--red);box-shadow:0 8px 18px -8px rgba(120,30,30,.8),0 0 0 4px var(--paper),0 0 0 5px var(--gold)}
+html.kyoto-theme .qp{background:var(--card);border-color:var(--gold);border-radius:14px}
+html.kyoto-theme .qh b{font-weight:700}
+html.kyoto-theme .qg button{background:var(--paper2);border-radius:10px;min-height:44px}
+html.kyoto-theme .qfx{background:var(--paper2);border:1px solid var(--line);border-radius:10px}
+html.kyoto-theme .kupd{color:var(--shu);background:rgba(251,246,234,.94);border-color:var(--gold)}
+html.kyoto-theme.night .kupd{background:rgba(42,38,34,.94)}
+html.kyoto-theme #big{background:var(--paper);background-image:var(--paper-tex);background-size:var(--paper-tex-size)}
+html.kyoto-theme .off{background:var(--moss);color:#fbf3e2}
+html.kyoto-theme .sp{color:var(--fuji)}
+html.kyoto-theme .sp.on{color:var(--shu)}
+
+/* ---------- 窄手機 ---------- */
+@media (max-width:359px){
+ html.kyoto-theme .kc-stats{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:8px}
+ html.kyoto-theme .kc-stats li:nth-child(2){border-right:0}
+ html.kyoto-theme .kc-hero-copy{padding-left:56px}
+ html.kyoto-theme .kc-quick a{grid-template-columns:32px 1fr 10px;padding-left:8px}
+ html.kyoto-theme .kc-quick svg{width:26px;height:26px}
+ html.kyoto-theme .tk{padding-left:108px}
+ html.kyoto-theme .tk .kc-pic,html.kyoto-theme .tk img{width:92px}
+}
+@media (max-width:440px){
+ html.kyoto-theme .kc-brand{font-size:16px}
+ html.kyoto-theme .route .ap big{font-size:32px}
+ html.kyoto-theme .bp{grid-template-columns:minmax(0,1fr) 84px}
+ html.kyoto-theme .pane{padding-left:40px;background:var(--card) linear-gradient(90deg,transparent 24px,rgba(150,47,54,.35) 24px 25px,transparent 25px 28px,rgba(150,47,54,.35) 28px 29px,transparent 29px)}
+ html.kyoto-theme .pc h3,html.kyoto-theme .pc .ja,html.kyoto-theme .pc .en{padding-right:96px}
+ html.kyoto-theme .pc .stp{width:74px;height:82px}
+ html.kyoto-theme .pc .pm{right:56px;top:80px;width:56px;height:56px}
+}
+
+/* ---------- 平板：日卡雙欄 ---------- */
+@media (min-width:600px){
+ html.kyoto-theme .strip{grid-template-columns:repeat(2,minmax(0,1fr))}
+ html.kyoto-theme .tk{padding:0 14px 14px;min-height:0}
+ html.kyoto-theme .tk::after{display:none}
+ html.kyoto-theme .tk .kc-pic{position:relative;left:auto;top:auto;bottom:auto;width:auto;margin:8px -6px 10px;aspect-ratio:4/3;border-radius:6px}
+ html.kyoto-theme .tk img{left:8px;right:8px;top:8px;bottom:auto;width:auto;aspect-ratio:4/3;padding:22px}
+ html.kyoto-theme .tk::before{left:14px;top:14px}
+ html.kyoto-theme .tk .dt{left:14px;top:35px}
+ html.kyoto-theme .kc-hero-copy{padding:30px 24px 0 80px}
+ html.kyoto-theme .kc-vtag{left:24px;top:30px}
+ html.kyoto-theme .kc-seal{right:28px;top:34px}
+ html.kyoto-theme .kc-quick{grid-template-columns:repeat(4,minmax(0,1fr))}
+ html.kyoto-theme .kc-quick a{grid-template-columns:1fr;justify-items:center;text-align:center;row-gap:4px;padding:14px 8px 12px}
+ html.kyoto-theme .kc-quick a::after{position:absolute;right:10px;bottom:14px}
+}
+@media (min-width:760px){
+ html.kyoto-theme .strip{grid-template-columns:repeat(3,minmax(0,1fr))}
+ html.kyoto-theme .tl::before{left:69px}
+}
+
+/* ---------- 電腦：左文右圖主視覺、五欄明信片 ---------- */
+@media (min-width:1024px){
+ html.kyoto-theme .wrap,html.kyoto-theme .hb{max-width:1160px}
+ html.kyoto-theme .hb{flex-wrap:nowrap;gap:10px;padding:6px 20px}
+ html.kyoto-theme .kc-brand{font-size:19px;margin-right:6px}
+ html.kyoto-theme .dch{order:1;flex:0 1 auto;padding:2px 0}
+ html.kyoto-theme .kc-nav{display:flex;order:2;margin-left:auto;gap:2px}
+ html.kyoto-theme .kc-nav a{display:flex;align-items:center;gap:6px;min-height:44px;padding:6px 12px;border-radius:8px;color:#fbf3e2;font-size:15px;letter-spacing:.12em;font-family:var(--wk);font-weight:600}
+ html.kyoto-theme .kc-nav a::after{display:none}
+ html.kyoto-theme .kc-nav a:hover{background:rgba(251,243,226,.12)}
+ html.kyoto-theme .kc-nav svg{width:19px;height:19px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+ html.kyoto-theme .sbadge{order:3;margin-left:6px}
+ html.kyoto-theme .kc-hero{grid-template-columns:minmax(380px,.82fr) 1.18fr;align-items:stretch;min-height:500px}
+ html.kyoto-theme .kc-hero-copy{order:1;align-self:center;padding:40px 20px 70px 112px}
+ html.kyoto-theme .kc-vtag{left:42px;top:50%;transform:translateY(-58%)}
+ html.kyoto-theme .kc-seal{right:auto;left:calc(100% - 64px);top:auto;bottom:118px}
+ html.kyoto-theme .kc-hero-art{order:2;margin-top:0}
+ html.kyoto-theme .kc-hero-art img{height:100%;min-height:500px;max-height:560px;object-position:50% 55%;
+  -webkit-mask:linear-gradient(90deg,transparent 0,#000 14%,#000 90%,transparent),linear-gradient(180deg,#000 82%,transparent);-webkit-mask-composite:source-in;mask:linear-gradient(90deg,transparent 0,#000 14%,#000 90%,transparent) intersect,linear-gradient(180deg,#000 82%,transparent)}
+ html.kyoto-theme .kc-title{font-size:clamp(58px,5.3vw,78px)}
+ html.kyoto-theme .kc-title span{padding-left:.6em}
+ html.kyoto-theme .kc-hero::before{content:"";position:absolute;left:0;bottom:0;width:46%;height:110px;z-index:0;pointer-events:none;opacity:.55;
+  background:url("images/keihan-2027/classic/footer.jpg") 18% bottom/auto 110px no-repeat;-webkit-mask:linear-gradient(180deg,transparent,#000 50%),linear-gradient(90deg,#000 70%,transparent);-webkit-mask-composite:source-in;mask:linear-gradient(180deg,transparent,#000 50%) intersect,linear-gradient(90deg,#000 70%,transparent)}
+ html.kyoto-theme .kc-stats{max-width:820px;margin:-46px auto 0 calc(50% - 160px);padding:14px 10px}
+ html.kyoto-theme .kc-stats b{font-size:28px}
+ html.kyoto-theme .kc-stats svg{width:30px;height:30px}
+ html.kyoto-theme .kc-quick{max-width:1160px;grid-template-columns:repeat(4,minmax(0,1fr)) 190px;gap:16px;padding:0 20px;margin-top:22px;align-items:center}
+ html.kyoto-theme .kc-quick a{min-height:110px}
+ html.kyoto-theme .kc-quick b{font-size:19px}
+ html.kyoto-theme .kc-qmatcha{display:block;width:190px;height:auto;-webkit-mask:radial-gradient(ellipse 50% 50% at 50% 50%,#000 62%,transparent 100%);mask:radial-gradient(ellipse 50% 50% at 50% 50%,#000 62%,transparent 100%)}
+ html.kyoto-theme .strip{grid-template-columns:repeat(5,minmax(0,1fr));gap:14px}
+ html.kyoto-theme .tk .kc-pic{aspect-ratio:4/3.4}
+ html.kyoto-theme .tk img{aspect-ratio:4/3.4}
+ html.kyoto-theme .tk .tt{font-size:19px}
+ html.kyoto-theme #flight>div:last-child,html.kyoto-theme #ht{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;align-items:start}
+ html.kyoto-theme #fl .bp,html.kyoto-theme #ht .pc{margin-bottom:0}
+ html.kyoto-theme .day{padding:26px 30px 22px}
+ html.kyoto-theme #plan:is(:has(.tk.on[data-id=d1]),:has(.tk.on[data-id=d3]),:has(.tk.on[data-id=d5])) .dh{padding-right:140px}
+ html.kyoto-theme #plan:is(:has(.tk.on[data-id=d1]),:has(.tk.on[data-id=d3]),:has(.tk.on[data-id=d5])) .dh::after{width:120px;height:120px}
+ html.kyoto-theme .kupd{right:calc(20px + env(safe-area-inset-right));bottom:calc(16px + env(safe-area-inset-bottom))}
+}
+@media (prefers-reduced-motion:reduce){html.kyoto-theme .kc-quick a{transition:none}}
