@@ -201,6 +201,7 @@
 - 線上已確認（curl）：GitHub Pages 的 `sw.js` 為 v176、`home.html` 載入 `journal-v4.css`、`images/journal-v4/seoul-cut.webp` 回 200。
 - **未驗證**：線上畫面的實際瀏覽器截圖；iPhone 實機與 PWA 更新（WebP 去背圖在使用者那台曾破圖的 Safari 上是否正常，見上方 Seoul Winter v170 紀錄；若破圖，原因相同，可比照改 PNG/JPEG）；Mac/iOS 字型（宋體／Snell Roundhand）與 Windows 截圖的字形差異。
 - 分支 `journal-v4-preview` 已合併，可刪除（`git push origin --delete journal-v4-preview`）。
+- 2026/11/26 sw v180：首頁 App 圖示換成使用者提供的「皮革手帳＋富士山露營」圖（1254×1254，透明底）。`icon-home-192.png`、`icon-home-512.png` 保留透明底；`icon-home-180.png`（apple-touch-icon）iOS 會把透明補黑，改鋪紙色 `#f1e2c6`；`icon-home-maskable-512.png` 縮到 80% 置中在紙色底（Android 圓形安全區）。只換這 4 個檔，檔名、manifest、其他旅程圖示都沒動；舊圖在 git 歷史。**未驗證**：iPhone／Android 主畫面實際顯示。iOS 已加到主畫面的捷徑不會自動換圖，要刪掉重新「加入主畫面」。
 
 ## 公開首頁 `home.html`「家庭旅行手帖」v3 整合紀錄（2026/11/26，使用者提供 `family-journal-final.zip`、`family-journal-v3.zip` 與一張範例稿）
 **使用者要求**：美編素材與 CSS 都由使用者提供，不得自行重畫、替換圖片或簡化版面；保留首爾／港珠澳／東京三大旅程，露營車為東京子項目，京阪不列入總覽；DETOUR（`stob/`）、各旅程內頁、`trips/` 資料不得修改；保留倒數、離線、檢查更新；先備份舊首頁；手機與電腦都要實測。
