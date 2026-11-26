@@ -48,6 +48,7 @@
   - 診斷頁：JPEG／PNG／WebP 直接與快取 decode 都成功（Edge）。
 - 測試大多在合併前的 v175 完成；推送前其他工作階段把 sw.js 升到 v178，已以遠端版本為底重新套用京阪的 CORE 與 activate 改動成 v179，並重跑功能、離線重載、各旅程離線導航（通過，`trip-v179` 228 項）。更新接管（重載一次／延後／首次不重載）的測試是在 v175 做的，邏輯沒變但未在 v179 重測。
 - 2026/11/26 部署後線上（GitHub Pages，headless Edge）：390px 無溢出、無破圖、Yuji Syuku 載入；首次造訪 SW 背景安裝、不重載，重新整理後受控（`trip-v179`）；**線上離線重新整理通過**（5 張日卡圖、主視覺、JSON、換日期）；`kyoto-diag.html` 線上報告正常（JPEG／PNG／WebP 解碼都成功，PNG 不在預先快取）。
+- **主畫面圖示（2026/11/26，sw v191）**：舊的紫色「京阪」圖示換成 `icon-keihan-v2-180/192/512.png`，由 `classic/hero.jpg` 正方形裁切（x 78、455×455，和服雙人背影＋五重塔），不是重畫；maskable 與 512 共用同一檔。`manifest-keihan-2027.webmanifest` 的 theme_color 改苔綠 `#414a36`、background_color 改米白 `#f4eddf`；`keihan.html` 的 apple-touch-icon／icon 與 `sw.js` CORE 已改用新檔名（換檔名避免 iOS／Android 沿用舊圖快取）。舊的 `icon-keihan-*.png` 保留在 repo 沒刪（沒有其他頁引用）。**已加到主畫面的 App 不會自動換圖示，要刪掉重新「加入主畫面」**；iPhone 實機顯示未驗證。
 - **未驗證（需使用者）**：iPhone Safari 與主畫面 App 實機（瀏海、底部安全區、Yuji Syuku 在 iOS 的載入、之前 WebP 破圖的真正原因——請在 iPhone 開 `kyoto-diag.html` 複製報告）；GitHub Pages 線上的更新接管流程只做了部署後檢查（見下一點），沒有在線上模擬兩次版本更新。
 - **與定稿仍有的落差（缺素材，未自行重畫）**：楓葉、秋葉角落裝飾、日卡撕紙邊、卡片內小插圖（人力車、章魚燒）、標題旁朱色筆刷圈、「查看完整行程」按鈕（單頁版沒有獨立行程頁，加了等於無作用按鈕）；日卡項目列是 JSON 的路線文字，不是定稿的三點條列；統計是 4 格（京都 3 晚／大阪 1 晚分開，依資料）。
 
