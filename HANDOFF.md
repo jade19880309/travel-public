@@ -60,6 +60,9 @@
 - 三個 manifest 的 maskable 改指向同一張 512（不另存一份）；theme_color／background_color **沒改**。`index.html`（id ti/fi，沒有程式在用）、`hk.html`、`tokyo.html` 的 apple-touch-icon／icon 與 `sw.js` CORE 已改新檔名。舊檔保留在 repo。
 - 現況：首頁（11/26 皮革手帳版）、京阪（V2）、首爾、港珠澳、東京都已是新版；**露營車 `campervan.html` 沒有 manifest 和圖示**（使用者這次沒要求，未處理）；偏航 `detour/` 動態圖示不動。
 - 已加到主畫面的 App 要刪掉重加才會換圖示；iPhone 實機顯示未驗證。
+## 登機證航程圖示（2026/11/26，sw v206）
+- 使用者 iPhone 截圖：中間飛機壓到「2 小時 40 分」。原因：theme-han.css 的 `.fl .mid::after` 飛機動畫＋V3 的手繪 plane.png 背景兩架疊在一起，間距不足。改成只留手繪飛機（`::after` 改為右半段虛線），虛線在飛機兩側斷開，時間在飛機下方；機型前 style.css 的「✈」字元（iPhone 顯示成彩色表情）在 V3 隱藏。
+
 ## 開啟速度修正（2026/11/26，sw v205）
 - 使用者回報 iPhone「還是打不太開、耗太多時間」。量測：離線快取 CORE 297 檔約 **30MB**；v204 以前 install 用 `cache:'reload'` 每次強制全部重抓，且 297 個請求同時發出。當天連續更新 v199～v204，iPhone 每次開頁都在背景重下載 30MB、搶走頁面頻寬。
 - `sw.js` install 改為：`cache:'no-cache'`（以 ETag 向伺服器確認，沒變的檔案用瀏覽器 HTTP 快取，不重新下載）；**同時最多 3 個請求**，首爾頁相關檔案排最前。fetch／activate 邏輯不變。
