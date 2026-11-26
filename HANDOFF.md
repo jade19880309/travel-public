@@ -62,7 +62,8 @@
 - **素材缺口（不要自己畫）**：示意圖「裝飾與背景素材」列的 `paper-texture.jpg`、`leaf.png`、`hydrangea.png`、`signwood.png`、`washi.png`、`cloud.png` **zip 裡沒有**；目前和紙用 CSS 雜訊紋理、葉片沿用 V1 的 `images/forest-journal/leaf.webp`，繡球花／木牌／紙膠帶／雲朵沒有用。酒藏巡禮沒有清酒圖示，暫用 `icon-japanese.png`（書本）；里程地圖用 `icon-fuji.png`。使用者補素材後再換。
 - 切換／復原：`?theme=classic`＝原版（v168 的復原機制，照舊）；`?theme=v1`＝森林手帳第一版（v168 外觀）；`?theme=forest`＝V2（預設）。都記在 localStorage `theme`。永久拿掉 V2＝刪兩頁 `<html>` 的 `fj2`、`theme-forest-v2.css` link、`forest-v2.js` script，或 `git revert` V2 那個 commit。改版前版本：`3cc7ad2`（sw v170）；森林 V1 基準 `1311076`（v168）。
 - 測試（本機 PowerShell HttpListener＋Claude 內建瀏覽器）：375／390／430／1280 無橫向溢出；東京：功能紙卡跳轉與高亮、☰、Day 分頁↔底部日期列同步、展開日卡、方案切換（方案三 6 天）、待辦勾選、換算／字體／更新鈕、倒數；露營車：4 個圖示鍵、RV／酒藏切換（13 間）、總覽日程卡→DAY 3、行程點勾選、日文切換、分頁黏頂；`?theme=classic`／`?theme=v1` 正常；首爾頁無錯誤。
-- **未測**：Service Worker／離線（內建瀏覽器拒絕註冊 SW，`fetch('sw.js')` 正常，原版也一樣，非本次造成）；切換方案後自動捲到每日行程在內建瀏覽器裡（classic 原版也一樣）停在頂端，無法在此驗證；iPhone 實機、GitHub Pages 線上畫面。
+- 線上（GitHub Pages，commit `33b6765`）：東京、露營車 390px 正常、無破圖、無溢出；Service Worker 已啟用，快取 `trip-v171` 內含 19 個 V2 檔案（CSS、JS、17 張素材）。
+- **未測**：實際斷網後重新整理（內建瀏覽器無法切離線；本機 http 也拒絕註冊 SW）；切換方案後自動捲到每日行程在內建瀏覽器裡停在頂端（classic 原版也一樣，無法在此驗證，請在手機確認）；iPhone 實機（安全區域、明體字型）。
 
 ## 森林手帳風主題（2026/11/26，依使用者提供的素材包整合）
 - `theme-forest-journal.css`＝素材包原 CSS（上半，原樣保留）＋「整合補充」精確 selector（下半，蓋過 theme-fuji.css 與露營車內嵌樣式）。只由 `tokyo.html`、`campervan.html` 載入；兩頁 `<html>` 加了 `forest-journal` class。
