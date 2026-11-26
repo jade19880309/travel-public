@@ -339,7 +339,7 @@ addEventListener('resize',()=>{if(lb.classList.contains('on'))reset()});
 (function(){const links=[...document.querySelectorAll('#hd nav a')],secs=links.map(a=>document.querySelector(a.getAttribute('href')));
 let cur=-1;
 function spy(){const off=($('#hd').offsetHeight||60)+48;let k=0;
-secs.forEach((el,i)=>{if(el&&el.getBoundingClientRect().top<=off)k=i});
+let bt=-1e9;secs.forEach((el,i)=>{if(!el)return;const t=el.getBoundingClientRect().top;if(t<=off&&t>bt+1){bt=t;k=i}}); // 依畫面位置（最接近上方的已捲過段落），版面順序與選單順序不同也正確
 if(innerHeight+scrollY>=document.documentElement.scrollHeight-4)k=secs.length-1;
 if(scrollY<40&&secs[0]&&secs[0].getBoundingClientRect().top>off)k=0;
 if(k===cur||!links[k])return;cur=k;

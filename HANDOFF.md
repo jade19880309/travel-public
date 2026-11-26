@@ -60,6 +60,16 @@
 - 三個 manifest 的 maskable 改指向同一張 512（不另存一份）；theme_color／background_color **沒改**。`index.html`（id ti/fi，沒有程式在用）、`hk.html`、`tokyo.html` 的 apple-touch-icon／icon 與 `sw.js` CORE 已改新檔名。舊檔保留在 repo。
 - 現況：首頁（11/26 皮革手帳版）、京阪（V2）、首爾、港珠澳、東京都已是新版；**露營車 `campervan.html` 沒有 manifest 和圖示**（使用者這次沒要求，未處理）；偏航 `stob/` 動態圖示不動。
 - 已加到主畫面的 App 要刪掉重加才會換圖示；iPhone 實機顯示未驗證。
+## 首爾 V2.1 韓系新春水彩手帳（2026/11/26，sw v193，使用者提供 seoul-winter-v2.1.zip）
+- 素材包內容：`CLAUDE-INSTRUCTIONS.md`、`CHECKLIST.md`、`reference.html`、`seoul-v2.css`、`V2-design-reference.webp`（＋ `mobile-design-reference.webp`）、decor 素材。參考圖／參考 HTML **沒放進 repo**；`seoul-v2.css` 原樣放在根目錄（路徑本來就是相對根目錄，不用改）。
+- 新素材：`images/seoul-2027/decor/brush-{rose,blue,green,gold,violet}.png`、`day-1～6.webp`（原檔）＋ `day-1～6.jpg`（瀏覽器 canvas 同尺寸轉出，品質 0.92；比照 v170 iPhone WebP 破圖紀錄，網頁實際用 JPEG）。其他 decor 檔與包內相同（已逐檔比對）。day 圖是示意圖裁切，只有約 278×96，電腦版放大略糊（CHECKLIST 已註明非高解析原稿）。
+- 做法：沿用上一版的 `seoul-winter.js`（只搬動／包裝 app.js 畫好的元素），改成套 `reference.html` 的 class：`<html>` 加 `sw sv2`、`<body>` 加 `seoul-v2`；封面 `hero2`、功能列 `nav2`＋`tile`／`nav-icon`（沿用原本的功能線條圖示）、倒數 `panel2 count2`（`#cd` 加 `numbers`）、日期 `panel2 info2`、航班登機證 `flight2`、飯店卡 `panel2 hotel2`（照片仍是正式網站 `hotel-2.jpg`）、標題文字包 `span.brush2`（五色筆刷輪替）、`#days` 加 `days2`、每張 `.dy` 加 `day2`＋`--accent`、底部日期列 `dock2`、頁尾 `footer2`。所有原有 id、事件、資料都沒動。
+- `seoul-v2-site.css`（新檔，全部 `html.th-han.sw.sv2` 開頭）：把 V2 版型對應到正式頁並蓋過 theme-han.css 舊「Seoul Winter」區塊中衝突的規則（舊規則權重較高，所以 V2 的數值在這裡重寫一次）；背景圖改用同圖 `.jpg`；修正 `seoul-v2.css` 通用 `button`（nowrap）與 `panel2`（padding）規則在正式頁造成的擠壓。舊 Seoul Winter 區塊仍負責內頁（韓語、美食、價格、待辦等）的配色，**不要刪**。
+- 版面：航班＋住宿改成並排 `.pair.sv2-fh`（手機上下排），所以 DOM 順序變成 航班→住宿→行程；倒數＋日期一組、天氣＋工具鍵一組。原本右下角三顆懸浮鈕（換算／字體／更新）搬進天氣旁的工具列（同一個元素，事件不變；換算面板仍從右下彈出）。日期列多一個「總覽」鍵（連到 `#plan`；沒選日期時是深藍），日期鍵前面用 CSS counter 加 D1～D6。每日卡標題用 JSON 的 `h`（去掉「Day N」），下方小字是原本的路線 `ds`；點開的那天跨滿整列。
+- 每日卡配圖（裝飾，依實際行程配，不代表新增景點）：2/3 day-1 飛機、2/4 day-2 明洞、2/5 day-5 玩雪、2/6 day-3 景福宮、2/7 day-4 南山塔、2/8 day-6 機場。日數變動要改 `seoul-winter.js` 的 `DIMG`／`ACC`。
+- `app.js` 改一行：上方功能列的捲動高亮改成「依畫面位置選最接近上方的已捲過段落」，因為首爾頁版面順序（航班→住宿→行程）和選單順序（航班→行程→住宿）不同；其他頁版面順序與選單一致，結果不變。航班與住宿在電腦版並排時同高，捲到那裡會亮「航班」。
+- 示意圖中的「9 人（6 大 3 小）」、氣溫、航班時間、行程細項等**沒有寫進網站**（JSON 沒有人數資料）；頁尾文字用 JSON 的日期與天數。
+- 測試（本機 PowerShell HttpListener＋Claude 內建瀏覽器，非 Playwright）：375／390／768／1440 無橫向溢出、無破圖、無 console error；功能列各段高亮正確（以 resize 事件觸發 spy 驗證）、點日卡展開／跨列、底部日期列切換、換算面板開關、字體 1→1.15、待辦勾選、`?theme=classic` 回舊版；hk／tokyo／keihan／campervan／home 頁可正常載入；SW 安裝後 260 個檔案（本機測試時為 v192；rebase 後正式為 v193），關掉伺服器重新整理仍顯示 V2.1 版面、無破圖。**未測**：GitHub Pages 線上畫面、iPhone 實機（安全區、Snell Roundhand 草寫字、JPEG 是否解決破圖）、320／430 寬度。
 
 ## Seoul Winter：首爾冬日旅行手帳（2026/11/26，使用者提供 seoul-winter-kit 素材包＋手機版示意圖）
 - 做法：`index.html` 在 `app.js` 載入後，只有 `t=seoul-2027` 才載入 `seoul-winter.js`；它只搬動／包裝 app.js 畫好的元素（封面換 `hero-winter.webp`＋HTML 標題、功能列從頁首搬到封面下方並改 sticky 圖示鍵、倒數與日期移到 `.sw-top` 卡片、區塊標題去表情符號加小插畫、住宿卡插入 `hotel-2.jpg`、頁尾插畫），並在 `<html>` 加 `sw` class。樣式在 `theme-han.css` 最後的「Seoul Winter」區塊，全部以 `html.th-han.sw` 開頭。`app.js`、`style.css`、`trips/seoul-2027.json` 都沒改。
