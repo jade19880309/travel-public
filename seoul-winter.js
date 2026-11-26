@@ -1,119 +1,130 @@
-// 首爾冬日旅行手帳 V2.1 版面（Design-to-Code 重構版，2026/11/26）：只在首爾頁（index.html?t=seoul-2027）由 index.html 於 app.js 之後載入。
-// 只搬動／包裝 app.js 已畫好的元素，再加上素材插畫層（前景／中景／背景）；不改任何行程資料、id、事件。
-// 樣式：theme-han.css「Seoul Winter」區塊（html.th-han.sw，內頁配色）＋ seoul-v2.css（使用者提供，原樣）＋ seoul-v2-site.css（版面重構，html.th-han.sw.sv2）。
-// 恢復舊版：網址加 ?theme=classic（記在這支手機）；?theme=winter 改回。
+// 首爾冬日旅行手帳 V3.0（2026/11/26，使用者提供 seoul-winter-v3.zip）：只在首爾頁（index.html?t=seoul-2027）由 index.html 於 app.js 之後載入。
+// 依 reference-v3.html／seoul-v3.css 重建「視覺呈現層」：只搬動／包裝 app.js 畫好的元素並插入 V3 素材，不改任何行程資料、id、事件。
+// 樣式：seoul-v3-site.css（全部 html.th-han.sv3 開頭）。V2.1 版面備份在 seoul-winter-v2.js（網址 ?theme=v2）。
+// 切換：?theme=classic 原始版、?theme=v2 V2.1 備份、?theme=v3（或 winter）V3（記在這支手機）。
 (function(){
  var q=new URLSearchParams(location.search).get('theme');
- try{if(q==='classic'||q==='winter')localStorage.setItem('seoulTheme',q)}catch(e){}
+ if(q==='winter')q='v3';
+ try{if(q==='classic'||q==='v2'||q==='v3')localStorage.setItem('seoulTheme',q)}catch(e){}
  var th=null;try{th=localStorage.getItem('seoulTheme')}catch(e){}
  if(th==='classic'||!window.TRIP||!document.getElementById('hero'))return;
+ if(th==='v2'){var s2=document.createElement('script');s2.src='seoul-winter-v2.js';document.body.appendChild(s2);return}
+
  var $=function(s,r){return (r||document).querySelector(s)},$$=function(s,r){return [].slice.call((r||document).querySelectorAll(s))};
- var IMG='images/seoul-2027/decor/';
- var deco=function(f,c,lazy){return '<img class="sw-deco '+(c||'')+'" src="'+IMG+f+'" alt=""'+(lazy?' loading="lazy"':'')+' aria-hidden="true">'};
+ var V3='images/seoul-2027/v3/',DEC='images/seoul-2027/decor/';
+ var img=function(src,c,lazy){return '<img class="'+(c||'')+'" src="'+src+'" alt=""'+(lazy?' loading="lazy"':'')+' aria-hidden="true">'};
  var H=TRIP.hero||{},M=TRIP.meta||{},DAYS=TRIP.days||[];
- // 開頭的表情符號（功能鍵、分頁、摺疊標題）：首爾手帳版改用插畫／線條圖示，不顯示表情符號
  var EMO=/^\s*(?:[←-⯿☀-➿️‍]|[\uD83C-\uDBFF][\uDC00-\uDFFF])+\s*/;
  var deEmoji=function(el){var n=el.firstChild;while(n&&n.nodeType===1&&!n.textContent.trim())n=n.nextSibling;if(n&&n.nodeType===3&&EMO.test(n.nodeValue))n.nodeValue=n.nodeValue.replace(EMO,'')};
- document.documentElement.classList.add('sw','sv2');
- document.body.classList.add('seoul-v2');
+ var esc=function(s){return String(s).replace(/[<>&"]/g,function(c){return {'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;'}[c]})};
+ document.documentElement.classList.add('sv3');
+ document.body.classList.add('seoul-v3');
 
- // ===== 封面（hero2）：背景＝冬日韓屋全景；前景＝梅枝、飛機、雪花；標題文字取自行程資料 =====
+ // 手繪圖示（12 個，依語意）
+ var IC=function(n){return V3+n+'.png'};
+ var NAVIC={flight:'plane',plan:'map',hotel:'bed',phr:'hanok',food:'food',price:'shopping',tips:'snow',todo:'luggage',apps:'train'};
+ // 行程摘要圖示：依文字內容判斷（不改文字）
+ var pickIc=function(t){
+  if(/KE\d|搭機|搭 KE|機場|航廈|報到|安檢|託運/.test(t))return 'plane';
+  if(/飯店|入住|退房/.test(t))return 'bed';
+  if(/行李/.test(t))return 'luggage';
+  if(/醫美/.test(t))return 'medical';
+  if(/玩雪|雪橇|滑雪|Vivaldi|Snowy/.test(t))return 'ski';
+  if(/宮/.test(t))return 'palace';
+  if(/韓屋|北村|仁寺洞|博物館/.test(t))return 'hanok';
+  if(/購物|商圈|明洞|Ssamziegil/.test(t))return 'shopping';
+  if(/早餐|午餐|晚餐|市場|美食|煎餅|小吃/.test(t))return 'food';
+  if(/地鐵|AREX|首爾站|車站|KTX/.test(t))return 'train';
+  if(/雪/.test(t))return 'snow';
+  return 'map'};
+
+ // ===== 封面 hero3：冬日全景＋書法標題 title.png（不加霧化遮罩） =====
  var hero=$('#hero'),bg=$('.hero-bg',hero);
- hero.classList.add('sw-hero','hero2');
- if(bg){var old=bg.getAttribute('src');bg.onerror=function(){bg.onerror=null;bg.removeAttribute('srcset');bg.src=old};bg.sizes='(min-width:1000px) 1100px, 100vw';bg.srcset=IMG+'hero-winter-m.jpg 1000w, '+IMG+'hero-winter.jpg 1672w';bg.src=IMG+'hero-winter.jpg';bg.alt=H.alt?'首爾封面：雪中的北村韓屋與南山首爾塔':'';bg.setAttribute('fetchpriority','high')}
+ hero.classList.add('hero3');
+ if(bg){var old=bg.getAttribute('src');bg.onerror=function(){bg.onerror=null;bg.removeAttribute('srcset');bg.src=old};bg.sizes='(min-width:1000px) 1100px, 100vw';bg.srcset=DEC+'hero-winter-m.jpg 1000w, '+DEC+'hero-winter.jpg 1672w';bg.src=DEC+'hero-winter.jpg';bg.alt='';bg.setAttribute('fetchpriority','high')}
  var ttl=H.title||M.title||'';
- hero.insertAdjacentHTML('beforeend','<div class="sv3-hfx" aria-hidden="true">'+deco('plum-branch.png','sv3-hplum1')+deco('plum-branch.png','sv3-hplum2')+deco('airplane.png','sv3-hplane')+deco('snowflake.png','sv3-hsnow')+deco('hotteok.png','sv3-hfood1')+deco('coffee.png','sv3-hfood2')+'</div>'
-  +'<div class="sv2-title"><h1><span class="sv2-zh">首爾</span><span class="sv2-side"><small lang="ko">서울</small><em lang="en">Seoul</em></span></h1><p>'+ttl+'</p>'+(H.eyebrow?'<b>'+H.eyebrow+'</b>':'')+'</div>');
+ hero.insertAdjacentHTML('beforeend','<h1 class="t3"><img src="'+V3+'title.png" alt="首爾 서울 Seoul" fetchpriority="high"></h1><b class="band3">'+esc(ttl)+'</b>'+(H.eyebrow?'<small class="eb3">'+esc(H.eyebrow)+'</small>':''));
 
- // ===== 功能選單（nav2）：疊在封面下緣（保留同一組連結，捲動標示照常運作） =====
- var nav=$('#hd nav'),ICON={};
- if(nav){nav.classList.add('sw-nav','nav2');nav.setAttribute('aria-label','功能選單');
-  $$('a',nav).forEach(function(a){var id=(a.getAttribute('href')||'').slice(1);a.dataset.ic=id;a.classList.add('tile');a.innerHTML='<i class="nav-icon" aria-hidden="true"></i><span>'+a.textContent+'</span>'});
+ // ===== 功能列 nav3：手繪圖示＋文字（同一組連結，捲動標示照常） =====
+ var nav=$('#hd nav');
+ if(nav){nav.classList.add('nav3');nav.setAttribute('aria-label','功能選單');
+  $$('a',nav).forEach(function(a){var id=(a.getAttribute('href')||'').slice(1);a.innerHTML=img(IC(NAVIC[id]||'map'),'ni3')+'<span>'+a.textContent+'</span>'});
   hero.after(nav);
-  // 線條圖示（theme-han.css 的遮罩圖）也用在區塊標題
-  $$('a',nav).forEach(function(a){var cs=getComputedStyle(a.querySelector('i'));ICON[a.dataset.ic]=cs.webkitMaskImage||cs.maskImage||''});
   var stk=function(){nav.classList.toggle('stuck',nav.getBoundingClientRect().top<=1&&scrollY>40)};addEventListener('scroll',stk,{passive:true});stk();
   new MutationObserver(function(){var a=$('a.on',nav);if(a&&nav.scrollWidth>nav.clientWidth){var l=a.offsetLeft-(nav.clientWidth-a.offsetWidth)/2;nav.scrollTo({left:l,behavior:'smooth'})}}).observe(nav,{subtree:true,attributes:true,attributeFilter:['class']});
   window.dispatchEvent(new Event('resize'))}
 
- // ===== 倒數卡（count2）：前景福袋（左）＋梅枝（左上）＋雪花 =====
+ // ===== 倒數 count3（福袋＋倒數＋新年祝福）＋日期 info3（景福宮）＋天氣 quick3 =====
  var cd=$('#cd'),note=$('#cdnote'),go=$('#gotoday'),sub=$('p',hero);
- var card=document.createElement('section');card.className='card sw-cd panel2 count2';
- card.innerHTML=deco('plum-branch.png','sv3-cplum')+deco('bokjumeoni.png','sv3-cbag')+deco('snowflake.png','sv3-csnow')+'<div class="sw-cdin"></div>';
- var inn=$('.sw-cdin',card);
- if(note){inn.append(note)}if(cd){cd.classList.add('numbers');inn.append(cd)}
- inn.insertAdjacentHTML('beforeend','<p class="sw-wish"><span lang="ko">새해 복 많이 받으세요!</span><small>新年快樂</small></p>');
+ var card=document.createElement('section');card.className='card paper3 count3';
+ card.innerHTML=img(DEC+'bokjumeoni.png','bag3')+img(DEC+'plum-branch.png','plum3')+'<div class="cin3"></div>';
+ var inn=$('.cin3',card);
+ if(note)inn.append(note);if(cd){cd.classList.add('nums');inn.append(cd)}
+ inn.insertAdjacentHTML('beforeend','<b class="wish3" lang="ko">새해 복 많이 받으세요!</b><p class="wish3s">新年快樂</p>');
  if(go){deEmoji(go);inn.append(go)}
- // 旅遊日期（info2）：景福宮雪景插畫壓在右下（去背版，不是整張白底圖）
- var info=document.createElement('section');info.className='card sw-info panel2 info2';
+ var info=document.createElement('section');info.className='card paper3 info3';
  var CDL=(H.cd||{}).label||'';
- info.innerHTML=deco('palace-cut.png','sv3-ipal')+deco('snowflake.png','sv3-isnow')
-  +'<div class="sw-irow"><i class="sw-ical" aria-hidden="true"></i><div><small>旅遊日期</small><b>'+((H.sub||[])[0]||'')+'</b>'+((H.sub||[])[1]?'<span>'+H.sub[1]+'</span>':'')+'</div></div>'
-  +(CDL?'<div class="sw-irow sv2-irow2"><img class="sv2-iplane" src="'+IMG+'airplane.png" alt="" aria-hidden="true"><div><small>出發</small><b>'+CDL+'</b></div></div>':'');
+ info.innerHTML=img(DEC+'palace-cut.png','pal3')
+  +'<p><img src="'+IC('map')+'" alt="" aria-hidden="true"><span><small>旅遊日期</small><b>'+esc((H.sub||[])[0]||'')+'</b>'+((H.sub||[])[1]?'<em>'+esc(H.sub[1])+'</em>':'')+'</span></p>'
+  +(CDL?'<p><img src="'+IC('plane')+'" alt="" aria-hidden="true"><span><small>出發</small><b>'+esc(CDL)+'</b></span></p>':'');
  if(sub)sub.remove();
- var top=document.createElement('div');top.className='sw-top';
- var p1=document.createElement('div');p1.className='pair';p1.append(card,info);top.append(p1);
+ var top=document.createElement('div');top.className='top3';top.append(card,info);
  nav?nav.after(top):hero.after(top);
- // 天氣卡（整列，右側冬日旅行插畫）；換算／字體／更新維持右側懸浮鈕（使用者指定）
- var wx=$('#wx');if(wx){wx.classList.add('panel2','sv2-wx');wx.insertAdjacentHTML('afterbegin',deco('winter-travel-cut.png','sv3-wxi',true));top.append(wx)}
+ var wx=$('#wx');if(wx){wx.classList.add('paper3','quick3');wx.insertAdjacentHTML('afterbegin',img(IC('snow'),'wxi3'));top.append(wx)}
 
- // ===== 區塊標題：線條圖示＋文字放進水彩筆刷（brush2），右側素材貼紙 =====
- var DECO={flight:'airplane.png',hotel:'',plan:'',phr:'hanok-window.png',food:'hotteok.png',price:'coffee.png',tips:'mittens.png',todo:'plum-branch.png',apps:'snowflake.png'};
- var BR={flight:'blue',hotel:'green',plan:'rose',phr:'violet',food:'gold',price:'blue',tips:'green',todo:'rose',apps:'violet'};
- $$('main>section[id]>h2').forEach(function(h){
+ // ===== 區塊標題 section3：水彩筆刷＋手繪圖示 =====
+ var BR={flight:'rose',hotel:'blue',plan:'rose',phr:'violet',food:'gold',price:'blue',tips:'green',todo:'rose',apps:'violet'};
+ $$('main>section[id]>h2').forEach(function(h){var id=h.parentNode.id;
   h.innerHTML=h.innerHTML.replace(EMO,'');
-  var id=h.parentNode.id,ic=ICON[id];
-  h.innerHTML='<span class="brush2 sv2-'+(BR[id]||'rose')+'">'+(ic&&ic!=='none'?'<i class="sv3-hic" style="-webkit-mask-image:'+ic.replace(/"/g,"'")+';mask-image:'+ic.replace(/"/g,"'")+'" aria-hidden="true"></i>':'')+h.innerHTML+'</span>';
-  var f=DECO[id];h.classList.add('sw-h');if(f)h.insertAdjacentHTML('beforeend',deco(f,'sw-hd',true))});
- // 功能鍵、分頁、摺疊標題去掉開頭表情符號（app.js 重畫分頁時再處理一次）
+  h.classList.add('section3','br3-'+(BR[id]||'rose'));
+  h.innerHTML='<span class="sh3">'+img(IC(NAVIC[id]||'map'),'si3')+'<span>'+h.innerHTML+'</span></span>'});
  var clean=function(){$$('main .btns>.b, main .tabs>button, main .seg>button, main details.fold>summary, main details.td>summary, main p.rate').forEach(deEmoji)};
  clean();var mo=new MutationObserver(function(){mo.disconnect();clean();watch()}),watch=function(){$$('main .tabs, main .seg, #pf, #ps').forEach(function(t){mo.observe(t,{childList:true,subtree:true})})};watch();
 
- // ===== 航班＋住宿並排（pair）：登機證 flight2、飯店卡 hotel2（照片沿用正式網站，南山塔拍立得） =====
+ // ===== 航班＋住宿 pair3：手撕紙卡 =====
  var fl=$('#flight'),ho=$('#hotel');
- if(fl&&ho){var p3=document.createElement('div');p3.className='pair sv2-fh';fl.before(p3);p3.append(fl,ho)}
- $$('#flight .bp').forEach(function(b){b.classList.add('flight2');var h=$('.bph',b);if(!h)return;
-  // 日期文字搬到登機證本體（示意圖：深藍票頭＝航空公司＋去／回程，本體第一行＝日期）
-  [].slice.call(h.childNodes).forEach(function(n){if(n.nodeType===3&&n.nodeValue.trim()){var d=document.createElement('div');d.className='sv3-fdate';d.textContent=n.nodeValue.trim();h.after(d);n.remove()}})});
+ if(fl&&ho){var p3=document.createElement('div');p3.className='pair3';fl.before(p3);p3.append(fl,ho)}
+ $$('#flight .bp').forEach(function(b){b.classList.add('paper3','fl3');var h=$('.bph',b);if(!h)return;
+  [].slice.call(h.childNodes).forEach(function(n){if(n.nodeType===3&&n.nodeValue.trim()){var d=document.createElement('div');d.className='fdate3';d.textContent=n.nodeValue.trim();h.after(d);n.remove()}});
+  h.insertAdjacentHTML('afterbegin',img(IC('plane'),'fi3'))});
  $$('#hotel details.hotel').forEach(function(d,i){var s=$('summary',d),o=(TRIP.hotels||[])[i]||{};if(!s)return;
-  d.classList.add('sw-hotel','panel2','hotel2');
-  var src=o.pic==='hpic'?'images/seoul-2027/hotel-2.jpg':'';
-  if(src)s.insertAdjacentHTML('afterbegin','<button class="sw-hpic" data-sh="'+o.pic+'" onclick="event.preventDefault()" aria-label="飯店相片"><img src="'+src+'" alt="飯店外觀" loading="lazy"></button>')});
- if(ho)ho.insertAdjacentHTML('afterbegin','<div class="sv3-polar" aria-hidden="true">'+deco('namsan-tower.png','',true)+'</div>');
+  d.classList.add('paper3','ho3');
+  if(o.pic==='hpic')s.insertAdjacentHTML('afterbegin','<button class="hpic3" data-sh="hpic" onclick="event.preventDefault()" aria-label="飯店相片"><img src="images/seoul-2027/hotel-2.jpg" alt="飯店外觀" loading="lazy"></button>')});
+ if(ho)ho.insertAdjacentHTML('beforeend',img(DEC+'plum-branch.png','hplum3',true));
 
- // ===== 每日行程卡（days2／day2）：Day 筆刷標籤＋插畫（裝飾，依真實行程內容配圖，不代表新增景點）＋當日標題＋前三個行程點 =====
- // 圖：2/3 出發飛機、2/4 明洞、2/5 玩雪、2/6 景福宮、2/7 南山、2/8 機場返程
- var DIMG=['day-1','day-2','day-5','day-3','day-4','day-6'],ACC=['#a84d59','#497da6','#537c63','#a96730','#78618f','#537c63'],BRS=['rose','blue','green','gold','violet','green'];
- var plan=$('#plan');if(plan)plan.insertAdjacentHTML('afterbegin','<div class="sv3-pfx" aria-hidden="true">'+deco('hanok-street-cut.png','sv3-pst',true)+deco('plum-branch.png','sv3-pplum',true)+'</div>');
+ // ===== 每日行程 days3／day3：依 reference-v3.html 結構重建視覺層 =====
+ // 左欄 46%：Day 水彩標籤（badge-1～6）＋日期同列、下方插畫；右欄：當日標題＋三項摘要（圖示 21px、文字 14px、自然換行）
+ // 插畫依正式行程：2/3 飛機、2/4 明洞、2/5 玩雪、2/6 景福宮、2/7 韓屋（scene-5 為南山摩天輪，與行程不符，改用 decor 原圖 hanok-street 裁切）、2/8 機場
+ var SCN=['scene-1.png','scene-2.png','scene-3.png','scene-4.png','scene-5-hanok.png','scene-6.png'];
+ var ACC=['#a84d59','#497da6','#537c63','#a96730','#78618f','#537c63'];
+ var plain=function(s){var e=document.createElement('div');e.innerHTML=String(s||'').replace(/<a\b[^>]*class="xl"[^>]*>[\s\S]*?<\/a>/g,'');return (e.textContent||'').replace(EMO,'').replace(/\s+/g,' ').trim()};
  var dbox=$('#days');
- if(dbox){dbox.classList.add('days2');
-  $$('.dy',dbox).forEach(function(el,k){var r=$('.dr',el);if(!r)return;
-   el.classList.add('day2','sv3-b-'+BRS[k%BRS.length]);el.style.setProperty('--accent',ACC[k%ACC.length]);
-   var h=((DAYS[k]||{}).h||'').replace(/^Day\s*\d+\s*/i,'');
-   r.insertAdjacentHTML('afterbegin','<strong class="sv2-dn">Day '+(k+1)+'</strong>');
-   var D=DAYS[k]||{},its=(D.ab?D.A:D.i)||[],tx=function(s){var e=document.createElement('div');e.innerHTML=s||'';return (e.textContent||'').trim()};
-   var li=its.map(function(x){return tx(x[1])}).filter(function(s){return s&&!/^(早餐|午餐|晚餐)$/.test(s)}).slice(0,3);
-   var b=$('b',r);if(b)b.insertAdjacentHTML('afterend','<img class="sv2-dimg" src="'+IMG+(DIMG[k]||'day-1')+'.jpg" alt="" loading="lazy">'+(h?'<span class="sv2-dt">'+h+'</span>':'')+(li.length?'<span class="sv2-dl">'+li.map(function(s){return '<i>'+s.replace(/[<>&]/g,'')+'</i>'}).join('')+'</span>':''))})}
+ if(dbox){dbox.classList.add('days3');
+  $$('.dy',dbox).forEach(function(el,k){var r=$('.dr',el);if(!r||el.hidden)return;var D=DAYS[k]||{};
+   el.classList.add('paper3','day3');el.style.setProperty('--accent',ACC[k%ACC.length]);
+   var t=(D.t||'').split(' '),date=t[0]+(t[1]?'（'+t[1]+'）':'');
+   var h=(D.h||'').replace(/^Day\s*\d+\s*/i,'');
+   var its=(D.ab?D.A:D.i)||[];
+   var li=its.map(function(x){return plain(x[1])}).filter(function(s){return s&&!/^(早餐|午餐|晚餐)$/.test(s)}).slice(0,3);
+   var tg=$('.tg',r);
+   r.classList.add('dr3');
+   r.insertAdjacentHTML('afterbegin','<span class="dl3"><span class="dayhead"><span class="daybadge" style="--badge:url('+V3+'badge-'+((k%6)+1)+'.png)">Day '+(k+1)+'</span><span class="ddate">'+esc(date)+'</span></span><img class="scene" src="'+V3+SCN[k%SCN.length]+'" alt="" loading="lazy"></span>'
+    +'<span class="dr3r"><span class="dh3">'+esc(h)+'</span><span class="dul">'+li.map(function(s){return '<span class="dli"><img src="'+IC(pickIc(s))+'" alt="" aria-hidden="true"><span>'+esc(s)+'</span></span>'}).join('')+'</span></span>');
+   if(tg)$('.dr3r',r).append(tg)})}
 
- // ===== 底部日期列（dock2）：加「總覽」回到每日行程；日期鍵加 D1～D6 =====
+ // ===== 底部日期列 dock3：總覽＋D1～D6 =====
  var dk=$('#daybar');
- if(dk){dk.classList.add('dock2');var row=dk.firstElementChild;
-  if(row)row.insertAdjacentHTML('afterbegin','<a class="tile sv2-all" href="#plan"><i aria-hidden="true"></i>總覽</a>');
-  $$('#dbtn>button').forEach(function(b){b.classList.add('tile')});
+ if(dk){dk.classList.add('dock3');var row=dk.firstElementChild;
+  if(row)row.insertAdjacentHTML('afterbegin','<a class="all3" href="#plan">'+img(IC('map'),'')+'總覽</a>');
   window.dispatchEvent(new Event('resize'))}
 
- // ===== 下半部：每區一張不同色調的韓紙紙卡＋紙膠帶（筆刷素材）＋角落貼紙＋底部插畫 =====
- var SHEET={phr:['violet',''],food:['gold','eomuk.png'],price:['blue','suitcase.png'],tips:['green',''],todo:['rose',''],apps:['violet','']};
- Object.keys(SHEET).forEach(function(id){var s=document.getElementById(id);if(!s||s.parentNode.tagName!=='MAIN')return;
-  s.classList.add('sv2-sheet','sv3-t-'+SHEET[id][0]);
-  if(SHEET[id][1])s.insertAdjacentHTML('beforeend',deco(SHEET[id][1],'sv3-sfoot',true))});
- var td=$('#todo');if(td&&td.classList.contains('sv2-sheet'))td.insertAdjacentHTML('beforeend','<div class="sv3-tdfx" aria-hidden="true">'+deco('new-year-cut.png','',true)+deco('winter-travel-cut.png','',true)+'</div>');
+ // ===== 下半部：手撕紙卡 =====
+ ['phr','food','price','tips','todo','apps'].forEach(function(id){var s=document.getElementById(id);if(s&&s.parentNode.tagName==='MAIN')s.classList.add('sheet3')});
+ // 價格／App 橫滑卡：容器高度跟著目前那一張
+ $$('main .swipe').forEach(function(sw){var tm,fit=function(){var c=[].slice.call(sw.children).filter(function(e){return e.offsetWidth}),x=sw.scrollLeft+sw.clientWidth*0.3,cur=c[0];c.forEach(function(e){if(e.offsetLeft-sw.offsetLeft<=x+1)cur=e});if(!cur)return;var cs=getComputedStyle(sw);sw.style.height=(cur.offsetHeight+parseFloat(cs.paddingTop)+parseFloat(cs.paddingBottom))+'px'};
+  sw.classList.add('fit3');sw.addEventListener('scroll',function(){clearTimeout(tm);tm=setTimeout(fit,90)},{passive:true});addEventListener('resize',fit);setTimeout(fit,60);fit()});
 
- // 價格／App 橫滑卡：容器高度跟著目前那一張（不被最高的一張撐出大片空白）
- $$('main .swipe').forEach(function(sw){var t,fit=function(){var c=[].slice.call(sw.children).filter(function(e){return e.offsetWidth}),x=sw.scrollLeft+sw.clientWidth*0.3,cur=c[0];c.forEach(function(e){if(e.offsetLeft-sw.offsetLeft<=x+1)cur=e});if(!cur)return;var cs=getComputedStyle(sw);sw.style.height=(cur.offsetHeight+parseFloat(cs.paddingTop)+parseFloat(cs.paddingBottom))+'px'};
-  sw.classList.add('sv3-fit');sw.addEventListener('scroll',function(){clearTimeout(t);t=setTimeout(fit,90)},{passive:true});addEventListener('resize',fit);setTimeout(fit,50);fit()});
-
- // ===== 頁尾（footer2）：背景天際線、前景韓式小吃，中間手寫標語（文字取自行程資料） =====
+ // ===== 頁尾 foot3：韓式美食＋天際線＋手寫標語（文字取自行程資料） =====
  var ft=$('footer');
- if(ft)ft.insertAdjacentHTML('beforebegin','<div class="footer2"><div class="sv3-ffx" aria-hidden="true">'+deco('seoul-skyline-cut.png','sv3-fsky',true)+deco('street-food-cut.png','sv3-ffood',true)+deco('plum-branch.png','sv3-fplum',true)+deco('snowflake.png','sv3-fsnow',true)+'</div><div class="sv3-ftx"><b>首爾冬日・新春旅行</b>'+((H.sub||[]).length?'<small>'+H.sub.join('・')+'</small>':'')+'<span lang="ko">즐거운 여행 되세요</span></div></div>');
+ if(ft)ft.insertAdjacentHTML('beforebegin','<div class="foot3">'+img(DEC+'seoul-skyline-cut.png','fsky3',true)+img(DEC+'street-food-cut.png','ffood3',true)+img(DEC+'plum-branch.png','fplum3',true)+'<div class="ftx3"><b>首爾冬日・新春旅行</b>'+((H.sub||[]).length?'<small>'+esc(H.sub.join('・'))+'</small>':'')+'</div></div>');
 })();
