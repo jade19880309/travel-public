@@ -1,0 +1,120 @@
+/* 家庭旅行手帖 V4 預覽（home-v4.html）。素材全部來自 images/journal-v4/（使用者提供的 V4 素材包），
+   棋盤格底的素材已從外框去背成 *-cut.webp；紙底素材（筆刷、剪影、紙膠帶）以 multiply 融入紙張。 */
+*{box-sizing:border-box}
+html{background:#f1e2c6;overflow-x:hidden}
+body{margin:0;background:#f1e2c6 url('images/journal-v4/paper-texture.webp') 0 0/350px 270px;color:#2b241b;font-family:'PingFang TC','Microsoft JhengHei',sans-serif;line-height:1.35;overflow-x:hidden}
+img{max-width:100%}
+.wrap{max-width:1000px;margin:0 auto;padding:0 12px}
+:root{--serif:'Songti TC','Noto Serif TC','STSong','PMingLiU',serif;--hand:'Snell Roundhand','Segoe Script','Apple Chancery','Brush Script MT',cursive}
+
+/* ── 封面：橫幅插畫＋毛筆標題（紙片疊在插畫下緣） ── */
+.cover{position:relative;padding-top:0}
+.cover-art{display:block;width:100%;height:calc(172px + env(safe-area-inset-top));object-fit:cover;object-position:18% 62%;
+ clip-path:polygon(0 0,100% 0,100% 92%,96% 96%,91% 93%,86% 97%,80% 94%,74% 98%,68% 94%,61% 97%,55% 93%,48% 97%,42% 94%,35% 98%,29% 94%,22% 97%,16% 93%,9% 97%,4% 94%,0 97%)}
+.cover-copy{position:relative;margin:-58px auto 0;max-width:1000px;padding:0 12px;display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"script script" "title title" "slogan year";align-items:center}
+.script{grid-area:script;position:absolute;left:16px;top:calc(-104px - 0px);font:italic 21px/1 var(--hand);color:#fff7e3;text-shadow:0 1px 2px #000c,0 0 10px #0009,0 0 3px #0008;letter-spacing:.02em}
+.cover h1{grid-area:title;margin:0;line-height:0;filter:drop-shadow(0 4px 4px #4a35214d)}
+.cover h1 img{width:min(94%,727px);height:auto}
+.slogan{grid-area:slogan;margin:4px 0 0 10px;font:600 14px/1.55 var(--serif);color:#4a3a28;letter-spacing:.06em}
+.year{grid-area:year;width:min(132px,36vw);height:auto;margin:-10px 6px 0 0;transform:rotate(-6deg);filter:drop-shadow(0 3px 3px #4a352140)}
+
+/* ── 旅程卡：紙片＋錯落明信片＋筆刷倒數＋地標剪影 ── */
+.journal{display:grid;grid-template-columns:minmax(0,1fr);gap:26px;margin-top:18px;padding-bottom:8px}
+.entry{position:relative;isolation:isolate;padding:14px 10px 16px 10px;filter:drop-shadow(0 5px 4px #6b4c3333)}
+.entry:before{content:'';position:absolute;inset:0;z-index:-1;background:linear-gradient(#fffbf1c4,#fff8e9b0),#fbf2df url("images/journal-v4/paper-texture.webp") 0 0/350px 270px;
+
+ clip-path:polygon(0 4%,3% 1%,8% 3%,13% 0,19% 2%,25% 0,31% 3%,37% 1%,43% 3%,50% 0,56% 2%,62% 0,68% 3%,74% 1%,80% 3%,86% 0,92% 2%,97% 0,100% 5%,99% 20%,100% 36%,99% 52%,100% 68%,99% 84%,100% 96%,95% 100%,89% 98%,83% 100%,77% 97%,71% 100%,65% 98%,59% 100%,53% 97%,47% 100%,41% 98%,35% 100%,29% 97%,23% 100%,17% 98%,11% 100%,5% 97%,0 99%,1% 84%,0 68%,1% 52%,0 36%,1% 20%)}
+.entry .stack{position:absolute;z-index:-2;left:-8px;bottom:-14px;width:min(62%,430px);height:auto;transform:rotate(-3deg);opacity:.95;pointer-events:none}
+.entry.alt .stack{left:auto;right:-8px;transform:scaleX(-1) rotate(-3deg)}
+.entry .tape{position:absolute;z-index:3;right:22%;top:-12px;width:min(92px,24%);height:auto;transform:rotate(4deg);filter:drop-shadow(0 1px 1px #0002);pointer-events:none}
+.entry.alt .tape{right:auto;left:52%;transform:rotate(-5deg)}
+.entry a{color:inherit;text-decoration:none}
+.entry-main{position:relative;display:grid;grid-template-columns:44% minmax(0,1fr);gap:10px;align-items:center;min-height:150px}
+.card{width:100%;height:auto;transform:rotate(-3deg);filter:drop-shadow(0 3px 3px #533c3240);position:relative}
+.entry.alt .card{transform:rotate(2.5deg)}
+.info{position:relative;padding-right:30px;min-width:0}
+.date{display:flex;align-items:center;gap:5px;font:700 13px/1.2 var(--serif);white-space:nowrap;color:#3a2f22}
+.cal{width:16px;height:auto;flex:none}
+.name{display:flex;flex-wrap:wrap;align-items:baseline;column-gap:6px;margin:4px 0 2px}
+.info h2{margin:0;font:900 clamp(30px,9vw,58px)/1.02 var(--serif);letter-spacing:.02em;color:var(--accent);text-shadow:0 1px 0 #fff8}
+.en{font:italic 19px/1.1 var(--hand);color:var(--accent);white-space:nowrap}
+.t-hk .en{flex-basis:100%;font-size:clamp(12px,3.5vw,17px);letter-spacing:-.01em}
+.info p{margin:5px 0 7px;font:600 12.5px/1.4 var(--serif);color:#3a2f22}
+.status{position:relative;display:inline-grid;place-items:center;min-width:128px;max-width:222px;padding:5px 22px 6px 16px;color:#fff;font:700 13px/1.1 var(--serif);letter-spacing:.06em}
+.status img{position:absolute;inset:0;width:100%;height:100%}
+.status span{position:relative;text-shadow:0 1px 1px #0004;white-space:nowrap}
+.status b{font:italic 700 24px/1 Georgia,'Times New Roman',serif;margin:0 3px;vertical-align:-2px}
+.mark{position:absolute;z-index:-1;right:-2px;bottom:-14px;width:min(44%,290px);max-height:62px;object-fit:contain;object-position:right bottom;height:auto;opacity:.9;pointer-events:none}
+.t-hk .mark{width:min(44%,289px);max-height:66px}
+.t-tokyo .mark{width:min(40%,301px);max-height:70px;bottom:-10px}
+.arr{position:absolute;z-index:3;right:0;top:50%;width:34px;height:34px;margin-top:-17px;border-radius:50%;background:var(--accent);border:2px solid #fff7e6;box-shadow:0 2px 5px #0004}
+.arr:after,.chev:after{content:'';position:absolute;left:50%;top:50%;width:9px;height:9px;border:solid #fff;border-width:3px 3px 0 0;transform:translate(-65%,-50%) rotate(45deg)}
+.t-hk .arr{top:70%}
+.t-seoul{--accent:#2c5a8c}.t-hk{--accent:#9b3127}.t-tokyo{--accent:#3d6a3a}
+
+/* 露營車：東京卡內的票券子入口 */
+.subtrip{position:relative;z-index:2;display:flex;align-items:center;gap:10px;margin:14px 2px 2px 26%;min-height:56px;padding:4px 14px 4px 4px;border-radius:12px;background:#fff7e3cc;border:1.5px dashed #a59a6e;box-shadow:0 3px 5px #0002}
+.subtrip img{width:42%;max-width:200px;height:auto;flex:none;filter:drop-shadow(0 2px 2px #0003)}
+.subtrip span{flex:1;min-width:0;font:900 clamp(14px,4vw,17px)/1.2 var(--serif);white-space:nowrap;color:#2f3d22;letter-spacing:.04em}
+.subtrip small{display:block;font:600 12px/1.4 var(--serif);color:#4a4a35;letter-spacing:0}
+.chev{position:relative;width:20px;height:28px;flex:none}
+.chev:after{border-color:#2f3d22}
+
+/* ── 頁尾：森林插畫＋木牌 ── */
+footer{position:relative;margin-top:6px;padding-bottom:calc(12px + env(safe-area-inset-bottom))}
+.forest{position:relative;container-type:inline-size;max-width:1100px;margin:0 auto}
+.forest img{display:block;width:100%;height:auto}
+.sign{position:absolute;left:77.6%;top:31%;width:14%;font:italic 700 3.1cqw/1 var(--hand);color:#fff3d6;text-shadow:0 1px 1px #3b2410,0 0 3px #3b2410}
+.sign i{display:block;font-style:normal}
+.sign i:first-child{transform:rotate(-4deg);margin-left:6%}
+.sign i:last-child{margin:4.2cqw 0 0 14%;transform:rotate(-9deg)}
+.foot{position:relative;display:flex;align-items:center;justify-content:space-between;gap:10px;max-width:1000px;margin:-14px auto 0;padding:0 14px;font:600 12px/1.4 var(--serif);color:#4b3c28}
+.foot button{flex:none;min-height:44px;padding:9px 18px;border-radius:999px;border:1.5px solid #a68c62;background:#fff6dd;color:#3f3324;font:700 15px/1 var(--serif);letter-spacing:.08em;box-shadow:0 3px 6px #0002;cursor:pointer}
+a:focus-visible,button:focus-visible{outline:3px solid #2c5a8c;outline-offset:3px}
+
+/* 窄手機 */
+@media(max-width:350px){
+ .entry-main{grid-template-columns:40% minmax(0,1fr);gap:7px}
+ .info{padding-right:26px}.arr{width:28px;height:28px;margin-top:-14px}
+ .en{font-size:16px}.status{min-width:0;padding:4px 10px}.status b{font-size:20px}
+ .subtrip{margin-left:12%}.subtrip span{font-size:15px}
+ .slogan{font-size:12.5px}
+}
+
+/* 平板／桌機：橫幅以原生高度 241px 顯示（不放大），卡片維持「明信片＋資訊」橫排 */
+@media(min-width:760px){
+ .cover-art{height:calc(241px + env(safe-area-inset-top));object-position:center 60%}
+ .cover-copy{margin-top:-86px;grid-template-columns:minmax(0,560px) minmax(150px,1fr);grid-template-areas:"script script" "title year" "title slogan";grid-template-rows:auto auto 1fr;column-gap:22px;align-items:start}
+ .script{top:-150px;left:24px;font-size:28px}
+ .cover h1 img{width:min(560px,100%)}
+ .slogan{margin:14px 0 0 4px;font-size:16px}
+ .year{width:min(170px,100%);justify-self:start;align-self:end;margin:0}
+ .journal{gap:34px;margin-top:26px}
+ .entry{padding:20px 22px 22px}
+ .entry-main{grid-template-columns:minmax(0,360px) minmax(0,1fr);gap:36px;min-height:240px}
+ .info{padding-right:60px}
+ .date{font-size:18px}.cal{width:20px}
+ .info h2{font-size:clamp(48px,6vw,66px)}
+ .en,.t-hk .en{font-size:26px}
+ .info p{font-size:18px;margin:8px 0 14px}
+ .status{min-width:190px;font-size:18px;padding:10px 30px 11px 22px}.status b{font-size:34px}
+ .mark{width:min(42%,290px);max-height:126px;right:70px;bottom:-8px}
+ .t-hk .mark{width:min(42%,289px);max-height:144px}.t-tokyo .mark{width:min(42%,301px);max-height:150px;right:70px;bottom:-4px}
+ .arr,.t-hk .arr{top:50%;width:46px;height:46px;margin-top:-23px;right:4px}
+ .arr:after{width:12px;height:12px}
+ .entry .tape{width:120px}
+ .entry .stack{width:430px}
+ .subtrip{margin:10px 60px 2px calc(min(360px,45%) + 36px);padding:6px 18px 6px 6px}
+ .subtrip img{width:clamp(130px,36%,200px)}
+ .subtrip span{font-size:22px}.subtrip small{font-size:14px}
+ .foot{margin-top:-24px;font-size:15px}
+}
+@media(min-width:1100px){.foot{padding:0}}
+/* 平板寬度（760–1023）：資訊欄較窄，縮小英文名、剪影與露營車票券文字 */
+@media(min-width:760px) and (max-width:1023px){
+ .en,.t-hk .en{font-size:20px}
+ .info{padding-right:56px}
+ .mark,.t-hk .mark,.t-tokyo .mark{max-height:84px;right:58px;bottom:-10px}
+ .subtrip span{font-size:18px}.subtrip small{font-size:12px}
+ .status{min-width:160px;font-size:16px}.status b{font-size:28px}
+}

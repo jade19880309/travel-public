@@ -143,6 +143,19 @@
 - Workman 路線的說明文字（`workman.routes`）仍寫「富士五湖 → 中部橫斷道 → 輕井澤」，與新路線方向相反，尚未調整。
 - 御殿場蒸餾所（7/4 選項，2026/11/25 加進東京頁方案一 7/4 的行程、`x` 區塊與 `todo`，兩份 `days` 都有改）：資料只來自 gojapan.com.tw 2026/10 的文章，**沒對照麒麟官網**。未查證：導覽場次時間（文章沒寫）、7/4 場次是否 6/1 08:00 JST 開放（文章寫「參觀月前 1 個月的 1 日 08:00」，這是文章的規則、2027 年可能變）、小孩能否參加（文章兩處寫法矛盾：500 圓導覽寫 20 歲以上，FAQ 寫未滿 20 歲免費）、兩台露營車停車。露營車頁 `campervan.html` 原本就有這段，內容與文章一致，但「未滿 20 歲免費」那句同樣沒確認。
 
+## 首頁 V4 預覽（2026/11/26，分支 `journal-v4-preview`，**尚未合併、正式首頁仍是 V3 `home.html`**）
+依使用者附的 `family-journal-v4-assets.zip`（reference-v4.png、CLAUDE-INSTRUCTIONS.md、ASSET-MANIFEST.md）製作獨立預覽頁，等使用者視覺驗收。
+- 檔案：`home-v4.html`（render／倒數 cdStart-cdEnd／fallback／SW 註冊／`upd.js`／metadata 皆沿用 V3 `home.html` 邏輯，只改 HTML 結構）、`journal-v4.css`、`images/journal-v4/`（19 張）。`home.html`、`journal-v3*.css`、`stob/`、各旅程內頁、`trips/`、PNG Icon 都沒動。
+- 素材處理：素材包的棋盤格／紙底都不是真透明。以「從圖片外框 flood fill、只移除與外框相連的背景」去背，輸出 `*-cut.webp`（原生尺寸、未放大、未重畫）。明信片／露營車票券／紙堆／頁尾用中性淺灰判定；標題、2027 吊牌、筆刷、地標剪影、紙膠帶用角落紙色判定（容差 8–20），再刪掉圖集相鄰素材殘片（保留最大連通區、東京剪影右上 56×10px 殘片手動清掉）。未去背的只有 `hero-landscape.webp`、`paper-texture.webp`（原檔）。
+- 未使用：`cover-portrait.webp`（內含「家庭旅行手帖 2027」字樣，會與毛筆標題重複）、`sources/` 原圖。明信片本身已含目的地字、紙膠帶、郵戳、迴紋針，所以沒有再疊文字或另加這些裝飾。
+- 版面：橫幅封面（手機 172px 高、桌機 241px 原生高）＋毛筆標題紙片疊在橫幅下緣＋2027 吊牌；卡片為紙紋＋撕邊 clip-path（沿用 V3 做法）＋紙堆底層錯落；筆刷倒數、地標剪影、圓形箭頭；露營車為東京卡內票券子入口（高 56px）；森林頁尾木牌上的「Family Trip ♥」是 HTML 文字（素材木牌是空白的）。行事曆小圖示沿用 `images/journal-v3/deco-cal-*.png`。
+- 與基準稿的差異（素材限制，非遺漏）：基準稿封面是夜景＋人物＋露營車，素材包只有黃昏橫幅 `hero-landscape`；基準稿卡片右上的 SEOUL/HONG KONG/TOKYO 郵戳與雪花沒有獨立素材（明信片內已有小郵戳）；頁尾小巴與虛線路徑不在素材內，改用 `footer-original` 的露營車。
+- `sw.js`（此分支）：`VERSION` v174→v175，CORE 加入 `home-v4.html`、`journal-v4.css` 與 19 張素材，navigate 備援加 `home-v4.html`。其他內容未改。
+- 已測（本機 PowerShell HttpListener + headless Edge／DevTools protocol，Python/Playwright 在這台 Windows 不可用）：320／360／390／430／768／1280／1440 無水平溢出；23 張圖全部載入；連結 `./?t=seoul-2027`、`hk.html`、`tokyo.html`、`campervan.html` 正確且回 200；倒數由程式產生（測試日 2026/11/26：69／128／218 天）；檢查更新顯示「已是最新版（v175）」；SW 控制頁面、斷網重新整理仍顯示三卡且無破圖（390 與 1280）。
+- 既有行為（V3 相同，未改）：斷網時按「檢查更新」會顯示「已是最新版」而非「沒有網路」，因為 SW 以快取回應 `sw.js`。
+- **未驗證**：GitHub Pages 線上畫面（分支不會發佈到 Pages，要合併到 main 才看得到）；iPhone 實機（WebP 去背圖在使用者那台曾破圖的 Safari 上是否正常，見上方 Seoul Winter v170 紀錄）；Mac/iOS 字型（宋體／Snell Roundhand）與 Windows 截圖的字形差異。
+- 驗收通過後要做：把 `home-v4.html` 內容換進 `home.html`（先備份 V3 到 `backups/`），`sw.js` 移除 `home-v4.html` 項目並 `VERSION` 再加 1；推送前 `git fetch`，以 origin/main 的 `sw.js` 為底只加首頁資源。
+
 ## 公開首頁 `home.html`「家庭旅行手帖」v3 整合紀錄（2026/11/26，使用者提供 `family-journal-final.zip`、`family-journal-v3.zip` 與一張範例稿）
 **使用者要求**：美編素材與 CSS 都由使用者提供，不得自行重畫、替換圖片或簡化版面；保留首爾／港珠澳／東京三大旅程，露營車為東京子項目，京阪不列入總覽；DETOUR（`stob/`）、各旅程內頁、`trips/` 資料不得修改；保留倒數、離線、檢查更新；先備份舊首頁；手機與電腦都要實測。
 
