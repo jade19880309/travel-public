@@ -112,7 +112,7 @@
    r.classList.add('dr3');
    r.insertAdjacentHTML('afterbegin','<span class="dl3"><span class="dayhead"><span class="daybadge" style="--badge:url('+V3+'badge-'+((k%6)+1)+'.png)">Day '+(k+1)+'</span><span class="ddate">'+esc(date)+'</span></span><img class="scene" src="'+V3+SCN[k%SCN.length]+'" style="object-position:'+SPOS[k%SPOS.length]+' 50%" alt="" loading="lazy"></span>'
     +'<span class="dr3r"><span class="dh3">'+esc(h)+'</span><span class="dul">'+li.map(function(s){return '<span class="dli"><img src="'+IC(pickIc(s))+'" alt="" aria-hidden="true"><span>'+esc(s)+'</span></span>'}).join('')+'</span></span>');
-   if(tg)$('.dr3r',r).append(tg)})}
+   if(tg)$('.dl3',r).append(tg)})} // 節日標籤放左欄插畫下方（右欄只留標題與摘要，卡片不被撐高）
 
  // ===== 底部日期列 dock3：總覽＋D1～D6 =====
  var dk=$('#daybar');
