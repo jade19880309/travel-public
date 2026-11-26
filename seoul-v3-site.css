@@ -410,3 +410,87 @@ html.th-han.sv3 #flight .bp.fl3 .fl .mid::before{left:4px;right:calc(50% + 24px)
 html.th-han.sv3 #flight .bp.fl3 .fl .mid::after{left:calc(50% + 24px);right:4px}
 @media (max-width:759px){html.th-han.sv3 #flight .bp.fl3 .fl .mid{padding-top:28px;background-size:32px 24px}html.th-han.sv3 #flight .bp.fl3 .fl .mid::before,html.th-han.sv3 #flight .bp.fl3 .fl .mid::after{top:12px}}
 html.th-han.sv3 #flight .bp.fl3 .ac::before{content:none}
+
+/* ===================================================================
+   文字質感重排（2026/11/26，sw v207）：使用者回饋「粗體沒有質感，還是適當間隔」
+   - 字重：內文 400、標籤 500，標題改用明體 600（Noto Serif TC 已載入 600），不再大量 700／800
+   - 間距：介於 v201 原版與 v202 緊湊版之間（行距 1.55、紙卡內距 10×13、區塊 14px）
+   - 觸控目標仍 ≥44px
+   =================================================================== */
+html.th-han.sv3 body.seoul-v3{font-size:15px;line-height:1.55;letter-spacing:.01em;font-weight:400}
+html.th-han.sv3 main b,html.th-han.sv3 main strong{font-weight:500}
+html.th-han.sv3 .paper3{padding:10px 13px;margin:7px 0}
+html.th-han.sv3 main>section{margin-top:14px}
+html.th-han.sv3 main h2.section3{margin:16px 0 6px;font-size:19px}
+html.th-han.sv3 .sh3{font-weight:600;letter-spacing:.12em}
+html.th-han.sv3 main p.rate{margin:2px 0 8px!important;font-size:13px;line-height:1.55;font-weight:400;color:#66737f}
+/* 功能列、日期列 */
+html.th-han.sv3 nav.nav3 a{font-weight:500;letter-spacing:.06em}
+html.th-han.sv3 .dock3 a.all3,html.th-han.sv3 .dock3 #dbtn>button{font-weight:500}
+html.th-han.sv3 .dock3 #dbtn>button::before{font-family:var(--serif);font-weight:600}
+/* 封面色帶 */
+html.th-han.sv3 .hero3 .band3{font-weight:600;letter-spacing:.18em}
+html.th-han.sv3 .hero3 .eb3{font-weight:500}
+/* 倒數 */
+html.th-han.sv3 .count3 #cdnote{font-weight:600;letter-spacing:.1em}
+html.th-han.sv3 .count3 .cd.nums b{font-family:var(--serif);font-weight:600}
+html.th-han.sv3 .count3 .cd.nums span{font-weight:400;letter-spacing:.2em}
+html.th-han.sv3 .count3 .wish3{font-weight:500}
+html.th-han.sv3 .count3 .go{font-weight:500;letter-spacing:.1em}
+/* 日期、天氣 */
+html.th-han.sv3 .info3{font-weight:400}
+html.th-han.sv3 .info3 small{font-weight:400;letter-spacing:.08em}
+html.th-han.sv3 .info3 b{font-family:var(--serif);font-weight:600;letter-spacing:.03em}
+html.th-han.sv3 .info3 em{font-weight:500}
+html.th-han.sv3 #wx.quick3 .wxh b{font-weight:600}
+/* 登機證 */
+html.th-han.sv3 #flight .bp.fl3 .bph,html.th-han.sv3 #flight .bp.fl3 .bph .al{font-weight:500;letter-spacing:.06em}
+html.th-han.sv3 #flight .bp.fl3 .fdate3{font-weight:400;letter-spacing:.04em}
+html.th-han.sv3 #flight .bp.fl3 .fl big{font-weight:500;letter-spacing:.08em}
+html.th-han.sv3 #flight .bp.fl3 .fl b{font-family:var(--serif);font-weight:600}
+/* 住宿 */
+html.th-han.sv3 #hotel summary .hn .en{font-family:var(--serif);font-weight:600;letter-spacing:.01em}
+html.th-han.sv3 #hotel summary .hn .zh{font-weight:500}
+html.th-han.sv3 #hotel summary .hko b.ko{font-weight:400}
+/* 每日卡 */
+html.th-han.sv3 #days .ddate{font-weight:500;letter-spacing:.02em}
+html.th-han.sv3 #days .dh3{font-family:var(--serif);font-weight:600;letter-spacing:.04em;line-height:1.35}
+html.th-han.sv3 #days .dli{font-weight:400;line-height:1.45;margin:3px 0}
+/* 下半部 */
+html.th-han.sv3 main>section.sheet3 .tabs>button,html.th-han.sv3 main>section.sheet3 .seg>button{font-weight:500}
+html.th-han.sv3 #tips details.fold>summary,html.th-han.sv3 #todo details.td>summary{font-weight:500}
+html.th-han.sv3 #tips details.fold>summary::before{font-weight:600}
+html.th-han.sv3 .ftx3 b{font-weight:600}
+@media (max-width:759px){
+ html.th-han.sv3 body.seoul-v3{font-size:14.5px;line-height:1.55}
+ html.th-han.sv3 .paper3{padding:9px 12px;margin:6px 0}
+ html.th-han.sv3 main>section{margin-top:12px}
+ html.th-han.sv3 main h2.section3{margin:14px 0 5px;font-size:18px}
+ html.th-han.sv3 .count3{padding:9px 11px 10px 7px}
+ html.th-han.sv3 .count3 .cd.nums{margin:5px 0 4px}
+ html.th-han.sv3 .info3{padding:9px 32% 9px 12px}
+ html.th-han.sv3 .info3 p+p{margin-top:6px;padding-top:6px}
+ html.th-han.sv3 #wx.quick3{padding:8px 12px}
+ html.th-han.sv3 #flight .bp.fl3{padding:9px 12px 10px}
+ html.th-han.sv3 #flight .bp.fl3 .fdate3{margin:5px 2px 1px}
+ html.th-han.sv3 #flight .bp.fl3 .fl big{font-size:24px}
+ html.th-han.sv3 #flight .bp.fl3 .ac,html.th-han.sv3 #flight .bp.fl3 small{line-height:1.6}
+ html.th-han.sv3 #hotel details.ho3{padding:10px 12px}
+ html.th-han.sv3 #hotel summary .hn{gap:3px}
+ html.th-han.sv3 #days .dy.day3{margin:7px 0;padding:7px 9px 8px}
+ html.th-han.sv3 #days .dy.day3 .dr.dr3{gap:8px}
+ html.th-han.sv3 #days .dh3{font-size:15.5px;padding-bottom:3px;margin:2px 0 5px}
+ html.th-han.sv3 #days .dli{font-size:13.5px;margin:3px 0;gap:5px}
+ html.th-han.sv3 main>section.sheet3{margin-top:14px;padding:6px 12px 12px}
+ html.th-han.sv3 main .tabs,html.th-han.sv3 main .swipe{margin-left:-12px;margin-right:-12px;padding-left:12px;padding-right:12px;scroll-padding-left:12px}
+ html.th-han.sv3 #plist,html.th-han.sv3 #flist,html.th-han.sv3 #slist{gap:7px}
+ html.th-han.sv3 #flist>.pi,html.th-han.sv3 #slist>.pi{padding:9px 11px;line-height:1.4}
+ html.th-han.sv3 #tips .grid{gap:6px}
+ html.th-han.sv3 #tips details.fold>summary{padding:11px 40px 11px 12px}
+ html.th-han.sv3 #tips details.fold>summary::after{top:19px}
+ html.th-han.sv3 #tips details.fold[open]>summary::after{top:24px}
+ html.th-han.sv3 #todo details.td>summary{padding:11px 30px 11px 0}
+ html.th-han.sv3 #todo details.td>summary::after{top:19px}
+ html.th-han.sv3 #todo details.td[open]>summary::after{top:23px}
+ html.th-han.sv3 .foot3{height:190px;margin-top:14px}
+}

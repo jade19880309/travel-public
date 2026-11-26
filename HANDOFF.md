@@ -60,6 +60,9 @@
 - 三個 manifest 的 maskable 改指向同一張 512（不另存一份）；theme_color／background_color **沒改**。`index.html`（id ti/fi，沒有程式在用）、`hk.html`、`tokyo.html` 的 apple-touch-icon／icon 與 `sw.js` CORE 已改新檔名。舊檔保留在 repo。
 - 現況：首頁（11/26 皮革手帳版）、京阪（V2）、首爾、港珠澳、東京都已是新版；**露營車 `campervan.html` 沒有 manifest 和圖示**（使用者這次沒要求，未處理）；偏航 `detour/` 動態圖示不動。
 - 已加到主畫面的 App 要刪掉重加才會換圖示；iPhone 實機顯示未驗證。
+## 首爾 V3 文字質感重排（2026/11/26，sw v207）
+- 使用者回饋：粗體沒有質感，間距改回適當。`seoul-v3-site.css` 最後「文字質感重排」區塊：內文 400、標籤 500，標題、日期、時間、飯店英文名改 Noto Serif TC 600（已載入），不再大量 700／800；行距 1.55、紙卡內距 9～10×12～13、區塊間距 12～14px。390px 全頁 5426px（v201 原版 6243、v202 緊湊 5087）。觸控目標仍 ≥44px，天氣卡連網三種字級不重疊。
+
 ## 登機證航程圖示（2026/11/26，sw v206）
 - 使用者 iPhone 截圖：中間飛機壓到「2 小時 40 分」。原因：theme-han.css 的 `.fl .mid::after` 飛機動畫＋V3 的手繪 plane.png 背景兩架疊在一起，間距不足。改成只留手繪飛機（`::after` 改為右半段虛線），虛線在飛機兩側斷開，時間在飛機下方；機型前 style.css 的「✈」字元（iPhone 顯示成彩色表情）在 V3 隱藏。
 
