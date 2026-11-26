@@ -494,3 +494,8 @@ html.th-han.sv3 .ftx3 b{font-weight:600}
  html.th-han.sv3 #todo details.td[open]>summary::after{top:23px}
  html.th-han.sv3 .foot3{height:190px;margin-top:14px}
 }
+
+/* 底色（v208）：照 V3 概念圖，偏白的暖米白＋淡淡粉色水彩暈（原 #f8f5ef 偏灰） */
+html.th-han.sv3{--bg3:#fdf8f3}
+html.th-han.sv3 body.seoul-v3{background:radial-gradient(80% 40% at 0 30%,rgba(250,226,220,.45),transparent 70%),radial-gradient(70% 35% at 100% 55%,rgba(255,228,214,.4),transparent 70%),radial-gradient(90% 40% at 50% 100%,rgba(250,230,222,.35),transparent 70%),#fdf8f3;background-attachment:scroll}
+html.th-han.sv3 nav.nav3.stuck,html.th-han.sv3 .dock.dock3{background:rgba(253,248,243,.97)}
