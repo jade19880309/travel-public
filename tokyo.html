@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-Hant" class="th-fuji forest-journal">
+<html lang="zh-Hant" class="th-fuji forest-journal fj2">
 <head>
 <meta charset="utf-8">
 <meta name="robots" content="noindex,nofollow">
@@ -17,8 +17,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="theme-fuji.css">
-<link id="theme-forest" rel="stylesheet" href="theme-forest-journal.css">
-<script>/* 森林手帳風：?theme=classic 恢復原版、?theme=forest 改回（記在這支手機） */try{var tq=new URLSearchParams(location.search).get("theme");if(tq==="classic"||tq==="forest")localStorage.setItem("theme",tq);if(localStorage.getItem("theme")==="classic"){document.getElementById("theme-forest").disabled=true;document.documentElement.classList.remove("forest-journal");document.head.insertAdjacentHTML("beforeend","<style>.forest-scene,.forest-footer{display:none}</style>")}}catch(e){}</script>
+<link id="theme-forest" rel="stylesheet" href="theme-forest-journal.css"><link id="theme-forest-v2" rel="stylesheet" href="theme-forest-v2.css">
+<script>/* 森林手帳：?theme=classic 恢復原版（v168 復原機制）、?theme=v1 森林手帳第一版（v168）、?theme=forest 改回 V2（記在這支手機） */try{var tq=new URLSearchParams(location.search).get("theme");if(tq==="classic"||tq==="forest"||tq==="v1")localStorage.setItem("theme",tq);var th=localStorage.getItem("theme");if(th==="classic"||th==="v1"){document.getElementById("theme-forest-v2").disabled=true;document.documentElement.classList.remove("fj2")}if(th==="classic"){document.getElementById("theme-forest").disabled=true;document.documentElement.classList.remove("forest-journal");document.head.insertAdjacentHTML("beforeend","<style>.forest-scene,.forest-footer{display:none}</style>")}}catch(e){}</script>
 </head>
 <body>
 <header id="hd"><div class="net" id="net" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 18h10.5a4 4 0 0 0 .6-7.95A6 6 0 0 0 6.6 9.1 4.5 4.5 0 0 0 7 18z"/><path d="m9.5 13.5 2 2 3.5-3.5"/></svg><span>目前沒有網路・行程已存在手機，可照常查看</span></div><nav></nav></header>
@@ -74,7 +74,7 @@
  var id='tokyo-2027'; // 這個入口頁固定是東京
  function fail(m){document.body.insertAdjacentHTML('afterbegin','<p style="padding:16px;font:16px sans-serif">'+m+'</p>')}
  fetch('trips/'+id+'.json',{cache:'no-cache'}).then(function(r){if(!r.ok)throw 0;return r.json()}).then(function(d){
-  window.TRIP=d;var s=document.createElement('script');s.src='app.js';s.onerror=function(){fail('程式載入失敗，請重新整理。')};document.body.appendChild(s)
+  window.TRIP=d;try{var mm=d.meta||{};window.FJ2_GO=sessionStorage.getItem((mm.store||mm.id)+'pgo')}catch(_){} /* 森林手帳 V2：切換方案後重排版面，再捲回每日行程 */var s=document.createElement('script');s.src='app.js';s.onload=function(){var v=document.createElement('script');v.src='forest-v2.js';document.body.appendChild(v)};s.onerror=function(){fail('程式載入失敗，請重新整理。')};document.body.appendChild(s)
  }).catch(function(){fail('行程資料載入失敗，請確認網路後重新整理。（直接開本機檔案無法讀取資料，請用網址開啟）')});
 })();
 </script>

@@ -54,6 +54,16 @@
   - 手機版字級下限 14px（只剩高德地圖「高」字圖示 13px）。
 - 未在 iPhone 實機確認（只用 Playwright 測 320／375／390／430／768／1440；安全區域 `env()` 在模擬器中是 0，未實測瀏海機）。
 
+## 森林手帳 V2 版面重構（2026/11/26，sw v171；依 `FOREST-JOURNAL-V2-HANDOFF.md`＋使用者附的 `forest-journal-v2.zip` 與手機示意圖）
+- 做法同首爾冬日：`forest-v2.js` 在頁面畫完後**只搬動／包裝元素、換圖**，樣式在 `theme-forest-v2.css`（全部 `html.fj2` 開頭，疊在 V1 `theme-forest-journal.css` 之後）。`app.js`、`style.css`、`trips/tokyo-2027.json`、`campervan.html` 的 `const D`／render 邏輯都沒改；`campervan.html`／`tokyo.html` 只改 `<html>` class、加 link 與 script。
+- 東京：頁首改品牌列「東京旅遊」＋☰（捲回功能選單）；原頂部導覽搬到封面下方變 4＋3 水彩圖示紙卡（同一組 `<a>`，捲動高亮照常）；封面換 `tokyo-hero.webp`＋HTML 標題；日期／倒數／看每日行程包成紙卡；每日行程上方加「Day N」分頁（只是代按底部日期列 `#dbtn`）；日卡改縮圖卡（`ic-*.svg` → 同名水彩圖示：van→camper、port→harbor、其餘同名）；橫幅 `banner-fuji.svg`→`campervan-hero.webp`、`banner-kaminarimon.svg`→`asakusa-banner.webp`（圖說文字照舊）；頁尾 `footer-fuji.webp`。切換方案後頁面會重新載入：`tokyo.html` 先把 `sessionStorage` 的 `tyo27pgo` 存到 `window.FJ2_GO`，V2 版面排好後再捲到 `#plan`。
+- 露營車：頂部改品牌列「露營車之旅」＋返回鍵；封面換 `campervan-hero.webp`＋標題；4 個圖示鍵（行程總覽 `ov`、里程地圖 `mp`、RV Park、酒藏巡禮＝`rvSet()`＋`go('rv')`，只放頁面原有的分頁，沒有新增「美食／購物／露營裝備」等示意圖裡的假功能）；原 `#tabs` 移到「露營車行程」標題下並黏在品牌列下；總覽頁加 DAY 1～4 日程卡（標題取自 `D[lang].dN[0]`）；每日標題換水彩圖示。日文模式（`#lgb`）品牌列／圖示鍵文字會跟著換（`render` 被包一層呼叫 `post()`）。
+- 素材：`images/forest-journal-v2/`（zip 內 4 張橫幅 webp＋13 張 256×256 圖示 png，`design-reference.png` 沒放進 repo）。圖示保留紙色底與底部檔名殘字，CSS 用 `background-position` 裁切＋`mix-blend-mode:multiply`＋圓形漸層遮罩融入紙卡。橫幅原檔只有約 361×122，大螢幕放大會偏糊（README 已說明是低解析裁切）。
+- **素材缺口（不要自己畫）**：示意圖「裝飾與背景素材」列的 `paper-texture.jpg`、`leaf.png`、`hydrangea.png`、`signwood.png`、`washi.png`、`cloud.png` **zip 裡沒有**；目前和紙用 CSS 雜訊紋理、葉片沿用 V1 的 `images/forest-journal/leaf.webp`，繡球花／木牌／紙膠帶／雲朵沒有用。酒藏巡禮沒有清酒圖示，暫用 `icon-japanese.png`（書本）；里程地圖用 `icon-fuji.png`。使用者補素材後再換。
+- 切換／復原：`?theme=classic`＝原版（v168 的復原機制，照舊）；`?theme=v1`＝森林手帳第一版（v168 外觀）；`?theme=forest`＝V2（預設）。都記在 localStorage `theme`。永久拿掉 V2＝刪兩頁 `<html>` 的 `fj2`、`theme-forest-v2.css` link、`forest-v2.js` script，或 `git revert` V2 那個 commit。改版前版本：`3cc7ad2`（sw v170）；森林 V1 基準 `1311076`（v168）。
+- 測試（本機 PowerShell HttpListener＋Claude 內建瀏覽器）：375／390／430／1280 無橫向溢出；東京：功能紙卡跳轉與高亮、☰、Day 分頁↔底部日期列同步、展開日卡、方案切換（方案三 6 天）、待辦勾選、換算／字體／更新鈕、倒數；露營車：4 個圖示鍵、RV／酒藏切換（13 間）、總覽日程卡→DAY 3、行程點勾選、日文切換、分頁黏頂；`?theme=classic`／`?theme=v1` 正常；首爾頁無錯誤。
+- **未測**：Service Worker／離線（內建瀏覽器拒絕註冊 SW，`fetch('sw.js')` 正常，原版也一樣，非本次造成）；切換方案後自動捲到每日行程在內建瀏覽器裡（classic 原版也一樣）停在頂端，無法在此驗證；iPhone 實機、GitHub Pages 線上畫面。
+
 ## 森林手帳風主題（2026/11/26，依使用者提供的素材包整合）
 - `theme-forest-journal.css`＝素材包原 CSS（上半，原樣保留）＋「整合補充」精確 selector（下半，蓋過 theme-fuji.css 與露營車內嵌樣式）。只由 `tokyo.html`、`campervan.html` 載入；兩頁 `<html>` 加了 `forest-journal` class。
 - 插畫在 `images/forest-journal/`：`campervan-scene.webp`（露營車頁封面下方）、`tokyo-footer.webp`、`campervan-footer.webp`（頁尾裝飾）。素材包原圖有龍貓／小黑炭等吉卜力角色（非授權），所以兩張 footer 是裁掉角色、只留風景的版本；`tokyo-scene.webp` 整張以角色為主，沒有上傳也沒有使用。示意圖（reference.jpg／approved-reference.png）只供驗收，沒放進 repo。

@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="zh-Hant" class="forest-journal"><head><meta charset="utf-8"><meta name="robots" content="noindex,nofollow"><title>關東露營車行程 / 関東キャンピングカー旅行</title>
+<!DOCTYPE html><html lang="zh-Hant" class="forest-journal fj2"><head><meta charset="utf-8"><meta name="robots" content="noindex,nofollow"><title>關東露營車行程 / 関東キャンピングカー旅行</title>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#2f9e5b"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@600;700&display=swap" rel="stylesheet">
 <style>
@@ -187,8 +187,8 @@ ul{margin:0;padding:8px 0 8px 20px}li{margin:7px 0;font-size:15px}li::marker{col
  h3{font-size:18px}
 }
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.tabs button,.pn button,.lk a{transition:none}}
-</style><link id="theme-forest" rel="stylesheet" href="theme-forest-journal.css">
-<script>/* 森林手帳風：?theme=classic 恢復原版、?theme=forest 改回（記在這支手機） */try{var tq=new URLSearchParams(location.search).get("theme");if(tq==="classic"||tq==="forest")localStorage.setItem("theme",tq);if(localStorage.getItem("theme")==="classic"){document.getElementById("theme-forest").disabled=true;document.documentElement.classList.remove("forest-journal");document.head.insertAdjacentHTML("beforeend","<style>.forest-scene,.forest-footer{display:none}</style>")}}catch(e){}</script>
+</style><link id="theme-forest" rel="stylesheet" href="theme-forest-journal.css"><link id="theme-forest-v2" rel="stylesheet" href="theme-forest-v2.css">
+<script>/* 森林手帳：?theme=classic 恢復原版（v168 復原機制）、?theme=v1 森林手帳第一版（v168）、?theme=forest 改回 V2（記在這支手機） */try{var tq=new URLSearchParams(location.search).get("theme");if(tq==="classic"||tq==="forest"||tq==="v1")localStorage.setItem("theme",tq);var th=localStorage.getItem("theme");if(th==="classic"||th==="v1"){document.getElementById("theme-forest-v2").disabled=true;document.documentElement.classList.remove("fj2")}if(th==="classic"){document.getElementById("theme-forest").disabled=true;document.documentElement.classList.remove("forest-journal");document.head.insertAdjacentHTML("beforeend","<style>.forest-scene,.forest-footer{display:none}</style>")}}catch(e){}</script>
 </head><body>
 <div class="bar"><div class="wrap"><nav class="tabs" id="tabs"></nav></div></div>
 <div class="wrap"><header class="hero"><a class="back" href="tokyo.html">← 東京行程</a><span class="dpill">2027.07.02–07.05｜4 DAYS｜2 CAMPERS</span><h1 id="ti"></h1><div class="sub" id="su"></div><div class="desc" id="de" hidden></div></header>
@@ -264,4 +264,4 @@ addEventListener('touchend',e=>{if($('#zm').style.display=='block'||e.target.clo
 const h=location.hash.slice(1);if(ID.includes(h))cur=h;else if(h==='brew'){cur='rv';rvSub='brew'}render();
 if('serviceWorker' in navigator&&/^https?:/.test(location.protocol))navigator.serviceWorker.register('sw.js').catch(()=>{});
 document.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest('.upd');if(b){b.classList.add('spin');setTimeout(()=>b.classList.remove('spin'),2800)}});
-</script><script src="upd.js"></script></body></html>
+</script><script src="forest-v2.js"></script><script src="upd.js"></script></body></html>
