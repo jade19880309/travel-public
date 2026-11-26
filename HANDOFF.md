@@ -167,7 +167,8 @@
 - `sw.js`：v174→v176，CORE 加入 `journal-v4.css` 與 19 張素材（預覽用的 `home-v4.html` 已刪除、項目已移除）。其他內容未改。
 - 已測（本機 PowerShell HttpListener + headless Edge／DevTools protocol，Python/Playwright 在這台 Windows 不可用）：320／360／390／430／768／1280／1440 無水平溢出；23 張圖全部載入；連結 `./?t=seoul-2027`、`hk.html`、`tokyo.html`、`campervan.html` 正確且回 200；倒數由程式產生（測試日 2026/11/26：69／128／218 天）；檢查更新顯示「已是最新版（v176）」；SW 控制頁面、斷網重新整理仍顯示三卡且無破圖（390 與 1280）。
 - 既有行為（V3 相同，未改）：斷網時按「檢查更新」會顯示「已是最新版」而非「沒有網路」，因為 SW 以快取回應 `sw.js`。
-- **未驗證**：GitHub Pages 線上畫面與線上 sw v176（本機無法確認 Pages 部署完成）；iPhone 實機與 PWA 更新（WebP 去背圖在使用者那台曾破圖的 Safari 上是否正常，見上方 Seoul Winter v170 紀錄；若破圖，原因相同，可比照改 PNG/JPEG）；Mac/iOS 字型（宋體／Snell Roundhand）與 Windows 截圖的字形差異。
+- 線上已確認（curl）：GitHub Pages 的 `sw.js` 為 v176、`home.html` 載入 `journal-v4.css`、`images/journal-v4/seoul-cut.webp` 回 200。
+- **未驗證**：線上畫面的實際瀏覽器截圖；iPhone 實機與 PWA 更新（WebP 去背圖在使用者那台曾破圖的 Safari 上是否正常，見上方 Seoul Winter v170 紀錄；若破圖，原因相同，可比照改 PNG/JPEG）；Mac/iOS 字型（宋體／Snell Roundhand）與 Windows 截圖的字形差異。
 - 分支 `journal-v4-preview` 已合併，可刪除（`git push origin --delete journal-v4-preview`）。
 
 ## 公開首頁 `home.html`「家庭旅行手帖」v3 整合紀錄（2026/11/26，使用者提供 `family-journal-final.zip`、`family-journal-v3.zip` 與一張範例稿）
