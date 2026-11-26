@@ -284,3 +284,103 @@ html.th-han.sv3 .ftx3{padding:6px 40px 0}
  html.th-han.sv3 .foot3{height:196px}
 }
 html.th-han.sv3 .hero.hero3 .hero-bg{left:0;right:0;width:100%;max-width:none;margin:0;transform:none}
+
+/* ===================================================================
+   緊湊版文字排版（2026/11/26，sw v202；手機 ≤759px）
+   行距、內距、區塊間距收緊；觸控目標仍維持 ≥44px
+   =================================================================== */
+@media (max-width:759px){
+ html.th-han.sv3 body.seoul-v3{font-size:14.5px;line-height:1.4}
+ html.th-han.sv3 .paper3{padding:8px 11px;margin:5px 0}
+ html.th-han.sv3 main>section{margin-top:8px}
+ html.th-han.sv3 main h2.section3{margin:10px 0 2px;font-size:18px}
+ html.th-han.sv3 .sh3{padding:3px 18px 4px 5px}
+ html.th-han.sv3 .sh3 .si3{width:26px;height:26px}
+ html.th-han.sv3 main p.rate{margin:2px 0 5px!important;font-size:12.5px;line-height:1.4}
+ /* 封面＋功能列 */
+ html.th-han.sv3 .hero.hero3{min-height:270px;padding-bottom:50px}
+ html.th-han.sv3 nav.nav3 a{min-height:52px;padding:4px 5px 3px;font-size:12px}
+ html.th-han.sv3 nav.nav3 a .ni3{width:26px;height:21px}
+ /* 倒數：祝福語與新年快樂同一列、按鈕貼近 */
+ html.th-han.sv3 .count3{padding:7px 10px 8px 6px;grid-template-columns:26% 1fr}
+ html.th-han.sv3 .count3 .plum3{width:66px}
+ html.th-han.sv3 .count3 #cdnote{font-size:15.5px;letter-spacing:.03em}
+ html.th-han.sv3 .count3 .cd.nums{margin:3px 0 2px;gap:4px}
+ html.th-han.sv3 .count3 .cd.nums b{font-size:22px;padding:1px 0}
+ html.th-han.sv3 .count3 .cd.nums span{font-size:11.5px;line-height:1.3}
+ html.th-han.sv3 .cin3{display:grid;grid-template-columns:1fr auto;grid-template-areas:"n n" "c c" "w g" "s g";column-gap:8px;align-items:center;justify-items:center}
+ html.th-han.sv3 .count3 #cdnote{grid-area:n}
+ html.th-han.sv3 .count3 .cd.nums{grid-area:c}
+ html.th-han.sv3 .count3 .wish3{grid-area:w;font-size:14px;line-height:1.3}
+ html.th-han.sv3 .count3 .wish3s{grid-area:s;font-size:11.5px;letter-spacing:.18em;line-height:1.3}
+ html.th-han.sv3 .count3 .go{grid-area:g;margin:0;padding:0 14px;font-size:13px}
+ /* 日期：天數標籤與日期同列 */
+ html.th-han.sv3 .info3{padding:7px 32% 7px 11px}
+ html.th-han.sv3 .info3 p+p{margin-top:4px;padding-top:4px}
+ html.th-han.sv3 .info3 small{font-size:11px;line-height:1.25}
+ html.th-han.sv3 .info3 b{font-size:14.5px;line-height:1.3}
+ html.th-han.sv3 .info3 em{display:inline-block;margin:0 0 0 4px;vertical-align:1px}
+ html.th-han.sv3 .info3 .pal3{width:30%}
+ html.th-han.sv3 #wx.quick3{min-height:0;padding:6px 11px;font-size:12px}
+ html.th-han.sv3 #wx.quick3 .wxh{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;line-height:1.3}
+ /* 航班：機型與艙等同一列 */
+ html.th-han.sv3 .pair3{gap:4px;margin-top:4px}
+ html.th-han.sv3 #flight .bp.fl3{padding:7px 11px 8px}
+ html.th-han.sv3 #flight .bp.fl3 .bph{padding:3px 10px;font-size:13.5px}
+ html.th-han.sv3 #flight .bp.fl3 .fdate3{margin:3px 2px 0;font-size:12px;line-height:1.2}
+ html.th-han.sv3 #flight .bp.fl3 .fl big{font-size:24px}
+ html.th-han.sv3 #flight .bp.fl3 .fl span{font-size:11px;line-height:1.2}
+ html.th-han.sv3 #flight .bp.fl3 .fl b{font-size:18px;line-height:1.2}
+ html.th-han.sv3 #flight .bp.fl3 .fl .mid{padding-top:20px;background-size:28px auto}
+ html.th-han.sv3 #flight .bp.fl3 .ac,html.th-han.sv3 #flight .bp.fl3 small{display:inline;margin:0;padding:0;border:0;font-size:11.5px}
+ html.th-han.sv3 #flight .bp.fl3 .ac{margin-left:2px}
+ html.th-han.sv3 #flight .bp.fl3 small::before{content:"｜"}
+ html.th-han.sv3 #flight p.rate+.btns,html.th-han.sv3 #flight .btns{margin-top:4px}
+ /* 住宿：兩顆地圖鍵並排 */
+ html.th-han.sv3 #hotel details.ho3{padding:8px 11px}
+ html.th-han.sv3 #hotel details.ho3>summary{grid-template-columns:36% minmax(0,1fr);gap:9px}
+ html.th-han.sv3 #hotel summary .hn{gap:1px}
+ html.th-han.sv3 #hotel summary .hn .en{font-size:15px;line-height:1.2}
+ html.th-han.sv3 #hotel summary .hn .zh,html.th-han.sv3 #hotel summary .hko b.ko,html.th-han.sv3 #hotel summary .hph{font-size:12.5px;line-height:1.3}
+ html.th-han.sv3 #hotel summary .btns{flex-wrap:nowrap;gap:5px;margin-top:3px}
+ html.th-han.sv3 #hotel summary .btns .b{flex:1 1 0;min-width:0;padding:0 4px;font-size:12.5px;white-space:nowrap}
+ html.th-han.sv3 #hotel .hpic3 img{aspect-ratio:1}
+ /* 每日卡 */
+ html.th-han.sv3 #days .dy.day3{margin:5px 0;padding:5px 8px 6px}
+ html.th-han.sv3 #days .dy.day3 .dr.dr3{gap:6px}
+ html.th-han.sv3 #days .daybadge{font-size:21px;padding:3px 12px 4px 9px}
+ html.th-han.sv3 #days .dh3{font-size:15px;line-height:1.25;padding-bottom:2px;margin:1px 0 3px}
+ html.th-han.sv3 #days .dli{margin:2px 0;font-size:13px;line-height:1.3;gap:4px}
+ html.th-han.sv3 #days .dli img{width:18px;height:18px}
+ html.th-han.sv3 #days .dr3r .tg{gap:3px;margin-top:3px}
+ html.th-han.sv3 #days .dr3r .tg .pill{font-size:10.5px;padding:0 6px;line-height:1.6}
+ /* 下半部紙卡 */
+ html.th-han.sv3 main>section.sheet3{margin-top:10px;padding:4px 10px 10px}
+ html.th-han.sv3 main .tabs,html.th-han.sv3 main .swipe{margin-left:-10px;margin-right:-10px;padding-left:10px;padding-right:10px;scroll-padding-left:10px}
+ html.th-han.sv3 main>section.sheet3 .tabs{gap:5px;padding-top:2px;padding-bottom:4px}
+ html.th-han.sv3 main>section.sheet3 .tabs>button,html.th-han.sv3 main>section.sheet3 .seg>button{font-size:13.5px;padding:0 12px}
+ html.th-han.sv3 #plist{gap:5px}
+ html.th-han.sv3 #plist .pw .pi{min-height:44px;padding:6px 10px;font-size:14px;line-height:1.3}
+ html.th-han.sv3 #flist,html.th-han.sv3 #slist{gap:5px}
+ html.th-han.sv3 #flist>.pi,html.th-han.sv3 #slist>.pi{padding:7px 10px 7px 11px;font-size:14.5px;line-height:1.3}
+ html.th-han.sv3 #flist>.pi small,html.th-han.sv3 #slist>.pi small{font-size:12px;line-height:1.3}
+ html.th-han.sv3 #price .slide,html.th-han.sv3 #apps .slide{padding:11px 12px}
+ html.th-han.sv3 #price .slide li{margin:2px 0;line-height:1.45}
+ html.th-han.sv3 main .dots{margin-top:4px}
+ html.th-han.sv3 #tips .grid{gap:4px}
+ html.th-han.sv3 #tips details.fold>summary{min-height:44px;padding:9px 40px 9px 12px;font-size:15px}
+ html.th-han.sv3 #todo details.td>summary{min-height:44px;padding:9px 30px 9px 0;font-size:15px}
+ html.th-han.sv3 #todolist.card{padding-top:2px;padding-bottom:2px}
+ /* 頁尾 */
+ html.th-han.sv3 .foot3{height:176px;margin-top:10px}
+ html.th-han.sv3 .ftx3 b{font-size:17px}
+ html.th-han.sv3 .ftx3 small{font-size:12px}
+}
+@media (max-width:759px){
+ html.th-han.sv3 #flight .bp.fl3 small::before{content:"｜";position:static;width:auto;height:auto;border:0;border-radius:0;background:none}
+ html.th-han.sv3 #flight .bp.fl3 small::after{content:none}
+ html.th-han.sv3 #tips details.fold>summary::after{top:16px}
+ html.th-han.sv3 #tips details.fold[open]>summary::after{top:21px}
+ html.th-han.sv3 #todo details.td>summary::after{top:16px}
+ html.th-han.sv3 #todo details.td[open]>summary::after{top:20px}
+}
