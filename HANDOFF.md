@@ -58,7 +58,7 @@
   - 港珠澳 `icon-hk-v2-180/192/512.png` ← `images/hk-2027/retro/hero-m.webp`（x 54、500×500：香港霓虹招牌、叮叮車、「港珠澳」題字、維港夜景）。原圖是寬幅海報，正方形裁切時左側霓虹框、上方英文副標與「三城一程・4天3夜」標籤會被切到一點，這是取捨。
   - 東京 `icon-tokyo-v2-180/192/512.png` ← `images/forest-journal-v2/tokyo-hero.webp`（x 600、941×941：淺草雷門＋晴空塔；這張沒有吉卜力角色，只有一般路人）
 - 三個 manifest 的 maskable 改指向同一張 512（不另存一份）；theme_color／background_color **沒改**。`index.html`（id ti/fi，沒有程式在用）、`hk.html`、`tokyo.html` 的 apple-touch-icon／icon 與 `sw.js` CORE 已改新檔名。舊檔保留在 repo。
-- 現況：首頁（11/26 皮革手帳版）、京阪（V2）、首爾、港珠澳、東京都已是新版；**露營車 `campervan.html` 沒有 manifest 和圖示**（使用者這次沒要求，未處理）；偏航 `stob/` 動態圖示不動。
+- 現況：首頁（11/26 皮革手帳版）、京阪（V2）、首爾、港珠澳、東京都已是新版；**露營車 `campervan.html` 沒有 manifest 和圖示**（使用者這次沒要求，未處理）；偏航 `detour/` 動態圖示不動。
 - 已加到主畫面的 App 要刪掉重加才會換圖示；iPhone 實機顯示未驗證。
 ## 首爾 V2.1 韓系新春水彩手帳（2026/11/26，sw v193，使用者提供 seoul-winter-v2.1.zip）
 - 素材包內容：`CLAUDE-INSTRUCTIONS.md`、`CHECKLIST.md`、`reference.html`、`seoul-v2.css`、`V2-design-reference.webp`（＋ `mobile-design-reference.webp`）、decor 素材。參考圖／參考 HTML **沒放進 repo**；`seoul-v2.css` 原樣放在根目錄（路徑本來就是相對根目錄，不用改）。
