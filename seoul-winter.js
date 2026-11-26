@@ -39,7 +39,9 @@
  inn.insertAdjacentHTML('beforeend','<p class="sw-wish"><span lang="ko">새해 복 많이 받으세요!</span><small>新年快樂</small></p>');
  if(go)inn.append(go);
  var info=document.createElement('section');info.className='card sw-info panel2 info2';
- info.innerHTML='<div class="sw-irow"><i class="sw-ical" aria-hidden="true"></i><div><small>旅遊日期</small><b>'+((H.sub||[])[0]||'')+'</b>'+((H.sub||[])[1]?'<span>'+H.sub[1]+'</span>':'')+'</div></div>';
+ var CDL=(H.cd||{}).label||'';
+ info.innerHTML='<div class="sw-irow"><i class="sw-ical" aria-hidden="true"></i><div><small>旅遊日期</small><b>'+((H.sub||[])[0]||'')+'</b>'+((H.sub||[])[1]?'<span>'+H.sub[1]+'</span>':'')+'</div></div>'
+  +(CDL?'<div class="sw-irow sv2-irow2"><img class="sv2-iplane" src="'+IMG+'airplane.png" alt="" aria-hidden="true"><div><small>出發</small><b>'+CDL+'</b></div></div>':'');
  if(sub)sub.remove();
  var top=document.createElement('div');top.className='sw-top';
  var p1=document.createElement('div');p1.className='pair';p1.append(card,info);top.append(p1);
@@ -73,7 +75,10 @@
    el.classList.add('day2');el.style.setProperty('--accent',ACC[k%ACC.length]);
    var h=((DAYS[k]||{}).h||'').replace(/^Day\s*\d+\s*/i,'');
    r.insertAdjacentHTML('afterbegin','<strong class="sv2-dn">Day '+(k+1)+'</strong>');
-   var b=$('b',r);if(b)b.insertAdjacentHTML('afterend','<img class="sv2-dimg" src="'+IMG+(DIMG[k]||'day-1')+'.jpg" alt="" loading="lazy">'+(h?'<span class="sv2-dt">'+h+'</span>':''))})}
+   // 當日前三個行程點（取自 JSON 的 i；二選一的日子取 A 方案），手機版卡片顯示，示意圖的三行條列
+   var D=DAYS[k]||{},its=(D.ab?D.A:D.i)||[],tx=function(s){var e=document.createElement('div');e.innerHTML=s||'';return (e.textContent||'').trim()};
+   var li=its.map(function(x){return tx(x[1])}).filter(function(s){return s&&!/^(早餐|午餐|晚餐)$/.test(s)}).slice(0,3);
+   var b=$('b',r);if(b)b.insertAdjacentHTML('afterend','<img class="sv2-dimg" src="'+IMG+(DIMG[k]||'day-1')+'.jpg" alt="" loading="lazy">'+(h?'<span class="sv2-dt">'+h+'</span>':'')+(li.length?'<span class="sv2-dl">'+li.map(function(s){return '<i>'+s.replace(/[<>&]/g,'')+'</i>'}).join('')+'</span>':''))})}
 
  // ===== 底部日期列（dock2）：加「總覽」回到每日行程；日期鍵加 D1～D6 =====
  var dk=$('#daybar');
@@ -83,6 +88,9 @@
   window.dispatchEvent(new Event('resize'))}
 
  // ===== 頁尾（footer2）：韓式美食＋首爾天際線 =====
+ // 下半部各區塊做成韓紙紙卡（sheet），標題小插畫變成角落貼紙
+ ['phr','food','price','todo','tips','apps'].forEach(function(id){var s=document.getElementById(id);if(s&&s.parentNode.tagName==='MAIN')s.classList.add('sv2-sheet')});
  var ft=$('footer');
+ if(ft)ft.insertAdjacentHTML('beforebegin','<div class="sv2-snacks" aria-hidden="true">'+deco('eomuk.png','',true)+deco('hotteok.png','',true)+deco('coffee.png','',true)+deco('mittens.png','',true)+deco('suitcase.png','',true)+'</div>');
  if(ft)ft.insertAdjacentHTML('beforebegin','<div class="footer2"><b>首爾冬日・新春旅行</b>'+((H.sub||[]).length?'<small>'+H.sub.join('・')+'</small>':'')+'</div>');
 })();
