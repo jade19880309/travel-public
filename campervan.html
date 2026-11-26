@@ -229,7 +229,7 @@ const GP=[[35.77, 140.39, "成田機場", "成田空港", "成田空港"], [36.0
 const OFFLINE_MAPS={"mp": {"zh": "images/campervan/map-all.jpg", "ja": "images/campervan/map-all.jpg"}};
 const CLEAN_STAY_MAPS={"s3": "images/campervan/stay-s3.jpg"};
 /* DAY 1／2：日歸溫泉＋車泊合併地圖，放在「日歸溫泉」前面；這兩天的「今晚住宿」不再另放地圖 */
-const ONSEN_MAPS={"d1": "images/campervan/onsen-stay-map-d1.jpg", "d2": "images/campervan/onsen-stay-map-d2.jpg"};
+const ONSEN_MAPS={"d1": "images/campervan/onsen-stay-map-d1-v2.jpg", "d2": "images/campervan/onsen-stay-map-d2.jpg"};
 const CLEAN_DAILY_MAPS={"d1": "images/campervan/day-d1.jpg", "d2": "images/campervan/day-d2.jpg", "d3": "images/campervan/day-d3.jpg", "d4": "images/campervan/day-d4.jpg"};
 const STAY_QUERIES={"d1": ["横川SA 安中市", "道の駅 ヘルシーテラス佐久南", "道の駅 雷電くるみの里", "東部湯の丸SA"], "d2": ["道の駅 なるさわ", "道の駅 朝霧高原", "RVパーク HESTA富士河口湖"], "d3": ["Capsule Plus Yokohama Sauna & Capsule", "道の駅 すばしり", "道の駅 富士吉田", "EXPASA 足柄 上り", "EXPASA 海老名 上り"]};
 function stayLinks(k,html){let i=0;const qs=STAY_QUERIES[k];const link=(name,q)=>`<a class="stay-link" href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(q+", Japan")}" target="_blank" rel="noopener">${name}<span class="gm" role="img" aria-label="Google Maps"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5a7.2 7.2 0 0 0-7.2 7.2c0 5.2 7.2 11.8 7.2 11.8s7.2-6.6 7.2-11.8A7.2 7.2 0 0 0 12 2.5z" fill="currentColor"/><circle cx="12" cy="9.7" r="2.7" fill="#fff"/></svg></span></a>`;return html.replace(/<li>(.*?)<\/li>/g,(_,name)=>`<li>${link(name,qs[i++])}</li>`);}
