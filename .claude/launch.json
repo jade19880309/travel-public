@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "travel-public",
+      "runtimeExecutable": "powershell",
+      "runtimeArgs": ["-NoProfile", "-ExecutionPolicy", "Bypass", "-File", "C:\Users\CKT\AppData\Local\Temp\claude\f1b0d8021b26ee26\d037535d-6525-4ead-beca-712f0adf3acb\scratchpad\serve.ps1"],
+      "port": 8791
+    }
+  ]
+}
