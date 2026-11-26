@@ -181,3 +181,10 @@ html.fj2.th-fuji.forest-journal .fj2-bnr img{object-position:50% 50%}
 html.fj2 .fj2-keys button i[style*="icon-sake"]{background-size:auto 92%;background-position:center}
 /* 讓繡球花／紙膠帶的 multiply 能和頁面和紙融合（不要建立獨立堆疊層） */
 html.fj2.th-fuji.forest-journal .fj2-cdcard{z-index:auto}
+/* body 背景若被提升到畫布，Chrome 的 multiply 不會和它混合（會出現淺色方框）；html 自己給底色，body 的和紙就留在 body 上 */
+html.fj2{background:#f6f1e5}
+html.fj2 body{min-height:100vh}
+/* 素材紙色底約 #FCF9F0，multiply 後仍留 2～5% 的方框：輕微提亮讓紙色變白、只留圖案（不改素材檔） */
+html.fj2 .fj2-brand img,html.fj2 section[id] h2.fj2-h::before,html.fj2 h2.fj2-h::after,html.fj2 .fj2-sech::before,html.fj2 .fj2-sech::after,
+html.fj2 .fj2-sign,html.fj2 .fj2-title::before,html.fj2 .fj2-hero .fj2-cover::after,html.fj2 .fj2-cdcard::before,html.fj2 .fj2-days::before,
+html.fj2 .fj2-cdcard::after,html.fj2 .fj2-days::after,html.fj2 .fj2-keys button i[style*="icon-sake"]{filter:brightness(1.06)}
