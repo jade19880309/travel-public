@@ -1,105 +1,258 @@
 /* ===================================================================
-   首爾 V2.1・把使用者提供的 seoul-v2.css（原樣載入）版型對應到正式首爾頁
+   首爾 V2.1・Design-to-Code 重構版（2026/11/26）
+   目標：V2-design-reference.webp（電腦）＋ mobile-design-reference.webp（手機 390px）
    只在 html.th-han.sw.sv2 生效（class 由 seoul-winter.js 加；?theme=classic 時不加）。
-   數值取自 seoul-v2.css；這裡只負責：
-   1. 蓋過 theme-han.css 舊「Seoul Winter」區塊中與 V2 衝突的規則（舊規則權重較高）
-   2. 圖片改用同圖 JPEG（使用者 iPhone 曾無法顯示 WebP，見 HANDOFF v170）
-   3. 正式頁才有的元素：天氣、工具鍵、展開的每日行程、日期列
+   圖層：背景（韓紙紋理、水彩暈、場景插畫）→ 中景（紙卡）→ 前景（梅枝、福袋、拍立得、小吃貼紙）
+   白底插畫一律用 *-cut.png（去背版），不再用 multiply 混色。
+   圖片用 JPEG／PNG（使用者 iPhone 曾無法顯示 WebP，見 HANDOFF v170）。
    =================================================================== */
-html.th-han.sw.sv2{--paper:#fffaf2;--v2line:#dfcbb7;--v2sh:0 4px 9px #795d3b26;--navy:#294760;--hanji:url('images/seoul-2027/decor/hanji-texture.jpg')}
-html.th-han.sw.sv2 body.seoul-v2{background:#f3e7d7 var(--hanji);font-family:var(--sans);line-height:1.5}
-html.th-han.sw.sv2 main{max-width:1100px;padding:0 12px calc(var(--dock,64px) + 24px)}
+html.th-han.sw.sv2{
+ --paper:#fffaf2;--cream:#f6eee3;--v2line:#e0cdb8;--navy:#294760;--ink2:#34465b;
+ --rose:#a84d59;--blue:#497da6;--green:#537c63;--gold:#a96730;--violet:#78618f;
+ --tint-rose:#f8e9e7;--tint-blue:#e9eff6;--tint-green:#eaf1ea;--tint-gold:#f8eedf;--tint-violet:#f0ebf5;
+ --v2sh:0 4px 10px #795d3b24,0 1px 2px #795d3b1a;
+ --hanji:url('images/seoul-2027/decor/hanji-texture.jpg');
+ --gut:12px;--D:'images/seoul-2027/decor/'}
+html.th-han.sw.sv2 body.seoul-v2{font-family:var(--sans);line-height:1.5;color:var(--ink);
+ background:var(--hanji),radial-gradient(120% 60% at 50% 0,#f1e4ef 0,#f6ece4 45%,transparent 70%),linear-gradient(180deg,#f6ece4,#f4e9dc 60%,#efe5ea);background-blend-mode:multiply,normal,normal;background-color:#f4e9dc}
+html.th-han.sw.sv2 main{max-width:1100px;padding:0 var(--gut) calc(var(--dock,64px) + 12px)}
+html.th-han.sw.sv2 .sw-deco{pointer-events:none;user-select:none}
 
-/* ---------- 封面 hero2 ---------- */
-html.th-han.sw.sv2 .hero.sw-hero.hero2{display:grid;place-items:start center;justify-content:stretch;align-content:start;height:auto;min-height:290px;margin:0;padding:18px 8px;border-radius:0 0 24px 24px;isolation:isolate;overflow:hidden;
- background:#e9e6ee url('images/seoul-2027/decor/hero-winter.jpg') center/cover;box-shadow:0 10px 22px -16px rgba(52,70,91,.5)}
-html.th-han.sw.sv2 .hero.sw-hero.hero2 .hero-bg{z-index:-2;object-position:50% 60%}
-html.th-han.sw.sv2 .hero.sw-hero.hero2::after{content:"";display:block;position:absolute;inset:0;z-index:-1;pointer-events:none;
- background:url('images/seoul-2027/decor/plum-branch.png') right top/24% auto no-repeat,url('images/seoul-2027/decor/coffee.png') right bottom/19% auto no-repeat}
-html.th-han.sw.sv2 .hero.sw-hero.hero2::before{content:"";position:absolute;inset:0 0 auto;height:62%;z-index:-1;pointer-events:none;background:linear-gradient(180deg,rgba(255,250,246,.55),rgba(255,250,246,0))}
-html.th-han.sw.sv2 .sv2-title{position:relative;color:var(--ink);display:flex;flex-direction:column;align-items:center}
-html.th-han.sw.sv2 .hero2 h1{display:flex;align-items:flex-end;justify-content:center;gap:4px;color:#24405e;font-family:var(--serif);font-weight:700;letter-spacing:.04em}
-html.th-han.sw.sv2 .sv2-side{display:flex;flex-direction:column;align-items:flex-start;line-height:1;padding-bottom:.12em;color:#b3586a;text-shadow:0 0 10px #fff,0 0 4px #fff}
-html.th-han.sw.sv2 .sv2-side small{font-family:"Noto Sans KR",var(--sans);font-size:.3em;font-weight:500;letter-spacing:.06em;margin-left:.2em}
-html.th-han.sw.sv2 .sv2-side em{font-family:"Snell Roundhand","Segoe Script","Apple Chancery","Brush Script MT",cursive;font-style:italic;font-weight:600;font-size:.42em;letter-spacing:0}
-html.th-han.sw.sv2 .hero2 .sv2-title p{font-family:var(--serif);letter-spacing:.12em;font-size:clamp(15px,3.8vw,20px);background:transparent url('images/seoul-2027/decor/brush-rose.png') center/100% 100% no-repeat;padding:6px 26px;border-radius:0;box-shadow:none;text-shadow:0 1px 0 rgba(80,30,40,.3)}
-html.th-han.sw.sv2 .hero2 .sv2-title b{font-size:11.5px;font-weight:600;letter-spacing:.28em;color:var(--ink)}
+/* ===================================================================
+   1. 封面 hero2：接近滿版、主視覺占滿，標題疊在畫面上方
+   =================================================================== */
+html.th-han.sw.sv2 .hero.sw-hero.hero2{display:block;position:relative;height:auto;min-height:0;aspect-ratio:auto;margin:0;padding:0;border-radius:0 0 26px 26px;overflow:hidden;isolation:isolate;background:#e9e3ec;box-shadow:none;
+ height:clamp(340px,44vw,470px)}
+html.th-han.sw.sv2 .hero.sw-hero.hero2::before{content:"";position:absolute;inset:0 0 auto;height:58%;z-index:1;pointer-events:none;background:linear-gradient(180deg,rgba(255,250,248,.72),rgba(255,250,248,.35) 55%,rgba(255,250,248,0))}
+html.th-han.sw.sv2 .hero.sw-hero.hero2::after{content:"";position:absolute;inset:auto 0 0;height:90px;z-index:1;pointer-events:none;background:linear-gradient(180deg,rgba(246,238,228,0),rgba(246,238,228,.85) 70%,#f6ece4)}
+html.th-han.sw.sv2 .hero.sw-hero.hero2 .hero-bg{z-index:0;object-position:38% 70%}
+html.th-han.sw.sv2 .sv3-hfx{position:absolute;inset:0;z-index:2;pointer-events:none}
+html.th-han.sw.sv2 .sv3-hfx img{position:absolute;height:auto;filter:drop-shadow(0 3px 4px rgba(70,45,40,.18))}
+html.th-han.sw.sv2 .sv3-hplum1{left:-26px;top:-14px;width:150px;transform:scaleX(-1) rotate(-8deg)}
+html.th-han.sw.sv2 .sv3-hplum2{right:-24px;top:-10px;width:140px;transform:rotate(6deg)}
+html.th-han.sw.sv2 .sv3-hplane{left:8%;top:40px;width:84px;transform:rotate(-10deg);opacity:.95}
+html.th-han.sw.sv2 .sv3-hsnow{right:21%;top:118px;width:34px;opacity:.9}
+html.th-han.sw.sv2 .sv3-hfood1{display:none}
+html.th-han.sw.sv2 .sv3-hfood2{right:12px;bottom:58px;width:92px}
+html.th-han.sw.sv2 .sv2-title{position:relative;z-index:3;display:flex;flex-direction:column;align-items:center;padding-top:calc(env(safe-area-inset-top,0px) + 22px);color:var(--ink)}
+html.th-han.sw.sv2 .hero2 h1{display:flex;align-items:flex-end;justify-content:center;gap:6px;margin:0;color:#21405f;font-family:var(--serif);font-weight:800;font-size:clamp(70px,20vw,112px);line-height:1;letter-spacing:.04em;text-shadow:0 2px 0 #fff,0 0 14px #fff,0 0 28px rgba(255,255,255,.9)}
+html.th-han.sw.sv2 .sv2-zh{display:block}
+html.th-han.sw.sv2 .sv2-side{display:flex;flex-direction:column;align-items:flex-start;line-height:1;padding-bottom:.1em;color:#b3586a;text-shadow:0 0 10px #fff,0 0 4px #fff,0 0 2px #fff}
+html.th-han.sw.sv2 .sv2-side small{font-family:"Noto Sans KR",var(--sans);font-size:.27em;font-weight:600;letter-spacing:.06em;margin:0 0 .1em .25em}
+html.th-han.sw.sv2 .sv2-side em{font-family:"Snell Roundhand","Segoe Script","Apple Chancery","Brush Script MT",cursive;font-style:italic;font-weight:700;font-size:.4em;letter-spacing:0}
+html.th-han.sw.sv2 .hero2 .sv2-title p{margin:10px 0 0;padding:8px 34px 9px;font-family:var(--serif);font-weight:700;letter-spacing:.12em;font-size:clamp(16px,4.4vw,22px);color:#fff;background:transparent url('images/seoul-2027/decor/brush-rose.png') center/100% 100% no-repeat;border-radius:0;box-shadow:none;text-shadow:0 1px 1px rgba(80,30,40,.35)}
+html.th-han.sw.sv2 .hero2 .sv2-title b{margin-top:8px;padding:2px 10px;font-size:11.5px;font-weight:700;letter-spacing:.26em;color:var(--ink2);background:rgba(255,250,242,.82);border-radius:6px}
 
-/* ---------- 功能列 nav2 ---------- */
-html.th-han.sw.sv2 .sw-nav.nav2{margin:0 -12px;padding:10px 12px 8px;gap:6px;background:transparent}
-html.th-han.sw.sv2 .sw-nav.nav2.stuck{background:rgba(243,231,215,.97);box-shadow:0 6px 14px -12px rgba(52,70,91,.5)}
-html.th-han.sw.sv2 .sw-nav.nav2 a.tile{flex:1 0 auto;width:auto;min-width:62px;min-height:60px;padding:6px 10px;gap:2px;border:1px solid #d9c6b0;border-radius:12px;
- background:#fffaf2 var(--hanji);background-blend-mode:multiply;color:var(--ink);font-size:13px;box-shadow:0 3px 6px #684c3220}
+/* ===================================================================
+   2. 功能列 nav2：紙籤圖示鍵，疊在封面下緣
+   =================================================================== */
+html.th-han.sw.sv2 .sw-nav.nav2{position:relative;z-index:6;margin:-46px calc(-1*var(--gut)) 0;padding:8px var(--gut) 8px;gap:7px;background:transparent;scrollbar-width:none}
+html.th-han.sw.sv2 .sw-nav.nav2::-webkit-scrollbar{display:none}
+html.th-han.sw.sv2 .sw-nav.nav2.stuck{background:rgba(246,236,228,.97);box-shadow:0 6px 14px -12px rgba(52,70,91,.5)}
+html.th-han.sw.sv2 .sw-nav.nav2 a.tile{flex:1 0 auto;width:auto;min-width:58px;min-height:62px;padding:7px 9px 6px;gap:3px;border:1px solid #dcc8b2;border-radius:14px 14px 12px 12px;
+ background:#fffaf2 var(--hanji);background-blend-mode:multiply;color:var(--ink);font-size:13px;font-weight:600;box-shadow:0 4px 8px #684c3226}
 html.th-han.sw.sv2 .sw-nav.nav2 a.tile.on{background:var(--navy);border-color:var(--navy);color:#fff}
-html.th-han.sw.sv2 .sw-nav.nav2 a.tile i.nav-icon{width:23px;height:23px;font-size:0}
+html.th-han.sw.sv2 .sw-nav.nav2 a.tile i.nav-icon{width:24px;height:24px;font-size:0}
 
-/* ---------- 共用紙卡 panel2 ---------- */
-html.th-han.sw.sv2 .card.panel2,html.th-han.sw.sv2 .sw-top>.pair>.card{margin:0;border:1px solid var(--v2line);border-radius:17px;box-shadow:var(--v2sh);background:#fffaf2 var(--hanji);background-blend-mode:multiply}
-html.th-han.sw.sv2 .sw-top{display:block;margin:0}
-html.th-han.sw.sv2 .pair{align-items:stretch}
+/* ===================================================================
+   3. 共用紙卡 panel2
+   =================================================================== */
+html.th-han.sw.sv2 .card.panel2,html.th-han.sw.sv2 .sw-top>.pair>.card{position:relative;margin:0;border:1px solid var(--v2line);border-radius:18px;box-shadow:var(--v2sh);background:#fffaf2 var(--hanji);background-blend-mode:multiply}
+html.th-han.sw.sv2 .sw-top{display:block;margin:6px 0 0}
+html.th-han.sw.sv2 .pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;align-items:stretch}
+html.th-han.sw.sv2 .sw-top .pair{margin:0}
 
-/* 倒數 count2：福袋（左）＋梅枝（右上） */
-html.th-han.sw.sv2 .sw-top .sw-cd.count2{display:block;min-height:150px;padding:12px 12px 12px 29%;overflow:hidden;
- background-color:#fffaf2;background-image:url('images/seoul-2027/decor/bokjumeoni.png'),url('images/seoul-2027/decor/plum-branch.png'),var(--hanji);
- background-position:left 4px center,right top,center;background-size:28% auto,20% auto,auto;background-repeat:no-repeat,no-repeat,repeat;background-blend-mode:normal,normal,multiply}
-html.th-han.sw.sv2 .sw-cd #cdnote{margin:0 0 8px;font-size:18px;font-weight:700;letter-spacing:.1em;color:var(--ink);font-family:var(--serif)}
-html.th-han.sw.sv2 .sw-cd .cd.numbers{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;width:100%;max-width:300px}
-html.th-han.sw.sv2 .sw-cd .cd.numbers div{min-width:0;width:auto}
-html.th-han.sw.sv2 .sw-cd .cd.numbers b{display:block;min-width:0;width:100%;padding:4px 0;border-radius:8px;background:#b95e68;color:#fff;font-size:clamp(20px,4vw,30px);line-height:1.2;font-variant-numeric:tabular-nums;box-shadow:inset 0 -3px 0 rgba(0,0,0,.08)}
-html.th-han.sw.sv2 .sw-cd .cd.numbers span{color:var(--ink)}
-html.th-han.sw.sv2 .sw-wish{margin-top:8px}
-html.th-han.sw.sv2 .sw-wish span{color:#a84d59;font-size:17px}
-html.th-han.sw.sv2 .sw-cd .go{margin-top:10px;min-height:44px;background:var(--navy)}
+/* 倒數 count2：前景福袋（左，大）＋左上梅枝＋雪花 */
+html.th-han.sw.sv2 .sw-top .sw-cd.count2{display:block;min-height:0;padding:14px 12px 14px 33%;overflow:hidden;background:#fffaf2 var(--hanji);background-blend-mode:multiply}
+html.th-han.sw.sv2 .sw-cd .sv3-cbag{position:absolute;left:2px;top:50%;width:32%;max-width:170px;height:auto;transform:translateY(-44%) rotate(-6deg);filter:drop-shadow(0 6px 6px rgba(90,50,50,.22));z-index:1}
+html.th-han.sw.sv2 .sw-cd .sv3-cplum{position:absolute;left:-18px;top:-16px;width:118px;height:auto;transform:scaleX(-1) rotate(-12deg);z-index:2}
+html.th-han.sw.sv2 .sw-cd .sv3-csnow{position:absolute;right:8px;top:8px;width:30px;height:auto;opacity:.9}
+html.th-han.sw.sv2 .sw-cdin{position:relative;z-index:3;display:flex;flex-direction:column;align-items:center;text-align:center}
+html.th-han.sw.sv2 .sw-cd #cdnote{margin:0 0 8px;padding:0 26px 0 0;font-size:17px;font-weight:700;letter-spacing:.08em;color:var(--ink);font-family:var(--serif)}
+html.th-han.sw.sv2 .sw-cd .cd.numbers{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;width:100%;max-width:300px;margin:0}
+html.th-han.sw.sv2 .sw-cd .cd.numbers div{min-width:0;width:auto;background:none;box-shadow:none;padding:0}
+html.th-han.sw.sv2 .sw-cd .cd.numbers b{display:block;min-width:0;width:100%;padding:5px 0;border-radius:9px;background:linear-gradient(180deg,#c56a73,#ae535e);color:#fff;font-family:var(--serif);font-size:clamp(22px,6.4vw,32px);line-height:1.15;font-variant-numeric:tabular-nums;box-shadow:inset 0 -3px 0 rgba(0,0,0,.1),0 2px 4px rgba(150,60,70,.25)}
+html.th-han.sw.sv2 .sw-cd .cd.numbers span{display:block;margin-top:2px;color:var(--ink);font-size:13px;font-weight:600}
+html.th-han.sw.sv2 .sw-wish{margin:8px 0 0;display:flex;flex-direction:column;align-items:center;gap:0}
+html.th-han.sw.sv2 .sw-wish span{color:var(--rose);font-family:"Nanum Pen Script","Noto Sans KR",var(--sans);font-size:18px;font-weight:700;font-style:italic}
+html.th-han.sw.sv2 .sw-wish small{display:flex;align-items:center;gap:8px;color:var(--ink2);font-size:13px;letter-spacing:.2em}
+html.th-han.sw.sv2 .sw-wish small::before,html.th-han.sw.sv2 .sw-wish small::after{content:"";width:22px;height:1px;background:currentColor;opacity:.5}
+html.th-han.sw.sv2 .sw-cd .go{margin-top:10px;min-height:44px;padding:0 20px;border-radius:22px;background:var(--navy);color:#fff;font-weight:700;letter-spacing:.06em;box-shadow:0 3px 8px rgba(41,71,96,.3)}
 
-/* 旅遊日期 info2：景福宮（右下） */
-html.th-han.sw.sv2 .sw-top .sw-info.info2{display:block;min-height:150px;padding:16px 16px 85px;overflow:hidden;
- background-color:#fffaf2;background-image:url('images/seoul-2027/decor/palace.jpg'),var(--hanji);background-position:right bottom,center;background-size:48% auto,auto;background-repeat:no-repeat,repeat;background-blend-mode:multiply}
-html.th-han.sw.sv2 .sw-irow b{font-size:19px}
-html.th-han.sw.sv2 .sw-irow span{background:#f3e2df;color:#a84d59}
+/* 旅遊日期 info2：景福宮雪景（去背）壓在右下，前景 */
+html.th-han.sw.sv2 .sw-top .sw-info.info2{display:block;min-height:0;padding:16px 16px 16px;overflow:hidden;background:#fffaf2 var(--hanji);background-blend-mode:multiply}
+html.th-han.sw.sv2 .sw-info .sv3-ipal{position:absolute;right:-6px;bottom:-8px;width:min(52%,250px);height:auto;z-index:0}
+html.th-han.sw.sv2 .sw-info .sv3-isnow{position:absolute;right:10px;top:10px;width:28px;height:auto;opacity:.85}
+html.th-han.sw.sv2 .sw-irow{position:relative;z-index:1;display:flex;align-items:center;gap:12px}
+html.th-han.sw.sv2 .sw-irow small{display:block;color:var(--sub);font-size:13px;font-weight:600;letter-spacing:.08em}
+html.th-han.sw.sv2 .sw-irow b{display:block;font-size:clamp(16px,4.6vw,20px);color:var(--ink)}
+html.th-han.sw.sv2 .sw-irow span{display:inline-block;margin-top:3px;padding:1px 10px;border-radius:10px;background:#f3e2df;color:var(--rose);font-size:12.5px;font-weight:700}
+html.th-han.sw.sv2 .sv2-irow2{margin-top:12px;padding-top:12px;border-top:1.5px dashed #dcc9b3;max-width:56%}
+html.th-han.sw.sv2 .sv2-iplane{flex:none;width:40px;height:auto;margin:0 -2px}
 
-/* 天氣卡（整列）見下方 */
- border:1px solid #d9c6b0;border-radius:14px;background:#fffaf2 var(--hanji);background-blend-mode:multiply;color:var(--ink);font-size:20px;box-shadow:0 3px 6px #684c3220}
+/* 天氣卡：右側冬日旅行插畫（去背） */
+html.th-han.sw.sv2 .sw-top #wx.sv2-wx{position:relative;margin:12px 0 0;width:auto;max-width:none;min-height:76px;padding:14px max(14px,min(34%,200px)) 14px 16px;overflow:hidden;display:flex;align-items:center}
+html.th-han.sw.sv2 #wx .sv3-wxi{position:absolute;right:6px;bottom:-14px;width:min(30%,170px);height:auto}
+html.th-han.sw.sv2 #wx .wxh{position:relative;z-index:1}
 
-/* ---------- 區塊標題：水彩筆刷 brush2 ---------- */
-html.th-han.sw.sv2 main h2.sw-h{display:flex;align-items:center;gap:10px;padding-right:66px;margin-top:22px}
+/* ===================================================================
+   4. 區塊標題：水彩筆刷籤＋線條圖示＋右側貼紙
+   =================================================================== */
+html.th-han.sw.sv2 main h2.sw-h{position:relative;display:flex;align-items:center;gap:10px;min-height:46px;margin:0 0 10px;padding-right:76px}
 html.th-han.sw.sv2 main h2.sw-h::before{content:none;display:none}
-html.th-han.sw.sv2 h2 .brush2{flex:none;margin:0;padding:6px 22px 7px;font-size:20px;letter-spacing:.08em;color:#fff;text-shadow:0 1px 1px rgba(60,30,30,.25)}
+html.th-han.sw.sv2 main h2.sw-h::after{content:"";flex:1;height:1.5px;margin-left:2px;background:linear-gradient(90deg,#cdb79f,rgba(205,183,159,0));opacity:.8}
+html.th-han.sw.sv2 h2 .brush2{flex:none;display:inline-flex;align-items:center;gap:8px;margin:0;padding:8px 26px 9px 20px;font-size:19px;font-weight:700;letter-spacing:.1em;color:#fff;text-shadow:0 1px 1px rgba(60,30,30,.3);background:transparent url('images/seoul-2027/decor/brush-rose.png') center/100% 100% no-repeat;border-radius:0}
 html.th-han.sw.sv2 .brush2.sv2-blue{background-image:url('images/seoul-2027/decor/brush-blue.png')}
 html.th-han.sw.sv2 .brush2.sv2-green{background-image:url('images/seoul-2027/decor/brush-green.png')}
 html.th-han.sw.sv2 .brush2.sv2-gold{background-image:url('images/seoul-2027/decor/brush-gold.png')}
 html.th-han.sw.sv2 .brush2.sv2-violet{background-image:url('images/seoul-2027/decor/brush-violet.png')}
+html.th-han.sw.sv2 .sv3-hic{flex:none;width:20px;height:20px;background:currentColor;-webkit-mask-size:contain;mask-size:contain;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-position:center;mask-position:center}
+html.th-han.sw.sv2 main h2.sw-h .sw-hd{position:absolute;right:-2px;top:50%;width:72px;height:auto;transform:translateY(-50%) rotate(6deg);opacity:1;filter:drop-shadow(0 4px 5px rgba(80,55,35,.2))}
 
-/* ---------- 航班＋住宿 pair ---------- */
+/* 區塊間距 */
+html.th-han.sw.sv2 main>section{margin-top:22px}
+html.th-han.sw.sv2 .sv2-fh{margin-top:22px}
 html.th-han.sw.sv2 .sv2-fh>section{margin:0;min-width:0}
-html.th-han.sw.sv2 .sv2-fh #flight .grid{grid-template-columns:1fr;gap:10px}
-html.th-han.sw.sv2 #flight .bp.flight2{border:1px solid var(--v2line);border-top:8px solid var(--navy);border-radius:17px;box-shadow:var(--v2sh);background:#fffaf2 var(--hanji);background-blend-mode:multiply}
-html.th-han.sw.sv2 #hotel details.sw-hotel.hotel2{overflow:hidden;background-color:#fffaf2;background-image:url('images/seoul-2027/decor/namsan-tower.png'),var(--hanji);background-position:right 4px bottom 4px,center;background-size:27% auto,auto;background-repeat:no-repeat,repeat;background-blend-mode:normal,multiply;overflow-wrap:anywhere}
+html.th-han.sw.sv2 main p.rate{margin:0 0 10px;font-size:14px;color:var(--sub)}
+html.th-han.sw.sv2 main .btns{gap:8px}
+html.th-han.sw.sv2 main .btns>.b{min-height:44px;border-radius:22px}
 
-/* ---------- 每日行程 days2／day2 ---------- */
-html.th-han.sw.sv2 #days.days2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:10px 0}
-html.th-han.sw.sv2 #days .dy.day2{margin:0;padding:7px;border:1px solid var(--v2line);border-radius:17px;box-shadow:var(--v2sh);background:#fffaf2 var(--hanji);background-blend-mode:multiply;overflow:hidden}
-html.th-han.sw.sv2 #days .dy.day2.on{grid-column:1/-1;border-color:var(--accent);box-shadow:0 0 0 1px var(--accent),var(--v2sh)}
-html.th-han.sw.sv2 #days .dy.day2 .dr{display:block;width:100%;min-height:0;padding:0;background:none;color:var(--ink);text-align:left}
+/* ===================================================================
+   5. 航班：登機證（深藍票頭、白色票身、打孔）
+   =================================================================== */
+html.th-han.sw.sv2 .sv2-fh #flight .grid{grid-template-columns:1fr;gap:10px}
+html.th-han.sw.sv2 #flight .bp.flight2{position:relative;padding:0 0 10px;border:1px solid var(--v2line);border-top:0;border-radius:16px;overflow:hidden;box-shadow:var(--v2sh);background:#fffdf8;cursor:pointer}
+html.th-han.sw.sv2 #flight .bp.flight2::after{content:"";position:absolute;right:12px;top:52px;width:78px;height:56px;background:url('images/seoul-2027/decor/airplane.png') center/contain no-repeat;opacity:.16;pointer-events:none}
+html.th-han.sw.sv2 #flight .bp.flight2::before{content:"";position:absolute;left:-9px;right:-9px;top:42px;height:18px;pointer-events:none;background:radial-gradient(circle at 9px 9px,#f4e9dc 8px,transparent 8.5px) left/18px 18px no-repeat,radial-gradient(circle at 9px 9px,#f4e9dc 8px,transparent 8.5px) right/18px 18px no-repeat;z-index:2}
+html.th-han.sw.sv2 #flight .bp.flight2 .bph{display:flex;align-items:center;gap:8px;padding:10px 14px;background:linear-gradient(120deg,#2b4a66,#3f6585);color:#fff;font-size:15px;font-weight:700;letter-spacing:.04em}
+html.th-han.sw.sv2 #flight .bp.flight2 .bph .al{order:-1;margin:0 auto 0 0;color:#fff;font-size:15px;font-weight:700;opacity:1}
+html.th-han.sw.sv2 #flight .bp.flight2 .bph .al::before{content:"";display:inline-block;width:9px;height:9px;margin-right:7px;border-radius:50%;background:linear-gradient(180deg,#e0505a 50%,#3b6fc0 50%);vertical-align:1px;box-shadow:0 0 0 1.5px #fff}
+html.th-han.sw.sv2 #flight .bp.flight2 .bph .pill{display:inline-flex;align-items:center;gap:5px;margin:0;padding:2px 10px;border:0;border-radius:10px;background:rgba(255,255,255,.18);color:#fff;font-size:13px;font-weight:700}
+html.th-han.sw.sv2 #flight .bp.flight2 .bph .pill::before{content:"";width:14px;height:14px;background:currentColor;-webkit-mask:url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"%3E%3Cpath d="M21 4 3 11l6.5 2.5L12 20l3-4.5 4.5 3.5z"/%3E%3C/svg%3E') center/contain no-repeat;mask:url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"%3E%3Cpath d="M21 4 3 11l6.5 2.5L12 20l3-4.5 4.5 3.5z"/%3E%3C/svg%3E') center/contain no-repeat}
+html.th-han.sw.sv2 #flight .bp.flight2 .sv3-fdate{margin:10px 16px 0;font-size:13.5px;font-weight:700;color:var(--sub);letter-spacing:.04em}
+html.th-han.sw.sv2 #flight .bp.flight2 .fl{margin:2px 16px 6px;align-items:center}
+html.th-han.sw.sv2 #flight .bp.flight2 .fl big{display:block;font-family:var(--sans);font-size:30px;font-weight:800;line-height:1.1;color:var(--ink);letter-spacing:.02em;border:0;padding:0;background:none}
+html.th-han.sw.sv2 #flight .bp.flight2 .fl span{display:block;font-size:12px;color:var(--sub)}
+html.th-han.sw.sv2 #flight .bp.flight2 .fl b{display:block;margin-top:2px;font-family:var(--sans);font-size:22px;font-weight:700;color:var(--ink)}
+html.th-han.sw.sv2 #flight .bp.flight2 .fl .mid{position:relative;padding-top:20px;border-top:0;font-size:12px;color:var(--sub);background:url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23497da6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"%3E%3Cpath d="M21 4 3 11l6.5 2.5L12 20l3-4.5 4.5 3.5z" transform="rotate(45 12 12)"/%3E%3C/svg%3E') center 0/22px no-repeat}
+html.th-han.sw.sv2 #flight .bp.flight2 .fl .mid::before{content:"";position:absolute;left:4px;right:4px;top:10px;border-top:1.5px dashed #b9c7d6;z-index:-1}
+html.th-han.sw.sv2 #flight .bp.flight2 .ac{margin:0 16px;font-size:12.5px;color:var(--sub)}
+html.th-han.sw.sv2 #flight .bp.flight2 small{margin:6px 16px 0;padding-top:6px;border-top:1.5px dashed #e2d6c6;font-size:12.5px;color:var(--sub)}
+html.th-han.sw.sv2 #flight p.rate{margin:10px 0 6px}
+
+/* ===================================================================
+   6. 住宿：照片左、英文名在前；南山塔拍立得斜貼在標題右側
+   =================================================================== */
+html.th-han.sw.sv2 #hotel{position:relative}
+html.th-han.sw.sv2 #hotel .sv3-polar{position:absolute;right:4px;top:-14px;z-index:4;width:78px;padding:5px 5px 16px;background:#fff;border-radius:2px;box-shadow:0 6px 12px rgba(80,55,35,.28);transform:rotate(7deg);pointer-events:none}
+html.th-han.sw.sv2 #hotel .sv3-polar img{display:block;width:100%;height:auto;aspect-ratio:1;object-fit:cover;background:linear-gradient(180deg,#d8dcef,#f3e7ee)}
+html.th-han.sw.sv2 #hotel .sv3-polar::before{content:"";position:absolute;left:50%;top:-8px;width:46px;height:16px;transform:translateX(-50%) rotate(-4deg);background:url('images/seoul-2027/decor/brush-gold.png') center/100% 100% no-repeat;opacity:.85}
+html.th-han.sw.sv2 #hotel details.sw-hotel.hotel2{position:relative;padding:0;overflow:hidden;background:#fffaf2 var(--hanji);background-blend-mode:multiply;overflow-wrap:anywhere}
+html.th-han.sw.sv2 #hotel details.sw-hotel.hotel2::after{content:none}
+html.th-han.sw.sv2 #hotel details.sw-hotel.hotel2>summary{display:grid;grid-template-columns:minmax(110px,40%) minmax(0,1fr);gap:12px;align-items:start;padding:12px 34px 12px 12px}
+html.th-han.sw.sv2 #hotel .sw-hpic{display:block;min-height:0;padding:0;border:0;border-radius:12px;overflow:hidden;box-shadow:0 3px 8px rgba(60,45,30,.22);background:none}
+html.th-han.sw.sv2 #hotel .sw-hpic img{display:block;width:100%;aspect-ratio:4/5;object-fit:cover}
+html.th-han.sw.sv2 #hotel summary .hn{display:flex;flex-direction:column;gap:3px;min-width:0}
+html.th-han.sw.sv2 #hotel summary .hn .en{order:-2;font-size:16.5px;font-weight:800;line-height:1.25;color:var(--ink)}
+html.th-han.sw.sv2 #hotel summary .hn .zh{order:-1;font-size:14px;font-weight:600;color:var(--ink2)}
+html.th-han.sw.sv2 #hotel summary .hn .zh::before{content:"";display:inline-block;width:13px;height:13px;margin-right:4px;vertical-align:-1px;background:var(--rose);-webkit-mask:url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23000" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"%3E%3Cpath d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/%3E%3Ccircle cx="12" cy="9.5" r="2.5"/%3E%3C/svg%3E') center/contain no-repeat;mask:url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23000" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"%3E%3Cpath d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/%3E%3Ccircle cx="12" cy="9.5" r="2.5"/%3E%3C/svg%3E') center/contain no-repeat}
+html.th-han.sw.sv2 #hotel summary .hko{display:flex;align-items:center;gap:4px;flex-wrap:wrap}
+html.th-han.sw.sv2 #hotel summary .hko b.ko{font-size:13.5px;font-weight:600;color:var(--sub)}
+html.th-han.sw.sv2 #hotel summary .hko .pic{display:none}
+html.th-han.sw.sv2 #hotel summary .hph{font-size:13.5px;color:var(--ink2)}
+html.th-han.sw.sv2 #hotel summary .btns{margin-top:6px;gap:6px;flex-wrap:wrap}
+html.th-han.sw.sv2 #hotel summary .btns .b{flex:1 1 auto;min-height:44px;padding:0 10px;font-size:13.5px}
+html.th-han.sw.sv2 main button.vo{min-height:0;padding:0;border:0;background:none;box-shadow:none;border-radius:50%}
+
+/* ===================================================================
+   7. 每日行程：手機「左圖右文」摘要卡；電腦三欄插畫卡
+   =================================================================== */
+html.th-han.sw.sv2 #plan{position:relative}
+html.th-han.sw.sv2 .sv3-pfx{position:absolute;right:-4px;top:-18px;width:190px;height:100px;pointer-events:none;z-index:0}
+html.th-han.sw.sv2 .sv3-pst{position:absolute;right:0;top:0;width:150px;height:auto;-webkit-mask-image:radial-gradient(ellipse 50% 50% at 50% 50%,#000 62%,transparent 100%);mask-image:radial-gradient(ellipse 50% 50% at 50% 50%,#000 62%,transparent 100%)}
+html.th-han.sw.sv2 .sv3-pplum{position:absolute;right:110px;top:2px;width:80px;height:auto;transform:scaleX(-1) rotate(-6deg)}
+html.th-han.sw.sv2 #plan>*:not(.sv3-pfx){position:relative;z-index:1}
+html.th-han.sw.sv2 #plan>h2.sw-h{padding-right:150px;min-height:70px}
+html.th-han.sw.sv2 #plan>h2.sw-h::after{display:none}
+html.th-han.sw.sv2 #plan p.rate{padding-right:0}
+html.th-han.sw.sv2 #days.days2{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:10px 0 0}
+html.th-han.sw.sv2 #days .dy.day2{position:relative;margin:0;padding:8px;border:1px solid var(--v2line);border-radius:18px;box-shadow:var(--v2sh);background:#fffaf2 var(--hanji);background-blend-mode:multiply;overflow:hidden}
+html.th-han.sw.sv2 #days .dy.day2.on{grid-column:1/-1;border-color:var(--accent);box-shadow:0 0 0 1.5px var(--accent),var(--v2sh)}
+html.th-han.sw.sv2 #days .dy.day2 .dr{display:block;width:100%;min-height:0;padding:0;background:none;color:var(--ink);text-align:left;white-space:normal;border:0;border-radius:10px;box-shadow:none}
 html.th-han.sw.sv2 #days .dy.day2 .dr::before,html.th-han.sw.sv2 #days .dy.day2 .dr::after{content:none;display:none}
-html.th-han.sw.sv2 #days .day2 .sv2-dn{margin:0 0 6px;padding:3px 16px 4px 12px;color:#fff;font-family:"Snell Roundhand","Segoe Script","Apple Chancery","Brush Script MT",cursive;font-style:italic;font-weight:700;font-size:19px;line-height:1.2;text-shadow:0 1px 1px rgba(40,30,30,.25)}
-html.th-han.sw.sv2 #days .day2 .dr b{display:inline-block;float:right;padding:5px 4px 0 0;color:var(--accent);font-size:15px;font-weight:700;letter-spacing:.04em}
-html.th-han.sw.sv2 #days .day2 .sv2-dimg{display:block;clear:both;width:100%;aspect-ratio:2.5;object-fit:cover;border-radius:9px;background:#eef1f2}
-html.th-han.sw.sv2 #days .day2 .sv2-dt{display:block;margin:7px 2px 2px;font-weight:700;font-size:15px;line-height:1.4;color:var(--accent);text-align:center}
+html.th-han.sw.sv2 #days .day2 .sv2-dn{display:inline-block;margin:0 0 6px;padding:3px 20px 5px 13px;color:#fff;font-family:"Snell Roundhand","Segoe Script","Apple Chancery","Brush Script MT",cursive;font-style:italic;font-weight:700;font-size:20px;line-height:1.2;text-shadow:0 1px 1px rgba(40,30,30,.3);background:transparent url('images/seoul-2027/decor/brush-rose.png') center/100% 100% no-repeat}
+html.th-han.sw.sv2 #days .sv3-b-blue .sv2-dn{background-image:url('images/seoul-2027/decor/brush-blue.png')}
+html.th-han.sw.sv2 #days .sv3-b-green .sv2-dn{background-image:url('images/seoul-2027/decor/brush-green.png')}
+html.th-han.sw.sv2 #days .sv3-b-gold .sv2-dn{background-image:url('images/seoul-2027/decor/brush-gold.png')}
+html.th-han.sw.sv2 #days .sv3-b-violet .sv2-dn{background-image:url('images/seoul-2027/decor/brush-violet.png')}
+html.th-han.sw.sv2 #days .day2 .dr b{display:inline-block;float:right;padding:6px 4px 0 0;color:var(--accent);font-size:15px;font-weight:700;letter-spacing:.04em}
+html.th-han.sw.sv2 #days .day2 .sv2-dimg{display:block;clear:both;width:100%;aspect-ratio:2.4;object-fit:cover;border-radius:11px;background:#eef1f2;box-shadow:0 2px 6px rgba(80,55,35,.16)}
+html.th-han.sw.sv2 #days .day2 .sv2-dt{display:block;margin:8px 2px 2px;font-weight:800;font-size:15.5px;line-height:1.4;color:var(--accent);text-align:center;letter-spacing:.04em}
+html.th-han.sw.sv2 #days .day2 .sv2-dl{display:none}
 html.th-han.sw.sv2 #days .day2 .dr .ds{display:block;margin:2px 2px 0;font-size:13.5px;font-weight:500;line-height:1.5;color:var(--sub);text-align:center}
-html.th-han.sw.sv2 #days .day2 .dr .tg{display:flex;justify-content:center;flex-wrap:wrap;gap:4px;margin-top:5px}
+html.th-han.sw.sv2 #days .day2 .dr .tg{display:flex;justify-content:center;flex-wrap:wrap;gap:4px;margin-top:6px}
 html.th-han.sw.sv2 #days .day2 .dr .pill{font-size:12px}
 html.th-han.sw.sv2 #days .dy.day2.on .sv2-dimg{max-width:380px;margin:0 auto}
-html.th-han.sw.sv2 #days .dy.day2.on .dp{margin:8px -7px -7px;padding:12px 14px 14px;background:rgba(255,253,250,.9);border-top:1px dashed #e0d0bc}
+html.th-han.sw.sv2 #days .dy.day2.on .dp{margin:10px -8px -8px;padding:12px 14px 14px;background:rgba(255,253,250,.92);border-top:1.5px dashed #e0d0bc}
 
-/* ---------- 頁尾 footer2（美食＋天際線） ---------- */
-html.th-han.sw.sv2 .footer2{margin:28px 0 0;min-height:130px;display:grid;place-content:center;gap:2px;text-align:center;padding:0 28%;color:#925464;font-family:var(--serif);
- background:url('images/seoul-2027/decor/street-food.jpg') left center/45% auto no-repeat,url('images/seoul-2027/decor/seoul-skyline.jpg') right center/48% auto no-repeat}
-html.th-han.sw.sv2 .footer2{mix-blend-mode:multiply}
-html.th-han.sw.sv2 .footer2 b{font-size:19px;letter-spacing:.1em;text-shadow:0 0 8px #f3e7d7,0 0 3px #f3e7d7}
-html.th-han.sw.sv2 .footer2 small{font-size:13px;color:var(--ink);text-shadow:0 0 6px #f3e7d7}
+/* ===================================================================
+   8. 下半部：每區一張色調不同的韓紙紙卡＋紙膠帶＋角落貼紙
+   =================================================================== */
+html.th-han.sw.sv2 main>section.sv2-sheet{--t:var(--tint-rose);--tc:var(--rose);position:relative;margin-top:30px;padding:4px 14px 16px;border:1px solid var(--v2line);border-radius:22px 8px 22px 8px;background:var(--hanji),linear-gradient(180deg,var(--t),#fffaf2 70%);background-blend-mode:multiply,normal;box-shadow:var(--v2sh)}
+html.th-han.sw.sv2 main>section.sv2-sheet:nth-of-type(even){border-radius:8px 22px 8px 22px}
+html.th-han.sw.sv2 .sv3-t-blue{--t:var(--tint-blue)!important;--tc:var(--blue)!important}
+html.th-han.sw.sv2 .sv3-t-green{--t:var(--tint-green)!important;--tc:var(--green)!important}
+html.th-han.sw.sv2 .sv3-t-gold{--t:var(--tint-gold)!important;--tc:var(--gold)!important}
+html.th-han.sw.sv2 .sv3-t-violet{--t:var(--tint-violet)!important;--tc:var(--violet)!important}
+html.th-han.sw.sv2 main>section.sv2-sheet>h2.sw-h{margin:-18px 0 8px -6px;padding-right:84px}
+html.th-han.sw.sv2 main>section.sv2-sheet>h2.sw-h::after{opacity:.5}
+html.th-han.sw.sv2 main>section.sv2-sheet .sw-hd{width:84px;right:-10px;top:12px;transform:rotate(8deg)}
+html.th-han.sw.sv2 main>section.sv2-sheet:nth-of-type(even) .sw-hd{transform:rotate(-8deg)}
+html.th-han.sw.sv2 main>section.sv2-sheet .card{background-color:#fffdf8;background-image:none;border:1px solid #ead9c6;box-shadow:0 2px 5px #795d3b17}
+html.th-han.sw.sv2 main>section.sv2-sheet .sv3-sfoot{position:absolute;right:-8px;bottom:-22px;width:76px;height:auto;transform:rotate(-8deg);filter:drop-shadow(0 4px 5px rgba(80,55,35,.22));z-index:2}
+/* 韓語：句卡左側色條 */
+html.th-han.sw.sv2 #phr .pw{border-left:4px solid var(--tc);border-radius:6px 12px 12px 6px;background:#fffdf8}
+/* 分頁鈕（韓語／美食）：選中＝區塊主色 */
+html.th-han.sw.sv2 main>section.sv2-sheet .tabs>button,html.th-han.sw.sv2 main>section.sv2-sheet .seg>button{min-height:44px;border:1px solid #e0cdb8;background:#fffdf8;color:var(--ink);font-weight:600;box-shadow:0 2px 4px #795d3b14}
+html.th-han.sw.sv2 main>section.sv2-sheet .tabs>button.on,html.th-han.sw.sv2 main>section.sv2-sheet .seg>button.on{background:var(--tc);border-color:var(--tc);color:#fff}
+/* 注意事項：摺疊卡加序號圓章（取代表情符號） */
+html.th-han.sw.sv2 #tips .grid{counter-reset:tp;gap:8px}
+html.th-han.sw.sv2 #tips details.fold>summary{display:flex;align-items:center;gap:10px}
+html.th-han.sw.sv2 #tips details.fold>summary::before{counter-increment:tp;content:counter(tp);flex:none;display:grid;place-items:center;width:26px;height:26px;border-radius:50%;color:#fff;font-size:13px;font-weight:800;background:var(--green);box-shadow:0 2px 3px rgba(60,80,60,.25)}
+html.th-han.sw.sv2 #tips details.fold:nth-child(3n+2)>summary::before{background:var(--blue)}
+html.th-han.sw.sv2 #tips details.fold:nth-child(3n)>summary::before{background:var(--rose)}
+html.th-han.sw.sv2 #tips::before{content:"";position:absolute;left:-14px;bottom:-18px;width:76px;height:64px;background:url('images/seoul-2027/decor/plum-branch.png') center/contain no-repeat;transform:rotate(200deg);pointer-events:none;z-index:2}
+/* 待辦：筆記本橫線＋底部福袋與冬日行李插畫（去背） */
+html.th-han.sw.sv2 #todolist.card{background:repeating-linear-gradient(180deg,#fffdf8 0 27px,#efe2d3 27px 28px);border-left:4px solid var(--rose)}
+html.th-han.sw.sv2 #todo details.td>summary{display:flex;align-items:center;gap:10px}
+html.th-han.sw.sv2 #todo details.td>summary::before{content:"";flex:none;width:18px;height:18px;border:2px solid var(--rose);border-radius:5px;background:#fff}
+html.th-han.sw.sv2 #todo.sv2-sheet{padding-bottom:6px}
+html.th-han.sw.sv2 .sv3-tdfx{display:flex;justify-content:space-between;align-items:flex-end;margin:4px -6px -10px;height:120px;pointer-events:none}
+html.th-han.sw.sv2 .sv3-tdfx img{height:100%;width:auto}
+html.th-han.sw.sv2 .sv3-tdfx img:first-child{transform:rotate(-4deg)}
+/* 價格、App 卡片：頂部色帶 */
+html.th-han.sw.sv2 #price .slide,html.th-han.sw.sv2 #apps .slide{border-top:5px solid var(--tc)}
 
-/* ---------- 底部日期列 dock2 ---------- */
-html.th-han.sw.sv2 .dock.dock2{background:rgba(243,231,215,.97);border-top:1px solid #d9c6b0;padding:6px 8px calc(env(safe-area-inset-bottom,0px) + 6px)}
+/* ===================================================================
+   9. 頁尾 footer2：背景天際線＋前景韓式小吃＋手寫標語
+   =================================================================== */
+html.th-han.sw.sv2 .footer2{position:relative;margin:34px calc(-1*var(--gut)) 0;min-height:0;height:250px;padding:0;display:block;color:#925464;mix-blend-mode:normal;background:none;overflow:hidden}
+html.th-han.sw.sv2 .sv3-ffx{position:absolute;inset:0;pointer-events:none}
+html.th-han.sw.sv2 .sv3-ffx img{position:absolute;height:auto}
+html.th-han.sw.sv2 .sv3-fsky{right:-10px;bottom:0;width:62%;max-width:420px;opacity:.95}
+html.th-han.sw.sv2 .sv3-ffood{left:-6px;bottom:-4px;width:52%;max-width:360px;z-index:2;filter:drop-shadow(0 6px 8px rgba(80,55,35,.18))}
+html.th-han.sw.sv2 .sv3-fplum{left:2px;top:0;width:90px;transform:scaleX(-1) rotate(-14deg)}
+html.th-han.sw.sv2 .sv3-fsnow{right:14px;top:6px;width:34px;opacity:.85}
+html.th-han.sw.sv2 .sv3-ftx{position:relative;z-index:3;display:flex;flex-direction:column;align-items:center;text-align:center;padding:4px 70px 0;font-family:var(--serif)}
+html.th-han.sw.sv2 .sv3-ftx b{font-size:20px;letter-spacing:.12em;color:var(--rose);text-shadow:0 0 8px #f6ece4,0 0 3px #f6ece4}
+html.th-han.sw.sv2 .sv3-ftx small{font-size:13px;color:var(--ink);text-shadow:0 0 6px #f6ece4}
+html.th-han.sw.sv2 .sv3-ftx span{margin-top:2px;font-family:"Nanum Pen Script","Noto Sans KR",var(--sans);font-style:italic;font-size:15px;color:var(--rose)}
+html.th-han.sw.sv2 main>footer{margin-top:0;padding-top:12px;border-top:1.5px dashed #d9c6b0}
+
+/* ===================================================================
+   10. 底部日期列 dock2
+   =================================================================== */
+html.th-han.sw.sv2 .dock.dock2{background:rgba(246,236,228,.97);border-top:1px solid #d9c6b0;padding:6px 8px calc(env(safe-area-inset-bottom,0px) + 6px)}
 html.th-han.sw.sv2 .dock2>div{max-width:820px;gap:6px;overflow-x:auto;scrollbar-width:none;justify-content:center;counter-reset:dd}
 html.th-han.sw.sv2 .dock2>div::-webkit-scrollbar{display:none}
 html.th-han.sw.sv2 .dock2 .dl{display:none}
@@ -119,173 +272,134 @@ html.th-han.sw.sv2 .dock2 a.sv2-all{flex-direction:row;gap:6px;min-width:84px;ba
 html.th-han.sw.sv2 .dock2:not(:has(#dbtn>.on)) a.sv2-all{background:var(--navy);border-color:var(--navy);color:#fff}
 html.th-han.sw.sv2 .dock2 a.sv2-all i{width:18px;height:18px;background:currentColor;-webkit-mask:url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23000" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"%3E%3Crect x="3.5" y="5" width="17" height="15.5" rx="2.5"/%3E%3Cpath d="M3.5 10h17M8 3v4M16 3v4"/%3E%3C/svg%3E') center/contain no-repeat;mask:url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23000" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"%3E%3Crect x="3.5" y="5" width="17" height="15.5" rx="2.5"/%3E%3Cpath d="M3.5 10h17M8 3v4M16 3v4"/%3E%3C/svg%3E') center/contain no-repeat}
 
-/* ---------- 平板／電腦 ---------- */
-@media (min-width:760px){
- html.th-han.sw.sv2 #days.days2{grid-template-columns:repeat(3,minmax(0,1fr))}
- html.th-han.sw.sv2 .hero.sw-hero.hero2{min-height:300px}
- html.th-han.sw.sv2 .sw-nav.nav2{margin:0;padding-inline:0}
-}
-/* ---------- 手機（seoul-v2.css 的 600px 斷點） ---------- */
-@media (max-width:600px){
- html.th-han.sw.sv2 main{padding-inline:12px}
- html.th-han.sw.sv2 .hero.sw-hero.hero2{min-height:320px;margin:0 -12px;padding-top:calc(env(safe-area-inset-top,0px) + 16px)}
- html.th-han.sw.sv2 .sw-nav.nav2{margin:0 -12px;padding-inline:12px}
- html.th-han.sw.sv2 .sw-top .sw-info.info2{min-height:120px;padding:16px 31% 16px 14px;background-size:38% auto,auto}
- html.th-han.sw.sv2 .sw-irow{gap:10px}
- html.th-han.sw.sv2 .sw-irow b{font-size:clamp(15px,4.4vw,18px)}
- html.th-han.sw.sv2 .sw-top .sw-cd.count2{min-height:150px;background-size:28% auto,16% auto,auto;background-position:left 4px center,right -4px top -4px,center}
- html.th-han.sw.sv2 .sw-cd #cdnote{font-size:16px;letter-spacing:.06em;padding-right:10px}
- html.th-han.sw.sv2 .footer2{min-height:218px;place-content:start center;padding:0 10px;background-position:left bottom,right bottom;background-size:45% auto,48% auto}
- html.th-han.sw.sv2 .dock2>div{justify-content:flex-start}
- html.th-han.sw.sv2 .dock2 a.sv2-all{min-width:72px}
-}
-@media (max-width:359px){
- html.th-han.sw.sv2 .sw-cd #cdnote{font-size:15px}
- html.th-han.sw.sv2 #days .day2 .dr b{float:none;display:block;padding:0 0 4px}
-}
-
-/* ---------- seoul-v2.css 的通用 button／panel2 規則在正式頁的修正 ---------- */
-html.th-han.sw.sv2 #hotel details.sw-hotel.hotel2{padding:0 0 max(80px,22%);background-size:min(22%,120px) auto,auto}
-html.th-han.sw.sv2 #hotel details.sw-hotel.hotel2>summary{grid-template-columns:minmax(96px,38%) minmax(0,1fr);padding:14px 40px 4px 14px}
-html.th-han.sw.sv2 #days .dy.day2 .dr{white-space:normal;border:0;border-radius:10px;box-shadow:none}
-html.th-han.sw.sv2 main :is(.pi,.b,.dn button,.ab button,.sw-hpic){white-space:normal}
-html.th-han.sw.sv2 .sw-hpic{min-height:0;padding:0;border:0}
-
-/* ---------- 左右滿版的橫滑列（分頁鈕、App 卡片）：配合 V2 的頁面左右留白（電腦 12px／手機 9px），
-   原本 style.css 是 -16px，會讓手機整頁比螢幕寬 7px（可左右晃、整頁被縮小） ---------- */
-html.th-han.sw.sv2{--gut:12px}
-html.th-han.sw.sv2 main .tabs{margin-left:calc(-1*var(--gut));margin-right:calc(-1*var(--gut));padding-left:var(--gut);padding-right:var(--gut);scroll-padding-left:var(--gut)}
-html.th-han.sw.sv2 main .swipe{margin-left:calc(-1*var(--gut));margin-right:calc(-1*var(--gut));padding-left:var(--gut);padding-right:var(--gut);scroll-padding-left:var(--gut)}
-@media (max-width:600px){html.th-han.sw.sv2{--gut:12px}}
-
-/* ---------- 手機細部（2026/11/26 手機實看後調整） ---------- */
-@media (max-width:600px){
- /* 每日卡：收合時只留標題與標籤（路線小字與標題重複，展開後在詳細行程看得到） */
- html.th-han.sw.sv2 #days .dy.day2:not(.on) .dr .ds{display:none}
- html.th-han.sw.sv2 #days .day2 .sv2-dt{font-size:14.5px;margin-top:6px}
- html.th-han.sw.sv2 #days .day2 .sv2-dn{font-size:17px;padding:2px 12px 3px 10px}
- html.th-han.sw.sv2 #days .day2 .dr b{font-size:14px}
- /* 倒數：梅枝縮小，不壓到標題 */
- html.th-han.sw.sv2 .sw-top .sw-cd.count2{background-size:28% auto,13% auto,auto}
- /* 底部日期列：總覽＋D1～D6 一排放得下（320px 以下才橫滑） */
- html.th-han.sw.sv2 .dock2>div{gap:5px}
- html.th-han.sw.sv2 .dock2 a.tile,html.th-han.sw.sv2 .dock2 #dbtn>button{flex:1 1 0;min-width:40px;padding:4px 2px}
- html.th-han.sw.sv2 .dock2 a.sv2-all{flex:0 0 auto;min-width:60px;font-size:14px;gap:4px;padding:4px 8px}
- html.th-han.sw.sv2 .dock2 #dbtn>button::before{font-size:15px}
- html.th-han.sw.sv2 .dock2 #dbtn>button{font-size:11px}
- /* 住宿卡：南山塔小一點，底部留白縮小 */
- html.th-han.sw.sv2 #hotel details.sw-hotel.hotel2{padding-bottom:64px;background-size:64px auto,auto}
-}
-/* 其他內容卡（價格、待辦、注意事項、美食詳情等）也用韓紙紙卡，避免大片純白 */
-html.th-han.sw.sv2 main .card{background-color:#fffaf2;background-image:var(--hanji);background-blend-mode:multiply;border-color:var(--v2line);box-shadow:var(--v2sh)}
-@media (max-width:359px){html.th-han.sw.sv2 .sw-cd #cdnote{font-size:14px;letter-spacing:0;padding-right:4px}}
-
-/* ---------- 懸浮鈕（換算／字體／更新）：維持右側懸浮，改 V2 韓紙圓鈕 ---------- */
-html.th-han.sw.sv2 .sw-top #wx.sv2-wx{margin:10px 0 0;grid-column:auto;width:auto;max-width:none}
+/* ===================================================================
+   11. 懸浮鈕（換算／字體／更新）：維持右側懸浮（使用者指定），韓紙圓鈕
+   =================================================================== */
 html.th-han.sw.sv2 :is(#fxb,#fs,#upd){background:#fffaf2 var(--hanji);background-blend-mode:multiply;border:1px solid #d9c6b0;color:var(--ink);box-shadow:0 4px 10px rgba(104,76,50,.22);min-height:0;padding:0;white-space:normal}
 html.th-han.sw.sv2 :is(#fxb,#fs,#upd) small{color:var(--ink)}
 html.th-han.sw.sv2 #fxb.on{background:var(--navy);color:#fff;border-color:var(--navy)}
 html.th-han.sw.sv2 #fxb.on small{color:#fff}
 
-/* ---------- seoul-v2.css 的通用 button 規則不套在小圖示鍵上（喇叭、地圖小圓鈕） ---------- */
-html.th-han.sw.sv2 main button.vo{min-height:0;padding:0;border:0;background:none;box-shadow:none;border-radius:50%}
-
-/* ---------- 手機：有一天展開時改成單欄清單（其他天變成「左圖右文」小卡，避免兩欄留下空洞） ---------- */
-@media (max-width:600px){
-}
+/* ---------- seoul-v2.css 通用 button／panel2 規則在正式頁的修正 ---------- */
+html.th-han.sw.sv2 main :is(.pi,.b,.dn button,.ab button,.sw-hpic){white-space:normal}
+/* 左右滿版的橫滑列（分頁鈕、App 卡片）：配合頁面左右留白，避免整頁橫向溢出 */
+html.th-han.sw.sv2 main .tabs,html.th-han.sw.sv2 main .swipe{margin-left:calc(-1*var(--gut));margin-right:calc(-1*var(--gut));padding-left:var(--gut);padding-right:var(--gut);scroll-padding-left:var(--gut)}
+html.th-han.sw.sv2 main>section.sv2-sheet .tabs,html.th-han.sw.sv2 main>section.sv2-sheet .swipe{margin-left:-14px;margin-right:-14px;padding-left:14px;padding-right:14px;scroll-padding-left:14px}
 
 /* ===================================================================
-   熱鬧版（2026/11/26 使用者：整體空蕩、跟示意圖差太多）
-   只用素材包的圖；白底插畫（.jpg）用 multiply 融進韓紙底色
+   電腦版（≥1180px）兩側固定梅枝與雪花（不擋內容）
    =================================================================== */
-/* 頁面底：上方淡粉紫水彩暈＋韓紙 */
-html.th-han.sw.sv2 body.seoul-v2{background:var(--hanji),linear-gradient(180deg,#efe3ee 0,#f3e7d7 520px,#f3e7d7 70%,#eee5ea 100%);background-blend-mode:multiply,normal}
-/* 電腦版兩側留白：梅枝與雪花（固定在畫面邊，不擋內容） */
 @media (min-width:1180px){
  html.th-han.sw.sv2 body.seoul-v2::before,html.th-han.sw.sv2 body.seoul-v2::after{content:"";position:fixed;z-index:0;pointer-events:none;width:calc((100vw - 1100px)/2);max-width:260px;top:0;bottom:0}
  html.th-han.sw.sv2 body.seoul-v2::before{left:0;background:url('images/seoul-2027/decor/plum-branch.png') left -30px top 90px/100% auto no-repeat,url('images/seoul-2027/decor/snowflake.png') right 20px top 46%/56px auto no-repeat,url('images/seoul-2027/decor/snowflake.png') left 30px bottom 18%/38px auto no-repeat;transform:scaleX(-1)}
  html.th-han.sw.sv2 body.seoul-v2::after{right:0;background:url('images/seoul-2027/decor/plum-branch.png') right -30px top 52%/100% auto no-repeat,url('images/seoul-2027/decor/snowflake.png') left 24px top 22%/46px auto no-repeat,url('images/seoul-2027/decor/snowflake.png') right 40px bottom 12%/60px auto no-repeat}
  html.th-han.sw.sv2 main{position:relative;z-index:1}
 }
-/* 封面：加飛機（示意圖標題左上的飛機）、雪花 */
-html.th-han.sw.sv2 .hero.sw-hero.hero2::after{background:url('images/seoul-2027/decor/airplane.png') left 4% top 6%/15% auto no-repeat,url('images/seoul-2027/decor/snowflake.png') right 30% top 8%/7% auto no-repeat,url('images/seoul-2027/decor/plum-branch.png') right top/24% auto no-repeat,url('images/seoul-2027/decor/coffee.png') right bottom/19% auto no-repeat}
-@media (max-width:600px){html.th-han.sw.sv2 .hero.sw-hero.hero2::after{background:url('images/seoul-2027/decor/airplane.png') left 2% top 4%/19% auto no-repeat,url('images/seoul-2027/decor/plum-branch.png') right top/26% auto no-repeat,url('images/seoul-2027/decor/coffee.png') right 2% bottom 2%/22% auto no-repeat}}
-/* 日期卡第二列（出發地）＋雪花角落 */
-html.th-han.sw.sv2 .sv2-irow2{margin-top:12px;padding-top:10px;border-top:1.5px dashed #dcc9b3;max-width:62%}
-html.th-han.sw.sv2 .sv2-iplane{flex:none;width:38px;height:auto;margin:0 -2px}
-html.th-han.sw.sv2 .sw-top .sw-info.info2::before{content:"";position:absolute;right:10px;top:8px;width:30px;height:30px;background:url('images/seoul-2027/decor/snowflake.png') center/contain no-repeat;opacity:.85}
-/* 天氣卡：右側冬日旅行插畫 */
-html.th-han.sw.sv2 .sw-top #wx.sv2-wx{position:relative;overflow:hidden;padding-right:max(12px,min(28%,190px))}
-html.th-han.sw.sv2 .sw-top #wx.sv2-wx::after{content:"";position:absolute;right:4px;bottom:0;width:min(27%,180px);height:100%;background:url('images/seoul-2027/decor/winter-travel.jpg') right bottom/contain no-repeat;mix-blend-mode:multiply;pointer-events:none}
-/* 住宿：南山塔拍立得（示意圖右側的拍立得） */
-html.th-han.sw.sv2 #hotel details.sw-hotel.hotel2{background-image:var(--hanji);background-size:auto;background-repeat:repeat;position:relative;overflow:visible;padding-bottom:0}
-html.th-han.sw.sv2 #hotel details.sw-hotel.hotel2::after{content:"";position:absolute;right:10px;bottom:-14px;width:92px;height:116px;padding:6px 6px 20px;background:#fff url('images/seoul-2027/decor/namsan-tower.png') center 6px/80px auto no-repeat;box-shadow:0 6px 14px rgba(80,55,35,.28);transform:rotate(6deg);pointer-events:none;border-radius:2px}
-html.th-han.sw.sv2 #hotel details.sw-hotel.hotel2>summary{padding-bottom:22px;padding-right:112px}
-html.th-han.sw.sv2 #hotel details.sw-hotel.hotel2[open]>summary{padding-right:40px}
-html.th-han.sw.sv2 #hotel details.sw-hotel.hotel2[open]::after{display:none}
-html.th-han.sw.sv2 #hotel{padding-bottom:16px}
-@media (max-width:600px){html.th-han.sw.sv2 #hotel details.sw-hotel.hotel2>summary{padding-right:40px;padding-bottom:96px}html.th-han.sw.sv2 #hotel details.sw-hotel.hotel2::after{width:76px;height:96px;background-size:66px auto;bottom:-10px}}
-/* 電腦版住宿欄下方空白：北村韓屋巷弄插畫 */
-@media (min-width:601px){html.th-han.sw.sv2 .sv2-fh #hotel::after{content:"";display:block;height:250px;margin-top:22px;background:url('images/seoul-2027/decor/hanok-street.jpg') center/contain no-repeat;mix-blend-mode:multiply}}
-/* 每日行程：標題右側加梅枝 */
-html.th-han.sw.sv2 #plan{position:relative}
-html.th-han.sw.sv2 #plan::before{content:"";position:absolute;right:76px;top:-6px;width:110px;height:70px;background:url('images/seoul-2027/decor/plum-branch.png') center/contain no-repeat;transform:scaleX(-1);pointer-events:none}
-/* 下半部區塊：韓紙紙卡＋角落貼紙 */
-html.th-han.sw.sv2 main>section.sv2-sheet{--gut:12px;position:relative;margin-top:26px;padding:2px 12px 14px;border:1px solid var(--v2line);border-radius:20px;background:#fffaf2 var(--hanji);background-blend-mode:multiply;box-shadow:var(--v2sh)}
-html.th-han.sw.sv2 main>section.sv2-sheet>h2.sw-h{margin-top:-14px;padding-right:80px}
-html.th-han.sw.sv2 main>section.sv2-sheet>h2.sw-h::after{opacity:.6}
-html.th-han.sw.sv2 main>section.sv2-sheet .sw-hd{width:82px;right:-6px;top:4px;transform:rotate(7deg);filter:drop-shadow(0 4px 5px rgba(80,55,35,.22))}
-html.th-han.sw.sv2 main>section.sv2-sheet:nth-of-type(even) .sw-hd{transform:rotate(-7deg)}
-html.th-han.sw.sv2 main>section.sv2-sheet .card{box-shadow:0 2px 6px #795d3b1f}
-html.th-han.sw.sv2 #todo.sv2-sheet{padding-bottom:120px}
-html.th-han.sw.sv2 #todo.sv2-sheet::after{content:"";position:absolute;left:10px;right:10px;bottom:6px;height:110px;background:url('images/seoul-2027/decor/winter-travel.jpg') right 6px bottom/auto 100% no-repeat,url('images/seoul-2027/decor/new-year.jpg') left 6px bottom/auto 92% no-repeat;mix-blend-mode:multiply;pointer-events:none}
-html.th-han.sw.sv2 #tips.sv2-sheet::before{content:"";position:absolute;left:-10px;bottom:-14px;width:70px;height:70px;background:url('images/seoul-2027/decor/plum-branch.png') center/contain no-repeat;transform:rotate(200deg);pointer-events:none}
-/* 頁尾上方：冬日小吃貼紙列 */
-html.th-han.sw.sv2 .sv2-snacks{display:flex;justify-content:center;align-items:flex-end;gap:2px;margin:26px 0 -18px;position:relative;z-index:1}
-html.th-han.sw.sv2 .sv2-snacks img{width:clamp(58px,17vw,108px);height:auto;filter:drop-shadow(0 4px 6px rgba(52,70,91,.18))}
-html.th-han.sw.sv2 .sv2-snacks img:nth-child(odd){transform:rotate(-5deg)}
-html.th-han.sw.sv2 .sv2-snacks img:nth-child(even){transform:rotate(5deg) translateY(-6px)}
-/* 間距收緊：區塊之間不要大片空白 */
-html.th-han.sw.sv2 main>section{margin-top:22px}
-html.th-han.sw.sv2 .sv2-fh{margin-top:18px}
+/* 平板／電腦：封面加高、小吃在右下、功能列置中 */
+@media (min-width:761px){
+ html.th-han.sw.sv2 .sv3-hplum1{width:230px}
+ html.th-han.sw.sv2 .sv3-hplum2{width:210px}
+ html.th-han.sw.sv2 .sv3-hplane{left:22%;top:48px;width:120px}
+ html.th-han.sw.sv2 .sv3-hsnow{right:27%;top:150px;width:46px}
+ html.th-han.sw.sv2 .sv3-hfood1{display:block;right:150px;bottom:60px;width:130px}
+ html.th-han.sw.sv2 .sv3-hfood2{right:24px;bottom:64px;width:140px}
+ html.th-han.sw.sv2 .sw-nav.nav2{margin:-52px 0 0;padding:8px 0}
+ html.th-han.sw.sv2 .sw-nav.nav2 a.tile{min-height:70px;font-size:14px}
+ html.th-han.sw.sv2 .sw-top{margin-top:10px}
+ html.th-han.sw.sv2 .sw-top .sw-cd.count2{padding-left:30%}
+ html.th-han.sw.sv2 .sw-info .sv3-ipal{width:min(50%,280px)}
+ html.th-han.sw.sv2 #hotel .sv3-polar{top:-6px;width:96px}
+ html.th-han.sw.sv2 .sv2-fh #hotel::after{content:"";display:block;height:220px;margin-top:14px;background:url('images/seoul-2027/decor/hanok-street-cut.png') center/contain no-repeat}
+ html.th-han.sw.sv2 .footer2{margin-left:0;margin-right:0;height:300px}
+ html.th-han.sw.sv2 .sv3-ffood{width:38%}
+ html.th-han.sw.sv2 .sv3-fsky{width:40%}
+ html.th-han.sw.sv2 .sv3-ftx{padding-top:70px}
+ html.th-han.sw.sv2 .sv3-ftx b{font-size:26px}
+ html.th-han.sw.sv2 .sv3-ftx span{font-size:18px}
+ html.th-han.sw.sv2 main>section.sv2-sheet{padding:6px 20px 20px}
+}
 
 /* ===================================================================
-   手機每日行程：示意圖的「左圖右文」摘要卡（插畫約佔 36%）
-   Day 水彩筆刷＋日期｜當日標題｜前三個行程點；點開後下方展開完整行程
+   手機（≤600px，以 390px 為基準）：左右 12px、區塊 16–18px、卡片 10px
    =================================================================== */
-html.th-han.sw.sv2 #days .day2 .sv2-dl{display:none}
 @media (max-width:600px){
+ html.th-han.sw.sv2{--gut:12px}
+ html.th-han.sw.sv2 .hero.sw-hero.hero2{margin:0 calc(-1*var(--gut));height:clamp(330px,92vw,380px);border-radius:0 0 24px 24px}
+ html.th-han.sw.sv2 .pair{grid-template-columns:1fr;gap:10px}
+ html.th-han.sw.sv2 .sw-top .pair{gap:10px}
+ html.th-han.sw.sv2 .sw-top #wx.sv2-wx{margin-top:10px}
+ html.th-han.sw.sv2 main>section{margin-top:18px}
+ html.th-han.sw.sv2 .sv2-fh{margin-top:18px;gap:18px}
+ html.th-han.sw.sv2 main>section.sv2-sheet{margin-top:30px;padding:4px 12px 14px}
+ html.th-han.sw.sv2 main>section.sv2-sheet .tabs,html.th-han.sw.sv2 main>section.sv2-sheet .swipe{margin-left:-12px;margin-right:-12px;padding-left:12px;padding-right:12px;scroll-padding-left:12px}
+ html.th-han.sw.sv2 .sw-top .sw-cd.count2{padding:14px 10px 12px 34%}
+ html.th-han.sw.sv2 .sw-cd .sv3-cbag{width:35%;left:-2px}
+ html.th-han.sw.sv2 .sw-cd #cdnote{font-size:16px;letter-spacing:.04em;padding-right:22px}
+ html.th-han.sw.sv2 .sw-cd .sv3-cplum{width:96px}
+ html.th-han.sw.sv2 .sw-top .sw-info.info2{padding:14px 14px 14px}
+ html.th-han.sw.sv2 .sw-info .sv3-ipal{width:50%;bottom:-6px}
+ /* 每日行程：左圖右文摘要卡（插畫約 38%） */
  html.th-han.sw.sv2 #days.days2{grid-template-columns:1fr;gap:10px}
- html.th-han.sw.sv2 #days .dy.day2{padding:8px}
- html.th-han.sw.sv2 #days .dy.day2 .dr{display:grid;grid-template-columns:36% minmax(0,1fr);grid-template-areas:"n n" "img t" "img l" "img g";column-gap:10px;row-gap:3px;align-items:start}
- html.th-han.sw.sv2 #days .day2 .sv2-dn{grid-area:n;justify-self:start;margin:0 0 4px;font-size:18px}
- html.th-han.sw.sv2 #days .day2 .dr b{grid-area:n;justify-self:start;align-self:center;float:none;margin-left:96px;padding:0;font-size:14.5px}
- html.th-han.sw.sv2 #days .day2 .sv2-dimg{grid-area:img;width:100%;height:100%;min-height:92px;aspect-ratio:auto;border-radius:10px;box-shadow:0 2px 6px rgba(80,55,35,.18)}
- html.th-han.sw.sv2 #days .day2 .sv2-dt{grid-area:t;margin:0;padding:0 0 4px;text-align:left;font-size:15.5px;line-height:1.35;border-bottom:1.5px solid color-mix(in srgb,var(--accent) 30%,transparent)}
- html.th-han.sw.sv2 #days .day2 .sv2-dl{grid-area:l;display:flex;flex-direction:column;gap:1px;margin-top:2px}
- html.th-han.sw.sv2 #days .day2 .sv2-dl i{position:relative;padding-left:14px;font-style:normal;font-size:13.5px;line-height:1.5;color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
- html.th-han.sw.sv2 #days .day2 .sv2-dl i::before{content:"";position:absolute;left:2px;top:.62em;width:6px;height:6px;border-radius:50%;background:var(--accent);opacity:.8}
+ html.th-han.sw.sv2 #days .dy.day2{padding:8px 10px 10px 8px}
+ html.th-han.sw.sv2 #days .dy.day2 .dr{display:grid;grid-template-columns:38% minmax(0,1fr);grid-template-areas:"n t" "img l" "img g";column-gap:10px;row-gap:2px;align-items:start}
+ html.th-han.sw.sv2 #days .day2 .sv2-dn{grid-area:n;justify-self:start;align-self:end;margin:0 0 4px;font-size:18px;padding:2px 16px 4px 10px}
+ html.th-han.sw.sv2 #days .day2 .dr b{grid-area:img;align-self:start;justify-self:end;float:none;z-index:2;margin:6px 6px 0 0;padding:1px 7px;border-radius:8px;background:rgba(255,253,248,.92);font-size:12.5px;box-shadow:0 1px 3px rgba(60,40,30,.2)}
+ html.th-han.sw.sv2 #days .day2 .sv2-dimg{grid-area:img;width:100%;height:100%;min-height:104px;aspect-ratio:auto;border-radius:12px}
+ html.th-han.sw.sv2 #days .day2 .sv2-dt{grid-area:t;align-self:end;margin:0 0 4px;padding:0 0 4px;text-align:left;font-size:15.5px;line-height:1.35;border-bottom:1.5px solid color-mix(in srgb,var(--accent) 35%,transparent)}
+ html.th-han.sw.sv2 #days .day2 .sv2-dl{grid-area:l;display:flex;flex-direction:column;gap:1px}
+ html.th-han.sw.sv2 #days .day2 .sv2-dl i{position:relative;padding-left:15px;font-style:normal;font-size:13.5px;line-height:1.55;color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+ html.th-han.sw.sv2 #days .day2 .sv2-dl i::before{content:"";position:absolute;left:2px;top:.6em;width:7px;height:7px;border-radius:50%;background:var(--accent);opacity:.85}
  html.th-han.sw.sv2 #days .day2 .dr .ds{display:none}
- html.th-han.sw.sv2 #days .day2 .dr .tg{grid-area:g;justify-content:flex-start;margin-top:3px}
+ html.th-han.sw.sv2 #days .day2 .dr .tg{grid-area:g;justify-content:flex-start;margin-top:4px}
  html.th-han.sw.sv2 #days .dy.day2.on .sv2-dimg{max-width:none;margin:0}
- /* 每日行程區：背景層北村韓屋巷弄（淡），前景梅枝 */
- html.th-han.sw.sv2 #plan{isolation:auto}
- html.th-han.sw.sv2 #plan::after{content:"";position:absolute;right:-12px;top:30px;width:62%;height:150px;z-index:-1;background:url('images/seoul-2027/decor/hanok-street.jpg') right top/contain no-repeat;mix-blend-mode:multiply;opacity:.45;pointer-events:none}
- html.th-han.sw.sv2 #plan::before{right:70px;top:-4px;width:84px;height:56px}
- /* 間距：區塊 16px、卡片 10px */
- html.th-han.sw.sv2 main>section{margin-top:16px}
- html.th-han.sw.sv2 main>section.sv2-sheet{margin-top:20px}
- html.th-han.sw.sv2 .sw-top .pair{gap:10px;margin:10px 0}
+ html.th-han.sw.sv2 .sv3-pfx{right:-8px;top:-14px;width:170px}
+ html.th-han.sw.sv2 .sv3-pst{width:138px}
+ html.th-han.sw.sv2 .sv3-pplum{right:104px;width:66px}
+ html.th-han.sw.sv2 #plan>h2.sw-h{padding-right:140px;min-height:62px}
+ /* 頁尾 */
+ html.th-han.sw.sv2 .footer2{height:236px}
+ html.th-han.sw.sv2 .sv3-ftx{padding:0 64px}
+ /* 底部日期列：總覽＋D1～D6 一排放得下（320px 以下才橫滑） */
+ html.th-han.sw.sv2 .dock2>div{justify-content:flex-start;gap:5px}
+ html.th-han.sw.sv2 .dock2 a.tile,html.th-han.sw.sv2 .dock2 #dbtn>button{flex:1 1 0;min-width:40px;padding:4px 2px}
+ html.th-han.sw.sv2 .dock2 a.sv2-all{flex:0 0 auto;min-width:60px;font-size:14px;gap:4px;padding:4px 8px}
+ html.th-han.sw.sv2 .dock2 #dbtn>button::before{font-size:15px}
+ html.th-han.sw.sv2 .dock2 #dbtn>button{font-size:11px}
 }
+@media (max-width:359px){
+ html.th-han.sw.sv2 .sw-cd #cdnote{font-size:14px;letter-spacing:0;padding-right:18px}
+ html.th-han.sw.sv2 .hero2 .sv2-title p{padding:7px 22px 8px}
+ html.th-han.sw.sv2 #hotel details.sw-hotel.hotel2>summary{grid-template-columns:96px minmax(0,1fr)}
+}
+
+/* ---------- 第二輪修正（實際截圖比對後） ---------- */
+/* 紙卡標題下第一段說明：右側留給角落貼紙，不被蓋住 */
+html.th-han.sw.sv2 main>section.sv2-sheet>h2.sw-h+p.rate{padding-right:64px}
+/* 價格／App 橫滑卡：各卡依內容高度，不被最高的一張撐開留白 */
+html.th-han.sw.sv2 main .swipe{align-items:flex-start}
+/* 待辦：改成左側紅線＋虛線分隔（筆記本感），不畫穿過文字的橫線 */
+html.th-han.sw.sv2 #todolist.card{background:#fffdf8;border-left:4px solid var(--rose)}
+html.th-han.sw.sv2 #todo details.td+details.td{border-top:1.5px dashed #ead9c6}
+/* 每日行程標題右側的北村巷弄插畫：縮小，不壓到說明文字 */
+html.th-han.sw.sv2 .sv3-pst{width:124px}
+@media (max-width:600px){html.th-han.sw.sv2 .sv3-pst{width:112px}html.th-han.sw.sv2 .sv3-pplum{right:92px}}
+@media (min-width:761px){
+ html.th-han.sw.sv2 .sv2-fh #hotel::after{-webkit-mask-image:radial-gradient(ellipse 50% 50% at 50% 50%,#000 60%,transparent 100%);mask-image:radial-gradient(ellipse 50% 50% at 50% 50%,#000 60%,transparent 100%)}
+ html.th-han.sw.sv2 #hotel .sv3-polar{top:-34px;right:8px}
+ html.th-han.sw.sv2 #hotel details.sw-hotel.hotel2>summary{grid-template-columns:minmax(120px,36%) minmax(0,1fr);padding-right:40px}
+}
+html.th-han.sw.sv2 main>section.sv2-sheet .sv3-sfoot{right:-2px}
+/* 手機每日卡（對照設計稿第三輪）：Day 筆刷＋日期同一列；插畫約 42%；標題深藍＋主色底線 */
 @media (max-width:600px){
- /* 每日行程標題：右側改放北村巷弄插畫（取代小貼紙與梅枝），說明文字不被蓋到 */
- html.th-han.sw.sv2 #plan>h2.sw-h{min-height:66px;padding-right:136px}
- html.th-han.sw.sv2 #plan>h2 .sw-hd{display:none}
- html.th-han.sw.sv2 #plan::before{display:none}
- html.th-han.sw.sv2 #plan::after{right:-6px;top:-10px;width:140px;height:86px;opacity:1;background-position:right center}
- /* 住宿：拍立得壓在右下，不留大片空白 */
- html.th-han.sw.sv2 #hotel details.sw-hotel.hotel2>summary{padding-bottom:26px}
+ html.th-han.sw.sv2 #days .dy.day2 .dr{grid-template-columns:42% minmax(0,1fr)}
+ html.th-han.sw.sv2 #days .day2 .sv2-dn{font-size:20px;padding:2px 18px 4px 10px}
+ html.th-han.sw.sv2 #days .day2 .dr b{grid-area:n;align-self:center;justify-self:end;margin:0 0 4px;padding:0;background:none;box-shadow:none;font-size:13.5px;border-radius:0}
+ html.th-han.sw.sv2 #days .day2 .sv2-dt{color:var(--ink);font-size:16px;letter-spacing:.06em;border-bottom:2px solid color-mix(in srgb,var(--accent) 45%,transparent)}
+ html.th-han.sw.sv2 #days .day2 .sv2-dimg{min-height:96px}
 }
-@media (max-width:600px){html.th-han.sw.sv2 #plan::after{z-index:0}html.th-han.sw.sv2 #plan>*{position:relative;z-index:1}html.th-han.sw.sv2 #plan>h2.sw-h{position:relative}}
-@media (max-width:600px){html.th-han.sw.sv2 #plan::after{mix-blend-mode:normal;-webkit-mask-image:radial-gradient(ellipse 50% 50% at 50% 50%,#000 58%,transparent 100%);mask-image:radial-gradient(ellipse 50% 50% at 50% 50%,#000 58%,transparent 100%);background-size:cover;background-position:center 60%;border-radius:14px}}
-@media (min-width:601px){html.th-han.sw.sv2 .sv2-fh #hotel::after{mix-blend-mode:normal;-webkit-mask-image:radial-gradient(ellipse 50% 50% at 50% 50%,#000 60%,transparent 100%);mask-image:radial-gradient(ellipse 50% 50% at 50% 50%,#000 60%,transparent 100%)}}
+@media (max-width:359px){html.th-han.sw.sv2 #days .dy.day2 .dr{grid-template-columns:46% minmax(0,1fr)}html.th-han.sw.sv2 #days .day2 .sv2-dn{font-size:17px;padding:2px 12px 4px 8px}html.th-han.sw.sv2 #days .day2 .dr b{font-size:12px}}
+html.th-han.sw.sv2 main .swipe.sv3-fit{transition:height .25s ease;box-sizing:border-box}
+/* 頁尾：標語在上、插畫在下，不互相壓字 */
+html.th-han.sw.sv2 .sv3-ffx img.sv3-fsky,html.th-han.sw.sv2 .sv3-ffx img.sv3-ffood{bottom:-6px}
+@media (max-width:600px){html.th-han.sw.sv2 .footer2{height:286px}html.th-han.sw.sv2 .sv3-fsky{width:58%}html.th-han.sw.sv2 .sv3-ffood{width:50%}}
+@media (min-width:601px) and (max-width:960px){html.th-han.sw.sv2 .sw-cd #cdnote{font-size:15px;letter-spacing:.02em}}

@@ -63,28 +63,40 @@
 ## 首爾 V2.1 韓系新春水彩手帳（2026/11/26，sw v193，使用者提供 seoul-winter-v2.1.zip）
 - **2026/11/26 手機調整（sw v195）**：①手機整頁比螢幕寬 7px（可左右晃、整頁被縮小）：style.css 的 `.tabs`／`.swipe` 用 -16px 滿版，但 V2 頁面左右留白是 9px（手機）／12px，改用 `--gut` 對齊，320／375／390／430 皆無橫向溢出。②換算／字體／更新**改回右側懸浮鈕**（使用者指定方便使用），只換成韓紙圓鈕外觀；天氣卡改整列。③每日卡手機收合時只顯示標題＋標籤（路線小字展開後才顯示）；有一天展開時改單欄清單，其他天變左圖右文小卡，不留空洞。④底部日期列總覽＋D1～D6 在 375px 一排放得下（320px 才橫滑）。⑤倒數梅枝縮小、320px 倒數標題改 14px 不斷行；住宿卡南山塔縮小；喇叭鍵去掉 seoul-v2.css 通用 button 的框；價格、待辦等其餘卡片也套韓紙紋理。下方「原本右下角三顆懸浮鈕搬進天氣旁的工具列」一段已作廢。
 - **2026/11/26 熱鬧版／Design-to-Code 調整（sw v197）**：使用者回饋「整體空蕩、跟示意圖差太多」並要求以 390px 為基準高還原。重新解壓 zip 逐檔比對：31 張 decor 與 repo 完全相同、全部都有被頁面引用。手機左右留白改 12px、區塊間距 16px、卡片間距 10px；封面手機 320px 滿版；**手機每日卡改成示意圖的「左圖右文」摘要卡**（插畫約 36% 寬、Day 水彩筆刷＋日期、JSON 標題、當日前三個行程點〔取自 `i`／二選一取 `A`，略過單純「早餐／午餐／晚餐」〕），點開後下方展開完整行程；電腦版維持三欄。下半部（韓語、美食、價格、待辦、注意、App）做成韓紙紙卡＋角落貼紙；頁尾上方加冬日小吃貼紙列；電腦版兩側固定梅枝與雪花（≥1180px）。`new-year.webp` 另轉 `new-year.jpg`（同尺寸 506×500）。白底插畫在卡片內用 multiply 融入；在頁面底上 multiply 無效，改用 radial mask 淡出邊緣。
-- **素材使用對照表（V2.1）**（圖層：背＝背景層、中＝內容卡、前＝貼紙／前景裝飾）
+- **2026/11/26 Design-to-Code 重構（sw v198，取代上面 v197 的版面與對照表）**：使用者對美編仍不滿意，要求把設計稿當規格、逐區高還原（不是風格參考），允許重建首爾專屬視覺 DOM。zip 由使用者在雲端 session 重新上傳並解壓：31 張 decor 與 `seoul-v2.css` 和 repo 逐檔相同；`reference.html`、`V2-design-reference.webp`、`mobile-design-reference.webp`、`design-reference.webp`、`seoul-winter.css`（舊版）仍**不放進 repo**。
+  - `seoul-v2-site.css` **整份重寫**（舊版是多輪補丁疊加）：依圖層分 11 段（封面→功能列→紙卡→標題→航班→住宿→每日→下半部→頁尾→日期列→懸浮鈕）。`seoul-winter.js` 改成插入實際 `<img>` 圖層（封面梅枝×2／飛機／雪花／咖啡／糖餅、倒數卡梅枝＋福袋＋雪花、日期卡景福宮、天氣卡冬日行李、每日行程標題的巷弄＋梅枝、住宿拍立得、待辦底部福袋＋行李、頁尾天際線＋小吃＋梅枝＋雪花），不再全用 background 疊圖。
+  - **新增去背素材** `images/seoul-2027/decor/{palace,hanok-street,seoul-skyline,street-food,winter-travel,new-year}-cut.png`：由同名白底 JPG 自動去背（只去掉與圖邊相連的白色、邊緣羽化、去白邊），裁掉鄰圖殘片（new-year 左側的宮殿碎片），縮到 400px、256 色 PNG（各約 70KB）。不是重畫，內容與原圖相同。白底 JPG 原檔保留。
+  - 版面：封面手機 330～380px 高滿版、標題「首爾」約 78px，功能列往上疊在封面下緣 46px；手機左右 12px、區塊 18px、卡片 10px；航班改白色票身＋深藍票頭（航空公司在左、去／回程在右），日期移到票身第一行（JS 把 `.bph` 內的日期文字搬成 `.sv3-fdate`）；住宿卡英文名在前、中文名加地點圖示、韓文名＋喇叭在下，`📷` 小鈕隱藏（左邊照片本身就能點開相片）；手機每日卡＝Day 筆刷＋日期同列、插畫 42% 寬、右側深藍標題＋主色底線＋三個行程點；下半部六區各用不同色調紙卡（韓語紫、美食金、價格藍、注意綠、待辦玫瑰、App 紫）、圓角左右交錯、分頁選中色＝區塊色；注意事項用彩色序號圓章、待辦用勾選框＋虛線分隔。
+  - 功能鍵、分頁、摺疊標題、說明文字開頭的表情符號，在首爾手帳版由 JS 拿掉（`deEmoji`；app.js 重畫分頁時 MutationObserver 再處理）；美食清單裡每家店名後面的 🦐 等是 JSON 資料，沒動。區塊標題的線條圖示取自功能列同一組遮罩圖（JS 讀 computed mask-image）。
+  - 價格／App 橫滑卡：容器高度跟著目前那張（JS `.sv3-fit`），不再被最高的一張撐出大片空白。
+- **素材使用對照表（v198）**（圖層：背＝背景、中＝內容卡、前＝前景裝飾）
 
 | 素材 | 位置 | 尺寸／裁切 | 圖層 |
 |---|---|---|---|
-| hero-winter（.jpg／-m.jpg） | 封面 `hero2` 的 `<img>`（srcset） | cover，object-position 50% 60%；手機 320px 高滿版、電腦 300px | 背 |
-| airplane.png | 封面左上；日期卡「出發」列圖示 | 封面寬 15%（手機 19%）；圖示 38px | 前 |
-| plum-branch.png | 封面右上、倒數卡右上、每日行程標題（電腦）、注意事項左下、電腦版兩側 | 封面 24%；倒數 20%（手機 13%）；兩側 ≤260px | 前 |
-| coffee.png | 封面右下；頁尾小吃列；價格標題貼紙 | 封面 19%（手機 22%） | 前 |
-| snowflake.png | 封面、日期卡右上、App 標題貼紙、電腦版兩側 | 30～60px | 前 |
-| bokjumeoni.png | 倒數卡 `count2` 左側 | 卡寬 28%，left center | 中 |
-| palace.jpg | 日期卡 `info2` 右下 | 卡寬 48%（手機 38%） | 中 |
-| winter-travel.jpg | 天氣卡右側；待辦卡底部右 | contain，multiply | 中 |
-| new-year.jpg | 待辦卡底部左 | 高 92%，multiply | 中 |
-| namsan-tower.png | 住宿卡右下拍立得（白框、旋轉 6°） | 92×116（手機 76×96），展開時隱藏 | 前 |
-| hanok-street.jpg | 電腦：住宿欄下方 250px；手機：每日行程標題右側 140×86 | radial mask 淡出 | 背 |
-| hanok-roof／hanok-window／hotteok／mittens／suitcase.png | 各區塊標題右側貼紙（行程／韓語／美食／注意／住宿） | 62～82px，旋轉 ±7° | 前 |
-| eomuk／hotteok／coffee／mittens／suitcase.png | 頁尾上方小吃貼紙列 | clamp(58px,17vw,108px)，交錯旋轉 | 前 |
-| street-food.jpg＋seoul-skyline.jpg | 頁尾 `footer2` 左／右 | 45%／48% | 背 |
-| brush-rose/blue/green/gold/violet.png | 區塊標題 `brush2`、每日 Day 標籤、封面副標 | 100% 100% 拉伸 | 中 |
-| day-1～6.jpg（.webp 原檔） | 每日卡插畫（2/3 day-1、2/4 day-2、2/5 day-5、2/6 day-3、2/7 day-4、2/8 day-6） | 手機左欄 36%、cover；電腦 2.5:1 | 中 |
-| hanji-texture.jpg | 頁面底、所有紙卡 | 原尺寸平鋪，multiply | 背 |
-| hotel-2.jpg（正式網站照片，非素材包） | 住宿卡照片 | 38% 欄寬 | 中 |
+| hero-winter（.jpg／-m.jpg） | 封面 `hero2` 的 `<img>`（srcset） | cover，object-position 38% 70%；手機 clamp(330px,92vw,380px)、電腦 clamp(340px,44vw,470px)；上方白霧、下方淡出到頁面底色 | 背 |
+| plum-branch.png | 封面左上（翻轉）＋右上、倒數卡左上、每日行程標題、注意事項左下、頁尾左上、電腦版兩側 | 封面 140～150px（電腦 210～230）；倒數 96～118px | 前 |
+| airplane.png | 封面標題左側；日期卡「出發」圖示；登機證淡浮水印 | 封面 84px（電腦 120）；圖示 40px；浮水印 16% 透明 | 前 |
+| snowflake.png | 封面、倒數卡右上、日期卡右上、App 貼紙、頁尾右上、電腦兩側 | 28～46px | 前 |
+| coffee.png | 封面右下；價格貼紙 | 92px（電腦 140）；84px | 前 |
+| hotteok.png | 美食貼紙；電腦封面右下 | 84px；130px | 前 |
+| bokjumeoni.png | 倒數卡左側 `<img>`，傾斜 -6° | 卡寬 32～35% | 前 |
+| palace-cut.png | 日期卡右下 `<img>` | 卡寬 50～52% | 前 |
+| winter-travel-cut.png | 天氣卡右側；待辦底部右 | 寬 30%；高 120px | 前 |
+| new-year-cut.png | 待辦底部左 | 高 120px | 前 |
+| hanok-street-cut.png | 每日行程標題右側（手機 112px、電腦 124px，radial mask 淡邊）；電腦住宿欄下方 220px | contain | 背 |
+| namsan-tower.png | 住宿標題右側拍立得（白框、紙膠帶、轉 7°） | 78px（電腦 96px） | 前 |
+| hanok-window／mittens.png | 韓語、注意事項貼紙 | 84px，±8° | 前 |
+| eomuk.png、suitcase.png | 美食、價格紙卡右下角貼紙 | 76px，-8° | 前 |
+| seoul-skyline-cut.png | 頁尾右側 | 手機 58%、電腦 40% | 背 |
+| street-food-cut.png | 頁尾左側（壓在天際線前） | 手機 50%、電腦 38% | 前 |
+| brush-rose/blue/green/gold/violet.png | 區塊標題 `brush2`、Day 標籤（依日輪替）、封面副標、拍立得紙膠帶 | 100% 100% 拉伸 | 中 |
+| day-1～6.jpg（.webp 原檔） | 每日卡插畫（2/3 day-1、2/4 day-2、2/5 day-5、2/6 day-3、2/7 day-4、2/8 day-6） | 手機左欄 42%、cover；電腦 2.4:1 | 中 |
+| hanji-texture.jpg | 頁面底、所有紙卡（multiply） | 平鋪 | 背 |
+| hotel-2.jpg（正式網站照片） | 住宿卡照片 | 40% 欄寬、4:5 | 中 |
+| palace.jpg／hanok-street.jpg／street-food.jpg／seoul-skyline.jpg／winter-travel.jpg／new-year.jpg（白底原檔） | v198 起頁面改用 -cut.png，原檔留在 repo 與快取 | — | — |
+
+- v198 測試（雲端 session：python http.server＋Playwright Chromium）：375／390／768／1440 全頁截圖，無橫向溢出、無 pageerror、無 4xx、無破圖；390 與手機設計稿、1440 與 V2 設計稿並排比對。功能：倒數、點日卡展開、日期列 D4、總覽回行程、功能列跳住宿、換算面板、字體（main zoom 1→1.15）、待辦勾選、韓語分頁、住宿展開、價格卡高度跟隨、主要按鈕高度 ≥44px、`?theme=classic`／`?theme=winter`、hk／tokyo／keihan／campervan／home／detour 載入皆正常；SW v198 快取 264 檔，斷網重新整理首爾頁仍是新版、去背圖全部顯示。**未測**：iPhone 實機（Snell Roundhand／韓文手寫字型、安全區）、GitHub Pages 線上畫面。
+- v198 仍未還原（素材或資料限制）：設計稿的韓國國旗、雪人、石像（無素材，不自行繪製）；「旅遊成員 9 人（6 大 3 小）」與氣溫（JSON 無此資料）；每日卡行程點前的小線條圖示（設計稿每點不同圖示，資料無分類，改用主色圓點）；day-1～6 只有 278×96，電腦版放大偏糊，需要高解析原稿（建議每張 ≥ 1000×420）。
 - 素材包內容：`CLAUDE-INSTRUCTIONS.md`、`CHECKLIST.md`、`reference.html`、`seoul-v2.css`、`V2-design-reference.webp`（＋ `mobile-design-reference.webp`）、decor 素材。參考圖／參考 HTML **沒放進 repo**；`seoul-v2.css` 原樣放在根目錄（路徑本來就是相對根目錄，不用改）。
 - 新素材：`images/seoul-2027/decor/brush-{rose,blue,green,gold,violet}.png`、`day-1～6.webp`（原檔）＋ `day-1～6.jpg`（瀏覽器 canvas 同尺寸轉出，品質 0.92；比照 v170 iPhone WebP 破圖紀錄，網頁實際用 JPEG）。其他 decor 檔與包內相同（已逐檔比對）。day 圖是示意圖裁切，只有約 278×96，電腦版放大略糊（CHECKLIST 已註明非高解析原稿）。
 - 做法：沿用上一版的 `seoul-winter.js`（只搬動／包裝 app.js 畫好的元素），改成套 `reference.html` 的 class：`<html>` 加 `sw sv2`、`<body>` 加 `seoul-v2`；封面 `hero2`、功能列 `nav2`＋`tile`／`nav-icon`（沿用原本的功能線條圖示）、倒數 `panel2 count2`（`#cd` 加 `numbers`）、日期 `panel2 info2`、航班登機證 `flight2`、飯店卡 `panel2 hotel2`（照片仍是正式網站 `hotel-2.jpg`）、標題文字包 `span.brush2`（五色筆刷輪替）、`#days` 加 `days2`、每張 `.dy` 加 `day2`＋`--accent`、底部日期列 `dock2`、頁尾 `footer2`。所有原有 id、事件、資料都沒動。
