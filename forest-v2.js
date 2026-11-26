@@ -55,8 +55,8 @@
     var v=(txt.match(/VERSION\s*=\s*'([^']+)'/)||[])[1];if(!v)return;VER.latest=v;
     if(v===VER.loaded){VER.state='ok';verLine();if(done)toast('已更新到最新版 '+v+' ✓');return}
     VER.state='downloading';verLine();showBar();
-    var n=0,poll=function(){caches.keys().then(function(k2){if(k2.indexOf('trip-'+v)>=0&&k2.filter(function(k){return k.indexOf('trip-')===0}).length===1){VER.state='ready';verLine();showBar()}else if(++n<60)setTimeout(poll,1000)})};
-    if(navigator.serviceWorker){navigator.serviceWorker.getRegistration().then(function(r){if(r)r.update().catch(function(){})})}
+    var n=0,poll=function(){caches.keys().then(function(k2){if(k2.indexOf('trip-'+v)>=0&&k2.filter(function(k){return k.indexOf('trip-')===0}).length===1){VER.state='ready';verLine();showBar()}else if(++n<150)setTimeout(poll,2000)})};
+    if(navigator.serviceWorker){navigator.serviceWorker.getRegistration().then(function(r){if(r)r.update().catch(function(){})});navigator.serviceWorker.addEventListener('controllerchange',function(){setTimeout(poll,300)})} // 快取較大（約 6.5 MB），慢速網路最多等 5 分鐘
     poll();
    });
   }).catch(function(){});

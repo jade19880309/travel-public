@@ -91,6 +91,7 @@
   - 已放進 repo、但版面還沒用、也**沒加進 SW 快取**的素材：`paper-texture.webp`、`sky-texture.webp`、`wash-green.webp`、`leaf-corner.png`、`leaf-corner-r.png`、`leaf-fall.png`、`leaf-accent.png`、`grass-flowers.png`。要用時記得加進 `sw.js` 的 CORE。
   - 注意：`hydrangea.png` 左緣有一小點黃色雜點（素材本身，約 x=20、y=170），目前位置不明顯。V2 快取量增加到約 6.5 MB（兩張封面各約 900 KB、圖示各約 200～320 KB），第一次離線快取會比較久。
   - 測試（本機）：375／390／430／1280px 無橫向溢出、無破圖。東京：導覽、Day 分頁展開、工具選單換算、天氣城市名單行。露營車：酒藏（13 間）、里程地圖、DAY 3 日程卡。iPhone 實機仍未測。
+  - 線上（commit `70def48`，v177）：這台瀏覽器原本是 v175，版本提示實際跑過：「發現新版 v177」→ 約 30 秒後（207 個檔案）「已下載完成」→ 重新載入後跳出「已更新到最新版 v177 ✓」，畫面是新封面與透明素材。因為快取變大，v178 把版本提示等待下載完成的時間從 60 秒放寬到 5 分鐘（每 2 秒檢查一次），並在新 Service Worker 接手（`controllerchange`）時立即檢查。
 - 切換／復原：`?theme=classic`＝原版（v168 的復原機制，照舊）；`?theme=v1`＝森林手帳第一版（v168 外觀）；`?theme=forest`＝V2（預設）。都記在 localStorage `theme`。永久拿掉 V2＝刪兩頁 `<html>` 的 `fj2`、`theme-forest-v2.css` link、`forest-v2.js` script，或 `git revert` V2 那個 commit。改版前版本：`3cc7ad2`（sw v170）；森林 V1 基準 `1311076`（v168）。
 - 測試（本機 PowerShell HttpListener＋Claude 內建瀏覽器）：375／390／430／1280 無橫向溢出；東京：功能紙卡跳轉與高亮、☰、Day 分頁↔底部日期列同步、展開日卡、方案切換（方案三 6 天）、待辦勾選、換算／字體／更新鈕、倒數；露營車：4 個圖示鍵、RV／酒藏切換（13 間）、總覽日程卡→DAY 3、行程點勾選、日文切換、分頁黏頂；`?theme=classic`／`?theme=v1` 正常；首爾頁無錯誤。
 - **V2.1 介面修正（2026/11/26）**，全部在 `forest-v2.js`／`theme-forest-v2.css` 末段，只作用在 `html.fj2`（東京、露營車）；`upd.js`、`sw.js` 的機制沒改（只升 VERSION）：
