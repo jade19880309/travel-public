@@ -63,10 +63,13 @@ TOB 原有的畫面（清單、未付款、個人單、確認信、店家報到�
 
 ## 資料
 
-- 存在 Claude artifact 的 `db` capability：`data/users/<user.id()>/tob`（JSON 字串分段存，每段 6 萬字）、訂單截圖 `data/users/<id>/img_<訂單編號>`（WebP data URL，<185KB）。每人只看得到自己的。
-- **雲端格式 v2**（2026-11-22 起）：主文件 `tob` = `{v:2, rev, n, len, h, pk, t, by, s}`，`s` 是第 1 段；第 2 段起存 `<pk><i>`，`pk`＝`tob_r<rev>_<寫入者 sid 前 10 碼>_p`（每版、每個寫入者各一份，避免鎖過期時互相蓋到分段）。先寫分段、最後才寫主文件，寫完再讀一次主文件確認是自己寫的，才刪上一版分段。`len`＋`h`（FNV-1a 雜湊）是檢查碼。讀取用 `partPre(o)`：有 `pk` 用 `pk`；沒有 `pk` 的 v2 用 `tob_r<rev>_p`；舊格式用 `tob_p`。
-  - 舊格式（主文件沒有 `rev`，分段叫 `tob_p<i>`）仍可讀；第一次儲存就升級成 v2 並刪掉舊分段。
-  - 寫入鎖只用 Claude db 的 `acquire`（cooperative lease，沒有交易 API）：`tob_lock` 文件、holder＝`CLD.sid`、ttl 10 秒。**拿不到鎖就不寫**（busy → 4 秒後重試）；不支援 acquire → `CLD.lock='nolease'` 暫停儲存；acquire 網路錯誤 → 當斷線處理、指數退避重試，`online` 事件會立即補存。每次 `set` 前 `keepLease()` 確認剩餘 >4 秒，否則續約，續不到就中止（主文件不會被寫）。
+- 存在 Claude artifact 的 `db` capability：`data/users/<user.id()>/detour`（JSON 字串分段存，每段 6 萬字）、訂單截圖 `data/users/<id>/img_<訂單編號>`（WebP data URL，<185KB）。每人只看得到自己的。
+- **雲端格式 v2**（2026-11-22 起）：主文件 `detour` = `{v:2, rev, n, len, h, pk, t, by, s}`，`s` 是第 1 段；第 2 段起存 `<pk><i>`，`pk`＝`detour_r<rev>_<寫入者 sid 前 10 碼>_p`（每版、每個寫入者各一份，避免鎖過期時互相蓋到分段）。先寫分段、最後才寫主文件，寫完再讀一次主文件確認是自己寫的，才刪上一版分段。`len`＋`h`（FNV-1a 雜湊）是檢查碼。讀取用 `partPre(o)`：有 `pk` 用 `pk`；沒有 `pk` 的 v2 用 `<名>_r<rev>_p`；舊格式用 `<名>_p`（`<名>` 是 `detour`，讀舊資料時是 `tob`）。
+  - 鍵名常數在 `cloud.js`：`MAIN='detour'`、`LOCK='detour_lock'`、`OLD_MAIN='tob'`。
+  - **舊名搬家（2026-11-26 改名）**：沒有 `detour` 主文件時，`readMain` 改讀舊名 `tob`（與它的分段，含更舊的無 `rev` 格式），標記 `_old`；第一次儲存寫到 `detour`，**舊名的主文件與分段原封不動當備份**（`ownPart` 只刪 `detour_` 開頭的舊分段）。測試：`tests/t_migrate.py`。
+  - 已知邊界：若同一個 artifact 有人還開著改名前的舊版頁面，它會繼續寫 `tob`、新版看不到；請大家都換新版。
+  - 最舊格式（主文件沒有 `rev`，分段叫 `<名>_p<i>`）仍可讀；第一次儲存就升級成 v2。
+  - 寫入鎖只用 Claude db 的 `acquire`（cooperative lease，沒有交易 API）：`detour_lock` 文件、holder＝`CLD.sid`、ttl 10 秒。**拿不到鎖就不寫**（busy → 4 秒後重試）；不支援 acquire → `CLD.lock='nolease'` 暫停儲存；acquire 網路錯誤 → 當斷線處理、指數退避重試，`online` 事件會立即補存。每次 `set` 前 `keepLease()` 確認剩餘 >4 秒，否則續約，續不到就中止（主文件不會被寫）。
   - 拿到鎖後讀主文件 `rev`；和本機 `CLD.rev` 不同＝別的裝置改過 → `CLD.lock='conflict'`。例外：`CLD.pend` 記著上次寫主文件的 rev/h，如果主文件正是自己上次寫的（回應遺失），直接接手。
   - 寫完主文件再讀一次，`rev/by/h` 不是自己的（被沒用鎖的舊版覆蓋）→ 鎖定。
   - 「重新讀取」要先在 `#lockbar` 確認（`CLD.rconf`），並提供「先複製目前資料」；`cloudReload(1)` 才真的載入。`CLD.dirty` 表示有沒存上雲端的修改。
@@ -77,7 +80,7 @@ TOB 原有的畫面（清單、未付款、個人單、確認信、店家報到�
 - **AI 修改**：`aiCheck` 逐項逐欄位用 `vField` 驗證（欄位中文名在 `FLD`），驗證不過的不能勾；刪除預設不勾；`aiApply` 只套用 `ADS.aiSel` 勾選的。
 - **截圖失敗**：`imgSave` 失敗記在 `ADS.imgFail`（只在這次使用期間），上傳頁頂端顯示卡片可重試。
 - `db` 物件：`members[]`（id, zh, last, first, sex, dob, pp, ppExp, grp）、`trips[]`（id, name＝YYYYMM＋名稱, start, end, note, curs, fam, nosplit, web）、`fl[]` 機票（segs[], pax{成員:金額}, pp{成員:{pnr,tkt,kind}}）、`ht[]` 飯店（rooms[{type,bf,price,members[]}], cin, cout, cancelBy, payDate, rep）、`tr[]` 交通（含 `camp:{cin,cout,zh}` 的露營車／郵輪＝交通兼住宿）、`ot[]` 其他、`imgs[]`、`plans{旅程id:{prefs,plan}}`、`rates{}`。
-- 勾選採用（`SEL`）、個人單選項、確認信狀態存在各裝置的 localStorage（`stob_` 開頭——這是舊名留下的鍵名，**刻意不改**，改了朋友手機裡的勾選與設定會全部歸零），不跨裝置同步。
+- 勾選採用（`SEL`）、個人單選項、確認信狀態存在各裝置的 localStorage（`detour_` 開頭；舊版存的 `stob_` 鍵在 head 的小程式第一次開啟時自動改名搬過來），不跨裝置同步。
 
 ## Claude artifact 的限制（改功能前先想到）
 

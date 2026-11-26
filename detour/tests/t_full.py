@@ -66,7 +66,7 @@ async def main():
             await pg.evaluate("ADS.imp='not json';bkImport()");print('restore bad ok',await pg.evaluate("db.trips.length"))
             # large data chunking
             n=await pg.evaluate("""(async()=>{for(let i=0;i<400;i++)db.ot.push({id:'ot-x'+i,trip:db.trips[0].id,type:'門票',title:'很長的測試門票名稱'.repeat(5)+i,date:'2027-07-03',status:'已確認',paid:true,cur:'JPY',total:100,pax:{},note:'備註'.repeat(40),lines:[]});
-               cloudFlush();await CLD.q;const parts=(await uref('tob').get()).data().n;const c=db.ot.length;db={};await cloudLoad();return [parts,c,db.ot.length]})()""")
+               cloudFlush();await CLD.q;const parts=(await uref('detour').get()).data().n;const c=db.ot.length;db={};await cloudLoad();return [parts,c,db.ot.length]})()""")
             print('chunk parts/count/reloaded',n)
             await sweep(pg,'light big data',errs)
             # ended trip

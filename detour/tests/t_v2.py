@@ -11,13 +11,13 @@ async def main():
     ctx=await b.new_context(viewport={'width':390,'height':844});pg=await ctx.new_page();errs=[];pg.on('pageerror',lambda e:errs.append(str(e)))
     await pg.add_init_script(MOCK);await pg.goto(APP_URL);await pg.wait_for_timeout(1200)
     await pg.evaluate("go('up');ADS.text='x'");await pg.evaluate("adRun()");await pg.wait_for_timeout(400);await pg.evaluate("adApply()");await pg.wait_for_timeout(1500)
-    main=await pg.evaluate("window.__store['data/users/u1/tob']")
+    main=await pg.evaluate("window.__store['data/users/u1/detour']")
     ok('新格式主文件 v2＋rev＋檢查碼',main and main.get('v')==2 and main.get('rev')>=1 and 'h' in main and 'len' in main,{k:main[k] for k in ['v','rev','n','len']})
     # 1) 另一台裝置寫入 → 本機下次儲存應該鎖定、不覆蓋
-    await pg.evaluate("const m=window.__store['data/users/u1/tob'];m.rev=m.rev+5;m.by='other'")
-    before=await pg.evaluate("JSON.stringify(window.__store['data/users/u1/tob'])")
+    await pg.evaluate("const m=window.__store['data/users/u1/detour'];m.rev=m.rev+5;m.by='other'")
+    before=await pg.evaluate("JSON.stringify(window.__store['data/users/u1/detour'])")
     await pg.evaluate("db.trips[0].note='本機修改';cloudFlush()");await pg.wait_for_timeout(500);await pg.evaluate("CLD.q")
-    after=await pg.evaluate("JSON.stringify(window.__store['data/users/u1/tob'])")
+    after=await pg.evaluate("JSON.stringify(window.__store['data/users/u1/detour'])")
     ok('版本衝突時鎖定',await pg.evaluate("CLD.lock")=='conflict')
     ok('版本衝突時沒有覆蓋雲端',before==after)
     ok('鎖定提示列出現',await pg.evaluate("!!document.querySelector('#lockbar:not([hidden])')"))
@@ -26,9 +26,9 @@ async def main():
     # 重新讀取 → 解鎖（因為檢查碼沒變，只改 rev，資料仍可讀）
     await pg.evaluate("cloudReload(1)");await pg.wait_for_timeout(2500)
     ok('重新讀取後解鎖',await pg.evaluate("CLD.lock")=='' ,await pg.evaluate("CLD.msg"))
-    ok('解鎖後可再儲存',await pg.evaluate("(async()=>{db.trips[0].note='ok2';cloudFlush();await CLD.q;return window.__store['data/users/u1/tob'].rev==CLD.rev&&CLD.st=='ok'})()"))
+    ok('解鎖後可再儲存',await pg.evaluate("(async()=>{db.trips[0].note='ok2';cloudFlush();await CLD.q;return window.__store['data/users/u1/detour'].rev==CLD.rev&&CLD.st=='ok'})()"))
     # 2) 檢查碼錯誤 → 讀取鎖定，並且不寫入
-    await pg.evaluate("window.__store['data/users/u1/tob'].s='{\"trips\":[]}'")
+    await pg.evaluate("window.__store['data/users/u1/detour'].s='{\"trips\":[]}'")
     await pg.evaluate("cloudReload(1)");await pg.wait_for_timeout(4000)
     ok('檢查碼不符時鎖定',await pg.evaluate("CLD.lock")=='read',await pg.evaluate("CLD.msg"))
     snap=await pg.evaluate("JSON.stringify(window.__store)")
@@ -36,15 +36,15 @@ async def main():
     ok('讀取鎖定時不寫入雲端',snap==await pg.evaluate("JSON.stringify(window.__store)"))
     # 3) 讀取失敗（網路）→ 重試一次後鎖定
     await pg.evaluate("window.__getFail=1;const d=window.claude;")
-    r=await pg.evaluate("""(async()=>{const r=uref('tob'),g=r.get;let c=0;const orig=CLD.db.collection;CLD.db.collection=c0=>({doc:id=>{const x=orig(c0).doc(id);if(id=='tob')x.get=async()=>{c++;throw {code:'unavailable'}};return x}});
+    r=await pg.evaluate("""(async()=>{const r=uref('detour'),g=r.get;let c=0;const orig=CLD.db.collection;CLD.db.collection=c0=>({doc:id=>{const x=orig(c0).doc(id);if(id=='detour')x.get=async()=>{c++;throw {code:'unavailable'}};return x}});
       const okk=await loadSafe();CLD.db.collection=orig;return [okk,c,CLD.lock]})()""")
     ok('讀取失敗會重試一次再鎖定',r==[False,2,'read'],r)
     # 4) 舊格式資料讀得到，存檔後升級並刪掉舊分段
-    legacy=await pg.evaluate("""(async()=>{for(const k of Object.keys(window.__store))if(k.includes('/tob'))delete window.__store[k];
-      const js=JSON.stringify(db),A=js.slice(0,60000),B=js.slice(60000);window.__store['data/users/u1/tob']={n:B?2:1,s:A,t:1};if(B)window.__store['data/users/u1/tob_p1']={s:B};
+    legacy=await pg.evaluate("""(async()=>{for(const k of Object.keys(window.__store))if(k.includes('/detour'))delete window.__store[k];
+      const js=JSON.stringify(db),A=js.slice(0,60000),B=js.slice(60000);window.__store['data/users/u1/detour']={n:B?2:1,s:A,t:1};if(B)window.__store['data/users/u1/detour_p1']={s:B};
       const n=db.trips.length;db={};const okk=await loadSafe();return [okk,db.trips.length==n,CLD.legacy]})()""")
     ok('舊格式資料可讀取',legacy[0] and legacy[1] and legacy[2],legacy)
-    up=await pg.evaluate("(async()=>{cloudFlush();await CLD.q;const m=window.__store['data/users/u1/tob'];return [m.v,m.rev,!('data/users/u1/tob_p1' in window.__store)]})()")
+    up=await pg.evaluate("(async()=>{cloudFlush();await CLD.q;const m=window.__store['data/users/u1/detour'];return [m.v,m.rev,!('data/users/u1/detour_p1' in window.__store)]})()")
     ok('存檔後升級為新格式',up[0]==2 and up[1]==1 and up[2],up)
     # 5) 截圖存失敗 → 提示＋上傳頁卡片＋可重試
     tips=[];pg.on('console',lambda m:None)

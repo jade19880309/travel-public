@@ -23,7 +23,7 @@ async def dbop(src,op,path,data,opt):
     if op=='set':
         if len(json.dumps(data,ensure_ascii=False))>256*1024: return {'__err':'invalid_argument'}
         S['store'][path]=copy.deepcopy(data);S['sets'].append(path)
-        if path.endswith('/tob') and S['after_main']: fn=S['after_main'];S['after_main']=None;fn()
+        if path.endswith('/detour') and S['after_main']: fn=S['after_main'];S['after_main']=None;fn()
         return {'ok':1}
     if op=='del': S['store'].pop(path,None);return {'ok':1}
     if op=='acq':
@@ -40,7 +40,7 @@ DBX="""(()=>{const call=(op,p,d,o)=>window.__dbop(op,p,d===undefined?null:d,o||n
  wait().then(()=>{const u=window.claude.use;window.claude={use:async n=>n=='db'?DB:n=='downloads'?(window.__dlMode=='none'?null:{save:async o=>{window.__dlTry=(window.__dlTry||[]).concat([o.data]);if(window.__dlMode=='fail')throw {code:'unavailable'};if(window.__dlMode=='declined')return {status:'declined'};window.__html=o.data;return {status:'saved'}}}):u(n)}});
  window.__copied=[];const cw=t=>{window.__copied.push(t);return Promise.resolve()};try{Object.defineProperty(navigator,'clipboard',{value:{writeText:cw},configurable:true})}catch(e){}
 })();"""
-MAIN='data/users/u1/tob'
+MAIN='data/users/u1/detour'
 async def newtab(ctx,errs):
     pg=await ctx.new_page();pg.on('pageerror',lambda e:errs.append(str(e)))
     await pg.add_init_script(MOCK);await pg.add_init_script(DBX);await pg.goto(URL);await pg.wait_for_timeout(1500);return pg
@@ -51,7 +51,7 @@ async def main():
     ctx=await b.new_context(viewport={'width':390,'height':844});await ctx.expose_binding('__dbop',dbop);errs=[]
     A=await newtab(ctx,errs)
     await A.evaluate("go('up');ADS.text='x'");await A.evaluate("adRun()");await A.wait_for_timeout(400);await A.evaluate("adApply()");await A.wait_for_timeout(1500);await settle(A)
-    ok('A 首次儲存成功並寫入 pk',S['store'][MAIN]['rev']==1 and S['store'][MAIN]['pk'].startswith('tob_r1_'),{k:S['store'][MAIN][k] for k in ['rev','n','pk']})
+    ok('A 首次儲存成功並寫入 pk',S['store'][MAIN]['rev']==1 and S['store'][MAIN]['pk'].startswith('detour_r1_'),{k:S['store'][MAIN][k] for k in ['rev','n','pk']})
     B=await newtab(ctx,errs)
     ok('B 分頁讀到 A 的資料',await B.evaluate("db.trips.length")==1 and await B.evaluate("CLD.rev")==1)
     # ===== 1. 多分頁：A 先存，B 用舊版本存 → B 鎖定、不覆蓋 =====
@@ -84,7 +84,7 @@ async def main():
     loser=B if lb else A;winner=A if lb else B
     await loser.evaluate("cloudReload(1)");await loser.wait_for_timeout(2500)
     # ===== 1c. 拿不到鎖 → 不寫；鎖釋放後自動補存 =====
-    S['leases']['data/users/u1/tob_lock']={'holder':'someone','until':now()+15000};S['sets']=[]
+    S['leases']['data/users/u1/detour_lock']={'holder':'someone','until':now()+15000};S['sets']=[]
     await A.evaluate("db.trips[0].note='等鎖';cloudFlush()");await A.wait_for_timeout(300)
     await settle(A)
     ok('拿不到鎖：沒有寫入雲端',MAIN not in S['sets'],S['sets'])
@@ -126,7 +126,7 @@ async def main():
     ok('寫入後被其他程式覆蓋：立即鎖定',await A.evaluate("CLD.lock")=='conflict')
     S['store'][MAIN]=json.loads(before) if False else S['store'][MAIN]
     # 復原資料讓後面測試繼續
-    await A.evaluate("(async()=>{CLD.lock='';CLD.rev=0;CLD.legacy=true;CLD.prevN=1;CLD.pk='tob_p';cloudFlush();await CLD.q})()");await settle(A)
+    await A.evaluate("(async()=>{CLD.lock='';CLD.rev=0;CLD.legacy=true;CLD.prevN=1;CLD.pk='detour_p';cloudFlush();await CLD.q})()");await settle(A)
     ok('（測試復原）重新寫入',await A.evaluate("[CLD.lock,CLD.st]")==['','ok'])
     # ===== 4. 個資格式偵測 =====
     POS=['0912-345-678','0912345678','0912 345 678','+886 912 345 678','+886-2-2345-6789','02-2345-6789','(02)2345-6789','+81 3-1234-5678','03-1234-5678','+852 2345 6789','電話：2345 6789','Tel 9123 4567','手機 0912345678','A123456789','F131104093','4111 1111 1111 1111','4111111111111111','5500-0000-0000-0004','卡號末四碼 1234','x.y@example.com']

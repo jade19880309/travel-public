@@ -22,14 +22,16 @@ function normDb(o){o=obj(o);const b={members:arr(o.members),trips:arr(o.trips),f
 function applyDb(o){db=normDb(o);famCalc();campCalc()}
 
 /* ---------- 雲端讀寫（版本保護＋讀取失敗鎖定） ----------
-   主文件 tob：{v:2, rev, n, len, h, t, by, s:第 1 段}；其餘段落存在 tob_r<rev>_p<i>（每個版本各一份）。
-   先寫完所有段落、最後才更新主文件，所以讀的人不會拿到存一半的資料；舊版格式（無 rev、段落 tob_p<i>）照樣讀得到。
+   主文件 detour：{v:2, rev, n, len, h, t, by, s:第 1 段}；其餘段落存在 detour_r<rev>_<sid>_p<i>（每個版本各一份）。
+   先寫完所有段落、最後才更新主文件，所以讀的人不會拿到存一半的資料。
+   舊名搬家：還沒有 detour 主文件時，改讀舊名（OLD_MAIN 與它的段落）；第一次儲存就寫到新名，舊名資料原封不動留著當備份、不刪。
    讀取失敗或資料檢查碼不符 → 鎖定儲存，避免用空資料蓋掉雲端；儲存前比對版本，別台裝置已更新 → 停止並請使用者重新讀取。 */
 const PART=60000;
+const MAIN='detour',LOCK='detour_lock',OLD_MAIN='tob'; // OLD_MAIN：2026-11-26 改名前的舊鍵名，只讀不寫
 const uref=k=>CLD.db.collection('data/users/'+CLD.uid).doc(k);
 const fnv=s=>{let h=0x811c9dc5;for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619)}return (h>>>0).toString(16)};
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
-CLD.rev=0;CLD.prevN=1;CLD.legacy=false;CLD.lock='';CLD.sid=uid()+uid();CLD.imgMiss=0;CLD.pk='tob_p';CLD.pend=null;CLD.dirty=false;CLD.retry=0;CLD.rconf=false;CLD.leaseUntil=0;
+CLD.rev=0;CLD.prevN=1;CLD.legacy=false;CLD.lock='';CLD.sid=uid()+uid();CLD.imgMiss=0;CLD.pk=MAIN+'_p';CLD.pend=null;CLD.dirty=false;CLD.retry=0;CLD.rconf=false;CLD.leaseUntil=0;
 function cloudBadge(){const m={load:'讀取中…',ok:'',save:'儲存中…',err:'⚠ 未儲存',off:'⚠ 未登入',lock:'⚠ 已暫停儲存'}[CLD.lock?'lock':CLD.st]||'';return `<span class="cldb ${CLD.lock?'err':CLD.st}"${m?'':' hidden'}>${m}</span>`}
 /* 只更新標籤，不整頁重畫（避免清掉正在填的表單） */
 function badgeUpd(){const e=document.querySelector('.cldb');if(e)e.outerHTML=cloudBadge();lockUpd()}
@@ -40,13 +42,16 @@ function lockUpd(){let b=document.getElementById('lockbar');const show=!!CLD.loc
 /* 寫入前的守門：鎖定或沒有登入時不讓改，也不在畫面上假裝改好了 */
 function canWrite(){if(CLD.lock){tip('目前暫停儲存，請先按上方「重新讀取」');lockUpd();return false}if(!CLD.db||!CLD.uid){tip(CLD.msg||'請先登入 Claude');return false}return true}
 function cloudSave(){famCalc();campCalc();CLD.dirty=true;if(!CLD.db||!CLD.uid){CLD.st='off';return}if(CLD.lock){badgeUpd();return}CLD.st='save';badgeUpd();clearTimeout(CLD.timer);CLD.timer=setTimeout(cloudFlush,500)}
-async function readMain(){const s=await uref('tob').get();return s.exists?(s.data()||{}):null}
-/* 分段文件的前綴：新格式寫在主文件 pk；沒有 pk 的 v2 用 tob_r<rev>_p；舊格式用 tob_p */
-const partPre=o=>{const p=o&&o.pk;if(typeof p=='string'&&/^tob_[A-Za-z0-9_]{1,80}$/.test(p))return p;return o&&o.rev?'tob_r'+o.rev+'_p':'tob_p'};
+async function readMain(){const s=await uref(MAIN).get();if(s.exists)return s.data()||{};
+ const o=await uref(OLD_MAIN).get();return o.exists?Object.assign({},o.data()||{},{_old:1}):null}
+/* 分段文件的前綴：新格式寫在主文件 pk；沒有 pk 的 v2 用 <名>_r<rev>_p；最舊格式用 <名>_p（<名> 是 detour 或舊名） */
+const partPre=o=>{const b=o&&o._old?OLD_MAIN:MAIN,p=o&&o.pk;if(typeof p=='string'&&new RegExp('^'+b+'_[A-Za-z0-9_]{1,80}$').test(p))return p;return o&&o.rev?b+'_r'+o.rev+'_p':b+'_p'};
+/* 只刪自己這個名字底下的舊段落；舊名的資料留著當備份 */
+const ownPart=p=>typeof p=='string'&&p.indexOf(MAIN+'_')===0;
 /* 寫入鎖：只用 Claude db 提供的 acquire（cooperative lease，所有偏航寫入者都先取得它）。
    沒拿到就不寫；不支援 acquire 就暫停儲存，不再「當作成功」。 */
 const LEASE_MS=10000,LEASE_MIN=4000;
-async function leaseTry(){const r=uref('tob_lock');if(typeof r.acquire!='function')throw {code:'nolease'};
+async function leaseTry(){const r=uref(LOCK);if(typeof r.acquire!='function')throw {code:'nolease'};
  const t0=Date.now();let a;try{a=await r.acquire({holder:CLD.sid,ttlMs:LEASE_MS})}catch(e){const c=e&&e.code;if(c=='capability_removed'||c=='capability_disabled')throw {code:'nolease'};throw e}
  if(a&&a.acquired){CLD.leaseUntil=t0+LEASE_MS;return {ok:true}}
  const ex=a&&a.expiresAt?Date.parse(a.expiresAt)-Date.now():NaN;return {ok:false,wait:isFinite(ex)?Math.min(4000,Math.max(300,ex+200)):1200}}
@@ -61,20 +66,20 @@ function cloudFlush(){
   const m=await readMain(),remote=m?(+m.rev||0):0,P=CLD.pend;
   if(remote!==CLD.rev){
    /* 上次寫主文件時斷線、其實已寫入：主文件是自己寫的同一份 → 接手，不算衝突 */
-   if(P&&m&&m.by===CLD.sid&&remote===P.rev&&m.h===P.h){CLD.rev=P.rev;CLD.prevN=P.n;CLD.legacy=false;const op=CLD.pk;CLD.pk=P.pk;CLD.pend=null;for(let i=1;i<P.oldN;i++)uref(op+i).delete().catch(()=>{})}
+   if(P&&m&&m.by===CLD.sid&&remote===P.rev&&m.h===P.h){CLD.rev=P.rev;CLD.prevN=P.n;CLD.legacy=false;const op=CLD.pk;CLD.pk=P.pk;CLD.pend=null;if(ownPart(op))for(let i=1;i<P.oldN;i++)uref(op+i).delete().catch(()=>{})}
    else throw {code:'conflict'}}
   const js=JSON.stringify(db),h=fnv(js);
   if(m&&!CLD.legacy&&m.h===h&&+m.len===js.length){CLD.dirty=false;CLD.retry=0;CLD.st='ok';badgeUpd();return}
   const parts=[];for(let i=0;i<js.length;i+=PART)parts.push(js.slice(i,i+PART));if(!parts.length)parts.push('{}');
-  const rev=CLD.rev+1,pk='tob_r'+rev+'_'+CLD.sid.slice(0,10)+'_p';
+  const rev=CLD.rev+1,pk=MAIN+'_r'+rev+'_'+CLD.sid.slice(0,10)+'_p';
   for(let i=1;i<parts.length;i++){await keepLease();await uref(pk+i).set({s:parts[i]})}
   await keepLease();
   CLD.pend={rev,h,n:parts.length,pk,oldN:CLD.prevN};
-  await uref('tob').set({v:2,rev,n:parts.length,len:js.length,h,pk,t:Date.now(),by:CLD.sid,s:parts[0]});
+  await uref(MAIN).set({v:2,rev,n:parts.length,len:js.length,h,pk,t:Date.now(),by:CLD.sid,s:parts[0]});
   /* 寫完再讀一次：如果被沒用鎖的舊版本覆蓋，立刻發現並鎖定 */
-  const v=await readMain();if(!v||+v.rev!==rev||v.by!==CLD.sid||v.h!==h)throw {code:'conflict'};
+  const v=await readMain();if(!v||v._old||+v.rev!==rev||v.by!==CLD.sid||v.h!==h)throw {code:'conflict'};
   const op=CLD.pk,oldN=CLD.prevN;CLD.rev=rev;CLD.prevN=parts.length;CLD.legacy=false;CLD.pk=pk;CLD.pend=null;
-  for(let i=1;i<oldN;i++)uref(op+i).delete().catch(()=>{});
+  if(ownPart(op))for(let i=1;i<oldN;i++)uref(op+i).delete().catch(()=>{});
   CLD.dirty=JSON.stringify(db)!==js;CLD.retry=0;CLD.st='ok';CLD.noWrite=false;badgeUpd()})
  .catch(e=>{const c=e&&e.code;clearTimeout(CLD.timer);
   if(c=='conflict'){CLD.lock='conflict';CLD.st='err';CLD.msg='這份資料在其他裝置或分頁更新過。為了不覆蓋，已暫停儲存；請按「重新讀取」載入最新資料。';badgeUpd();render();return}
@@ -84,13 +89,13 @@ function cloudFlush(){
   CLD.st='err';CLD.noWrite=c=='invalid_argument';CLD.msg=c=='quota_exceeded'?'雲端空間已滿，請刪除一些截圖或訂單。':CLD.noWrite?'你目前沒有儲存權限：請分享這個頁面的人把你設為「編輯者」。':'儲存失敗，請確認網路後再改一次（下次修改會再嘗試儲存）。';badgeUpd();tip(CLD.msg)})}
 addEventListener('online',()=>{if(CLD.dirty&&!CLD.lock&&CLD.db&&CLD.uid){clearTimeout(CLD.timer);CLD.retry=0;cloudFlush()}});
 async function cloudLoad(){const o=await readMain();
- if(!o){applyDb({});CLD.rev=0;CLD.prevN=1;CLD.legacy=false;CLD.pk='tob_p';return}
- const legacy=!o.rev,n=Math.max(1,+o.n||1),pre=partPre(o);let js=String(o.s||'');
+ if(!o){applyDb({});CLD.rev=0;CLD.prevN=1;CLD.legacy=false;CLD.pk=MAIN+'_p';return}
+ const legacy=!o.rev||!!o._old,n=Math.max(1,+o.n||1),pre=partPre(o);let js=String(o.s||'');
  for(let i=1;i<n;i++){const p=await uref(pre+i).get();if(!p.exists)throw {code:'part_missing'};js+=String((p.data()||{}).s||'')}
- if(!legacy&&(js.length!==+o.len||fnv(js)!==o.h))throw {code:'checksum'};
+ if(o.rev&&(js.length!==+o.len||fnv(js)!==o.h))throw {code:'checksum'};
  let d;try{d=JSON.parse(js||'{}')}catch(e){throw {code:'parse'}}
  if(!d||typeof d!='object'||Array.isArray(d))throw {code:'parse'};
- applyDb(d);CLD.rev=legacy?0:+o.rev;CLD.prevN=n;CLD.legacy=legacy;CLD.pk=pre;CLD.pend=null;CLD.dirty=false;
+ applyDb(d);CLD.rev=+o.rev||0;CLD.prevN=n;CLD.legacy=legacy;CLD.pk=pre;CLD.pend=null;CLD.dirty=false;
  CLD.imgMiss=0;for(const k of db.imgs){try{const p=await uref('img_'+ikey(k)).get();if(p.exists)ORDIMG[k]=String((p.data()||{}).d||'');else CLD.imgMiss++}catch(e){CLD.imgMiss++}}}
 const LOADERR={part_missing:'資料不完整（可能另一台裝置正在儲存）',checksum:'資料檢查碼不符',parse:'資料格式損壞'};
 async function loadSafe(){for(let i=0;i<2;i++){try{await cloudLoad();CLD.lock='';return true}catch(e){if(i==0){await sleep(1500);continue}
@@ -405,7 +410,7 @@ const bkPack=()=>JSON.stringify({detour:1,format:1,at:new Date().toISOString(),d
 const bkCount=o=>({trips:arr(o.trips).length,members:arr(o.members).length,orders:COLL.reduce((a,k)=>a+arr(o[k]).length,0),fl:arr(o.fl).length,ht:arr(o.ht).length,tr:arr(o.tr).length,ot:arr(o.ot).length,plans:Object.keys(obj(o.plans)).length});
 function bkCheck(txt){const R={errs:[],warns:[],data:null};let o;const t=String(txt||'').trim();if(!t){R.errs.push('還沒貼上備份內容');return R}
  try{o=JSON.parse(t)}catch(e){R.errs.push('不是完整的備份資料（可能沒複製完整，結尾少了括號）');return R}
- if(o&&(o.detour||o.stob)&&o.db)o=o.db; // 舊備份是 stob:1，一樣能還原
+ if(o&&(o.detour||o.stob)&&o.db)o=o.db; // o.stob：改名前的舊備份格式，一樣能還原
  if(!o||typeof o!='object'||Array.isArray(o)){R.errs.push('格式不對：最外層要是 {…}');return R}
  const K=['members','trips',...COLL];if(!K.some(k=>Array.isArray(o[k]))){R.errs.push('裡面沒有旅程、成員或訂單，不像是偏航的備份');return R}
  const ids=new Set();K.forEach(k=>{if(o[k]===undefined)return;if(!Array.isArray(o[k])){R.errs.push(CNAME[k]+'的格式不對');return}

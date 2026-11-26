@@ -34,8 +34,8 @@ def rep(old, new, count=1):
 s = re.sub(r'<link rel="manifest"[^\n]*?<link rel="icon"[^>]*>', '', s, count=1)
 rep('<title>TOB｜旅遊訂單查詢</title>', '<title>DETOUR 底稿</title>')
 rep('content="TOB 旅遊訂單"', 'content="DETOUR 底稿"')
-# 本機儲存鍵沿用 stob 前綴（朋友手機裡已存的勾選與設定要讀得到，改了會全部歸零）
-s = s.replace("localStorage.getItem('fth", "localStorage.getItem('stob").replace("localStorage.setItem('fth", "localStorage.setItem('stob").replace("localStorage.removeItem('fth", "localStorage.removeItem('stob").replace("sessionStorage.getItem('fth", "sessionStorage.getItem('stob").replace("sessionStorage.setItem('fth", "sessionStorage.setItem('stob").replace("sessionStorage.removeItem('fth", "sessionStorage.removeItem('stob")
+# 本機儲存鍵前綴 detour_（舊版 stob_ 的值由 detour.py 加在 head 的小程式自動搬過來）
+s = s.replace("localStorage.getItem('fth", "localStorage.getItem('detour").replace("localStorage.setItem('fth", "localStorage.setItem('detour").replace("localStorage.removeItem('fth", "localStorage.removeItem('detour").replace("sessionStorage.getItem('fth", "sessionStorage.getItem('detour").replace("sessionStorage.setItem('fth", "sessionStorage.setItem('detour").replace("sessionStorage.removeItem('fth", "sessionStorage.removeItem('detour")
 
 # family groups / camper / areas / trip icons become data-driven
 s = re.sub(r"const FAM=\[\['第1組[^\n]*?\]\];", "let FAM=[];", s, count=1)
