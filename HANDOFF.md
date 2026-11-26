@@ -23,19 +23,32 @@
 - 純改 `HANDOFF.md`（沒動網頁、JSON、`app.js`）時不需要加 `sw.js` 的 `VERSION`，那只在網頁內容變動時才有意義。
 - 京阪每日圖示：有 `choice` 的日子，選項若沒寫 `stk` 要退回當天的 `stk`（曾因此抓 `ic-undefined.svg`，9/9 圖示消失）。圖示出問題先查檔名，不要先怪快取。
 
-## 京阪「京都、慢日子。｜京町二人旅」美編改版（2026/11/26，sw v173；使用者提供 `kyoto-design-kit.zip`＋手機／電腦示意圖）
-- **範圍**：只動 `keihan.html`、新增 `theme-kyoto-classic.css`、`images/keihan-2027/classic/`、`sw.js`（VERSION v173＋CORE 加 9 個檔）。`trips/keihan-2027.json`、`home.html`、`trips/index.json`、`stob/`、其他旅程**都沒改**；京阪仍不列入公開總覽。
-- **做法**：`<head>` 的小 script 預設在 `<html>` 加 `kyoto-theme`；樣式全部以 `html.kyoto-theme` 開頭。新加的元件都帶 `.kc` class，經典版 `html:not(.kyoto-theme) .kc{display:none!important}`。
-  - 恢復舊版：`keihan.html?theme=classic`（存 localStorage `kyotoTheme`）；`?theme=kyoto` 改回。永久拿掉＝刪 `<head>` 那段 script＋link、所有 `.kc` 元素、日卡模板的 `data-id`／`.kc-pic`／`.ts`、頁尾前的輔助 script。改版前原檔：`backups/keihan-before-kyoto-classic-20261126.html`、分支 `backup/keihan-before-kyoto-classic`（commit `3cc7ad2`，該分支與之後的 main 在 keihan.html 上內容相同）。
-  - HTML 新增：頁首品牌列（鳥居用原有 `ic-torii_gate.svg`）、電腦版頁首選單、封面 `.kc-hero`（`hero.jpg`＋HTML 標題「京都、慢日子。」「京町二人旅」）、旅程資訊 `.kc-stats`（5 日／2 人／京都 3 晚／大阪 1 晚，與原 chips 相同）、快捷入口 `.kc-quick`（連到 `#plan/#hotel/#flight/#tools`；「旅費統計」會順便點原本的「交通預算」分頁）、道具區下方抹茶圖、頁尾山水 `footer.jpg`。原本的封面圖、標題「兩個人的京阪」、chips 在主題下隱藏（DOM 還在）。
-  - 日卡模板（`go()` 裡 `#strip` 那行）只多了 `data-id`、`<span class="kc kc-pic">`、`<span class="kc ts">${d.sub}</span>`；其他函式、儲存鍵（`kh27-*`）、事件都沒改。
-  - 頁尾前多一段輔助 script：①`[data-kc-tab]` 切道具分頁 ②寬度 <1024 時換日期後改捲到 `#day`（日卡改直排後，原本捲到 `#plan` 會只看到清單）——用**捕獲階段**監聽，因為原處理器會重畫 `#day` ③網址列顏色改苔綠 `#414a36`（夜間維持 `#1c1f33`）。
-  - 每日卡水彩依**原始資料**配對：d1 抵達京都＝京都塔、d3 嵐山・金閣寺＝嵐山竹林（當日內容右上明信片用金閣寺）、d5 回程＝飛機；**d2 鞍馬・貴船、d4 清水寺・稻荷沒有相符素材**，維持原本的 SVG 圖示＋青海波中性底。住宿憑證的郵票：京都＝京都塔、大阪＝大阪城（城市象徵，不是景點標示）。示意圖裡的嵐山行程、住宿名稱、21,948 日圓等**沒有採用**，以 JSON 為準。
-  - 素材包的小圖是從示意圖裁的，左緣帶示意圖的朱印殘影，CSS 用 `background-size:122%～158%` 靠右下裁掉；不要放大成滿版。
-  - 每張 WebP 都另轉成 JPEG（瀏覽器 canvas，品質 0.92），網頁用 `.jpg`（避免首爾那次 iPhone WebP 破圖）；WebP 原檔保留同資料夾。
-- **字體**：標題 Noto Serif TC、內文 Noto Sans TC（加進原本的 Google Fonts 連結），備援宋體／明體與系統無襯線。原頁沒有倒數，所以沒有加。
-- **測試（本機 PowerShell HttpListener＋內建瀏覽器）**：375／390／768／1440 無橫向捲動、無破圖、無 JS 錯誤；日卡、頁首日期、上下一天、HARUKA/JR 選項、蓋章（含計數歸零）、快捷選單、回到最上面、夜間模式、旅費入口切分頁、`?theme=classic`／`?theme=kyoto` 皆正常。2026/11/26 部署後線上（GitHub Pages）檢查：舊版 SW 先顯示快取頁、重新整理後換成新版（原更新機制正常）；`trip-v173` 快取 228 項，京阪頁、主題 CSS、9 張素材全在，舊快取已清；390px 無溢出、無破圖；首頁、首爾、港珠澳、東京、露營車頁標題正常、無破圖、沒有載入京都主題、首頁仍無京阪連結。
-- **未驗證**：本機內建瀏覽器無法註冊 Service Worker（線上可以），所以離線重新整理是部署後在線上檢查快取內容，**沒有實際斷網重新整理**；iPhone 實機（瀏海、主畫面 App 更新）沒測。
+## 京阪「京都、慢日子。」V2 首頁還原暨品質改善（2026/11/26，sw v179；依使用者 `kyoto-v2-handoff.zip` 的 CLAUDE-KYOTO-V2.md）
+- **範圍**：`keihan.html`、`theme-kyoto-classic.css`（整份重寫成 V2）、新增 `images/keihan-2027/v2/`（15 張 JPEG）、`images/keihan-2027/classic/hero.png`（診斷用）、新增 `kyoto-diag.html`、`sw.js`（v179＋CORE＋activate）、`upd.js`（一行版本判斷）。`trips/`、`home.html`、`stob/`、其他旅程頁都沒改；京阪仍不在公開總覽。
+- **回復方式**：①只要舊版樣式：`keihan.html?theme=classic`（`?theme=kyoto` 改回，存 localStorage `kyotoTheme`；**2027/10/01 再評估要不要移除舊版**）。②整個退回 V1：還原點分支 `backup/keihan-before-kyoto-v2`（commit `ed6dc8b`，已推送）；V1 以前的原版另有 `backup/keihan-before-kyoto-classic`、`backups/keihan-before-kyoto-classic-20261126.html`。退回後 `sw.js` 的 VERSION 要再加 1。
+- **做法重點**
+  - 主題規則全部 `html.kyoto-theme` 開頭；新元件都帶 `.kc`，經典版 `html:not(.kyoto-theme) .kc{display:none!important}`。
+  - 手機首頁：頁首單列 58px（品牌、集章、選單）；主視覺 340–400px，`classic/hero.jpg`（678px，比 V2 包的 487px 清楚，所以保留）以 `object-fit:cover` 鋪滿，標題、日期、印章、標語是 HTML 文字疊在圖上，用徑向漸層（左上）和底部短漸層融合；統計緊接主視覺；快捷 4 欄（<360px 時 2×2）；下方山水＋抹茶收尾。
+  - 標題字體 Yuji Syuku（Google Fonts，只下載「京都、慢日子。」7 個字的子集），備援 LXGW WenKai TC／標楷體／Noto Serif TC。
+  - 主題下由頁尾輔助 script 把 `#qb`（原快捷選單）搬到頁首當「選單」、把 `#dch`（日期列）搬到每日行程區並 sticky；id 不變，原本的程式照常運作。經典版位置不變。
+  - 底部導覽改成貼底 58px＋`env(safe-area-inset-bottom)`：行程／航班／首頁（`.kc-home`，回封面，用 button 以免影響原本 `#bar a` 的捲動高亮）／住宿／道具；平板以上回到置中浮動列。集章在頁首、檢查更新移進選單（`.kc-qupd`，顯示目前快取版本）；原本右下角的更新鈕在主題中隱藏。
+  - 每日卡（依 JSON，不改資料）：9/9 京都塔、9/10 鞍馬寺（當日明信片：貴船神社）、9/11 嵐山竹林（明信片：金閣寺）、9/12 清水寺（明信片：伏見稻荷）、9/13 飛機。住宿郵票：京都塔、大阪城。`shinsekai`、`sagano-train`、`stone-lantern` 有放在補充包裡但行程沒對應或用不到，`sagano-train`、`shinsekai` 沒有複製進 repo。V1 的 122–158% 放大已移除，改 `background-size:cover`（效果等同 object-fit:cover）。
+  - 響應式：≤767 單欄橫式卡；768–1199 兩欄、最後一張滿寬（2+2+1）；≥1200 五欄。電腦版 ≥1024 文字左、插畫右，左上風鈴、左下山水、統計壓在主視覺下緣、快捷旁抹茶。
+  - 和紙底紋用 `v2/washi.jpg`（疊 86% 米白），青海波用 `v2/seigaiha.jpg`。
+- **PWA**
+  - `keihan.html` 新增一段 script：SW 接管（controllerchange）時只重載一次；第一次安裝不重載；輸入框有內容時延後到離開輸入框或切到背景；sessionStorage `kh27-swreload` 20 秒內不重複；回到前景時呼叫 `registration.update()`。
+  - `sw.js` activate：新版快取 CORE 全部到齊才刪舊快取，否則保留舊快取當離線備援（install／fetch 策略沒改，skipWaiting＋clients.claim 原本就有）。CORE 每個檔案都確認存在（有缺檔會讓舊快取一直留著）。
+  - `upd.js`：若已有 `trip-<網站版本>` 快取就判定為最新（以前只看第一個 trip- 快取，保留舊快取時會誤判）。
+  - `kyoto-diag.html`（noindex，已加進快取）：同一張主視覺 JPEG／PNG／WebP 的直接下載（狀態、Content-Type、大小）、快取有無、decode、快取內容 decode、SW 註冊／控制、sw.js 版本、快取名稱、主畫面模式、安全區數值，可「複製報告」。PNG 872KB 沒放進預先快取。
+- **測試（本機 PowerShell HttpListener＋headless Edge 158，用 DevTools Protocol 驅動；這台沒有 Playwright／Node／Python）**
+  - 375／390／768／1024／1200／1440：無橫向捲動、無破圖、頁首 58px、底部導覽 58px、主視覺 368／382／430／560px、標題 40／41／54／58–86px；全頁截圖並與定稿並排比對（截圖在工作階段暫存，未放進 repo）。
+  - 功能：日卡、日期列、上下一天、HARUKA/JR 選項（預算同步）、蓋章與歸零、選單開關、夜間、字級、旅費入口切分頁、日圓換算、待辦勾選（localStorage）、首頁鈕、住宿 6 顆按鈕、2 張航班卡，全部正常；`?theme=classic`、`?theme=kyoto` 正常，經典版日期列與快捷鈕回到原位。
+  - 離線（`Network.emulateNetworkConditions offline`，頁面已受 SW 控制，`trip-v175`）：京阪頁重新整理後 5 張日卡圖、主視覺、JSON、換日期都正常、顯示離線提示；首頁、首爾、港珠澳、東京、露營車離線導航也正常、無破圖。
+  - 更新：暫時把 sw.js 改成 v175test1 → 頁面只重載一次、之後穩定、舊快取已清；v175test2＋輸入框有字 → 10 秒內不重載、離開輸入框後重載；清空後首次安裝 → 取得控制且不重載。測完已改回 v175。
+  - 診斷頁：JPEG／PNG／WebP 直接與快取 decode 都成功（Edge）。
+- 測試大多在合併前的 v175 完成；推送前其他工作階段把 sw.js 升到 v178，已以遠端版本為底重新套用京阪的 CORE 與 activate 改動成 v179，並重跑功能、離線重載、各旅程離線導航（通過，`trip-v179` 228 項）。更新接管（重載一次／延後／首次不重載）的測試是在 v175 做的，邏輯沒變但未在 v179 重測。
+- **未驗證（需使用者）**：iPhone Safari 與主畫面 App 實機（瀏海、底部安全區、Yuji Syuku 在 iOS 的載入、之前 WebP 破圖的真正原因——請在 iPhone 開 `kyoto-diag.html` 複製報告）；GitHub Pages 線上的更新接管流程只做了部署後檢查（見下一點），沒有在線上模擬兩次版本更新。
+- **與定稿仍有的落差（缺素材，未自行重畫）**：楓葉、秋葉角落裝飾、日卡撕紙邊、卡片內小插圖（人力車、章魚燒）、標題旁朱色筆刷圈、「查看完整行程」按鈕（單頁版沒有獨立行程頁，加了等於無作用按鈕）；日卡項目列是 JSON 的路線文字，不是定稿的三點條列；統計是 4 格（京都 3 晚／大阪 1 晚分開，依資料）。
 
 ## Seoul Winter：首爾冬日旅行手帳（2026/11/26，使用者提供 seoul-winter-kit 素材包＋手機版示意圖）
 - 做法：`index.html` 在 `app.js` 載入後，只有 `t=seoul-2027` 才載入 `seoul-winter.js`；它只搬動／包裝 app.js 畫好的元素（封面換 `hero-winter.webp`＋HTML 標題、功能列從頁首搬到封面下方並改 sticky 圖示鍵、倒數與日期移到 `.sw-top` 卡片、區塊標題去表情符號加小插畫、住宿卡插入 `hotel-2.jpg`、頁尾插畫），並在 `<html>` 加 `sw` class。樣式在 `theme-han.css` 最後的「Seoul Winter」區塊，全部以 `html.th-han.sw` 開頭。`app.js`、`style.css`、`trips/seoul-2027.json` 都沒改。

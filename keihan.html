@@ -14,6 +14,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=LXGW+WenKai+TC:wght@300;400;700&family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Yuji+Syuku&amp;text=%E4%BA%AC%E9%83%BD%E3%80%81%E6%85%A2%E6%97%A5%E5%AD%90%E3%80%82&amp;display=swap" rel="stylesheet">
 <style>
 /* 京阪・兩人旅：獨立版型（不使用 app.js／style.css）。和紙米白、櫻粉、藤紫、淡藍墨；夜間模式換成暮夜色。 */
 :root{
@@ -333,7 +334,7 @@ html:not(.kyoto-theme) .kc{display:none!important}
 </head>
 <body>
 <header><div class="hb"><div class="logo">京阪<i>・</i>二人</div><a class="kc kc-brand" href="#top" aria-label="回到封面"><img src="images/keihan-2027/ic-torii_gate.svg" alt="" width="30" height="24">京都・大阪 二人旅</a><div class="dch" id="dch" aria-label="快速切換日期"></div>
-<nav class="kc kc-nav" aria-label="主選單"><a href="#plan"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15" rx="2"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>每日行程</a><a href="#flight"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 14l18-7-6 12-3-5z"/><path d="M12 14l-4 5"/></svg>交通</a><a href="#hotel"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 19V7M3 15h18v4M21 15v-3a3 3 0 0 0-3-3h-7v6"/><circle cx="7" cy="11.5" r="1.8"/></svg>住宿</a><a href="#tools" data-kc-tab="bg"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h14a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a1 1 0 0 1-1-1z"/><path d="M4 7l11-3v3M15 13.5h2.5"/></svg>旅費</a></nav>
+<nav class="kc kc-nav" aria-label="主選單"><a href="#top"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10v10h13V10"/></svg>首頁</a><a href="#plan"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15" rx="2"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>每日行程</a><a href="#flight"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 14l18-7-6 12-3-5z"/><path d="M12 14l-4 5"/></svg>交通</a><a href="#hotel"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 19V7M3 15h18v4M21 15v-3a3 3 0 0 0-3-3h-7v6"/><circle cx="7" cy="11.5" r="1.8"/></svg>住宿</a><a href="#tools" data-kc-tab="bg"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h14a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a1 1 0 0 1-1-1z"/><path d="M4 7l11-3v3M15 13.5h2.5"/></svg>旅費</a></nav>
 <button id="night" hidden></button><button id="fs" hidden></button><button class="sbadge" id="sbadge" aria-label="蓋章進度"><span>印</span><b id="sbn">0</b></button></div></header>
 <div class="kc kc-hero" id="top">
  <div class="kc-hero-copy">
@@ -345,6 +346,8 @@ html:not(.kyoto-theme) .kc{display:none!important}
   <p class="kc-lead">不趕路，慢慢走進京都的日常。</p>
   <span class="kc-seal" aria-hidden="true">京阪</span>
  </div>
+ <img class="kc-hero-chime" src="images/keihan-2027/v2/wind-chime.jpg" alt="" width="248" height="197">
+ <img class="kc-hero-land" src="images/keihan-2027/v2/footer.jpg" alt="" width="847" height="174">
  <figure class="kc-hero-art"><img src="images/keihan-2027/classic/hero.jpg" alt="穿著和服的兩人背影，走在京都古街上，遠方是五重塔" width="678" height="455" fetchpriority="high"></figure>
 </div>
 <ul class="kc kc-stats" aria-label="旅程資訊">
@@ -358,8 +361,9 @@ html:not(.kyoto-theme) .kc{display:none!important}
  <a href="#hotel"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 19V7M3 15h18v4M21 15v-3a3 3 0 0 0-3-3h-7v6"/><circle cx="7" cy="11.5" r="1.8"/></svg><span><b>住宿資訊</b><small>京都・大阪</small></span></a>
  <a href="#flight"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="3" width="14" height="14" rx="3"/><path d="M5 11h14M8.5 14h.01M15.5 14h.01M8 21l2-4M16 21l-2-4"/></svg><span><b>交通航班</b><small>去回程航班</small></span></a>
  <a href="#tools" data-kc-tab="bg"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h14a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a1 1 0 0 1-1-1z"/><path d="M4 7l11-3v3M15 13.5h2.5"/></svg><span><b>旅費統計</b><small>預算・換算</small></span></a>
- <img class="kc-qmatcha" src="images/keihan-2027/classic/matcha.jpg" alt="" width="190" height="134" loading="lazy">
+ <img class="kc-qmatcha" src="images/keihan-2027/v2/matcha.jpg" alt="" width="280" height="197" loading="lazy">
 </nav>
+<div class="kc kc-homedeco" aria-hidden="true"><img class="kc-land" src="images/keihan-2027/v2/footer.jpg" alt="" width="847" height="174"><img class="kc-tea" src="images/keihan-2027/v2/matcha.jpg" alt="" width="280" height="197"></div>
 <div class="cover"><img src="images/keihan-2027/cover.jpg" alt="京阪自由行封面：京都塔、五重塔、電車、河岸夜景與夕陽" width="1672" height="706"></div>
 <div class="intro"><span class="vt l">京都・清水・貴船</span><span class="vt r">そして大阪へ</span>
  <h1>兩個人的京阪</h1><div class="en">KYOTO ・ KIBUNE ・ OSAKA</div>
@@ -375,13 +379,14 @@ html:not(.kyoto-theme) .kc{display:none!important}
 <section id="hotel"><div class="sh"><span class="no">参</span><h2>住宿</h2><p>STAY</p></div><div id="ht"></div></section>
 <section id="tools"><div class="sh"><span class="no">肆</span><h2>旅の道具</h2><p>TOOLS</p></div>
  <div class="tabs" id="tabs"><button data-p="bg" class="on">交通預算</button><button data-p="fx">日圓換算</button><button data-p="ph">常用日語</button><button data-p="td">待辦清單</button><button data-p="tp">旅遊須知</button></div>
- <div class="card pane" id="pane"></div><img class="kc kc-matcha" src="images/keihan-2027/classic/matcha.jpg" alt="" width="190" height="134" loading="lazy"></section>
+ <div class="card pane" id="pane"></div><img class="kc kc-matcha" src="images/keihan-2027/v2/matcha.jpg" alt="" width="280" height="197" loading="lazy"></section>
 </main>
-<footer><img src="images/keihan-2027/umbrella.webp" alt="" width="90" height="78">願這趟旅程<br>成為兩個人很久以後還會想起的風景<img class="kc kc-foot" src="images/keihan-2027/classic/footer.jpg" alt="" width="1169" height="99" loading="lazy"></footer>
+<footer><img src="images/keihan-2027/umbrella.webp" alt="" width="90" height="78">願這趟旅程<br>成為兩個人很久以後還會想起的風景<img class="kc kc-foot" src="images/keihan-2027/v2/footer.jpg" alt="" width="847" height="174" loading="lazy"></footer>
 <nav class="bar" id="bar" aria-label="功能列">
  <a href="#plan" data-sec="plan"><svg viewBox="0 0 24 24"><path d="M4 5h16M4 12h10M4 19h7"/><circle cx="18" cy="17" r="3"/></svg><span>行程</span></a>
  <a href="#flight" data-sec="flight"><svg viewBox="0 0 24 24"><path d="M3 14l18-7-6 12-3-5z"/><path d="M12 14l-4 5"/></svg><span>航班</span></a>
  <button class="qb" id="qb" aria-label="快捷選單"><svg viewBox="0 0 24 24"><path d="M12 3q1.2 7.8 9 9-7.8 1.2-9 9-1.2-7.8-9-9 7.8-1.2 9-9z"/></svg></button>
+ <button type="button" class="kc kc-home" aria-label="回到首頁"><i><svg viewBox="0 0 24 24"><path d="M2.5 5.5Q12 7.5 21.5 5.5"/><path d="M4.5 9.5h15"/><path d="M7 6.6V21M17 6.6V21M12 6.9v2.6"/></svg></i><span>首頁</span></button>
  <a href="#hotel" data-sec="hotel"><svg viewBox="0 0 24 24"><path d="M3 20V9l9-5 9 5v11"/><path d="M9 20v-6h6v6"/></svg><span>住宿</span></a>
  <a href="#tools" data-sec="tools"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="7" height="7" rx="2"/><rect x="13" y="4" width="7" height="7" rx="2"/><rect x="4" y="13" width="7" height="7" rx="2"/><rect x="13" y="13" width="7" height="7" rx="2"/></svg><span>道具</span></a>
 </nav>
@@ -393,6 +398,7 @@ html:not(.kyoto-theme) .kc{display:none!important}
   <button data-q="night"><i id="qni">🌙</i><b>夜間模式</b><small id="qns"></small></button>
   <button data-q="font"><i>Aa</i><b>字體大小</b><small id="qfs"></small></button>
   <button data-q="top"><i>⬆︎</i><b>回到最上面</b><small>封面</small></button>
+  <button class="kc kc-qupd" data-upd type="button"><i>↻</i><b>檢查更新</b><small id="kcver">網站版本</small></button>
  </div>
  <div class="qfx"><label>¥<input id="qj" inputmode="decimal" placeholder="輸入日圓" autocomplete="off"></label><span id="qt">≈ NT$ 0</span></div>
 </div></div>
@@ -557,12 +563,42 @@ if('serviceWorker' in navigator&&/^https?:/.test(location.protocol))navigator.se
 })();
 </script>
 <script>
+/* 新版接管後自動重新載入一次（只在京阪頁；新舊版主題都適用）：
+   - 第一次安裝（原本沒有 SW 控制）不重載
+   - 輸入框有未送出的內容（日圓換算等）時延後，等離開輸入框或切到背景再重載
+   - sessionStorage 記錄時間，20 秒內不重複重載，防止循環
+   - 回到前景時主動檢查一次 sw.js 是否有新版（主畫面 App 不必開兩次） */
+(function(){
+ if(!('serviceWorker' in navigator)||!/^https?:/.test(location.protocol))return;
+ var SW=navigator.serviceWorker,had=!!SW.controller,K='kh27-swreload',pending=false;
+ var dirty=function(){var a=document.activeElement;return !!(a&&/^(INPUT|TEXTAREA)$/.test(a.tagName)&&a.value)};
+ var go=function(){var t=+sessionStorage.getItem(K)||0;if(Date.now()-t<20000)return;try{sessionStorage.setItem(K,Date.now())}catch(e){}location.reload()};
+ var tryGo=function(){if(!pending)return;if(dirty())return;pending=false;go()};
+ SW.addEventListener('controllerchange',function(){if(!had){had=true;return}pending=true;tryGo()});
+ document.addEventListener('focusout',function(){setTimeout(tryGo,300)});
+ document.addEventListener('visibilitychange',function(){
+  if(document.visibilityState==='hidden'){if(pending){pending=false;go()}return}
+  SW.getRegistration().then(function(r){if(r)r.update().catch(function(){})}).catch(function(){});
+ });
+})();
+</script>
+<script>
 /* 「京都、慢日子。」主題的小輔助（只在 html.kyoto-theme 時動作，不改原本的資料與事件）：
    1. 「旅費」入口：捲到道具區並切到原有的「交通預算」分頁
    2. 手機／平板的日卡改成直排清單，換日期後改捲到當日內容（原本捲到清單頂端會看不到內容）
-   3. 上方列改成苔綠色，網址列顏色跟著調整（夜間模式維持原本的顏色） */
+   3. 上方列改成苔綠色，網址列顏色跟著調整（夜間模式維持原本的顏色）
+   4. V2：原本的快捷鈕 #qb 移到頁首當「選單」；日期列 #dch 從頁首移到每日行程區（id 不變，原本的切換程式照常運作）
+   5. V2：底部導覽「首頁」回到封面；選單內顯示目前快取版本 */
 (function(){
  var R=document.documentElement;if(!R.classList.contains('kyoto-theme'))return;
+ var $=function(s){return document.querySelector(s)};
+ var qb=$('#qb'),hb=$('header .hb'),dch=$('#dch'),strip=$('#strip');
+ if(qb&&hb){qb.setAttribute('aria-label','選單');hb.appendChild(qb)}
+ if(dch&&strip)strip.parentNode.insertBefore(dch,strip);
+ var hm=$('.kc-home');if(hm)hm.addEventListener('click',function(){scrollTo({top:0,behavior:'smooth'})});
+ if('caches' in window)caches.keys().then(function(ks){var k=ks.filter(function(x){return x.indexOf('trip-')===0})[0];var v=$('#kcver');if(v&&k)v.textContent='目前 '+k.slice(5)}).catch(function(){});
+ addEventListener('resize',function(){var h=$('header');if(h)R.style.setProperty('--hh',h.offsetHeight+'px')});
+ var h0=$('header');if(h0)R.style.setProperty('--hh',h0.offsetHeight+'px');
  document.addEventListener('click',function(e){
   var t=e.target.closest&&e.target.closest('[data-kc-tab]');
   if(t){var b=document.querySelector('#tabs [data-p="'+t.getAttribute('data-kc-tab')+'"]');if(b&&!b.classList.contains('on'))b.click()}

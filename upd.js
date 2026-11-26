@@ -15,7 +15,7 @@
    var txt=await (await fetch('sw.js?ts='+Date.now(),{cache:'no-store'})).text();
    var v=(txt.match(/VERSION\s*=\s*'([^']+)'/)||[])[1];
    var ks=('caches' in window)?await caches.keys():[];
-   var cur=ks.filter(function(k){return k.indexOf('trip-')===0})[0];
+   var cur=ks.indexOf('trip-'+v)>=0?'trip-'+v:ks.filter(function(k){return k.indexOf('trip-')===0})[0];/* 有新版快取就算最新（舊快取可能暫時保留當備援） */
    if(!v){toast('無法取得版本，請稍後再試');busy=false;return}
    if(cur==='trip-'+v){toast('已是最新版（'+v+'）');busy=false;return}
    toast('發現新版，更新中…');

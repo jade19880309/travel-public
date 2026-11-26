@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex,nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>京阪頁圖片與離線診斷</title>
+<style>
+body{margin:0;font:15px/1.6 system-ui,-apple-system,"PingFang TC","Microsoft JhengHei",sans-serif;background:#f4eddf;color:#302b28;padding:calc(14px + env(safe-area-inset-top)) 14px calc(24px + env(safe-area-inset-bottom))}
+h1{font-size:20px;margin:0 0 4px}p{margin:4px 0}
+.row{display:grid;grid-template-columns:72px 1fr;gap:10px;align-items:center;margin:10px 0;padding:10px;border:1px solid #dccdb0;border-radius:10px;background:#fbf6ea}
+.row img{width:72px;height:48px;object-fit:cover;background:#ece3d0;border-radius:4px}
+.ok{color:#2f6b3a;font-weight:700}.bad{color:#962f36;font-weight:700}
+pre{white-space:pre-wrap;word-break:break-all;background:#fff;border:1px solid #dccdb0;border-radius:10px;padding:10px;font-size:12.5px}
+button,a.b{display:inline-block;min-height:44px;padding:10px 16px;margin:6px 6px 0 0;border-radius:8px;border:1px solid #962f36;background:#962f36;color:#fff;font:inherit;text-decoration:none}
+a.b{background:#fff;color:#962f36}
+#sa{position:fixed;left:0;top:0;width:0;height:0;padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);visibility:hidden}
+</style>
+</head>
+<body>
+<h1>京阪頁圖片與離線診斷</h1>
+<p>同一張主視覺分別用 JPEG／PNG／WebP 載入，並檢查快取與 Service Worker。完成後按「複製報告」貼給維護者。</p>
+<div id="rows"></div>
+<button id="copy" type="button">複製報告</button><button id="again" type="button">重新檢測</button><a class="b" href="keihan.html">回京阪頁</a>
+<pre id="out">檢測中…</pre>
+<div id="sa"></div>
+<script>
+(function(){
+var IMGS=[['JPEG','images/keihan-2027/classic/hero.jpg'],['PNG','images/keihan-2027/classic/hero.png'],['WebP','images/keihan-2027/classic/hero.webp']];
+var out=document.getElementById('out'),rows=document.getElementById('rows'),L=[];
+function line(s){L.push(s);out.textContent=L.join('\n')}
+function decodeTest(src){return new Promise(function(res){var i=new Image(),t0=performance.now();var done=function(ok,why){res({ok:ok,why:why,w:i.naturalWidth,h:i.naturalHeight,ms:Math.round(performance.now()-t0),img:i})};
+ i.onload=function(){if(i.decode){i.decode().then(function(){done(true,'')},function(e){done(false,'decode() 失敗：'+(e&&e.message||e))})}else done(true,'')};
+ i.onerror=function(){done(false,'onerror')};i.src=src})}
+async function run(){
+ L=[];rows.innerHTML='';
+ var sa=getComputedStyle(document.getElementById('sa'));
+ line('時間：'+new Date().toString());
+ line('網址：'+location.href);
+ line('UA：'+navigator.userAgent);
+ line('主畫面 App：'+((navigator.standalone||(window.matchMedia&&matchMedia('(display-mode: standalone)').matches))?'是':'否')+'　連線：'+(navigator.onLine?'在線':'離線'));
+ line('螢幕：'+screen.width+'×'+screen.height+' @'+devicePixelRatio+'x　視窗：'+innerWidth+'×'+innerHeight);
+ line('安全區（上右下左）：'+[sa.paddingTop,sa.paddingRight,sa.paddingBottom,sa.paddingLeft].join(' '));
+ var sw='serviceWorker' in navigator,reg=null;
+ if(sw){try{reg=await navigator.serviceWorker.getRegistration()}catch(e){}}
+ line('Service Worker：'+(sw?'支援':'不支援')+'　註冊：'+(reg?'有':'無')+'　控制本頁：'+(sw&&navigator.serviceWorker.controller?'是':'否')+(reg&&reg.waiting?'　（有新版等待中）':''));
+ var ks=[];try{ks=await caches.keys()}catch(e){}
+ line('快取名稱：'+(ks.join(', ')||'（無）'));
+ try{var t=await (await fetch('sw.js?ts='+Date.now(),{cache:'no-store'})).text();line('網站上的 sw.js 版本：'+((t.match(/VERSION\s*=\s*'([^']+)'/)||[])[1]||'?'))}catch(e){line('網站上的 sw.js 版本：無法取得（'+e.message+'）')}
+ line('');
+ for(var k=0;k<IMGS.length;k++){
+  var fmt=IMGS[k][0],src=IMGS[k][1],r={};
+  try{var res=await fetch(src+'?diag='+Date.now(),{cache:'no-store'});var b=await res.blob();r.http=res.status+' '+(res.headers.get('content-type')||'?')+' '+b.size+' bytes'}catch(e){r.http='直接連線失敗：'+e.message}
+  var hit=null;try{hit=await caches.match(src,{ignoreSearch:true})}catch(e){}
+  r.cache=hit?('有（'+(hit.headers.get('content-type')||'?')+'）'):'無';
+  var d=await decodeTest(src);r.dec=d.ok?('成功 '+d.w+'×'+d.h+'，'+d.ms+'ms'):('失敗：'+d.why);
+  var d2=null;if(hit){try{var u=URL.createObjectURL(await hit.blob());d2=await decodeTest(u);URL.revokeObjectURL(u)}catch(e){d2={ok:false,why:e.message}}}
+  r.cdec=d2?(d2.ok?'成功 '+d2.w+'×'+d2.h:'失敗：'+d2.why):'（無快取可測）';
+  var row=document.createElement('div');row.className='row';d.img.alt=fmt;row.appendChild(d.img);
+  var info=document.createElement('div');info.innerHTML='<b>'+fmt+'</b>　<span class="'+(d.ok?'ok':'bad')+'">'+(d.ok?'可顯示':'無法顯示')+'</span><br><small>'+src+'</small>';row.appendChild(info);rows.appendChild(row);
+  line('['+fmt+'] '+src);line('  直接下載：'+r.http);line('  快取：'+r.cache);line('  解碼（網址）：'+r.dec);line('  解碼（快取內容）：'+r.cdec);
+ }
+}
+document.getElementById('again').onclick=run;
+document.getElementById('copy').onclick=function(){var s=L.join('\n');(navigator.clipboard?navigator.clipboard.writeText(s):Promise.reject()).then(function(){alert('已複製')},function(){var t=document.createElement('textarea');t.value=s;document.body.appendChild(t);t.select();try{document.execCommand('copy');alert('已複製')}catch(e){alert('無法自動複製，請長按下方文字複製')}t.remove()})};
+run();
+if('serviceWorker' in navigator&&/^https?:/.test(location.protocol))navigator.serviceWorker.register('sw.js').catch(function(){});
+})();
+</script>
+</body>
+</html>
