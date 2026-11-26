@@ -60,6 +60,12 @@
 - 三個 manifest 的 maskable 改指向同一張 512（不另存一份）；theme_color／background_color **沒改**。`index.html`（id ti/fi，沒有程式在用）、`hk.html`、`tokyo.html` 的 apple-touch-icon／icon 與 `sw.js` CORE 已改新檔名。舊檔保留在 repo。
 - 現況：首頁（11/26 皮革手帳版）、京阪（V2）、首爾、港珠澳、東京都已是新版；**露營車 `campervan.html` 沒有 manifest 和圖示**（使用者這次沒要求，未處理）；偏航 `detour/` 動態圖示不動。
 - 已加到主畫面的 App 要刪掉重加才會換圖示；iPhone 實機顯示未驗證。
+## 首爾 V3 iPhone 修正（2026/11/26，sw v200）
+- 使用者回報 iPhone 讀不到（v199 上線後）。GitHub Pages 部署成功（run #208）；雲端環境連不到 github.io，也沒有 WebKit 可測，以下是依程式碼判斷的原因與修正，**尚待使用者在 iPhone 實機確認**。
+- 原因（推測）：v199 的 `.paper3`／`.sheet3`／展開日卡都用兩層 `filter:drop-shadow`，iOS Safari 會替每個元素開獨立合成圖層；高的卡片（展開日卡約 1000px、美食、價格區塊）一多就記憶體不足，分頁出現「重複發生問題」並不斷重新載入，或卡片整塊空白。
+- 修正：新增 `v3/paper-s.png`（paper.png 外加 10px 柔和陰影，烘進圖片），紙卡改用 `border-image: url(paper-s.png) 34 fill / 17px / 0 stretch` 九宮格繪製，四角與手撕邊不隨卡片高度變形；拿掉紙卡、紙卡區塊、展開日卡、福袋的 filter（展開日卡改為標題變主色）。只剩封面書法標題一個小 filter。
+- 測試：Chromium 375／390／768／1440 無溢出、無錯誤；功能 25 項通過。**之後若再加卡片陰影，不要用 filter，用 paper-s.png。**
+
 ## 首爾 V3.0 韓系新春水彩手帳（2026/11/26，sw v199，使用者提供 seoul-winter-v3.zip；目前預設版面）
 - 使用者指示：停止沿用 V2.1 版型，改以 V3.0 為基準；依序讀 `V3-CLAUDE.md`、`V3-design-reference.webp`、`reference-v3.html`、`seoul-v3.css`、`images/seoul-2027/v3/`。不得重畫或簡化美術元件；每日卡依新版 HTML 結構重建視覺層；設計稿的航班、日期、行程文字、人數只是排版示意，**沒有寫進網站**。zip 的 decor 31 張與 `seoul-v2.css` 與 repo 相同；參考圖、參考 HTML、`seoul-v3.css` 原檔**不放進 repo**（數值已照搬進 `seoul-v3-site.css`）。
 - 檔案：
