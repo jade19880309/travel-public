@@ -74,7 +74,23 @@
 - 露營車：頂部改品牌列「露營車之旅」＋返回鍵；封面換 `campervan-hero.webp`＋標題；4 個圖示鍵（行程總覽 `ov`、里程地圖 `mp`、RV Park、酒藏巡禮＝`rvSet()`＋`go('rv')`，只放頁面原有的分頁，沒有新增「美食／購物／露營裝備」等示意圖裡的假功能）；原 `#tabs` 移到「露營車行程」標題下並黏在品牌列下；總覽頁加 DAY 1～4 日程卡（標題取自 `D[lang].dN[0]`）；每日標題換水彩圖示。日文模式（`#lgb`）品牌列／圖示鍵文字會跟著換（`render` 被包一層呼叫 `post()`）。
 - 素材：`images/forest-journal-v2/`（zip 內 4 張橫幅 webp＋13 張 256×256 圖示 png，`design-reference.png` 沒放進 repo）。圖示保留紙色底與底部檔名殘字，CSS 用 `background-position` 裁切＋`mix-blend-mode:multiply`＋圓形漸層遮罩融入紙卡。橫幅原檔只有約 361×122，大螢幕放大會偏糊（README 已說明是低解析裁切）。
 - **補件（2026/11/26，sw v172～v174，`forest-v2-supplement.zip`）**：新增 `washi-texture.webp`（body 平鋪＋米白薄層）、`leaf-branch.png`（品牌列與所有區塊標題兩側，取代 V1 `leaf.webp`）、`wood-sign.png`（「我的東京行程」「露營車行程」標題木牌，JS 包 `span.fj2-sign`）、`cloud.png`（封面標題後方柔光）、`tape.png`（上半綠格紋貼東京倒數卡、下半藍點貼露營車日程卡）、`hydrangea.png`（倒數卡左下、日程卡右下）、`icon-sake.png`（酒藏巡禮鍵，取代書本）；4 張橫幅換成同檔名的 623px 版（原 361px）。全部不透明紙色底，用 `mix-blend-mode:multiply` 融入；**放裝飾的容器不能建立堆疊層（z-index／isolation），否則會出現淺色方框**；另外 `html` 要有自己的底色（body 背景被提升到畫布時 Chrome 不和它混合），素材再加 `filter:brightness(1.06)` 讓紙色變白，方框才完全消失。`reference.png` 只供比對，沒放進 repo。
-- 仍缺（README 自述）：素材是合成圖裁切，不是高解析原畫；桌機版橫幅（760px 寬）仍偏糊，需要使用者提供 1920px 原檔。示意圖上的 leaf-corner／leaf-fall／grass-flowers／leaf-accent、paper／sky／wash-green 紋理、512px 圖示**本包沒有**，沒用到。里程地圖仍用 `icon-fuji.png`。
+- （補件時期的「仍缺」已由 V2.2 補齊大部分，見下方 V2.2。）
+- **V2.2 素材（2026/11/26，sw v177，`forest-journal-v22.zip`）**：
+  - 主封面：`tokyo-hero.webp`、`campervan-hero.webp` 換成 1672×941 原畫（README：獨立生成、原生解析度、未放大），桌機 760px 寬也清楚。其他橫幅：`asakusa-banner` 833×320、`footer-fuji` 836×320，README 自述仍未達原訂規格。
+  - PNG：全部是 512×512 RGBA 透明底，圖案四周留白。**multiply、brightness、圖示的圓形遮罩都已移除**，改用 `background-size`／`object-fit` 處理留白：
+    - 葉片：`100% auto` 裁上下留白。
+    - 木牌：`109% 154%`，讓木板剛好包住標題字。
+    - 紙膠帶：`104% 250%`。新版只有一條綠斜紋，兩處共用。
+    - 繡球花：`122% auto`。
+    - 圖示紙卡與日卡縮圖：用 `contain` 完整顯示。新圖示幾乎占滿畫布高度，用 cover 會切掉上下；縮圖底色改淡綠 `#eef2e4`。
+  - 雲朵：不再被 multiply 淡化，原本大小會蓋住露營車和富士山，所以縮成標題後方的扁長範圍（東京 inset、露營車 `aspect-ratio:3.3`，不透明度 .45～.55）。
+  - 新圖示 `icon-map.png` 用在露營車「里程地圖」（取代富士山）。
+  - 和紙紋理 `washi-texture.webp` 改成 1024×1024，以 512px 平鋪。
+  - 舊主題的標題虛線底線（`theme-fuji.css` 的 `h2::after` 的 border-top）會疊在右側葉片上，已在 V2 清掉。
+  - `html.fj2` 底色和 `.fj2-cdcard{z-index:auto}` 保留：不影響透明圖，之後若又遇到不透明素材還用得到。
+  - 已放進 repo、但版面還沒用、也**沒加進 SW 快取**的素材：`paper-texture.webp`、`sky-texture.webp`、`wash-green.webp`、`leaf-corner.png`、`leaf-corner-r.png`、`leaf-fall.png`、`leaf-accent.png`、`grass-flowers.png`。要用時記得加進 `sw.js` 的 CORE。
+  - 注意：`hydrangea.png` 左緣有一小點黃色雜點（素材本身，約 x=20、y=170），目前位置不明顯。V2 快取量增加到約 6.5 MB（兩張封面各約 900 KB、圖示各約 200～320 KB），第一次離線快取會比較久。
+  - 測試（本機）：375／390／430／1280px 無橫向溢出、無破圖。東京：導覽、Day 分頁展開、工具選單換算、天氣城市名單行。露營車：酒藏（13 間）、里程地圖、DAY 3 日程卡。iPhone 實機仍未測。
 - 切換／復原：`?theme=classic`＝原版（v168 的復原機制，照舊）；`?theme=v1`＝森林手帳第一版（v168 外觀）；`?theme=forest`＝V2（預設）。都記在 localStorage `theme`。永久拿掉 V2＝刪兩頁 `<html>` 的 `fj2`、`theme-forest-v2.css` link、`forest-v2.js` script，或 `git revert` V2 那個 commit。改版前版本：`3cc7ad2`（sw v170）；森林 V1 基準 `1311076`（v168）。
 - 測試（本機 PowerShell HttpListener＋Claude 內建瀏覽器）：375／390／430／1280 無橫向溢出；東京：功能紙卡跳轉與高亮、☰、Day 分頁↔底部日期列同步、展開日卡、方案切換（方案三 6 天）、待辦勾選、換算／字體／更新鈕、倒數；露營車：4 個圖示鍵、RV／酒藏切換（13 間）、總覽日程卡→DAY 3、行程點勾選、日文切換、分頁黏頂；`?theme=classic`／`?theme=v1` 正常；首爾頁無錯誤。
 - **V2.1 介面修正（2026/11/26）**，全部在 `forest-v2.js`／`theme-forest-v2.css` 末段，只作用在 `html.fj2`（東京、露營車）；`upd.js`、`sw.js` 的機制沒改（只升 VERSION）：

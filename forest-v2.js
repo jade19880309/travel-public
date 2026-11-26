@@ -143,7 +143,7 @@
   hero.insertAdjacentHTML('afterbegin','<div class="fj2-cover"><img class="fj2-cimg" src="'+IMG+'campervan-hero.webp" alt="富士山湖畔與露營車水彩插畫" fetchpriority="high"></div>');
   var ti=$('#ti');ti.insertAdjacentHTML('afterend','<p class="fj2-en" lang="en">Campervan Trip</p>');
   // 功能圖示紙卡：只放頁面原本就有的分頁
-  var KEYS=[['ov','schedule'],['mp','fuji'],['rv','camper','rv'],['rv','sake','brew']];
+  var KEYS=[['ov','schedule'],['mp','map'],['rv','camper','rv'],['rv','sake','brew']];
   var grid=document.createElement('nav');grid.className='fj2-keys';grid.setAttribute('aria-label','功能選單');
   grid.innerHTML=KEYS.map(function(k,i){return '<button type="button" data-fk="'+i+'"><i aria-hidden="true" style="background-image:url('+ic(k[1])+')"></i><span></span></button>'}).join('');
   hero.after(grid);
