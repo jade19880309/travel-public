@@ -394,3 +394,12 @@ html.th-han.sv3 #days .dl3 .tg .pill{white-space:normal;overflow:visible;text-ov
 html.th-han.sv3 #days .daybadge{font-size:calc(21px / var(--z,1));padding:calc(3px / var(--z,1)) calc(12px / var(--z,1)) calc(4px / var(--z,1)) calc(9px / var(--z,1))}
 html.th-han.sv3 #days .ddate{font-size:calc(13px / var(--z,1))}
 @media (min-width:1100px){html.th-han.sv3 #days .daybadge{font-size:calc(26px / var(--z,1))}}
+/* 天氣卡（v204 修正）：連網後是「標題列＋天氣面板」上下兩塊，不可左右並排（iPhone 大字體會重疊） */
+html.th-han.sv3 #wx.quick3{display:block}
+html.th-han.sv3 #wx.quick3 .wxh{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:0 2px 6px;flex-wrap:nowrap}
+html.th-han.sv3 #wx.quick3 .wxh b{white-space:nowrap;font-size:14px}
+html.th-han.sv3 #wx.quick3 .wxh span{font-size:11.5px;text-align:right;white-space:nowrap}
+html.th-han.sv3 #wx.quick3 .wxh:only-child{margin-bottom:0;flex-wrap:wrap}
+html.th-han.sv3 #wx.quick3 .wxh:only-child span{white-space:normal;text-align:left}
+html.th-han.sv3 #wx.quick3 .wxi3{display:none}
+@media (max-width:759px){html.th-han.sv3 .count3 .wish3{font-size:calc(14px / var(--z,1));white-space:nowrap}}
