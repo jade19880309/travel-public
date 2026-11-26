@@ -8,7 +8,7 @@
  var $=function(s,r){return (r||document).querySelector(s)},$$=function(s,r){return [].slice.call((r||document).querySelectorAll(s))};
  var IMG='images/forest-journal-v2/';
  var ic=function(n){return IMG+'icon-'+n+'.png'};
- var LEAF='images/forest-journal/leaf.webp';
+ var LEAF='images/forest-journal-v2/leaf-branch.png';
  var EMO=/^\s*(?:[←-⯿☀-➿️‍]|[\uD83C-\uDBFF][\uDC00-\uDFFF])+\s*/;
  var swapImg=function(img,src){if(!img)return;var old=img.getAttribute('src');img.onerror=function(){img.onerror=null;img.src=old};img.src=src};
 
@@ -46,7 +46,7 @@
 
   // ---- 區塊標題：去表情符號，兩側水彩葉片 ----
   $$('main>section[id]>h2').forEach(function(h){h.innerHTML=h.innerHTML.replace(EMO,'');h.classList.add('fj2-h')});
-  var ph=$('#plan>h2');if(ph)ph.textContent='我的東京行程';
+  var ph=$('#plan>h2');if(ph)ph.innerHTML='<span class="fj2-sign">我的東京行程</span>';
 
   // ---- 每日行程：方案卡、日期分頁（代按下方日期列）、行程卡片縮圖 ----
   $$('#plan .plans .pic,#days .dic').forEach(toWC);
@@ -88,7 +88,7 @@
   hero.insertAdjacentHTML('afterbegin','<div class="fj2-cover"><img class="fj2-cimg" src="'+IMG+'campervan-hero.webp" alt="富士山湖畔與露營車水彩插畫" fetchpriority="high"></div>');
   var ti=$('#ti');ti.insertAdjacentHTML('afterend','<p class="fj2-en" lang="en">Campervan Trip</p>');
   // 功能圖示紙卡：只放頁面原本就有的分頁
-  var KEYS=[['ov','schedule'],['mp','fuji'],['rv','camper','rv'],['rv','japanese','brew']];
+  var KEYS=[['ov','schedule'],['mp','fuji'],['rv','camper','rv'],['rv','sake','brew']];
   var grid=document.createElement('nav');grid.className='fj2-keys';grid.setAttribute('aria-label','功能選單');
   grid.innerHTML=KEYS.map(function(k,i){return '<button type="button" data-fk="'+i+'"><i aria-hidden="true" style="background-image:url('+ic(k[1])+')"></i><span></span></button>'}).join('');
   hero.after(grid);
@@ -102,7 +102,7 @@
   // 每天的縮圖（總覽頁的日程卡；分頁本身不變）
   var DIC={d1:'camper',d2:'forest',d3:'fuji',d4:'city'};
   var post=function(){
-   var l=L();$('.fj2-brand b',bar).textContent=l.brand;sech.textContent=l.sec;
+   var l=L();$('.fj2-brand b',bar).textContent=l.brand;sech.innerHTML='<span class="fj2-sign">'+l.sec+'</span>';
    $$('span',grid).forEach(function(s,i){s.textContent=l.keys[i]});
    var p=document.body.dataset.p;
    $$('button',grid).forEach(function(b,i){var k=KEYS[i],sub=k[2];var rvs='rv';try{rvs=localStorage.getItem('rvs')||'rv'}catch(e){}b.classList.toggle('on',p===k[0]&&(!sub||sub===rvs))});

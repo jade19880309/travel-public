@@ -150,3 +150,34 @@ html.fj2 body[data-p=d1] .ph,html.fj2 body[data-p=rv] .ph{--ic:url(images/forest
 html.fj2 body[data-p=d2] .ph{--ic:url(images/forest-journal-v2/icon-forest.png)}
 html.fj2 body[data-p=d3] .ph{--ic:url(images/forest-journal-v2/icon-fuji.png)}
 html.fj2 body[data-p=d4] .ph{--ic:url(images/forest-journal-v2/icon-city.png)}
+
+/* ===== V2 補件（2026/11/26，forest-v2-supplement.zip）=====
+   素材為合成圖裁切、PNG 不透明（紙色底），一律 multiply 融入和紙底；不重畫、不改色。 */
+/* 和紙紋理：washi-texture.webp 平鋪，上面蓋一層米白讓文字對比不變 */
+html.fj2 body{background:linear-gradient(#f6f1e5d6,#f6f1e5d6),url(images/forest-journal-v2/washi-texture.webp) 0 0/138px 73px repeat,#f6f1e5}
+/* 葉片枝條：品牌列與區塊標題兩側 */
+html.fj2 .fj2-brand img{width:44px;height:22px;mix-blend-mode:multiply}
+html.fj2 section[id] h2.fj2-h::before,html.fj2 h2.fj2-h::after,html.fj2 .fj2-sech::before,html.fj2 .fj2-sech::after{width:52px;height:26px;background:url(images/forest-journal-v2/leaf-branch.png) center/contain no-repeat!important;mix-blend-mode:multiply;opacity:1}
+/* 木牌：主要行程標題（我的東京行程／露營車行程） */
+html.fj2 #plan>h2.fj2-h,html.fj2 .fj2-sech{position:relative}
+html.fj2 #plan>h2.fj2-h span.fj2-sign,html.fj2 .fj2-sech span.fj2-sign{position:relative;display:inline-block;padding:12px 26px 14px;background:url(images/forest-journal-v2/wood-sign.png) center/100% 100% no-repeat;mix-blend-mode:multiply;color:#3b2a18;text-shadow:0 1px 0 #f3d9a8}
+/* 雲朵：封面標題後方的柔光底，提升標題可讀性 */
+html.fj2 .fj2-title::before,html.fj2 .fj2-hero .fj2-cover::after{content:"";position:absolute;z-index:-1;pointer-events:none;background:url(images/forest-journal-v2/cloud.png) center/contain no-repeat;mix-blend-mode:multiply;opacity:.55}
+html.fj2.th-fuji .fj2-title{z-index:0}
+html.fj2.th-fuji .fj2-title::before{inset:-18px -26px -14px -30px}
+html.fj2:not(.th-fuji) .fj2-hero .fj2-cover{position:relative}
+html.fj2:not(.th-fuji) .fj2-hero .fj2-cover::after{z-index:0;left:50%;top:0;width:min(78%,420px);aspect-ratio:177/87;transform:translateX(-50%)}
+html.fj2:not(.th-fuji) .fj2-hero #ti,html.fj2:not(.th-fuji) .fj2-hero .fj2-en{z-index:1}
+/* 紙膠帶＋繡球花：倒數紙卡（東京）、日程卡區（露營車） */
+html.fj2 .fj2-cdcard::before,html.fj2 .fj2-days::before{content:"";position:absolute;left:50%;top:-11px;width:96px;height:24px;transform:translateX(-50%) rotate(-3deg);
+ background:url(images/forest-journal-v2/tape.png) 0 0/100% 200% no-repeat;mix-blend-mode:multiply;opacity:.9;pointer-events:none}
+html.fj2 .fj2-cdcard::after,html.fj2 .fj2-days::after{content:"";position:absolute;left:-12px;bottom:-16px;width:74px;height:40px;background:url(images/forest-journal-v2/hydrangea.png) center/contain no-repeat;mix-blend-mode:multiply;pointer-events:none}
+html.fj2 .fj2-days{position:relative}
+html.fj2 .fj2-days::before{background-position:0 100%;top:-14px}
+html.fj2 .fj2-days::after{left:auto;right:-10px;bottom:-18px}
+/* 新版橫幅比例 623×113：住宿雷門橫幅高度跟著放寬 */
+html.fj2.th-fuji.forest-journal .fj2-bnr img{object-position:50% 50%}
+/* 酒藏圖示：圖檔較寬（128×98），置中不裁 */
+html.fj2 .fj2-keys button i[style*="icon-sake"]{background-size:auto 92%;background-position:center}
+/* 讓繡球花／紙膠帶的 multiply 能和頁面和紙融合（不要建立獨立堆疊層） */
+html.fj2.th-fuji.forest-journal .fj2-cdcard{z-index:auto}
