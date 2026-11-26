@@ -140,7 +140,7 @@
   $('.wrap',bar).insertAdjacentHTML('afterbegin','<div class="fj2-brand"><a class="fj2-backi" href="tokyo.html" aria-label="回東京行程"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></a><img src="'+LEAF+'" alt="" aria-hidden="true"><b></b><img class="r" src="'+LEAF+'" alt="" aria-hidden="true"></div>');
   // 封面：露營車湖畔水彩＋標題
   hero.classList.add('fj2-hero');
-  hero.insertAdjacentHTML('afterbegin','<div class="fj2-cover"><img class="fj2-cimg" src="'+IMG+'campervan-hero.webp" alt="富士山湖畔與露營車水彩插畫" fetchpriority="high"></div>');
+  hero.insertAdjacentHTML('afterbegin','<div class="fj2-cover"><img class="fj2-cimg" src="'+IMG+'campervan-hero-lavender.webp" alt="富士山、薰衣草花田與露營車水彩插畫" fetchpriority="high"></div>');
   var ti=$('#ti');ti.insertAdjacentHTML('afterend','<p class="fj2-en" lang="en">Campervan Trip</p>');
   // 功能圖示紙卡：只放頁面原本就有的分頁
   var KEYS=[['ov','schedule'],['mp','map'],['rv','camper','rv'],['rv','sake','brew']];
