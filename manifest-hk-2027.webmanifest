@@ -11,17 +11,17 @@
   "theme_color": "#0a6c85",
   "icons": [
     {
-      "src": "icon-hk-192.png",
+      "src": "icon-hk-v2-192.png",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "icon-hk-512.png",
+      "src": "icon-hk-v2-512.png",
       "sizes": "512x512",
       "type": "image/png"
     },
     {
-      "src": "icon-hk-maskable-512.png",
+      "src": "icon-hk-v2-512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable"

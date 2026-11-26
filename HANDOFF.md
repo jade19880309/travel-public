@@ -52,6 +52,15 @@
 - **未驗證（需使用者）**：iPhone Safari 與主畫面 App 實機（瀏海、底部安全區、Yuji Syuku 在 iOS 的載入、之前 WebP 破圖的真正原因——請在 iPhone 開 `kyoto-diag.html` 複製報告）；GitHub Pages 線上的更新接管流程只做了部署後檢查（見下一點），沒有在線上模擬兩次版本更新。
 - **與定稿仍有的落差（缺素材，未自行重畫）**：楓葉、秋葉角落裝飾、日卡撕紙邊、卡片內小插圖（人力車、章魚燒）、標題旁朱色筆刷圈、「查看完整行程」按鈕（單頁版沒有獨立行程頁，加了等於無作用按鈕）；日卡項目列是 JSON 的路線文字，不是定稿的三點條列；統計是 4 格（京都 3 晚／大阪 1 晚分開，依資料）。
 
+## 主畫面圖示更新：首爾、港珠澳、東京（2026/11/26，sw v192；使用者指示「三個都換」）
+- 舊的 11/20 宣紙水墨字樣圖示（`icon-*.png`、`icon-hk-*.png`、`icon-tokyo-*.png`）換成各自改版主視覺的正方形裁切，不是重畫：
+  - 首爾 `icon-v2-180/192/512.png` ← `images/seoul-2027/decor/hero-winter.jpg`（x 560、941×941：雪中韓屋巷弄＋南山塔）
+  - 港珠澳 `icon-hk-v2-180/192/512.png` ← `images/hk-2027/retro/hero-m.webp`（x 54、500×500：香港霓虹招牌、叮叮車、「港珠澳」題字、維港夜景）。原圖是寬幅海報，正方形裁切時左側霓虹框、上方英文副標與「三城一程・4天3夜」標籤會被切到一點，這是取捨。
+  - 東京 `icon-tokyo-v2-180/192/512.png` ← `images/forest-journal-v2/tokyo-hero.webp`（x 600、941×941：淺草雷門＋晴空塔；這張沒有吉卜力角色，只有一般路人）
+- 三個 manifest 的 maskable 改指向同一張 512（不另存一份）；theme_color／background_color **沒改**。`index.html`（id ti/fi，沒有程式在用）、`hk.html`、`tokyo.html` 的 apple-touch-icon／icon 與 `sw.js` CORE 已改新檔名。舊檔保留在 repo。
+- 現況：首頁（11/26 皮革手帳版）、京阪（V2）、首爾、港珠澳、東京都已是新版；**露營車 `campervan.html` 沒有 manifest 和圖示**（使用者這次沒要求，未處理）；偏航 `stob/` 動態圖示不動。
+- 已加到主畫面的 App 要刪掉重加才會換圖示；iPhone 實機顯示未驗證。
+
 ## Seoul Winter：首爾冬日旅行手帳（2026/11/26，使用者提供 seoul-winter-kit 素材包＋手機版示意圖）
 - 做法：`index.html` 在 `app.js` 載入後，只有 `t=seoul-2027` 才載入 `seoul-winter.js`；它只搬動／包裝 app.js 畫好的元素（封面換 `hero-winter.webp`＋HTML 標題、功能列從頁首搬到封面下方並改 sticky 圖示鍵、倒數與日期移到 `.sw-top` 卡片、區塊標題去表情符號加小插畫、住宿卡插入 `hotel-2.jpg`、頁尾插畫），並在 `<html>` 加 `sw` class。樣式在 `theme-han.css` 最後的「Seoul Winter」區塊，全部以 `html.th-han.sw` 開頭。`app.js`、`style.css`、`trips/seoul-2027.json` 都沒改。
 - 每日行程卡圖片是 CSS 依 `#dy0`～`#dy5` 指定（飛機／廣藏小吃／冬季行李／景福宮／韓屋巷弄／行李箱），只是裝飾，不代表新增景點；日數變動要改這段。「Day N」用 CSS counter。
