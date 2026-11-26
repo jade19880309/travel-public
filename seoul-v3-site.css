@@ -259,3 +259,28 @@ html.th-han.sv3 .paper3,html.th-han.sv3 main>section.sheet3{background:none;bord
 html.th-han.sv3 #days .dy.day3.on .dh3{color:var(--accent)}
 html.th-han.sv3 #days .dy.day3.on .dl3{outline:0}
 html.th-han.sv3 .count3 .bag3{filter:none}
+
+/* ===================================================================
+   V3.1 補充素材（2026/11/26，sw v201）：新版 scene-1～6、國旗、相機、雪人、美食拼盤
+   插畫保留手撕邊與透明背景，不加白色遮罩、厚陰影或圓角外框
+   =================================================================== */
+html.th-han.sv3 #days .scene{border-radius:0;box-shadow:none;background:none}
+@media (min-width:1100px){html.th-han.sv3 #days .scene{aspect-ratio:auto;max-height:none;object-position:50% 50%!important}}
+/* 封面：國旗在書法標題右側 */
+html.th-han.sv3 .hero3 .flag3{position:absolute;z-index:2;right:3%;top:calc(env(safe-area-inset-top,0px) + 10px);width:clamp(54px,15vw,120px);height:auto;transform:rotate(6deg)}
+html.th-han.sv3 .hero3 .t3{width:70%}
+@media (min-width:1100px){html.th-han.sv3 .hero3 .flag3{right:calc(50% - 22% - 120px);top:26px}}
+/* 每日行程標題旁：底片相機 */
+html.th-han.sv3 main h2.section3 .cam3{width:58px;height:auto;margin-left:2px;transform:rotate(-8deg)}
+/* 頁尾：左美食拼盤、右雪人（取代 decor 小吃與天際線） */
+html.th-han.sv3 .foot3{height:236px}
+html.th-han.sv3 .foot3 .ffood3{left:-6px;bottom:-4px;width:64%;max-width:520px;z-index:1}
+html.th-han.sv3 .foot3 .fsnow3{right:-4px;bottom:-4px;width:34%;max-width:200px;z-index:1}
+html.th-han.sv3 .ftx3{padding:6px 40px 0}
+@media (min-width:760px){html.th-han.sv3 .foot3{height:280px}html.th-han.sv3 .foot3 .ffood3{width:46%}html.th-han.sv3 .foot3 .fsnow3{width:20%}html.th-han.sv3 .ftx3{padding-top:60px}}
+@media (max-width:759px){
+ html.th-han.sv3 .hero3 .flag3{right:4px;top:calc(env(safe-area-inset-top,0px) + 6px);width:50px}
+ html.th-han.sv3 .hero3 .t3{width:68%;margin-right:22px}
+ html.th-han.sv3 .foot3{height:196px}
+}
+html.th-han.sv3 .hero.hero3 .hero-bg{left:0;right:0;width:100%;max-width:none;margin:0;transform:none}

@@ -43,7 +43,7 @@
  hero.classList.add('hero3');
  if(bg){var old=bg.getAttribute('src');bg.onerror=function(){bg.onerror=null;bg.removeAttribute('srcset');bg.src=old};bg.sizes='(min-width:1000px) 1100px, 100vw';bg.srcset=DEC+'hero-winter-m.jpg 1000w, '+DEC+'hero-winter.jpg 1672w';bg.src=DEC+'hero-winter.jpg';bg.alt='';bg.setAttribute('fetchpriority','high')}
  var ttl=H.title||M.title||'';
- hero.insertAdjacentHTML('beforeend','<h1 class="t3"><img src="'+V3+'title.png" alt="首爾 서울 Seoul" fetchpriority="high"></h1><b class="band3">'+esc(ttl)+'</b>'+(H.eyebrow?'<small class="eb3">'+esc(H.eyebrow)+'</small>':''));
+ hero.insertAdjacentHTML('beforeend',img(V3+'flag.png','flag3')+'<h1 class="t3"><img src="'+V3+'title.png" alt="首爾 서울 Seoul" fetchpriority="high"></h1><b class="band3">'+esc(ttl)+'</b>'+(H.eyebrow?'<small class="eb3">'+esc(H.eyebrow)+'</small>':''));
 
  // ===== 功能列 nav3：手繪圖示＋文字（同一組連結，捲動標示照常） =====
  var nav=$('#hd nav');
@@ -94,10 +94,12 @@
 
  // ===== 每日行程 days3／day3：依 reference-v3.html 結構重建視覺層 =====
  // 左欄 46%：Day 水彩標籤（badge-1～6）＋日期同列、下方插畫；右欄：當日標題＋三項摘要（圖示 21px、文字 14px、自然換行）
- // 插畫依正式行程：2/3 飛機、2/4 明洞、2/5 玩雪、2/6 景福宮、2/7 韓屋（scene-5 為南山摩天輪，與行程不符，改用 decor 原圖 hanok-street 裁切）、2/8 機場
- var SCN=['scene-1.png','scene-2.png','scene-3.png','scene-4.png','scene-5-hanok.png','scene-6.png'];
+ // 插畫依正式日期（V3.1 補充包 1800×540，網頁用 900×270）：2/3 飛機、2/4 明洞、2/5 玩雪雪橇、2/6 景福宮、2/7 韓屋與溪流、2/8 機場
+ // 手機 1.9:1 裁切時各張主體位置不同，用 object-position 對準（SPOS）
+ var SCN=['scene-1.png','scene-2.png','scene-3.png','scene-4.png','scene-5.png','scene-6.png'],SPOS=['44%','46%','30%','66%','50%','42%'];
  var ACC=['#a84d59','#497da6','#537c63','#a96730','#78618f','#537c63'];
  var plain=function(s){var e=document.createElement('div');e.innerHTML=String(s||'').replace(/<a\b[^>]*class="xl"[^>]*>[\s\S]*?<\/a>/g,'');return (e.textContent||'').replace(EMO,'').replace(/\s+/g,' ').trim()};
+ var ph=$('#plan>h2.section3');if(ph)ph.insertAdjacentHTML('beforeend',img(V3+'camera.png','cam3',true));
  var dbox=$('#days');
  if(dbox){dbox.classList.add('days3');
   $$('.dy',dbox).forEach(function(el,k){var r=$('.dr',el);if(!r||el.hidden)return;var D=DAYS[k]||{};
@@ -108,7 +110,7 @@
    var li=its.map(function(x){return plain(x[1])}).filter(function(s){return s&&!/^(早餐|午餐|晚餐)$/.test(s)}).slice(0,3);
    var tg=$('.tg',r);
    r.classList.add('dr3');
-   r.insertAdjacentHTML('afterbegin','<span class="dl3"><span class="dayhead"><span class="daybadge" style="--badge:url('+V3+'badge-'+((k%6)+1)+'.png)">Day '+(k+1)+'</span><span class="ddate">'+esc(date)+'</span></span><img class="scene" src="'+V3+SCN[k%SCN.length]+'" alt="" loading="lazy"></span>'
+   r.insertAdjacentHTML('afterbegin','<span class="dl3"><span class="dayhead"><span class="daybadge" style="--badge:url('+V3+'badge-'+((k%6)+1)+'.png)">Day '+(k+1)+'</span><span class="ddate">'+esc(date)+'</span></span><img class="scene" src="'+V3+SCN[k%SCN.length]+'" style="object-position:'+SPOS[k%SPOS.length]+' 50%" alt="" loading="lazy"></span>'
     +'<span class="dr3r"><span class="dh3">'+esc(h)+'</span><span class="dul">'+li.map(function(s){return '<span class="dli"><img src="'+IC(pickIc(s))+'" alt="" aria-hidden="true"><span>'+esc(s)+'</span></span>'}).join('')+'</span></span>');
    if(tg)$('.dr3r',r).append(tg)})}
 
@@ -126,5 +128,5 @@
 
  // ===== 頁尾 foot3：韓式美食＋天際線＋手寫標語（文字取自行程資料） =====
  var ft=$('footer');
- if(ft)ft.insertAdjacentHTML('beforebegin','<div class="foot3">'+img(DEC+'seoul-skyline-cut.png','fsky3',true)+img(DEC+'street-food-cut.png','ffood3',true)+img(DEC+'plum-branch.png','fplum3',true)+'<div class="ftx3"><b>首爾冬日・新春旅行</b>'+((H.sub||[]).length?'<small>'+esc(H.sub.join('・'))+'</small>':'')+'</div></div>');
+ if(ft)ft.insertAdjacentHTML('beforebegin','<div class="foot3">'+img(V3+'food-spread.png','ffood3',true)+img(V3+'snowman.png','fsnow3',true)+img(DEC+'plum-branch.png','fplum3',true)+'<div class="ftx3"><b>首爾冬日・新春旅行</b>'+((H.sub||[]).length?'<small>'+esc(H.sub.join('・'))+'</small>':'')+'</div></div>');
 })();

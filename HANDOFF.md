@@ -60,6 +60,14 @@
 - 三個 manifest 的 maskable 改指向同一張 512（不另存一份）；theme_color／background_color **沒改**。`index.html`（id ti/fi，沒有程式在用）、`hk.html`、`tokyo.html` 的 apple-touch-icon／icon 與 `sw.js` CORE 已改新檔名。舊檔保留在 repo。
 - 現況：首頁（11/26 皮革手帳版）、京阪（V2）、首爾、港珠澳、東京都已是新版；**露營車 `campervan.html` 沒有 manifest 和圖示**（使用者這次沒要求，未處理）；偏航 `detour/` 動態圖示不動。
 - 已加到主畫面的 App 要刪掉重加才會換圖示；iPhone 實機顯示未驗證。
+## 首爾 V3.1 補充素材（2026/11/26，sw v201，使用者提供 seoul-winter-v3.1.zip）
+- 包內 10 張 RGBA PNG（README 註明：由新生成總圖裁切、去背後放大到指定尺寸，非原生 1800px 原畫）。合併到 `images/seoul-2027/v3/`，網頁版縮小並量化為 256 色（10 張原約 12MB → 約 0.9MB）：scene-1～6 1800×540→900×270、snowman 800→320、flag／camera 600×450→280×210、food-spread 1600×600→1000×375。原尺寸檔不放 repo（在 zip 內）。
+- 每日插畫依正式日期：2/3 scene-1 飛機、2/4 scene-2 明洞＋南山塔、2/5 scene-3 雪橇、2/6 scene-4 景福宮、2/7 scene-5 韓屋與溪流（新版符合行程，**不再用 v199 代用的 scene-5-hanok.png，已刪除**）、2/8 scene-6 機場。舊 scene-*.webp 已刪除，引用全部是 PNG。
+- 手機 1.9:1 裁切逐張對準主體：`seoul-winter.js` 的 `SPOS`＝44%／46%／30%／66%／50%／42%（飛機、街景、雪橇孩童、宮殿、溪橋、登機口＋飛機）；≥1100px 三欄用原比例不裁切。插畫不加圓角、陰影、白框，保留手撕邊與透明背景。
+- 新裝飾：`flag.png` 封面書法標題右側（手機 50px、標題縮為 68%）；`camera.png` 每日行程標題旁 58px；頁尾左 `food-spread.png`（64%）、右 `snowman.png`（34%），取代 v199 的 decor 小吃與天際線。
+- 順手修正：電腦版封面圖寬度被舊規則限制在 820px（封面框 1076px），改為滿版。
+- 測試：375／390／768／1440 無溢出、無錯誤、無破圖；功能 25 項通過；SW v201 快取 297 檔，斷網重新整理 V3.1 新圖全部顯示。**未測**：iPhone 實機。
+
 ## 首爾 V3 iPhone 修正（2026/11/26，sw v200）
 - 使用者回報 iPhone 讀不到（v199 上線後）。GitHub Pages 部署成功（run #208）；雲端環境連不到 github.io，也沒有 WebKit 可測，以下是依程式碼判斷的原因與修正；**使用者已在 iPhone 實機確認 v200 可正常開啟**。
 - 原因（推測）：v199 的 `.paper3`／`.sheet3`／展開日卡都用兩層 `filter:drop-shadow`，iOS Safari 會替每個元素開獨立合成圖層；高的卡片（展開日卡約 1000px、美食、價格區塊）一多就記憶體不足，分頁出現「重複發生問題」並不斷重新載入，或卡片整塊空白。
