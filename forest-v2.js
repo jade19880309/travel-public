@@ -12,6 +12,60 @@
  var EMO=/^\s*(?:[←-⯿☀-➿️‍]|[\uD83C-\uDBFF][\uDC00-\uDFFF])+\s*/;
  var swapImg=function(img,src){if(!img)return;var old=img.getAttribute('src');img.onerror=function(){img.onerror=null;img.src=old};img.src=src};
 
+ // ================= V2.1 共用：可展開工具選單＋版本提示 =================
+ // 工具選單：原本右下角的懸浮鈕（換算 #fxb、字體 #fs、語言 #lgb、更新 #upd）收進一顆「工具」鈕，點開才顯示；
+ // 按鈕本身與原有點擊功能都沒改，只改位置與顯示。往下捲動時工具鈕暫時淡出，停下或往上捲就回來，避免擋住卡片文字與箭頭。
+ var VER={loaded:null,latest:null,state:''};
+ function tools(ids){
+  var bs=ids.map(function(i){return document.getElementById(i)}).filter(Boolean);if(!bs.length)return;
+  var t=document.createElement('button');t.id='fj2-tools';t.type='button';t.setAttribute('aria-expanded','false');t.setAttribute('aria-label','工具選單（換算、字體、更新等）');
+  t.innerHTML='<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h2M10 17h10"/><circle cx="16" cy="7" r="2"/><circle cx="8" cy="17" r="2"/></svg><small>工具</small><i class="fj2-dot" hidden></i>';
+  var ver=document.createElement('div');ver.id='fj2-ver';ver.setAttribute('role','status');
+  document.body.append(ver,t);
+  bs.forEach(function(b,k){b.classList.add('fj2-tool');b.style.setProperty('--fj2-i',k+1)});
+  R.style.setProperty('--fj2-n',bs.length);
+  var open=function(v){document.body.classList.toggle('fj2-tools-open',v);t.setAttribute('aria-expanded',v);bs.forEach(function(b){if(v)b.removeAttribute('tabindex');else b.setAttribute('tabindex','-1')});if(v)document.body.classList.remove('fj2-tools-hide')};
+  open(false);requestAnimationFrame(function(){requestAnimationFrame(function(){document.body.classList.add('fj2-tools-ready')})});
+  t.onclick=function(e){e.stopPropagation();open(!document.body.classList.contains('fj2-tools-open'))};
+  document.addEventListener('click',function(e){if(!document.body.classList.contains('fj2-tools-open'))return;if(e.target.closest('#fj2-tools,.fj2-tool,.fxp,#fj2-ver'))return;open(false)});
+  addEventListener('keydown',function(e){if(e.key==='Escape')open(false)});
+  var ly=scrollY,tm=0;
+  addEventListener('scroll',function(){var y=scrollY;if(!document.body.classList.contains('fj2-tools-open')&&y>ly+4&&y>200)document.body.classList.add('fj2-tools-hide');else if(y<ly-4)document.body.classList.remove('fj2-tools-hide');ly=y;clearTimeout(tm);tm=setTimeout(function(){document.body.classList.remove('fj2-tools-hide')},900)},{passive:true});
+  verLine();
+ }
+ function verLine(){var v=$('#fj2-ver');if(!v)return;var s=VER.state;
+  v.innerHTML=s==='ready'?'<b>新版 '+VER.latest+' 已下載</b><button type="button" class="fj2-reload">重新載入套用</button>'
+   :s==='downloading'?'<b>發現新版 '+VER.latest+'</b><span>下載中，完成後會提示…</span>'
+   :s==='ok'?'<span>目前版本 '+VER.loaded+'・已是最新</span>'
+   :VER.loaded?'<span>目前版本 '+VER.loaded+'</span>':'';
+  var d=$('.fj2-dot');if(d)d.hidden=!(s==='ready'||s==='downloading');
+  document.body.classList.toggle('fj2-has-update',s==='ready');
+  var r=$('.fj2-reload',v);if(r)r.onclick=function(){try{sessionStorage.setItem('fj2upd',VER.latest)}catch(_){}location.reload()}}
+ function toast(msg){var t=document.createElement('div');t.className='fj2-toast';t.setAttribute('role','status');t.textContent=msg;document.body.append(t);setTimeout(function(){t.classList.add('out')},3200);setTimeout(function(){t.remove()},3800)}
+ // 版本提示：頁面開啟當下（<head> 先記下）用的是哪個快取版本，和網站上的 sw.js 比對。
+ // 舊版 → 顯示「發現新版、下載中」，Service Worker 裝好新快取後改成「新版已下載，重新載入套用」（工具鈕亮綠點、頂部出現提示條）；
+ // 重新載入後若已是新版 → 提示「已更新到 vXXX」。沒有 Service Worker 控制（第一次開、本機測試）時不顯示。
+ function verCheck(){
+  var num=function(k){return +(String(k).match(/(\d+)$/)||[0,0])[1]};
+  Promise.resolve(window.FJ2_CV||null).then(function(ks){
+   ks=(ks||[]).filter(function(k){return k.indexOf('trip-')===0}).sort(function(a,b){return num(a)-num(b)});
+   if(!ks.length)return;VER.loaded=ks[0].slice(5);verLine();
+   var done=null;try{done=sessionStorage.getItem('fj2upd');sessionStorage.removeItem('fj2upd')}catch(_){}
+   return fetch('sw.js?ts='+Date.now(),{cache:'no-store'}).then(function(r){return r.text()}).then(function(txt){
+    var v=(txt.match(/VERSION\s*=\s*'([^']+)'/)||[])[1];if(!v)return;VER.latest=v;
+    if(v===VER.loaded){VER.state='ok';verLine();if(done)toast('已更新到最新版 '+v+' ✓');return}
+    VER.state='downloading';verLine();showBar();
+    var n=0,poll=function(){caches.keys().then(function(k2){if(k2.indexOf('trip-'+v)>=0&&k2.filter(function(k){return k.indexOf('trip-')===0}).length===1){VER.state='ready';verLine();showBar()}else if(++n<60)setTimeout(poll,1000)})};
+    if(navigator.serviceWorker){navigator.serviceWorker.getRegistration().then(function(r){if(r)r.update().catch(function(){})})}
+    poll();
+   });
+  }).catch(function(){});
+ }
+ function showBar(){var b=$('#fj2-bar');if(!b){b=document.createElement('div');b.id='fj2-bar';b.setAttribute('role','status');document.body.append(b)}
+  b.innerHTML=VER.state==='ready'?'<span>新版 '+VER.latest+' 已下載完成</span><button type="button">重新載入</button><button type="button" class="x" aria-label="稍後">✕</button>'
+   :'<span>發現新版 '+VER.latest+'，背景下載中…</span><button type="button" class="x" aria-label="關閉">✕</button>';
+  var bt=b.querySelectorAll('button');bt.forEach(function(x){x.onclick=function(){if(x.classList.contains('x')){b.remove();return}try{sessionStorage.setItem('fj2upd',VER.latest)}catch(_){}location.reload()}})}
+
  // ================= 東京 tokyo.html（app.js 畫完後執行） =================
  if(window.TRIP&&$('#hero')){
   // 舊的線條圖示（ic-xxx.svg）→ 水彩小插畫，對應關係固定，只換圖不改資料
@@ -64,6 +118,7 @@
   }
 
 
+  tools(['upd','fs','fxb']);verCheck();
   // ---- 頁尾：富士山與繡球花 ----
   var ff=$('.forest-footer');if(ff){swapImg(ff,IMG+'footer-fuji.webp');ff.removeAttribute('width');ff.removeAttribute('height')}
   window.dispatchEvent(new Event('resize'));window.dispatchEvent(new Event('scroll'));
@@ -115,5 +170,6 @@
   };
   var _render=window.render;window.render=function(){var r=_render.apply(this,arguments);try{post()}catch(e){}return r};
   window.render();
+  tools(['upd','lgb']);verCheck();
  }
 })();

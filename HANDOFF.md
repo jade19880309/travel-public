@@ -77,8 +77,17 @@
 - 仍缺（README 自述）：素材是合成圖裁切，不是高解析原畫；桌機版橫幅（760px 寬）仍偏糊，需要使用者提供 1920px 原檔。示意圖上的 leaf-corner／leaf-fall／grass-flowers／leaf-accent、paper／sky／wash-green 紋理、512px 圖示**本包沒有**，沒用到。里程地圖仍用 `icon-fuji.png`。
 - 切換／復原：`?theme=classic`＝原版（v168 的復原機制，照舊）；`?theme=v1`＝森林手帳第一版（v168 外觀）；`?theme=forest`＝V2（預設）。都記在 localStorage `theme`。永久拿掉 V2＝刪兩頁 `<html>` 的 `fj2`、`theme-forest-v2.css` link、`forest-v2.js` script，或 `git revert` V2 那個 commit。改版前版本：`3cc7ad2`（sw v170）；森林 V1 基準 `1311076`（v168）。
 - 測試（本機 PowerShell HttpListener＋Claude 內建瀏覽器）：375／390／430／1280 無橫向溢出；東京：功能紙卡跳轉與高亮、☰、Day 分頁↔底部日期列同步、展開日卡、方案切換（方案三 6 天）、待辦勾選、換算／字體／更新鈕、倒數；露營車：4 個圖示鍵、RV／酒藏切換（13 間）、總覽日程卡→DAY 3、行程點勾選、日文切換、分頁黏頂；`?theme=classic`／`?theme=v1` 正常；首爾頁無錯誤。
+- **V2.1 介面修正（2026/11/26）**，全部在 `forest-v2.js`／`theme-forest-v2.css` 末段，只作用在 `html.fj2`（東京、露營車）；`upd.js`、`sw.js` 的機制沒改（只升 VERSION）：
+  - 天氣卡：`.wxtop` 可換行、`.wxn` 不換行，天氣標籤放不下時會排到城市名下方。320／375／390／430px 城市名都維持單行（高 25px）。
+  - 工具選單：右下角原本的懸浮鈕收進一顆「工具」鈕（`#fj2-tools`）。東京是 更新 `#upd`／字體 `#fs`／換算 `#fxb`，露營車是 更新／語言 `#lgb`。按鈕元素與原本的點擊功能都沒改，只靠 `.fj2-tool` 和 `--fj2-i` 改位置與顯示；收起時加 `tabindex=-1`。點外面或按 Esc 會收起；換算面板 `.fxp` 的位置跟著往上移。往下捲時工具鈕淡出，往上捲或停 0.9 秒後回來。
+  - 版本提示：兩頁 `<head>` 先記下開頁當下的快取版本 `window.FJ2_CV`，和網站上的 `sw.js` VERSION 比對：
+    - 是舊版：頁首下方出現「發現新版 vXXX，背景下載中…」，等 Service Worker 裝好新快取後改成「新版已下載完成［重新載入］」，工具鈕也會亮綠點。
+    - 重新載入後已是新版：跳出「已更新到最新版 vXXX ✓」。
+    - 工具選單打開時，左側會顯示「目前版本 vXXX・已是最新」。
+    - 沒有 Service Worker 控制時（第一次開、本機 http）不顯示。
+  - 第 4～6 項照舊：方案切換後捲回每日行程（`FJ2_GO`）、classic／v1／forest 三種主題、multiply＋brightness 都保留。classic／v1 下沒有工具選單，懸浮鈕和原版一樣。
 - 線上（GitHub Pages，commit `33b6765`）：東京、露營車 390px 正常、無破圖、無溢出；Service Worker 已啟用，快取 `trip-v171` 內含 19 個 V2 檔案（CSS、JS、17 張素材）。
-- **未測**：實際斷網後重新整理（內建瀏覽器無法切離線；本機 http 也拒絕註冊 SW）；切換方案後自動捲到每日行程在內建瀏覽器裡停在頂端（classic 原版也一樣，無法在此驗證，請在手機確認）；iPhone 實機（安全區域、明體字型）。
+- **未測**：實際斷網後重新整理（內建瀏覽器無法切離線；本機 http 也拒絕註冊 SW）；切換方案後自動捲到每日行程（修正保留，待 iPhone 實機確認）；iPhone 實機（安全區域、明體字型）。
 
 ## 森林手帳風主題（2026/11/26，依使用者提供的素材包整合）
 - `theme-forest-journal.css`＝素材包原 CSS（上半，原樣保留）＋「整合補充」精確 selector（下半，蓋過 theme-fuji.css 與露營車內嵌樣式）。只由 `tokyo.html`、`campervan.html` 載入；兩頁 `<html>` 加了 `forest-journal` class。
