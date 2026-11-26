@@ -9,7 +9,7 @@ async def main():
   async with async_playwright() as p:
     b=await p.chromium.launch(executable_path=os.environ.get('CHROME','/usr/bin/google-chrome'),args=['--no-sandbox'])
     ctx=await b.new_context(viewport={'width':390,'height':844});pg=await ctx.new_page();errs=[];pg.on('pageerror',lambda e:errs.append(str(e)))
-    await pg.add_init_script(MOCK);await pg.goto(STOB_URL);await pg.wait_for_timeout(1200)
+    await pg.add_init_script(MOCK);await pg.goto(APP_URL);await pg.wait_for_timeout(1200)
     await pg.evaluate("go('up');ADS.text='x'");await pg.evaluate("adRun()");await pg.wait_for_timeout(400);await pg.evaluate("adApply()");await pg.wait_for_timeout(1500)
     main=await pg.evaluate("window.__store['data/users/u1/tob']")
     ok('新格式主文件 v2＋rev＋檢查碼',main and main.get('v')==2 and main.get('rev')>=1 and 'h' in main and 'len' in main,{k:main[k] for k in ['v','rev','n','len']})

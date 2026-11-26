@@ -1,7 +1,7 @@
 import re, sys, pathlib, os
 HERE = pathlib.Path(__file__).resolve().parent
 ROOT = HERE.parent.parent  # travel-public 根目錄
-# STOB 以私人 repo travel-private 裡 TOB 的某一版為基礎：設定 TOB_REPO 指到 travel-private（預設與 travel-public 並排）
+# 偏航 DETOUR 以私人 repo travel-private 裡 TOB 的某一版為基礎：設定 TOB_REPO 指到 travel-private（預設與 travel-public 並排）
 TOB = pathlib.Path(os.environ.get('TOB_REPO', str(ROOT.parent / 'travel-private')))
 import subprocess
 src = subprocess.run(['git','-C',str(TOB),'show','21ce4f8:index.html'],capture_output=True,check=True).stdout.decode('utf-8')
@@ -32,8 +32,9 @@ def rep(old, new, count=1):
 
 # head: no manifest/icons (not hosted here)
 s = re.sub(r'<link rel="manifest"[^\n]*?<link rel="icon"[^>]*>', '', s, count=1)
-rep('<title>TOB｜旅遊訂單查詢</title>', '<title>STOB 旅遊訂單</title>')
-rep('content="TOB 旅遊訂單"', 'content="STOB 旅遊訂單"')
+rep('<title>TOB｜旅遊訂單查詢</title>', '<title>DETOUR 底稿</title>')
+rep('content="TOB 旅遊訂單"', 'content="DETOUR 底稿"')
+# 本機儲存鍵沿用 stob 前綴（朋友手機裡已存的勾選與設定要讀得到，改了會全部歸零）
 s = s.replace("localStorage.getItem('fth", "localStorage.getItem('stob").replace("localStorage.setItem('fth", "localStorage.setItem('stob").replace("localStorage.removeItem('fth", "localStorage.removeItem('stob").replace("sessionStorage.getItem('fth", "sessionStorage.getItem('stob").replace("sessionStorage.setItem('fth", "sessionStorage.setItem('stob").replace("sessionStorage.removeItem('fth", "sessionStorage.removeItem('stob")
 
 # family groups / camper / areas / trip icons become data-driven
@@ -59,7 +60,7 @@ s = s.replace('grid-template-columns:repeat(4,minmax(0,1fr))!important', 'grid-t
 rep("const NAVI={", "const NAVI={'add':'<path d=\"M4 7h10M18 7h2M4 17h4M12 17h8\"/><circle cx=\"16\" cy=\"7\" r=\"2\"/><circle cx=\"10\" cy=\"17\" r=\"2\"/>',")
 
 # header label
-rep("'旅遊訂單<span class=\"tobt\" title=\"Travel Order Book\">TOB</span>'", "'<span class=\"sth\"><span class=\"stm\" role=\"button\" tabindex=\"0\" aria-label=\"回到頁首\" onclick=\"toTop()\" onkeydown=\"if(event.keyCode==13||event.keyCode==32){event.preventDefault();toTop()}\"><i></i>STOB</span><span class=\"stw\"><b>旅遊訂單</b><small>Share Travel Order Book</small></span></span>'+(typeof cloudBadge=='function'?cloudBadge():'')")
+rep("'旅遊訂單<span class=\"tobt\" title=\"Travel Order Book\">TOB</span>'", "'<span class=\"sth\"><span class=\"stm\" role=\"button\" tabindex=\"0\" aria-label=\"回到頁首\" onclick=\"toTop()\" onkeydown=\"if(event.keyCode==13||event.keyCode==32){event.preventDefault();toTop()}\"><i></i>DETOUR</span><span class=\"stw\"><b>旅遊訂單</b><small>DETOUR</small></span></span>'+(typeof cloudBadge=='function'?cloudBadge():'')")
 
 # append cloud + upload script
 cloud = (HERE / 'cloud.js').read_text(encoding='utf-8')
@@ -77,7 +78,7 @@ rep('<meta name="theme-color" content="#faf5ec" media="(prefers-color-scheme: li
 s = s.replace('"Noto Serif TC"','"Huninn","Noto Sans TC"').replace('"Songti TC",','').replace('"PMingLiU",','')
 rep('content="width=device-width, initial-scale=1, viewport-fit=cover"', 'content="width=device-width, initial-scale=1"')
 rep("tIc=n=>/韓國|首爾/.test(n)?", "tIc=n=>/台灣|臺灣|台北|臺北|新北|基隆|桃園|新竹|苗栗|台中|臺中|彰化|南投|雲林|嘉義|台南|臺南|高雄|屏東|墾丁|宜蘭|花蓮|台東|臺東|澎湖|金門|馬祖|綠島|蘭嶼|日月潭|阿里山|小琉球/.test(n)?'🇹🇼 ':/韓國|首爾/.test(n)?")
-# 美化：交通／其他卡片只選一趟旅程時不再重複旅程名；個人單改成 STOB 配色
+# 美化：交通／其他卡片只選一趟旅程時不再重複旅程名；個人單改成 DETOUR 底稿配色
 s = s.replace('<div class="text-xs text-stone-500 shrink-0">${esc(T(x.trip).name)}</div>', "${oneT()?'':`<div class=\"text-xs text-stone-500 shrink-0\">${esc(tShort(x.trip))}</div>`}")
 for _a,_b in [('#1c2e42','#0f4c52'),('#2a4560','#146c72'),('#b08c4a','#e8a93a'),('#8a6a2e','#146c72'),('#e2d7c0','#dce6e6'),('#e8e1d3','#dce6e6'),('#66625a','#5f7075'),('#1f2630','#1c2529'),('#f7f2e8','#eef4f3'),('#c8b27e','#9cc7c4'),('#fbf6ea','#f2f8f7'),('#7a5a20','#0f5c62'),('#ece5d6','#e3ecec'),('#e2dccd','#dce6e6'),('#efe4cc','#e6f0ef'),('#2a3442','#1c2529'),('#f6efe0','#f3f6f5'),('#e3d6bd','#cfe2e1'),('#8a857b','#7a8b8f'),('#ece4d5','#e3ecec'),('#6f6255','#5f7075'),('#fffaf1','#ffffff')]:
     s = s.replace(_a, _b)
@@ -106,5 +107,5 @@ rep("${pfab()}`;", "${pfab()}`;stkH();")
 # privacy check
 bad = sorted(set(re.findall(r"mkP\('m\d+','([^']+)'", src) + re.findall(r"pp:'(\w{6,})'", src) + re.findall(r"orderNo:'(\d{6,})'", src)[:20]))
 hits = [w for w in bad if w in s]
-(ROOT / 'stob' / 'STOB.html').write_text(s, encoding='utf-8')
+(HERE / 'base.html').write_text(s, encoding='utf-8')
 print('size', len(s.encode()), 'leftover:', hits)

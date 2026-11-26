@@ -24,7 +24,7 @@
 - 京阪每日圖示：有 `choice` 的日子，選項若沒寫 `stk` 要退回當天的 `stk`（曾因此抓 `ic-undefined.svg`，9/9 圖示消失）。圖示出問題先查檔名，不要先怪快取。
 
 ## 京阪「京都、慢日子。」V2 首頁還原暨品質改善（2026/11/26，sw v179；依使用者 `kyoto-v2-handoff.zip` 的 CLAUDE-KYOTO-V2.md）
-- **範圍**：`keihan.html`、`theme-kyoto-classic.css`（整份重寫成 V2）、新增 `images/keihan-2027/v2/`（15 張 JPEG）、`images/keihan-2027/classic/hero.png`（診斷用）、新增 `kyoto-diag.html`、`sw.js`（v179＋CORE＋activate）、`upd.js`（一行版本判斷）。`trips/`、`home.html`、`stob/`、其他旅程頁都沒改；京阪仍不在公開總覽。
+- **範圍**：`keihan.html`、`theme-kyoto-classic.css`（整份重寫成 V2）、新增 `images/keihan-2027/v2/`（15 張 JPEG）、`images/keihan-2027/classic/hero.png`（診斷用）、新增 `kyoto-diag.html`、`sw.js`（v179＋CORE＋activate）、`upd.js`（一行版本判斷）。`trips/`、`home.html`、`detour/`、其他旅程頁都沒改；京阪仍不在公開總覽。
 - **回復方式**：①只要舊版樣式：`keihan.html?theme=classic`（`?theme=kyoto` 改回，存 localStorage `kyotoTheme`；**2027/10/01 再評估要不要移除舊版**）。②整個退回 V1：還原點分支 `backup/keihan-before-kyoto-v2`（commit `ed6dc8b`，已推送）；V1 以前的原版另有 `backup/keihan-before-kyoto-classic`、`backups/keihan-before-kyoto-classic-20261126.html`。退回後 `sw.js` 的 VERSION 要再加 1。
 - **做法重點**
   - 主題規則全部 `html.kyoto-theme` 開頭；新元件都帶 `.kc`，經典版 `html:not(.kyoto-theme) .kc{display:none!important}`。
@@ -86,7 +86,7 @@
   - 規範建議的獨立明信片素材（首爾／港珠澳／東京 1200×1000、露營車橫幅 1200×500，無文字、無 UI）**尚未製作**；目前用的是裁切自示意圖的小尺寸 WebP（約 300×250、露營車 181×76），大螢幕放大會偏糊。不要自行重畫或用原 PNG 裁切代替，等使用者提供素材。
   - 手機桌面圖示（`icon-*.png`、`manifest-*.webmanifest`）**沒有換成新插畫**；規範要求先核對 manifest 與平台規格，不擅自更換共用 App 圖示。
   - 遠端分支 `icons-home-unified` 已不採用，不要合併；沙盒無法刪遠端分支，使用者可日後 `git push origin --delete icons-home-unified`。
-- 常駐事項：京阪 `keihan.html` 不放進 `trips/index.json` 與公開首頁（只從私人訂單頁連過來）；`kyoto-osaka.png` 只供私人訂單頁（`travel-private`）使用；偏航 `stob/` 不動。
+- 常駐事項：京阪 `keihan.html` 不放進 `trips/index.json` 與公開首頁（只從私人訂單頁連過來）；`kyoto-osaka.png` 只供私人訂單頁（`travel-private`）使用；偏航 `detour/` 不動。
 - 驗證做法備忘：首頁用 `python3 -m http.server`（與測試放同一個指令）＋Playwright；離線測試要等 Service Worker ready 約 4 秒再 `set_offline(True)` 重新整理。
 
 ## HZM Retro v1.0／v1.1：港珠澳港片復古風（2026/11/26）
@@ -210,7 +210,7 @@
 
 ## 公開首頁 V4（2026/11/26，使用者視覺驗收通過，已換成正式 `home.html`，sw v176）
 依使用者附的 `family-journal-v4-assets.zip`（reference-v4.png、CLAUDE-INSTRUCTIONS.md、ASSET-MANIFEST.md）先在分支 `journal-v4-preview` 以 `home-v4.html` 預覽，使用者看過並排截圖後確認通過，合併進 main 取代 V3。V3 備份：`backups/home-before-v4-20261126.html`（仍引用 `journal-v3*.css`、`images/journal-v3/`，這些檔案與 `sw.js` 快取項目都保留）。
-- 檔案：`home.html`（render／倒數 cdStart-cdEnd／fallback／SW 註冊／`upd.js`／metadata 皆沿用 V3 邏輯，只改 HTML 結構）、`journal-v4.css`、`images/journal-v4/`（19 張）。`journal-v3*.css`、`stob/`、各旅程內頁、`trips/`、PNG Icon 都沒動。
+- 檔案：`home.html`（render／倒數 cdStart-cdEnd／fallback／SW 註冊／`upd.js`／metadata 皆沿用 V3 邏輯，只改 HTML 結構）、`journal-v4.css`、`images/journal-v4/`（19 張）。`journal-v3*.css`、`detour/`、各旅程內頁、`trips/`、PNG Icon 都沒動。
 - 素材處理：素材包的棋盤格／紙底都不是真透明。以「從圖片外框 flood fill、只移除與外框相連的背景」去背，輸出 `*-cut.webp`（原生尺寸、未放大、未重畫）。明信片／露營車票券／紙堆／頁尾用中性淺灰判定；標題、2027 吊牌、筆刷、地標剪影、紙膠帶用角落紙色判定（容差 8–20），再刪掉圖集相鄰素材殘片（保留最大連通區、東京剪影右上 56×10px 殘片手動清掉）。未去背的只有 `hero-landscape.webp`、`paper-texture.webp`（原檔）。
 - 未使用：`cover-portrait.webp`（內含「家庭旅行手帖 2027」字樣，會與毛筆標題重複）、`sources/` 原圖。明信片本身已含目的地字、紙膠帶、郵戳、迴紋針，所以沒有再疊文字或另加這些裝飾。
 - 版面：橫幅封面（手機 172px 高、桌機 241px 原生高）＋毛筆標題紙片疊在橫幅下緣＋2027 吊牌；卡片為紙紋＋撕邊 clip-path（沿用 V3 做法）＋紙堆底層錯落；筆刷倒數、地標剪影、圓形箭頭；露營車為東京卡內票券子入口（高 56px）；森林頁尾木牌上的「Family Trip ♥」是 HTML 文字（素材木牌是空白的）。行事曆小圖示沿用 `images/journal-v3/deco-cal-*.png`。
@@ -224,7 +224,7 @@
 - 2026/11/26 sw v180：首頁 App 圖示換成使用者提供的「皮革手帳＋富士山露營」圖（1254×1254，透明底）。`icon-home-192.png`、`icon-home-512.png` 保留透明底；`icon-home-180.png`（apple-touch-icon）iOS 會把透明補黑，改鋪紙色 `#f1e2c6`；`icon-home-maskable-512.png` 縮到 80% 置中在紙色底（Android 圓形安全區）。只換這 4 個檔，檔名、manifest、其他旅程圖示都沒動；舊圖在 git 歷史。**未驗證**：iPhone／Android 主畫面實際顯示。iOS 已加到主畫面的捷徑不會自動換圖，要刪掉重新「加入主畫面」。
 
 ## 公開首頁 `home.html`「家庭旅行手帖」v3 整合紀錄（2026/11/26，使用者提供 `family-journal-final.zip`、`family-journal-v3.zip` 與一張範例稿）
-**使用者要求**：美編素材與 CSS 都由使用者提供，不得自行重畫、替換圖片或簡化版面；保留首爾／港珠澳／東京三大旅程，露營車為東京子項目，京阪不列入總覽；DETOUR（`stob/`）、各旅程內頁、`trips/` 資料不得修改；保留倒數、離線、檢查更新；先備份舊首頁；手機與電腦都要實測。
+**使用者要求**：美編素材與 CSS 都由使用者提供，不得自行重畫、替換圖片或簡化版面；保留首爾／港珠澳／東京三大旅程，露營車為東京子項目，京阪不列入總覽；DETOUR（`detour/`）、各旅程內頁、`trips/` 資料不得修改；保留倒數、離線、檢查更新；先備份舊首頁；手機與電腦都要實測。
 
 **已完成並推送到 `main`（`65f8dd5`、`4f3be8c`、`c689d72`）**
 - 備份：`backups/home-before-journal-20261126.html`（final 版整合前）、`backups/home-before-v3-20261126.html`（v3 整合前）。

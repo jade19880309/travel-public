@@ -1,6 +1,6 @@
 import pathlib as _pl, os as _os
 HERE=_pl.Path(__file__).resolve().parent
-STOB_URL=(HERE.parent/__import__('os').environ.get('APP','STOB.html')).as_uri()
+APP_URL=(HERE.parent/__import__('os').environ.get('APP','DETOUR.html')).as_uri()
 CHROME=_os.environ.get('CHROME','/usr/bin/google-chrome')
 import asyncio,json
 exec(open(HERE/'t8.py').read().split('async def main')[0])
@@ -26,7 +26,7 @@ async def main():
         for scheme in ['light','dark']:
             ctx=await b.new_context(viewport={'width':390,'height':844},color_scheme=scheme);pg=await ctx.new_page();errs=[]
             pg.on('pageerror',lambda e:errs.append(str(e)))
-            await pg.add_init_script(MOCK2);await pg.goto(STOB_URL);await pg.wait_for_timeout(1200)
+            await pg.add_init_script(MOCK2);await pg.goto(APP_URL);await pg.wait_for_timeout(1200)
             await sweep(pg,scheme+' empty',errs)
             await pg.evaluate("go('up');ADS.text='x'");await pg.evaluate("adRun()");await pg.wait_for_timeout(400)
             # preview: skip one member, change nothing else
@@ -74,10 +74,10 @@ async def main():
             await ctx.close()
         # signed out
         ctx=await b.new_context(viewport={'width':390,'height':844});pg=await ctx.new_page();errs=[];pg.on('pageerror',lambda e:errs.append(str(e)))
-        await pg.add_init_script("window.claude={use:async n=>null}");await pg.goto(STOB_URL);await pg.wait_for_timeout(1500)
+        await pg.add_init_script("window.claude={use:async n=>null}");await pg.goto(APP_URL);await pg.wait_for_timeout(1500)
         print('signed out msg:',await pg.evaluate("CLD.st+' / '+CLD.msg"),errs);await pg.screenshot(path='q_signedout.png')
         await pg.evaluate("go('up')");await pg.wait_for_timeout(200);print('up disabled', await pg.evaluate("!!document.querySelector('.adpick.dis')"),errs)
         ctx2=await b.new_context(viewport={'width':390,'height':844});pg2=await ctx2.new_page();e2=[];pg2.on('pageerror',lambda e:e2.append(str(e)))
-        await pg2.goto(STOB_URL);await pg2.wait_for_timeout(800);print('no claude:',await pg2.evaluate("CLD.st+' / '+CLD.msg"),e2)
+        await pg2.goto(APP_URL);await pg2.wait_for_timeout(800);print('no claude:',await pg2.evaluate("CLD.st+' / '+CLD.msg"),e2)
         await b.close()
 asyncio.run(main())

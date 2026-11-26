@@ -1,6 +1,6 @@
 import pathlib as _pl, os as _os
 HERE=_pl.Path(__file__).resolve().parent
-STOB_URL=(HERE.parent/__import__('os').environ.get('APP','STOB.html')).as_uri()
+APP_URL=(HERE.parent/__import__('os').environ.get('APP','DETOUR.html')).as_uri()
 CHROME=_os.environ.get('CHROME','/usr/bin/google-chrome')
 import json, asyncio
 from playwright.async_api import async_playwright
@@ -44,7 +44,7 @@ async def main():
         pg.on('pageerror', lambda e: errs.append(str(e)))
         pg.on('console', lambda m: m.type=='error' and errs.append('console:'+m.text))
         await pg.add_init_script(MOCK)
-        await pg.goto(STOB_URL)
+        await pg.goto(APP_URL)
         await pg.wait_for_timeout(1200)
         await pg.screenshot(path='s0_home.png')
         await pg.evaluate("go('up')"); await pg.wait_for_timeout(300)

@@ -1659,7 +1659,7 @@ button[disabled]{opacity:.55}
 .lockbtn{display:flex;flex-wrap:wrap;gap:.4rem;flex-basis:100%}
 .lockbar button.ghost{background:#fff;color:rgb(153 27 27);border:1px solid rgb(252 165 165)}
 
-/* ===== STOB 視覺：霧白底、港灣藍綠、行李吊牌金黃（與 TOB 的米色棕金區隔） ===== */
+/* ===== 偏航底稿視覺：霧白底、港灣藍綠、行李吊牌金黃（與 TOB 的米色棕金區隔） ===== */
 :root{--s50:243 246 245;--s100:233 239 238;--s200:218 227 226;--s300:196 209 208;--s400:108 124 128;--s500:96 112 117;--s600:78 92 97;--s700:58 71 76;--s800:40 51 56;--s900:28 37 41;--s950:16 22 25;--card:255 255 255;--a100:253 240 214;--a800:150 98 18;--a900:110 70 10;
  --gold:20 108 114;--goldt:16 92 98;--fc:16 92 98;--fcon:255 255 255;--acc:20 108 114;--acc2:14 84 90;--tag:232 169 58;--tagt:58 40 6;--shd:20 50 55}
 @media (prefers-color-scheme: dark){:root{--s50:16 23 25;--s100:24 33 36;--s200:36 47 51;--s300:54 68 72;--s400:140 158 162;--s500:156 173 177;--s600:180 195 198;--s700:204 216 218;--s800:222 231 232;--s900:236 242 243;--s950:248 251 251;--card:24 33 36;--a100:70 52 18;--a800:240 200 120;--a900:90 64 20;
@@ -1790,7 +1790,7 @@ function cloudSave(){famCalc();campCalc();CLD.dirty=true;if(!CLD.db||!CLD.uid){C
 async function readMain(){const s=await uref('tob').get();return s.exists?(s.data()||{}):null}
 /* 分段文件的前綴：新格式寫在主文件 pk；沒有 pk 的 v2 用 tob_r<rev>_p；舊格式用 tob_p */
 const partPre=o=>{const p=o&&o.pk;if(typeof p=='string'&&/^tob_[A-Za-z0-9_]{1,80}$/.test(p))return p;return o&&o.rev?'tob_r'+o.rev+'_p':'tob_p'};
-/* 寫入鎖：只用 Claude db 提供的 acquire（cooperative lease，所有 STOB 寫入者都先取得它）。
+/* 寫入鎖：只用 Claude db 提供的 acquire（cooperative lease，所有偏航寫入者都先取得它）。
    沒拿到就不寫；不支援 acquire 就暫停儲存，不再「當作成功」。 */
 const LEASE_MS=10000,LEASE_MIN=4000;
 async function leaseTry(){const r=uref('tob_lock');if(typeof r.acquire!='function')throw {code:'nolease'};
@@ -1857,7 +1857,7 @@ function imgRetry(){const L=ADS.imgFail.filter(x=>x.d);if(!L.length||!canWrite()
 function imgDel(k){if(!k||!db.imgs.includes(k))return;delete ORDIMG[k];db.imgs=db.imgs.filter(x=>x!=k);if(CLD.db)CLD.q=CLD.q.then(()=>uref('img_'+ikey(k)).delete()).catch(()=>{})}
 
 /* ===== 偏航 DETOUR：品牌區塊、版本號、關於頁（只加畫面文字，不碰資料） ===== */
-const DTR_V={"current": "1.3.1", "date": "2026-11-23", "history": [{"v": "1.3.1", "d": "2026-11-23", "t": "金額、固定列、取消訂單", "n": ["飯店金額改成「當地貨幣 / TWD」並列（例如 JPY 21,811 / TWD 4,580）；所有加總與分攤仍一律以台幣試算", "飯店訂單卡：總額與已付款狀態放在付款日期正上方，展開後只留逐間房金額", "旅程選單與子分頁列（成員、機票、飯店…）固定在頁首下方，捲動時不再跑掉", "已取消的飯店訂單只出現在飯店清單最下方的「已取消」區：整區摺疊，裡面依飯店名稱分組再摺疊，記錄取消日（欄位 cxlAt，可請 AI 一句話修改帶入）"]}, {"v": "1.3.0", "d": "2026-11-22", "t": "雙主題", "n": ["新增「浪漫」（酒紅、奶油白、玫瑰粉、香檳金）與「深藍」（海軍藍、象牙白、暖金）兩種主題，可隨時切換", "切換位置：管理 › 外觀設定；預設浪漫，只記在這支裝置的瀏覽器（localStorage 鍵 detour-theme），不同步帳號", "新標誌：圓角方形加紙飛機、偏航曲線與一顆星，兩個主題各一個顏色", "首頁標語卡改成細緻飛行弧線加靠右的紙飛機，文字固定為三句標語，拿掉時段問候與倒數"]}, {"v": "1.2.0", "d": "2026-11-22", "t": "浪漫改版", "n": ["配色改為「暮光玫瑰」：暖霧粉米底、乾燥玫瑰主色、香檳金點綴；深色模式是夜空紫", "首頁換成暮色天空卡片：依早晨、午後、傍晚、夜裡換問候語，有出發日的旅程會顯示倒數", "標題與數字改用襯線字體，區塊標題加上金色細線，卡片陰影改為柔光", "標誌與頁首、頁尾加上星點與航線", "畫面上標明版本號，「管理 › 關於」可看更新歷程，說明頁新增「版本歷程」"]}, {"v": "1.1.0", "d": "2026-11-22", "t": "更名偏航 DETOUR", "n": ["品牌由 STOB 旅遊訂單改為「偏航 DETOUR」，新標誌與頁首", "首頁品牌區塊、結尾台詞「一切都安排好了，現在可以亂來了。」", "存入訂單、建立旅程、產生行程時的提示改成更有溫度的句子"]}, {"v": "1.0.0", "d": "2026-11", "t": "STOB 旅遊訂單（分享版）", "n": ["上傳訂單截圖、PDF、確認信，由 Claude 讀出旅程、成員與訂單", "建議行程、單日重排、一句話修改；PDF 與發佈網頁（不含個資）", "雲端 v2 儲存格式與寫入鎖、備份與還原"]}]};
+const DTR_V={"current": "1.3.1", "date": "2026-11-23", "history": [{"v": "1.3.1", "d": "2026-11-23", "t": "金額、固定列、取消訂單", "n": ["飯店金額改成「當地貨幣 / TWD」並列（例如 JPY 21,811 / TWD 4,580）；所有加總與分攤仍一律以台幣試算", "飯店訂單卡：總額與已付款狀態放在付款日期正上方，展開後只留逐間房金額", "旅程選單與子分頁列（成員、機票、飯店…）固定在頁首下方，捲動時不再跑掉", "已取消的飯店訂單只出現在飯店清單最下方的「已取消」區：整區摺疊，裡面依飯店名稱分組再摺疊，記錄取消日（欄位 cxlAt，可請 AI 一句話修改帶入）"]}, {"v": "1.3.0", "d": "2026-11-22", "t": "雙主題", "n": ["新增「浪漫」（酒紅、奶油白、玫瑰粉、香檳金）與「深藍」（海軍藍、象牙白、暖金）兩種主題，可隨時切換", "切換位置：管理 › 外觀設定；預設浪漫，只記在這支裝置的瀏覽器（localStorage 鍵 detour-theme），不同步帳號", "新標誌：圓角方形加紙飛機、偏航曲線與一顆星，兩個主題各一個顏色", "首頁標語卡改成細緻飛行弧線加靠右的紙飛機，文字固定為三句標語，拿掉時段問候與倒數"]}, {"v": "1.2.0", "d": "2026-11-22", "t": "浪漫改版", "n": ["配色改為「暮光玫瑰」：暖霧粉米底、乾燥玫瑰主色、香檳金點綴；深色模式是夜空紫", "首頁換成暮色天空卡片：依早晨、午後、傍晚、夜裡換問候語，有出發日的旅程會顯示倒數", "標題與數字改用襯線字體，區塊標題加上金色細線，卡片陰影改為柔光", "標誌與頁首、頁尾加上星點與航線", "畫面上標明版本號，「管理 › 關於」可看更新歷程，說明頁新增「版本歷程」"]}, {"v": "1.1.0", "d": "2026-11-22", "t": "更名偏航 DETOUR", "n": ["品牌改為「偏航 DETOUR」，新標誌與頁首", "首頁品牌區塊、結尾台詞「一切都安排好了，現在可以亂來了。」", "存入訂單、建立旅程、產生行程時的提示改成更有溫度的句子"]}, {"v": "1.0.0", "d": "2026-11", "t": "旅遊訂單（分享版）", "n": ["上傳訂單截圖、PDF、確認信，由 Claude 讀出旅程、成員與訂單", "建議行程、單日重排、一句話修改；PDF 與發佈網頁（不含個資）", "雲端 v2 儲存格式與寫入鎖、備份與還原"]}]};
 const DTR_ST='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5l2.2 6.3 6.3 2.2-6.3 2.2L12 19.5l-2.2-6.3-6.3-2.2 6.3-2.2z" fill="#E0C496"/><\/svg>';
 const DTR_TH={romantic:{n:'浪漫',d:'奶油白・酒紅・玫瑰粉・香檳金',m:['#FFF9F6','#1C1216']},navy:{n:'深藍',d:'象牙白・海軍藍・暖金',m:['#F7F4E9','#0A1526']}};
 function dtrTheme(){const t=document.documentElement.getAttribute('data-theme');return DTR_TH[t]?t:'romantic'}
@@ -1866,7 +1866,7 @@ function dtrSetTheme(t){if(!DTR_TH[t])return;document.documentElement.setAttribu
 function dtrAppear(){const cur=dtrTheme();return `<div class="${CC}"><div class="font-bold mb-1">外觀設定<\/div><p class="text-sm text-stone-500 mb-3">選擇偏航的風格。只記在這支裝置的瀏覽器，不會同步到帳號。<\/p><div class="dtr-th" role="radiogroup" aria-label="外觀主題">${Object.keys(DTR_TH).map(k=>`<button type="button" role="radio" aria-checked="${k==cur}" class="dtr-tb dtr-${k}" onclick="dtrSetTheme('${k}')"><span class="dtr-sw"><i><\/i><i><\/i><i><\/i><\/span><b>${DTR_TH[k].n}${k==cur?'・使用中':''}<\/b><small>${DTR_TH[k].d}<\/small><\/button>`).join('')}<\/div><\/div>`}
 function dtrHero(){return `<section class="dtr-hero"><div class="dtr-fl" aria-hidden="true"><span class="th-r"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 220" fill="none"><path d="M15 205C155 205 241 183 323 121S463 77 527 40" stroke="#C9A06A" stroke-width="3" stroke-linecap="round"/><path d="m512 43 65-25-25 57-14-26-26-6Z" fill="#7A1F2C"/><path d="m538 49 39-31-25 57-14-26Z" fill="#A84D5A"/><\/svg><\/span><span class="th-n"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 220" fill="none"><path d="M15 205C155 205 241 183 323 121S463 77 527 40" stroke="#D6B273" stroke-width="3" stroke-linecap="round"/><path d="m512 43 65-25-25 57-14-26-26-6Z" fill="#F7F4E9"/><path d="m538 49 39-31-25 57-14-26Z" fill="#D6B273"/><\/svg><\/span><\/div><div class="dtr-g">夜色溫柔，把想去的地方收進口袋。<\/div><div class="dtr-t">我們計畫了遠方，<br>卻愛上了<em>沿途<\/em>。<\/div><div class="dtr-en">All planned. Free to wander.<\/div><\/section>`}
 function dtrFoot(){return `<div class="dtr-foot">${DTR_ST}<p>一切都安排好了，現在可以亂來了。<\/p><button type="button" class="dtr-ver" onclick="ADS.tab='ab';go('add')">DETOUR・v${DTR_V.current}<\/button><\/div>`}
-function dtrAbout(){return `<div class="${CC} dtr-ab"><h3>偏航 DETOUR<\/h3><div class="en">版本 v${DTR_V.current}・${DTR_V.date}<\/div><p class="text-sm text-stone-500 mt-2">前身是 STOB 旅遊訂單。把訂單收好，把心留給沿途。完整使用說明與版本歷程也在說明頁。<\/p>
+function dtrAbout(){return `<div class="${CC} dtr-ab"><h3>偏航 DETOUR<\/h3><div class="en">版本 v${DTR_V.current}・${DTR_V.date}<\/div><p class="text-sm text-stone-500 mt-2">把訂單收好，把心留給沿途。完整使用說明與版本歷程也在說明頁。<\/p>
  <ul class="dtr-vr">${DTR_V.history.map((h,i)=>`<li${i?'':' class="cur"'}><details${i?'':' open'}><summary><b>v${h.v}<\/b>${esc(h.t)}<small>${esc(h.d)}<\/small><\/summary><ul>${h.n.map(x=>`<li>${esc(x)}<\/li>`).join('')}<\/ul><\/details><\/li>`).join('')}<\/ul><\/div>`}
 
 (async function boot(){
@@ -2161,11 +2161,11 @@ function ordSave(k,id){if(!canWrite())return;const i=db[k].findIndex(x=>x.id==id
 function ordDel(k,id){if(!canWrite())return;const x=db[k].find(y=>y.id==id);if(x)imgDel(x.orderNo);db[k]=db[k].filter(y=>y.id!=id);ADS.del='';cloudSave();render();tip('已刪除')}
 
 /* ===== 備份：帶格式標記；還原先檢查、顯示比較、再二次確認，還原後可復原 ===== */
-const bkPack=()=>JSON.stringify({stob:1,format:1,at:new Date().toISOString(),db});
+const bkPack=()=>JSON.stringify({detour:1,format:1,at:new Date().toISOString(),db});
 const bkCount=o=>({trips:arr(o.trips).length,members:arr(o.members).length,orders:COLL.reduce((a,k)=>a+arr(o[k]).length,0),fl:arr(o.fl).length,ht:arr(o.ht).length,tr:arr(o.tr).length,ot:arr(o.ot).length,plans:Object.keys(obj(o.plans)).length});
 function bkCheck(txt){const R={errs:[],warns:[],data:null};let o;const t=String(txt||'').trim();if(!t){R.errs.push('還沒貼上備份內容');return R}
  try{o=JSON.parse(t)}catch(e){R.errs.push('不是完整的備份資料（可能沒複製完整，結尾少了括號）');return R}
- if(o&&o.stob&&o.db)o=o.db;
+ if(o&&(o.detour||o.stob)&&o.db)o=o.db; // 舊備份是 stob:1，一樣能還原
  if(!o||typeof o!='object'||Array.isArray(o)){R.errs.push('格式不對：最外層要是 {…}');return R}
  const K=['members','trips',...COLL];if(!K.some(k=>Array.isArray(o[k]))){R.errs.push('裡面沒有旅程、成員或訂單，不像是偏航的備份');return R}
  const ids=new Set();K.forEach(k=>{if(o[k]===undefined)return;if(!Array.isArray(o[k])){R.errs.push(CNAME[k]+'的格式不對');return}
@@ -2457,11 +2457,11 @@ function pubParts(t){const e=esc,M0=pubModel(t),m=pubMask(M0),C=PL.pal&&PL.pal[t
  const nav=`<nav class="jump" aria-label="各區">${secs.map(([k,ic,l,,c])=>`<a href="#${k}"><span aria-hidden="true">${ic}</span>${l}<small>${c}</small></a>`).join('')}</nav>`;
  const title=(m.plan&&m.plan.title)||nm,route=[...new Set(m.flights.flatMap(s=>[iata(s.from),iata(s.to)]).filter(Boolean))].slice(0,4);
  const nN=Math.max(0,days.length-1);
- const body=`<header><div class="w"><span class="brand"><i></i>STOB</span><h1>${e(title)}</h1>
+ const body=`<header><div class="w"><span class="brand"><i></i>DETOUR</span><h1>${e(title)}</h1>
  <div class="tix"><div><small>出發</small><b>${e(md(t.start))}</b><span>${e(wk(t.start))}</span></div><div class="mid"><b>${days.length}</b><span>天${nN?' '+nN+' 夜':''}</span></div><div class="r"><small>回程</small><b>${e(md(t.end))}</b><span>${e(wk(t.end))}</span></div></div>
  ${route.length>1?`<p class="rt">${route.map(e).join('<i>→</i>')}</p>`:''}<p class="cdn" data-s="${e(t.start)}" data-e="${e(t.end)}" hidden></p></div></header>
 <main>${nav}${secs.map(([k,ic,l,h,c])=>`<section id="${k}"><h2><span aria-hidden="true">${ic}</span>${l}<small>${c}</small></h2>${h}</section>`).join('')}</main>
-<footer>更新於 ${d(new Date().toLocaleDateString('sv-SE'))}・由 STOB 旅遊訂單產生<br><button type="button" data-act="open">全部展開</button><button type="button" data-act="print">列印</button></footer>`;
+<footer>更新於 ${d(new Date().toLocaleDateString('sv-SE'))}・由偏航 DETOUR 產生<br><button type="button" data-act="open">全部展開</button><button type="button" data-act="print">列印</button></footer>`;
  return {C,nm,title,short:pubShort(nm),body,hits:pubScan(M0)}}
 const pubShort=nm=>{nm=String(nm||'行程').replace(/\s+/g,'');return nm.length<=4?nm+'行程':nm.slice(0,6)};
 const PUB_ACT="(function(){var D=function(s){var p=String(s).split('-');return new Date(+p[0],+p[1]-1,+p[2])},n=new Date(),td=new Date(n.getFullYear(),n.getMonth(),n.getDate()),iso=td.getFullYear()+'-'+('0'+(td.getMonth()+1)).slice(-2)+'-'+('0'+td.getDate()).slice(-2);\nvar c=document.querySelector('.cdn');if(c){var s=D(c.getAttribute('data-s')),e=D(c.getAttribute('data-e')),k=Math.round((s-td)/864e5);c.textContent=k>0?'還有 '+k+' 天出發':td<=e?'旅行第 '+(1-k)+' 天':'旅程已結束';c.hidden=false}\nvar d=document.querySelector('details.day[data-date=\"'+iso+'\"]');if(d){d.classList.add('now');d.open=true;var b=d.querySelector('.nowb');if(b)b.hidden=false}\nvar L=[].slice.call(document.querySelectorAll('.jump a'));if('IntersectionObserver' in window&&L.length){var io=new IntersectionObserver(function(es){es.forEach(function(x){if(x.isIntersecting){L.forEach(function(a){var on=a.getAttribute('href')=='#'+x.target.id;a.classList.toggle('on',on);if(on&&a.scrollIntoView)a.parentNode.scrollTo({left:a.offsetLeft-20,behavior:'smooth'})})}})},{rootMargin:'-45% 0px -50% 0px'});[].slice.call(document.querySelectorAll('main section')).forEach(function(s){io.observe(s)})}\ndocument.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act]');if(!b)return;document.querySelectorAll('details.day').forEach(function(x){x.open=true});if(b.getAttribute('data-act')=='print')print()});})();";

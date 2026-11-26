@@ -43,7 +43,7 @@ function cloudSave(){famCalc();campCalc();CLD.dirty=true;if(!CLD.db||!CLD.uid){C
 async function readMain(){const s=await uref('tob').get();return s.exists?(s.data()||{}):null}
 /* 分段文件的前綴：新格式寫在主文件 pk；沒有 pk 的 v2 用 tob_r<rev>_p；舊格式用 tob_p */
 const partPre=o=>{const p=o&&o.pk;if(typeof p=='string'&&/^tob_[A-Za-z0-9_]{1,80}$/.test(p))return p;return o&&o.rev?'tob_r'+o.rev+'_p':'tob_p'};
-/* 寫入鎖：只用 Claude db 提供的 acquire（cooperative lease，所有 STOB 寫入者都先取得它）。
+/* 寫入鎖：只用 Claude db 提供的 acquire（cooperative lease，所有偏航寫入者都先取得它）。
    沒拿到就不寫；不支援 acquire 就暫停儲存，不再「當作成功」。 */
 const LEASE_MS=10000,LEASE_MIN=4000;
 async function leaseTry(){const r=uref('tob_lock');if(typeof r.acquire!='function')throw {code:'nolease'};
@@ -401,13 +401,13 @@ function ordSave(k,id){if(!canWrite())return;const i=db[k].findIndex(x=>x.id==id
 function ordDel(k,id){if(!canWrite())return;const x=db[k].find(y=>y.id==id);if(x)imgDel(x.orderNo);db[k]=db[k].filter(y=>y.id!=id);ADS.del='';cloudSave();render();tip('已刪除')}
 
 /* ===== 備份：帶格式標記；還原先檢查、顯示比較、再二次確認，還原後可復原 ===== */
-const bkPack=()=>JSON.stringify({stob:1,format:1,at:new Date().toISOString(),db});
+const bkPack=()=>JSON.stringify({detour:1,format:1,at:new Date().toISOString(),db});
 const bkCount=o=>({trips:arr(o.trips).length,members:arr(o.members).length,orders:COLL.reduce((a,k)=>a+arr(o[k]).length,0),fl:arr(o.fl).length,ht:arr(o.ht).length,tr:arr(o.tr).length,ot:arr(o.ot).length,plans:Object.keys(obj(o.plans)).length});
 function bkCheck(txt){const R={errs:[],warns:[],data:null};let o;const t=String(txt||'').trim();if(!t){R.errs.push('還沒貼上備份內容');return R}
  try{o=JSON.parse(t)}catch(e){R.errs.push('不是完整的備份資料（可能沒複製完整，結尾少了括號）');return R}
- if(o&&o.stob&&o.db)o=o.db;
+ if(o&&(o.detour||o.stob)&&o.db)o=o.db; // 舊備份是 stob:1，一樣能還原
  if(!o||typeof o!='object'||Array.isArray(o)){R.errs.push('格式不對：最外層要是 {…}');return R}
- const K=['members','trips',...COLL];if(!K.some(k=>Array.isArray(o[k]))){R.errs.push('裡面沒有旅程、成員或訂單，不像是 STOB 的備份');return R}
+ const K=['members','trips',...COLL];if(!K.some(k=>Array.isArray(o[k]))){R.errs.push('裡面沒有旅程、成員或訂單，不像是偏航的備份');return R}
  const ids=new Set();K.forEach(k=>{if(o[k]===undefined)return;if(!Array.isArray(o[k])){R.errs.push(CNAME[k]+'的格式不對');return}
   o[k].forEach((x,i)=>{if(!x||typeof x!='object'||Array.isArray(x)){R.errs.push(CNAME[k]+'第 '+(i+1)+' 筆格式不對');return}if(typeof x.id!='string'||!x.id){R.errs.push(CNAME[k]+'第 '+(i+1)+' 筆缺少 id');return}if(ids.has(x.id))R.errs.push('有重複的 id：'+x.id);ids.add(x.id)})});
  if(R.errs.length)return R;

@@ -2,7 +2,7 @@
 import asyncio,json,os,time,copy
 HERE=os.path.dirname(os.path.abspath(__file__))
 exec(open(os.path.join(HERE,'t8.py')).read().split('async def main')[0])
-URL=globals().get('STOB_URL') or ('file://'+HERE+'/index.html')
+URL=globals().get('APP_URL') or ('file://'+HERE+'/index.html')
 CH=os.environ.get('CHROME','/usr/bin/google-chrome')
 from playwright.async_api import async_playwright
 R=[]

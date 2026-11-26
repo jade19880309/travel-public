@@ -1,6 +1,6 @@
 import pathlib as _pl, os as _os
 HERE=_pl.Path(__file__).resolve().parent
-STOB_URL=(HERE.parent/__import__('os').environ.get('APP','STOB.html')).as_uri()
+APP_URL=(HERE.parent/__import__('os').environ.get('APP','DETOUR.html')).as_uri()
 CHROME=_os.environ.get('CHROME','/usr/bin/google-chrome')
 import asyncio,json,base64
 src=open(HERE/'test.py').read()
@@ -20,7 +20,7 @@ async def main():
         pg=await b.new_page(viewport={'width':390,'height':844},device_scale_factor=2);errs=[]
         pg.on('pageerror',lambda e:errs.append(str(e)))
         await pg.add_init_script(MOCK)
-        await pg.goto(STOB_URL);await pg.wait_for_timeout(1000)
+        await pg.goto(APP_URL);await pg.wait_for_timeout(1000)
         await pg.evaluate("go('up');ADS.text='x'");await pg.evaluate("adRun()");await pg.wait_for_timeout(500);await pg.evaluate("adApply()");await pg.wait_for_timeout(500)
         await pg.screenshot(path='p0_home.png')
         await pg.evaluate("S.trip=db.trips[0].id;go('plan')");await pg.wait_for_timeout(300)

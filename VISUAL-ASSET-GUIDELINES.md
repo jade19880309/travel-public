@@ -1,6 +1,6 @@
 # 旅程視覺素材規範（2026-11-26，使用者確認第四方案）
 ## 決策
-保留公開首頁 V3 手帳美編，Icon 與明信片分流。此決策取代 HANDOFF.md 中 Icon 整合的三選一；不要合併 icons-home-unified 分支，不要將露營車升為獨立主卡。偏航 stob/ 與私人訂單系統現有功能不動。
+保留公開首頁 V3 手帳美編，Icon 與明信片分流。此決策取代 HANDOFF.md 中 Icon 整合的三選一；不要合併 icons-home-unified 分支，不要將露營車升為獨立主卡。偏航 detour/ 與私人訂單系統現有功能不動。
 ## 素材用途與路徑
 - 功能識別：images/home-journal/{seoul,hong-kong-zhuhai-macau,tokyo,kyoto-osaka,tokyo-camper}.png，原始 512×512 RGBA，保留原色、透明邊、圓角、比例；object-fit:contain，不裁切、不加遮罩、不重畫。私人訂單卡已整合，不必重做。手機桌面圖示如需使用，須另核對 manifest 與平台規格，不擅自更換共用 App 圖示。
 - 公開首頁：沿用 images/journal-v3/ 內現有 WebP 明信片與裝飾，依 V3/V3b 構圖顯示；不強制換成正方形 PNG。未來獨立製作明信片建議 1200×1000，露營車橫幅 1200×500，無文字、無 UI、保留安全留白；這些是建議規格，不是已存在的新素材。
@@ -12,7 +12,7 @@
 ## Claude 執行與驗收
 1. 先讀 HANDOFF.md、README.md、本規範，確認 main 最新版本；不要覆蓋平行工作成果。
 2. 核對現有 V3/V3b 是否符合上述分流；符合就不改。保留原始 PNG 與 WebP 兩套，不刪除或互相覆蓋。不自行重畫、裁切原 PNG 或生成替代素材。缺獨立高解析度素材時記錄待辦，不假稱已完成。
-3. 如需修正，只精準調整公開首頁相關 HTML/CSS；保留 metadata、動態倒數、fallback、離線、upd.js、所有連結。不得修改 stob/、私人系統、各旅程內頁及資料。網頁有改才依 README 增加 sw.js VERSION，保留其他快取資源。
+3. 如需修正，只精準調整公開首頁相關 HTML/CSS；保留 metadata、動態倒數、fallback、離線、upd.js、所有連結。不得修改 detour/、私人系統、各旅程內頁及資料。網頁有改才依 README 增加 sw.js VERSION，保留其他快取資源。
 4. Playwright 驗證 320/360/390/430/768/1280/1440 寬度：無水平溢出、圖片載入成功、無 pageerror、四個入口連結正確、倒數與更新及離線正常。提供手機與桌機截圖；線上及 iPhone 未測須明列。
 5. 更新 HANDOFF.md：完成項目刪除，未完成與阻礙保留。不要強推。
 ## 本次交付狀態
