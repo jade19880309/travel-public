@@ -1,0 +1,68 @@
+/* 版面修正（2026-11-27）：總覽 home.html、首爾 index.html、港珠澳 hk.html、東京 tokyo.html、露營車 campervan.html 共用，放在各頁樣式表最後。
+   1. 首爾／港珠澳的「工具」選單（tools-menu.js）樣式
+   2. 總覽手機版：倒數彩帶不再壓到地標線稿、東京副標不碰箭頭
+   3. 電腦版（≥1200px）加寬：原本 760–1100px，改成約 1240–1320px，單欄清單改兩欄
+   各頁用 :has() 辨識（iOS 16.4+）。京阪 keihan.html 本來就 1160px，沒有套用。 */
+
+/* ---------- 1. 工具選單（首爾、港珠澳） ---------- */
+#tm-tools{position:fixed;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;padding:0;cursor:pointer;transition:opacity .2s,transform .2s}
+#tm-tools small{font-size:10px;line-height:1.1;opacity:.85}
+#tm-tools:active{transform:scale(.92)}
+body.tm-open #tm-tools{filter:brightness(.9)}
+body.tm-hide #tm-tools{opacity:0;transform:translateY(12px);pointer-events:none}
+.tm-tool{opacity:0;visibility:hidden;transform:translateY(14px) scale(.9);pointer-events:none}
+body.tm-ready .tm-tool{transition:opacity .2s,transform .2s,visibility 0s .2s}
+body.tm-open .tm-tool{opacity:1;visibility:visible;transform:none;pointer-events:auto;transition:opacity .2s,transform .2s,visibility 0s}
+@media (prefers-reduced-motion:reduce){#tm-tools,.tm-tool{transition:none!important}}
+
+/* ---------- 2. 總覽手機版 ---------- */
+@media(max-width:759.98px){
+ .journal .mark{opacity:.32}                 /* 地標線稿淡成浮水印，倒數彩帶的字不再跟線條打架 */
+ .journal .info{padding-right:40px}          /* 副標（例：盛夏東京・城市與自然漫遊）不碰右側箭頭 */
+ .journal .info p{text-wrap:balance}         /* 換行時兩行平均，不會只剩一個字掉到下一行 */
+}
+
+/* ---------- 3. 電腦版加寬（≥1200px） ---------- */
+@media(min-width:1200px){
+ /* 總覽 */
+ body:has(.journal) .wrap,body:has(.journal) .cover-copy,body:has(.journal) .foot{max-width:min(1240px,calc(100vw - 48px))}
+ body:has(.journal) .forest{max-width:1340px}
+ body:has(.journal) .entry-main{grid-template-columns:minmax(0,440px) minmax(0,1fr);min-height:280px}
+
+ /* 首爾 */
+ html.th-han main:has(> .hero3){max-width:min(1320px,calc(100vw - 48px))}
+ main:has(> .hero3) #plist{grid-template-columns:repeat(4,minmax(0,1fr))}
+ main:has(> .hero3) .hero3 .hero-bg{max-height:560px;object-fit:cover}
+ body:has(.hero3) #daybar > div{max-width:1000px}
+
+ /* 港珠澳（hk.html 的 header nav 是 6 欄） */
+ body:has(#hd > nav) > main{max-width:min(1280px,calc(100vw - 48px))}
+ body:has(#hd > nav) > main > #hero{max-width:1100px;margin-left:auto;margin-right:auto}
+ body:has(#hd > nav) #wx{max-width:1100px}
+ body:has(#hd > nav) #days{grid-template-columns:repeat(2,minmax(0,1fr));align-items:start}
+ body:has(#hd > nav) #hd > nav{max-width:1000px}
+ body:has(#hd > nav) #daybar > div{max-width:1000px}
+
+ /* 東京（森林手帳 V2，main 底下有 .fj2-hero） */
+ html.fj2 main:has(> .fj2-hero){max-width:min(1280px,calc(100vw - 48px))}
+ html.fj2 #hd .fj2-brand{max-width:1280px}
+ /* 東京封面：電腦版改成左圖右（快捷鍵＋倒數）兩欄，不再是中間一條窄柱 */
+ html.fj2.th-fuji.forest-journal main > #hero.fj2-hero{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);grid-template-rows:auto auto;column-gap:28px;row-gap:18px;align-items:center}
+ html.fj2.th-fuji.forest-journal main > #hero > .fj2-cover{grid-column:1;grid-row:1/3;max-width:none;width:100%;margin:16px 0 0}
+ html.fj2.th-fuji.forest-journal main > #hero > .fj2-nav{grid-column:2;grid-row:1;max-width:none;width:100%;margin:16px 0 0;align-self:end}
+ html.fj2.th-fuji.forest-journal main > #hero > .fj2-cdcard{grid-column:2;grid-row:2;max-width:none;width:100%;margin:0;align-self:start}
+ html.fj2.th-fuji.forest-journal main > #wx{max-width:none}
+ html.fj2 main #days{grid-template-columns:repeat(2,minmax(0,1fr));align-items:start}
+ html.fj2 main #hotel{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:16px;align-items:start}
+ html.fj2 main #hotel > :not(details){grid-column:1/-1}
+ html.fj2 main #plist{grid-template-columns:repeat(3,minmax(0,1fr))}
+ html.fj2 main .fj2-bnr img{max-height:420px;width:100%;object-fit:cover}
+ html.fj2 main .forest-footer{max-width:1000px}
+ html.fj2 #daybar > div{max-width:1000px}
+
+ /* 露營車（body 直接放 .wrap） */
+ html.fj2 body > .wrap,html.fj2 .fj2-bar .wrap{max-width:1180px}
+ html.fj2 body > .wrap .fj2-cover{max-width:920px;margin-left:auto;margin-right:auto}
+ html.fj2 body > .wrap .fj2-days{grid-template-columns:repeat(2,minmax(0,1fr));align-items:start}
+ html.fj2 body > .wrap .forest-footer{max-width:1000px}
+}

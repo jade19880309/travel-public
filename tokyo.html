@@ -20,7 +20,7 @@
 <link id="theme-forest" rel="stylesheet" href="theme-forest-journal.css"><link id="theme-forest-v2" rel="stylesheet" href="theme-forest-v2.css">
 <script>/* 森林手帳：?theme=classic 恢復原版（v168 復原機制）、?theme=v1 森林手帳第一版（v168）、?theme=forest 改回 V2（記在這支手機） */try{var tq=new URLSearchParams(location.search).get("theme");if(tq==="classic"||tq==="forest"||tq==="v1")localStorage.setItem("theme",tq);var th=localStorage.getItem("theme");if(th==="classic"||th==="v1"){document.getElementById("theme-forest-v2").disabled=true;document.documentElement.classList.remove("fj2")}if(th==="classic"){document.getElementById("theme-forest").disabled=true;document.documentElement.classList.remove("forest-journal");document.head.insertAdjacentHTML("beforeend","<style>.forest-scene,.forest-footer{display:none}</style>")}}catch(e){}</script>
 <script>/* 森林手帳 V2.1：記下開頁當下使用的快取版本（版本提示用） */try{window.FJ2_CV=("caches" in window)&&navigator.serviceWorker&&navigator.serviceWorker.controller?caches.keys():null}catch(e){}</script>
-</head>
+<link rel="stylesheet" href="layout-fix.css"></head>
 <body>
 <header id="hd"><div class="net" id="net" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 18h10.5a4 4 0 0 0 .6-7.95A6 6 0 0 0 6.6 9.1 4.5 4.5 0 0 0 7 18z"/><path d="m9.5 13.5 2 2 3.5-3.5"/></svg><span>目前沒有網路・行程已存在手機，可照常查看</span></div><nav></nav></header>
 <main>

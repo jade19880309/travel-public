@@ -19,7 +19,7 @@
 <link rel="stylesheet" href="theme-bay.css">
 <link id="theme-hzm-retro" rel="stylesheet" href="theme-hzm-retro.css">
 <script>/* HZM Retro v1.1（港片復古風）：?theme=classic 恢復原版水墨風、?theme=retro 改回（記在這支手機） */window.HZMR=true;try{var tq=new URLSearchParams(location.search).get("theme");if(tq==="classic"||tq==="retro")localStorage.setItem("hzmTheme",tq);if(localStorage.getItem("hzmTheme")==="classic")window.HZMR=false}catch(e){}if(window.HZMR){document.documentElement.classList.add("hzm-retro");document.querySelector('meta[name="theme-color"]').setAttribute("content","#10292c")}else{document.getElementById("theme-hzm-retro").disabled=true}</script>
-</head>
+<link rel="stylesheet" href="layout-fix.css"></head>
 <body>
 <header id="hd"><div class="net" id="net" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 18h10.5a4 4 0 0 0 .6-7.95A6 6 0 0 0 6.6 9.1 4.5 4.5 0 0 0 7 18z"/><path d="m9.5 13.5 2 2 3.5-3.5"/></svg><span>目前沒有網路・行程已存在手機，可照常查看</span></div><nav></nav></header>
 <main>
@@ -86,6 +86,6 @@
  }).catch(function(){fail('行程資料載入失敗，請確認網路後重新整理。（直接開本機檔案無法讀取資料，請用網址開啟）')});
 })();
 </script>
-<script src="upd.js"></script>
+<script src="tools-menu.js"></script><script src="upd.js"></script>
 </body>
 </html>

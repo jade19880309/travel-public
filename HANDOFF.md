@@ -23,6 +23,12 @@
 - 純改 `HANDOFF.md`（沒動網頁、JSON、`app.js`）時不需要加 `sw.js` 的 `VERSION`，那只在網頁內容變動時才有意義。
 - 京阪每日圖示：有 `choice` 的日子，選項若沒寫 `stk` 要退回當天的 `stk`（曾因此抓 `ic-undefined.svg`，9/9 圖示消失）。圖示出問題先查檔名，不要先怪快取。
 
+## 電腦版加寬＋手機重疊修正（2026/11/27，sw v210）
+- **新檔**：`layout-fix.css`（總覽、首爾、港珠澳、東京、露營車在 `</head>` 前載入，放在各頁樣式最後）、`tools-menu.js`（只有首爾 `index.html`、港珠澳 `hk.html`，在 `upd.js` 前）。兩檔已加進 `sw.js` CORE。京阪 `keihan.html` 本來就 1160px，沒套 `layout-fix.css`。
+- **電腦版（≥1200px）**：總覽 1240、首爾 1320、港珠澳／東京 1280、露營車 1180（都再用 `calc(100vw - 48px)` 留邊）。港珠澳／東京每日行程、露營車 DAY 卡改兩欄；東京住宿卡兩欄、常用日語三欄、封面改「左圖右（快捷鍵＋倒數）」兩欄；首爾常用韓語四欄。頁面用 `:has()` 辨識（iOS 16.4+）；東京封面選擇器要用 `html.fj2.th-fuji.forest-journal` 開頭才蓋得過 `theme-forest-v2.css`。
+- **手機**：首爾／港珠澳右側三顆懸浮鈕收進「工具」鈕（同東京 `forest-v2.js` 的做法，外觀複製 `#fs`；`#fxb` 是 app.js 晚產生，腳本會等最多 4 秒）。總覽地標線稿在 <760px 淡成 .32、`.info` 右側留 40px＋`text-wrap:balance`。京阪住宿卡郵戳 `.pm` 移到郵票左下（`theme-kyoto-classic.css` 最後一行）。
+- 已測：Chrome 模擬 390／820／1280／1440／1920，六頁無 pageerror、無橫向溢出，工具鈕開合正常。**未測**：iPhone Safari、iPad 實機。
+
 ## 京阪「京都、慢日子。」V2 首頁還原暨品質改善（2026/11/26，sw v179；依使用者 `kyoto-v2-handoff.zip` 的 CLAUDE-KYOTO-V2.md）
 - **範圍**：`keihan.html`、`theme-kyoto-classic.css`（整份重寫成 V2）、新增 `images/keihan-2027/v2/`（15 張 JPEG）、`images/keihan-2027/classic/hero.png`（診斷用）、新增 `kyoto-diag.html`、`sw.js`（v179＋CORE＋activate）、`upd.js`（一行版本判斷）。`trips/`、`home.html`、`detour/`、其他旅程頁都沒改；京阪仍不在公開總覽。
 - **回復方式**：①只要舊版樣式：`keihan.html?theme=classic`（`?theme=kyoto` 改回，存 localStorage `kyotoTheme`；**2027/10/01 再評估要不要移除舊版**）。②整個退回 V1：還原點分支 `backup/keihan-before-kyoto-v2`（commit `ed6dc8b`，已推送）；V1 以前的原版另有 `backup/keihan-before-kyoto-classic`、`backups/keihan-before-kyoto-classic-20261126.html`。退回後 `sw.js` 的 VERSION 要再加 1。

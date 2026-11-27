@@ -368,3 +368,6 @@ html.kyoto-theme .sp.on{color:var(--shu)}
  html.kyoto-theme .tk .tt{font-size:19px}
 }
 @media (prefers-reduced-motion:reduce){html.kyoto-theme .kc-quick a{transition:none}}
+
+/* 2026-11-27：郵戳移到郵票左下角，不再蓋住飯店日文名 */
+html.kyoto-theme .pc .pm{top:80px;right:34px}
