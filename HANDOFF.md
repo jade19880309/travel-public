@@ -23,6 +23,11 @@
 - 純改 `HANDOFF.md`（沒動網頁、JSON、`app.js`）時不需要加 `sw.js` 的 `VERSION`，那只在網頁內容變動時才有意義。
 - 京阪每日圖示：有 `choice` 的日子，選項若沒寫 `stk` 要退回當天的 `stk`（曾因此抓 `ic-undefined.svg`，9/9 圖示消失）。圖示出問題先查檔名，不要先怪快取。
 
+## 總覽封面固定（2026/11/27，sw v214）
+- 使用者選「封面不動、旅程卡片從上面滑過」。`layout-fix.css` 第 4 段：`header.cover` sticky、`main.wrap`／`footer` 疊在上面並鋪同一張紙紋底（`main.wrap` 改成滿版，寬度限制移到 `.journal`）；`html`／`body` 的 `overflow-x:hidden` 在總覽改成 `clip`，否則 sticky 不會作用。
+- `home.html` 副標把「・」前後各包成 `.nb`＋`<wbr>`，手機只在「・」處換行（東京：盛夏東京・／城市與自然漫遊）。
+- 已測 390／1440 捲動；iPhone Safari 實機未測（iOS 16 以前不支援 `overflow:clip`／`:has()`，會退回不固定）。
+
 ## 東京封面露營車快捷票券（2026/11/27，sw v212）
 - `forest-v2.js` 東京封面（`fj2-cover` 裡、`.fj2-title` 後面）加 `<a class="fj2-camp" href="campervan.html">`，圖用總覽同款 `images/journal-v4/camper-ticket-cut.webp`；樣式在 `theme-forest-v2.css` 最後一段。`?theme=classic`／`v1` 不會出現。已測 390／820／1440 位置與點擊跳轉；iPhone 實機未測。
 
