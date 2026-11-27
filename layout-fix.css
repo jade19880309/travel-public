@@ -67,11 +67,34 @@ body.tm-open .tm-tool{opacity:1;visibility:visible;transform:none;pointer-events
  html.fj2 body > .wrap .forest-footer{max-width:1000px}
 }
 
-/* ---------- 4. 總覽封面固定（2026-11-27）：封面不動，旅程卡片像紙一樣從上面滑過 ---------- */
-body:has(.journal) > header.cover{position:sticky;top:0;z-index:0}
-body:has(.journal) > main.wrap,body:has(.journal) > footer{position:relative;z-index:1}
-body:has(.journal) > main.wrap{max-width:none;margin:0;padding-left:0;padding-right:0;background:#f1e2c6 url('images/journal-v4/paper-texture.webp') 0 0/350px 270px;box-shadow:0 -12px 18px -12px rgba(74,53,33,.45)}
-body:has(.journal) > main.wrap > .journal{max-width:1000px;margin-left:auto;margin-right:auto;padding-left:12px;padding-right:12px;padding-top:4px}
-body:has(.journal) > footer{background:#f1e2c6 url('images/journal-v4/paper-texture.webp') 0 0/350px 270px}
-@media(min-width:1200px){body:has(.journal) > main.wrap > .journal{max-width:min(1240px,calc(100vw - 48px))}}
-html:has(.journal),body:has(.journal){overflow-x:clip} /* overflow-x:hidden 會讓 sticky 失效，改用 clip（效果同樣是不露出左右溢出） */
+/* ---------- 4. 總覽：封面固定在頂端＋旅程卡「便條紙」切換（2026-11-27，搭配 home-deck.js） ---------- */
+html:has(.journal),body:has(.journal){overflow-x:clip} /* overflow-x:hidden 會讓 sticky 失效，改用 clip */
+body:has(.journal) > header.cover{position:sticky;top:0;z-index:5;background:#f1e2c6 url('images/journal-v4/paper-texture.webp') 0 0/350px 270px;padding-bottom:8px;box-shadow:0 10px 14px -12px rgba(74,53,33,.45)}
+/* 一疊便條紙：所有卡片疊在同一格，後面的往下錯開、微微轉角，只露出邊 */
+.journal.deck{display:grid;grid-template-columns:minmax(0,1fr);gap:0;padding-bottom:26px;margin-top:22px}
+.journal.deck > .entry{grid-area:1/1;align-self:stretch;display:flex;flex-direction:column;justify-content:center;z-index:calc(10 - var(--d,0));transform-origin:50% 0;
+ transform:translateY(calc(var(--d,0) * 9px)) rotate(calc(var(--d,0) * var(--rot,1.1deg))) scale(calc(1 - var(--d,0) * .025));
+ transition:transform .45s cubic-bezier(.2,.8,.2,1),filter .45s,opacity .3s}
+.journal.deck > .entry:nth-child(even){--rot:-1.2deg}
+.journal.deck > .entry:not(.top){filter:brightness(.97) saturate(.85);pointer-events:none}
+.journal.deck > .entry:not(.top) > *{visibility:hidden}  /* 後面幾張只看到紙邊，不露出內容 */
+.journal.deck > .entry:not(.top){opacity:calc(1 - var(--d,0) * .12)}
+.journal.deck > .entry.tuck{transition:none}
+/* 撕掉：先從上緣被拉起（輕微彎折），再往左上飛走 */
+.journal.deck > .entry.tear{z-index:20;animation:dkTear .56s cubic-bezier(.5,0,.75,.2) forwards}
+@keyframes dkTear{
+ 0%{transform:none;filter:none}
+ 22%{transform:translateY(-6px) rotate(-3deg) skewX(-2deg);filter:drop-shadow(0 14px 14px rgba(60,40,20,.35))}
+ 100%{transform:translate(-115%,-40px) rotate(-24deg);opacity:0;filter:drop-shadow(0 20px 18px rgba(60,40,20,.25))}}
+/* 貼回來：從左上落下、按平 */
+.journal.deck > .entry.stick{z-index:20;animation:dkStick .5s cubic-bezier(.2,.8,.25,1) both}
+@keyframes dkStick{0%{transform:translate(-110%,-40px) rotate(-20deg);opacity:0}70%{transform:translateY(-4px) rotate(1deg);opacity:1}100%{transform:none}}
+/* 導覽：‹ ・・・ › */
+.deck-nav{display:flex;align-items:center;justify-content:center;gap:18px;margin:4px auto 6px}
+.deck-nav > button{width:42px;height:42px;border-radius:50%;border:1.5px solid #cdbb9e;background:#fff9ed;color:#5a4630;font:700 24px/1 Georgia,serif;box-shadow:0 2px 6px rgba(89,69,44,.18);cursor:pointer;padding:0 0 3px}
+.deck-nav > button:active{transform:scale(.92)}
+.dk-dots{display:flex;gap:10px}
+.dk-dots button{width:10px;height:10px;border-radius:50%;border:0;padding:0;background:#cdbb9e;cursor:pointer;transition:width .25s,background .25s}
+.dk-dots button.on{width:26px;border-radius:6px;background:#8a6a45}
+@media(min-width:760px){body:has(.journal) .journal.deck{max-width:960px;margin-left:auto;margin-right:auto}} /* 一次一張，太寬反而空 */
+@media(prefers-reduced-motion:reduce){.journal.deck > .entry{transition:none}}

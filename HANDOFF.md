@@ -23,10 +23,12 @@
 - 純改 `HANDOFF.md`（沒動網頁、JSON、`app.js`）時不需要加 `sw.js` 的 `VERSION`，那只在網頁內容變動時才有意義。
 - 京阪每日圖示：有 `choice` 的日子，選項若沒寫 `stk` 要退回當天的 `stk`（曾因此抓 `ic-undefined.svg`，9/9 圖示消失）。圖示出問題先查檔名，不要先怪快取。
 
-## 總覽封面固定（2026/11/27，sw v214）
-- 使用者選「封面不動、旅程卡片從上面滑過」。`layout-fix.css` 第 4 段：`header.cover` sticky、`main.wrap`／`footer` 疊在上面並鋪同一張紙紋底（`main.wrap` 改成滿版，寬度限制移到 `.journal`）；`html`／`body` 的 `overflow-x:hidden` 在總覽改成 `clip`，否則 sticky 不會作用。
-- `home.html` 副標把「・」前後各包成 `.nb`＋`<wbr>`，手機只在「・」處換行（東京：盛夏東京・／城市與自然漫遊）。
-- 已測 390／1440 捲動；iPhone Safari 實機未測（iOS 16 以前不支援 `overflow:clip`／`:has()`，會退回不固定）。
+## 總覽：封面固定＋旅程卡便條紙切換（2026/11/27，sw v215；取代 v214 的「卡片滑過封面」）
+- 使用者指定：封面整塊固定在頂端，旅程切換改成「撕便條紙」動畫。新檔 `home-deck.js`（`home.html` 在 `upd.js` 前載入，已進 `sw.js` CORE）；樣式在 `layout-fix.css` 第 4 段。
+- 做法：`#up.journal` 加 `deck`，所有 `.entry` 疊在同一格（`--d`＝第幾張，後面的往下錯開、轉角、內容隱藏，只露紙邊；高度一律拉成最高那張＝東京含露營車票券）。往左滑／`›`＝最上面那張 `tear` 動畫飛走後排到最底；往右滑／`‹`＝上一張 `stick` 貼回；圓點可直接跳。目前第幾張記在 `sessionStorage.deckI`（回上一頁會停在原本那張）。`home.html` render() 會畫兩次（內建清單→trips/index.json），所以用 MutationObserver 每次重新整理，事件只綁一次。
+- `header.cover` sticky＋紙紋底；`html`／`body` 的 `overflow-x` 在總覽改 `clip`（hidden 會讓 sticky 失效）。電腦版一次一張，寬度限 960px。
+- `home.html` 副標把「・」前後各包成 `.nb`＋`<wbr>`，手機只在「・」處換行。
+- 已測：390（觸控）／1440，切換、圓點、點卡片進行程、回上一頁保留位置，無 pageerror。iPhone Safari 實機（滑動手感、動畫流暢度）未測；iOS 16.4 以前不支援 `:has()`／`overflow:clip`。
 
 ## 東京封面露營車快捷票券（2026/11/27，sw v212）
 - `forest-v2.js` 東京封面（`fj2-cover` 裡、`.fj2-title` 後面）加 `<a class="fj2-camp" href="campervan.html">`，圖用總覽同款 `images/journal-v4/camper-ticket-cut.webp`；樣式在 `theme-forest-v2.css` 最後一段。`?theme=classic`／`v1` 不會出現。已測 390／820／1440 位置與點擊跳轉；iPhone 實機未測。
