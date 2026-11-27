@@ -35,6 +35,10 @@
 ## 東京封面露營車快捷票券（2026/11/27，sw v212）
 - `forest-v2.js` 東京封面（`fj2-cover` 裡、`.fj2-title` 後面）加 `<a class="fj2-camp" href="campervan.html">`，圖用總覽同款 `images/journal-v4/camper-ticket-cut.webp`；樣式在 `theme-forest-v2.css` 最後一段。`?theme=classic`／`v1` 不會出現。已測 390／820／1440 位置與點擊跳轉；iPhone 實機未測。
 
+## 露營車介紹方塊加車內照片（2026/11/27，sw v226）
+- 使用者提供 zip（WOHN 13 張、MARS 5 張車內照）。轉成 WebP 放 `images/campervan/van/{wohn,mars}-NN.webp`（最長邊 ≤1200），`campervan.html` 的 `VAN_GAL` 接在原外觀照 `VEHICLE_PHOTOS` 後面；`vehicles()` 改成方塊內左右滑動（scroll-snap，`.vp`／`.vp-car`），右下「n / 總數」，電腦版滑鼠移上去有 ‹ › 鈕，點照片用既有的 `zmOpen()` 放大；`vpInit()` 在 `render()` 裡綁定。整頁左右滑換分頁的手勢已排除 `.vp-car`。
+- WOHN 有 10 張原圖只有 300×200（使用者給的就這麼小），放大看會糊；有高解析度版可再替換同檔名。圖片沒加進 `sw.js` CORE（lazy 載入）。
+
 ## 露營車行李收納提醒（2026/11/27，sw v224）
 - 使用者要簡單版：衣物按天分包（三天份 DAY 1～3，露營車住三晚）、上車先取出放櫃子、盥洗用品另外取出、行李箱收進車上存放空間。一度做成獨立「行李」分頁，後依使用者要求改放在**總覽最後**（`panel()` 的 `case 'ov'` 結尾 `+pack()`），分頁已拿掉。`campervan.html`：`PK` 文字（中日）＋`pack()`、樣式 `.pk`／`.pk-s`。要加條目改 `PK.zh.s`／`PK.ja.s`（中日都要改）。只是說明，沒有勾選功能。
 
