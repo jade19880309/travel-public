@@ -499,3 +499,13 @@ html.th-han.sv3 .ftx3 b{font-weight:600}
 html.th-han.sv3{--bg3:#fdf8f3}
 html.th-han.sv3 body.seoul-v3{background:radial-gradient(80% 40% at 0 30%,rgba(250,226,220,.45),transparent 70%),radial-gradient(70% 35% at 100% 55%,rgba(255,228,214,.4),transparent 70%),radial-gradient(90% 40% at 50% 100%,rgba(250,230,222,.35),transparent 70%),#fdf8f3;background-attachment:scroll}
 html.th-han.sv3 nav.nav3.stuck,html.th-han.sv3 .dock.dock3{background:rgba(253,248,243,.97)}
+
+/* 住宿卡相片：左右滑動（2026/11/27，seoul-winter.js 的 .hcar3） */
+html.th-han.sv3 #hotel .hcar3{position:relative;cursor:default}
+html.th-han.sv3 #hotel .hcs3{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;overscroll-behavior-x:contain}
+html.th-han.sv3 #hotel .hcs3::-webkit-scrollbar{display:none}
+html.th-han.sv3 #hotel .hcs3 img{flex:0 0 100%;width:100%;scroll-snap-align:start;cursor:zoom-in}
+html.th-han.sv3 #hotel .hcn3{position:absolute;right:5px;top:5px;padding:1px 6px;border-radius:999px;background:rgba(40,52,66,.62);color:#fff;font-size:11px;line-height:1.5;font-variant-numeric:tabular-nums;pointer-events:none}
+html.th-han.sv3 #hotel .hcd3{position:absolute;left:0;right:0;bottom:6px;display:flex;justify-content:center;gap:4px;pointer-events:none}
+html.th-han.sv3 #hotel .hcd3 i{width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,.6);box-shadow:0 0 2px rgba(0,0,0,.35)}
+html.th-han.sv3 #hotel .hcd3 i.on{background:#fff;width:12px;border-radius:3px}

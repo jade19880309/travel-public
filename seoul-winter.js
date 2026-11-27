@@ -89,7 +89,13 @@
   h.insertAdjacentHTML('afterbegin',img(IC('plane'),'fi3'))});
  $$('#hotel details.hotel').forEach(function(d,i){var s=$('summary',d),o=(TRIP.hotels||[])[i]||{};if(!s)return;
   d.classList.add('paper3','ho3');
-  if(o.pic==='hpic')s.insertAdjacentHTML('afterbegin','<button class="hpic3" data-sh="hpic" onclick="event.preventDefault()" aria-label="飯店相片"><img src="images/seoul-2027/hotel-2.jpg" alt="飯店外觀" loading="lazy"></button>')});
+  // 飯店相片：取自 TRIP.sheets[o.pic] 的圖片清單，在卡片左欄左右滑動（外觀照排第一張）；點圖放大
+  if(o.pic&&(TRIP.sheets||{})[o.pic]){var ph=[],re=/<img[^>]*src="([^"]+)"[^>]*alt="([^"]*)"/g,m;while((m=re.exec(TRIP.sheets[o.pic])))ph.push([m[1],m[2]]);
+   ph.sort(function(a,b){return (/外觀/.test(b[1])?1:0)-(/外觀/.test(a[1])?1:0)});
+   if(ph.length){s.insertAdjacentHTML('afterbegin','<div class="hpic3 hcar3" onclick="event.preventDefault()"><div class="hcs3" tabindex="0" aria-label="飯店相片，左右滑動">'+ph.map(function(p,k){return '<img src="'+p[0]+'" alt="'+p[1]+'"'+(k?' loading="lazy"':'')+'>'}).join('')+'</div>'+(ph.length>1?'<span class="hcn3" aria-hidden="true">1/'+ph.length+'</span><span class="hcd3" aria-hidden="true">'+ph.map(function(_,k){return '<i'+(k?'':' class="on"')+'></i>'}).join('')+'</span>':'')+'</div>');
+    var car=$('.hcar3',s),sc=$('.hcs3',car),n=$('.hcn3',car),dots=$$('.hcd3 i',car);
+    sc.addEventListener('scroll',function(){var k=Math.round(sc.scrollLeft/sc.clientWidth);if(n)n.textContent=(k+1)+'/'+ph.length;dots.forEach(function(d,j){d.classList.toggle('on',j===k)})},{passive:true});
+    sc.addEventListener('click',function(e){var im=e.target.closest('img');if(im&&window.openLB)openLB(im.src)})}}});
  if(ho)ho.insertAdjacentHTML('beforeend',img(DEC+'plum-branch.png','hplum3',true));
 
  // ===== 每日行程 days3／day3：依 reference-v3.html 結構重建視覺層 =====
