@@ -317,3 +317,8 @@ html.fj2.th-fuji #flight .fj2-bp .fl .mid::before{margin:4px 0 -13px}
 html.fj2.th-fuji #flight .fj2-bp .ac{margin:2px 0 6px;font-size:12.5px}
 html.fj2.th-fuji #flight .fj2-bp small{margin:0;padding:6px 0 0;border-top:1px dashed #d6cdb4;font-size:12.5px}
 html.fj2.th-fuji #flight .fj2-bp small::before,html.fj2.th-fuji #flight .fj2-bp small::after{content:none;display:none}
+
+/* 航班：依使用者要求只留手繪登機證，票下方的 HTML 航班紙條視覺隱藏（仍在頁面上，輔助科技可讀；點票券照樣查航班動態） */
+html.fj2.th-fuji #flight .fj2-bpinfo{position:absolute!important;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap;border:0}
+html.fj2.th-fuji #flight .bp.fj2-bp{position:relative}
+html.fj2.th-fuji #flight .grid:has(.fj2-bp){gap:14px}
