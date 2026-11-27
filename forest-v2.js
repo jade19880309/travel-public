@@ -105,7 +105,7 @@
   // ---- 每日行程：方案卡、日期分頁（代按下方日期列）、行程卡片縮圖 ----
   $$('#plan .plans .pic,#days .dic').forEach(toWC);
   // 橫幅：富士山 → 湖畔露營車水彩、雷門 → 淺草雷門水彩（只換圖，圖說文字照舊）
-  $$('.bnr img').forEach(function(b){var s=b.getAttribute('src')||'';if(/banner-fuji/.test(s)){swapImg(b,IMG+'campervan-hero.webp');b.alt='富士山湖畔與露營車水彩插畫'}else if(/banner-kaminarimon/.test(s)){swapImg(b,IMG+'asakusa-banner.webp');b.alt='淺草雷門水彩插畫'}else return;b.closest('.bnr').classList.add('fj2-bnr')});
+  $$('.bnr img').forEach(function(b){var s=b.getAttribute('src')||'';if(/banner-fuji/.test(s)){swapImg(b,IMG+'campervan-hero-lavender.webp');b.alt='富士山、薰衣草花田與露營車水彩插畫'}else if(/banner-kaminarimon/.test(s)){swapImg(b,IMG+'asakusa-banner.webp');b.alt='淺草雷門水彩插畫'}else return;b.closest('.bnr').classList.add('fj2-bnr')});
   var dbtn=$('#dbtn'),days=$('#days');
   if(dbtn&&days){
    var tabs=document.createElement('div');tabs.className='fj2-daytabs';tabs.setAttribute('role','tablist');tabs.setAttribute('aria-label','選擇日期');
@@ -141,6 +141,16 @@
   // 封面：露營車湖畔水彩＋標題
   hero.classList.add('fj2-hero');
   hero.insertAdjacentHTML('afterbegin','<div class="fj2-cover"><img class="fj2-cimg" src="'+IMG+'campervan-hero-lavender.webp" alt="富士山、薰衣草花田與露營車水彩插畫" fetchpriority="high"></div>');
+  // 封面改成北河口湖富士山即時影像（2026-11-27 使用者指定；北河口湖観光協会 camera1，tw.live 同一路）。
+  // 水彩圖留在底下當預留畫面：離線或影片載入前看到的是圖。直播換網址時改 LV.id。
+  (function(){var LV={id:'Mak-Zg-fS2s',ch:'UCA9FCnkhxa54xP0jg4Tx42w'},cv=$('.fj2-cover',hero);if(!cv)return;
+   cv.classList.add('fj2-live');
+   cv.insertAdjacentHTML('beforeend','<a class="fj2-lvb" href="https://www.youtube.com/watch?v='+LV.id+'" target="_blank" rel="noopener"><i aria-hidden="true"></i>LIVE・北河口湖</a>');
+   if(navigator.onLine===false)return;
+   var f=document.createElement('iframe');f.className='fj2-lvf';f.title='北河口湖 富士山即時影像';
+   f.allow='autoplay; encrypted-media; picture-in-picture; fullscreen';f.allowFullscreen=true;f.setAttribute('referrerpolicy','strict-origin-when-cross-origin');
+   f.src='https://www.youtube-nocookie.com/embed/'+LV.id+'?autoplay=1&mute=1&playsinline=1&rel=0&modestbranding=1';
+   cv.insertBefore(f,cv.querySelector('.fj2-lvb'))})();
   var ti=$('#ti');ti.insertAdjacentHTML('afterend','<p class="fj2-en" lang="en">Campervan Trip</p>');
   // 功能圖示紙卡：只放頁面原本就有的分頁
   var KEYS=[['ov','schedule'],['mp','map'],['rv','camper','rv'],['rv','sake','brew']];

@@ -240,3 +240,15 @@ html.fj2 .fj2-cover .fj2-camp small{font-weight:500;font-size:11px;color:var(--s
 html.fj2 .fj2-cover .fj2-camp b{position:relative;width:9px;height:9px;margin-left:2px;border:solid currentColor;border-width:2.5px 2.5px 0 0;transform:rotate(45deg)}
 html.fj2 .fj2-cover .fj2-camp:active{transform:scale(.96)}
 @media(min-width:760px){html.fj2 .fj2-cover .fj2-camp{right:18px;bottom:18px;padding:7px 16px 7px 7px}html.fj2 .fj2-cover .fj2-camp img{width:104px}html.fj2 .fj2-cover .fj2-camp span{font-size:16px}html.fj2 .fj2-cover .fj2-camp small{font-size:12px}}
+
+/* 2026-11-27：露營車封面＝北河口湖富士山即時影像（iframe 疊在水彩圖上，圖當預留畫面）；標題不擋點擊 */
+html.fj2.forest-journal:not(.th-fuji) .fj2-hero .fj2-live{position:relative}
+html.fj2.forest-journal:not(.th-fuji) .fj2-hero .fj2-live .fj2-cimg{aspect-ratio:16/9}
+html.fj2.forest-journal:not(.th-fuji) .fj2-hero .fj2-lvf{position:absolute;inset:0;width:100%;height:100%;border:0;display:block;background:transparent;
+ -webkit-mask-image:linear-gradient(180deg,#000 82%,transparent);mask-image:linear-gradient(180deg,#000 82%,transparent)}
+html.fj2:not(.th-fuji) .fj2-hero #ti,html.fj2:not(.th-fuji) .fj2-hero .fj2-en{pointer-events:none}
+html.fj2.forest-journal:not(.th-fuji) .fj2-hero .fj2-lvb{position:absolute;z-index:2;left:12px;bottom:16%;display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;background:rgba(200,16,46,.92);color:#fff;font:700 12px/1.2 system-ui,-apple-system,sans-serif;letter-spacing:.06em;text-decoration:none;box-shadow:0 2px 6px rgba(0,0,0,.25)}
+html.fj2.forest-journal:not(.th-fuji) .fj2-hero .fj2-lvb i{width:7px;height:7px;border-radius:50%;background:#fff;animation:fj2Blink 1.6s ease-in-out infinite}
+@keyframes fj2Blink{50%{opacity:.25}}
+@media(min-width:760px){html.fj2.forest-journal:not(.th-fuji) .fj2-hero .fj2-lvf{border-radius:24px;-webkit-mask-image:none;mask-image:none}html.fj2.forest-journal:not(.th-fuji) .fj2-hero .fj2-lvb{left:16px;bottom:16px}}
+@media(prefers-reduced-motion:reduce){html.fj2 .fj2-lvb i{animation:none}}

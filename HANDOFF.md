@@ -35,9 +35,11 @@
 ## 東京封面露營車快捷票券（2026/11/27，sw v212）
 - `forest-v2.js` 東京封面（`fj2-cover` 裡、`.fj2-title` 後面）加 `<a class="fj2-camp" href="campervan.html">`，圖用總覽同款 `images/journal-v4/camper-ticket-cut.webp`；樣式在 `theme-forest-v2.css` 最後一段。`?theme=classic`／`v1` 不會出現。已測 390／820／1440 位置與點擊跳轉；iPhone 實機未測。
 
-## 露營車 DAY 3 河口湖即時影像（2026/11/27，sw v211）
-- `campervan.html`：`LIVE`（影片 `1cnReFAU04k`，河口湖有線電視 KTV 頻道 `UCK9eHUAiJeNA2i_1TcgZcfw`）、`liveCam()`、`liveOn()`，只在 `day()` 的 `d3` 路線圖下方輸出；中日文跟著語言切換。先顯示縮圖＋播放鈕（不預先載入 iframe），點了才換成 `youtube-nocookie.com` 靜音自動播放。直播若換網址，改 `LIVE.id` 即可；卡片也附頻道 `/live` 連結。樣式在頁內 `<style>` 的 `.livecam`，標題圖示 `h3.i-fuji`。
-- 縮圖（i.ytimg.com）與播放在沙盒連不到，只驗證了版面與點擊後 iframe 產生；**線上實際播放、iPhone Safari 未測**。
+## 露營車封面＝北河口湖富士山即時影像（2026/11/27，sw v218；取代 v211 的 DAY 3 直播卡）
+- 使用者指定：直播換成 tw.live「北河口湖遠眺富士山」那一路（YouTube `Mak-Zg-fS2s`，北河口湖観光協会 camera1，頻道 `UCA9FCnkhxa54xP0jg4Tx42w`，已確認可嵌入），放在封面；DAY 3 的直播卡已整段刪除（`campervan.html` 的 `LIVE`／`liveCam`／`liveOn`／`.livecam`／`h3.i-fuji` 都拿掉）。
+- `forest-v2.js` 露營車封面：`.fj2-cover` 加 `fj2-live`，iframe `.fj2-lvf`（youtube-nocookie、靜音自動播放、playsinline）疊在原本薰衣草水彩圖上，圖當預留畫面（離線時不插 iframe）；左下紅色「LIVE・北河口湖」連到 YouTube。封面比例改 16:9；標題 `#ti`／`.fj2-en` 設 `pointer-events:none` 不擋影片。直播換網址時改 `LV.id`。
+- 薰衣草水彩圖同時換到東京頁「我的東京行程」橫幅（原 `campervan-hero.webp`，`forest-v2.js` 的 `.bnr img` 替換那行）。
+- 沙盒連不到 YouTube，只驗證了 iframe 位置與尺寸（390／1440）；**線上實際播放、iPhone 自動播放未測**。
 
 ## 電腦版加寬＋手機重疊修正（2026/11/27，sw v210）
 - **新檔**：`layout-fix.css`（總覽、首爾、港珠澳、東京、露營車在 `</head>` 前載入，放在各頁樣式最後）、`tools-menu.js`（只有首爾 `index.html`、港珠澳 `hk.html`，在 `upd.js` 前）。兩檔已加進 `sw.js` CORE。京阪 `keihan.html` 本來就 1160px，沒套 `layout-fix.css`。
