@@ -272,3 +272,26 @@ html.fj2.forest-journal:not(.th-fuji) body:has(.fj2-lvhd) .fj2-tabsec{top:calc(5
 }
 /* v225：車輛使用指南（.spec-grid）五張卡片底色統一，跟頁面其他卡片同色（原本三色輪替） */
 html.fj2 .spec-grid article,html.fj2 .spec-grid article:nth-child(n){background:#fffdf6}
+
+/* Tokyo forest journal: vintage flight ticket */
+html.fj2.th-fuji #flight .bp{position:relative;overflow:hidden;background:#fffdf6;border:1px solid #c9cbb8;border-radius:18px;padding:0 0 14px;box-shadow:0 4px 12px #39463812;color:#394638}
+html.fj2.th-fuji #flight .bp .bph{display:flex;flex-wrap:wrap;align-items:center;gap:8px;background:#dce5cf;color:#394638;border:0;border-bottom:1px solid #c9cbb8;padding:30px 14px 12px;font-size:14px}
+html.fj2.th-fuji #flight .bp:nth-child(2) .bph{background:#e4eceb}
+html.fj2.th-fuji #flight .bp .bph::before{content:"FOREST JOURNAL · AIR TICKET";position:absolute;top:10px;left:14px;font-size:10px;letter-spacing:.12em;color:#536b49}
+html.fj2.th-fuji #flight .bp .bph::after{content:none}
+html.fj2.th-fuji #flight .bp .bph .pill{background:#536b49;color:#fff;border:0;box-shadow:none}
+html.fj2.th-fuji #flight .bp .bph .al{color:#394638;margin-right:0;margin-left:auto;font-size:12px;opacity:1}
+html.fj2.th-fuji #flight .bp .fl{display:grid;grid-template-columns:minmax(0,1fr) minmax(64px,.8fr) minmax(0,1fr);align-items:center;gap:6px;margin:20px 14px 14px}
+html.fj2.th-fuji #flight .bp .fl big{display:block;background:none;border:0;box-shadow:none;padding:0;font-family:Georgia,serif;font-size:clamp(25px,7vw,36px);color:#394638;letter-spacing:.04em}
+html.fj2.th-fuji #flight .bp .fl span{font-size:12px;color:#626b58;overflow-wrap:anywhere}
+html.fj2.th-fuji #flight .bp .fl b{font-size:clamp(19px,5.4vw,26px);color:#536b49;font-variant-numeric:tabular-nums}
+html.fj2.th-fuji #flight .bp .fl .mid{color:#626b58;font-size:11px;text-align:center;background:none}
+html.fj2.th-fuji #flight .bp .fl .mid::before{content:"";display:block;height:20px;border-top:1px dashed #81966c;border-radius:50%;margin:8px 0 -13px}
+html.fj2.th-fuji #flight .bp .fl .mid::after{animation:none;color:#536b49}
+html.fj2.th-fuji #flight .bp .ac{color:#626b58;margin:0 14px 10px}
+html.fj2.th-fuji #flight .bp small{display:block;position:relative;border-top:1px dashed #c7a384;margin:0 14px;padding:12px 0 0;color:#626b58;font-size:12px;line-height:1.6}
+html.fj2.th-fuji #flight .bp small::before,html.fj2.th-fuji #flight .bp small::after{background:#f6f1e5;border:1px solid #c9cbb8;width:16px;height:16px;top:-9px}
+html.fj2.th-fuji #flight .bp small::before{left:-24px}
+html.fj2.th-fuji #flight .bp small::after{right:-24px}
+html.fj2.th-fuji #flight .bp[data-fn] small::after{pointer-events:none}
+html.fj2.th-fuji #flight .bp[data-fn]:focus-visible{outline:2px solid #536b49;outline-offset:3px}
