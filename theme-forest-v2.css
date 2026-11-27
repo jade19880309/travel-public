@@ -260,8 +260,10 @@ html.fj2.forest-journal:not(.th-fuji) .fj2-lvhd{position:sticky;top:calc(52px + 
 html.fj2.forest-journal:not(.th-fuji) .fj2-lvhd .fj2-cover{margin-top:0}
 html.fj2.forest-journal:not(.th-fuji) body:has(.fj2-lvhd) .fj2-tabsec{top:calc(52px + env(safe-area-inset-top,0px) + var(--lvh,0px))}
 @media(min-width:760px){
- html.fj2.forest-journal:not(.th-fuji) .fj2-lvhd{padding-top:12px}
- html.fj2.forest-journal:not(.th-fuji) body > .wrap .fj2-hero.fj2-lvhd .fj2-cover{max-width:min(920px,72vh);margin-left:auto;margin-right:auto} /* 電腦版固定時不要佔掉半個畫面 */
+ /* 平板、電腦版不固定（使用者 2026-11-27：手機固定、網頁版不固定），分頁列回到原本位置 */
+ html.fj2.forest-journal:not(.th-fuji) .fj2-lvhd{position:relative;top:auto;background:none;padding-top:0}
+ html.fj2.forest-journal:not(.th-fuji) body:has(.fj2-lvhd) .fj2-tabsec{top:calc(52px + env(safe-area-inset-top,0px))}
+ html.fj2.forest-journal:not(.th-fuji) .fj2-lvhd .fj2-cover{margin-top:16px}
 }
 /* v220：直播上緣也淡入品牌列（拿掉品牌列底線與陰影，接縫不再是一條硬線）；只限手機（電腦版是圓角卡片） */
 @media(max-width:759.98px){

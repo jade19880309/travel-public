@@ -38,7 +38,7 @@
 ## 露營車封面＝北河口湖富士山即時影像（2026/11/27，sw v218；取代 v211 的 DAY 3 直播卡）
 - 使用者指定：直播換成 tw.live「北河口湖遠眺富士山」那一路（YouTube `Mak-Zg-fS2s`，北河口湖観光協会 camera1，頻道 `UCA9FCnkhxa54xP0jg4Tx42w`，已確認可嵌入），放在封面；DAY 3 的直播卡已整段刪除（`campervan.html` 的 `LIVE`／`liveCam`／`liveOn`／`.livecam`／`h3.i-fuji` 都拿掉）。
 - `forest-v2.js` 露營車封面：`.fj2-cover` 加 `fj2-live`，iframe `.fj2-lvf`（youtube-nocookie、靜音自動播放、playsinline）疊在原本薰衣草水彩圖上，圖當預留畫面（離線時不插 iframe）；左下紅色「LIVE・北河口湖」連到 YouTube。封面比例改 16:9；標題 `#ti`／`.fj2-en` 設 `pointer-events:none` 不擋影片。直播換網址時改 `LV.id`。有 iframe 時封面加 `fj2-lvon`：水彩底圖 `visibility:hidden`（只佔位）、雲朵 `::after` 不顯示（v219，使用者回報底圖從影片下緣透出來）。
-- 直播固定（v220）：`forest-v2.js` 把封面連同 `#ti`／`.fj2-en` 搬進 header 外的 `div.fj2-hero.fj2-lvhd`（sticky 在品牌列下方，紙紋底）；`--lvh`＝直播高度（ResizeObserver），分頁列 `.fj2-tabsec` 的 top 加上它；`toContent()` 捲動也扣掉直播高度。電腦版固定時封面寬 `min(920px,72vh)`。手機上直播上下緣都淡出（mask 14%／82%），品牌列底線與陰影在有直播時拿掉。
+- 直播固定（v220）：`forest-v2.js` 把封面連同 `#ti`／`.fj2-en` 搬進 header 外的 `div.fj2-hero.fj2-lvhd`（sticky 在品牌列下方，紙紋底）；`--lvh`＝直播高度（ResizeObserver），分頁列 `.fj2-tabsec` 的 top 加上它；`toContent()` 捲動也扣掉直播高度。≥760px（平板、電腦）不固定（v221，使用者指定手機固定、網頁版不固定），`.fj2-lvhd` 改 relative、分頁列 top 回到品牌列高度；`toContent()` 只有 sticky 時才扣直播高度。手機上直播上下緣都淡出（mask 14%／82%），品牌列底線與陰影在有直播時拿掉。
 - 薰衣草水彩圖同時換到東京頁「我的東京行程」橫幅（原 `campervan-hero.webp`，`forest-v2.js` 的 `.bnr img` 替換那行）。
 - 沙盒連不到 YouTube，只驗證了 iframe 位置與尺寸（390／1440）；**線上實際播放、iPhone 自動播放未測**。
 

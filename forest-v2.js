@@ -166,7 +166,7 @@
   hero.after(grid);
   var sech=document.createElement('h2');sech.className='fj2-sech';var sec=document.createElement('div');sec.className='fj2-tabsec';
   grid.after(sech);sech.after(sec);sec.append(tabs);
-  var toContent=function(){requestAnimationFrame(function(){var y=sec.getBoundingClientRect().top+scrollY-($('.bar').offsetHeight||0)-(($('.fj2-lvhd')||{}).offsetHeight||0)+2;scrollTo({top:y,behavior:'smooth'})})};
+  var toContent=function(){requestAnimationFrame(function(){var y=sec.getBoundingClientRect().top+scrollY-($('.bar').offsetHeight||0)-(function(h){return h&&getComputedStyle(h).position==='sticky'?h.offsetHeight:0})($('.fj2-lvhd'))+2;scrollTo({top:y,behavior:'smooth'})})};
   grid.onclick=function(e){var b=e.target.closest('[data-fk]');if(!b)return;var k=KEYS[+b.dataset.fk];if(k[2]&&typeof rvSet==='function')rvSet(k[2]);go(k[0]);toContent()};
   var sc=$('.forest-scene');if(sc)sc.remove();
   var ff2=$('.forest-footer');if(ff2){swapImg(ff2,IMG+'footer-fuji.webp');ff2.removeAttribute('width');ff2.removeAttribute('height')}
