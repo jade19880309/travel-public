@@ -62,7 +62,7 @@ body.tm-open .tm-tool{opacity:1;visibility:visible;transform:none;pointer-events
 
  /* 露營車（body 直接放 .wrap） */
  html.fj2 body > .wrap,html.fj2 .fj2-bar .wrap{max-width:1180px}
- html.fj2 body > .wrap .fj2-cover{max-width:920px;margin-left:auto;margin-right:auto}
+ html.fj2.forest-journal:not(.th-fuji) body > .wrap .fj2-hero .fj2-cover{max-width:920px;margin-left:auto;margin-right:auto} /* 要蓋過 theme-forest-v2.css 的 margin:-16px */
  html.fj2 body > .wrap .fj2-days{grid-template-columns:repeat(2,minmax(0,1fr));align-items:start}
  html.fj2 body > .wrap .forest-footer{max-width:1000px}
 }

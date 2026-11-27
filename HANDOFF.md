@@ -32,7 +32,7 @@
 
 ## 電腦版加寬＋手機重疊修正（2026/11/27，sw v210）
 - **新檔**：`layout-fix.css`（總覽、首爾、港珠澳、東京、露營車在 `</head>` 前載入，放在各頁樣式最後）、`tools-menu.js`（只有首爾 `index.html`、港珠澳 `hk.html`，在 `upd.js` 前）。兩檔已加進 `sw.js` CORE。京阪 `keihan.html` 本來就 1160px，沒套 `layout-fix.css`。
-- **電腦版（≥1200px）**：總覽 1240、首爾 1320、港珠澳／東京 1280、露營車 1180（都再用 `calc(100vw - 48px)` 留邊）。港珠澳／東京每日行程、露營車 DAY 卡改兩欄；東京住宿卡兩欄、常用日語三欄、封面改「左圖右（快捷鍵＋倒數）」兩欄；首爾常用韓語四欄。頁面用 `:has()` 辨識（iOS 16.4+）；東京封面選擇器要用 `html.fj2.th-fuji.forest-journal` 開頭才蓋得過 `theme-forest-v2.css`。
+- **電腦版（≥1200px）**：露營車封面置中要用 `html.fj2.forest-journal:not(.th-fuji) body > .wrap .fj2-hero .fj2-cover` 才蓋得過 theme 的 margin -16px（v213 修）。總覽 1240、首爾 1320、港珠澳／東京 1280、露營車 1180（都再用 `calc(100vw - 48px)` 留邊）。港珠澳／東京每日行程、露營車 DAY 卡改兩欄；東京住宿卡兩欄、常用日語三欄、封面改「左圖右（快捷鍵＋倒數）」兩欄；首爾常用韓語四欄。頁面用 `:has()` 辨識（iOS 16.4+）；東京封面選擇器要用 `html.fj2.th-fuji.forest-journal` 開頭才蓋得過 `theme-forest-v2.css`。
 - **手機**：首爾／港珠澳右側三顆懸浮鈕收進「工具」鈕（同東京 `forest-v2.js` 的做法，外觀複製 `#fs`；`#fxb` 是 app.js 晚產生，腳本會等最多 4 秒）。總覽地標線稿在 <760px 淡成 .32、`.info` 右側留 40px＋`text-wrap:balance`。京阪住宿卡郵戳 `.pm` 移到郵票左下（`theme-kyoto-classic.css` 最後一行）。
 - 已測：Chrome 模擬 390／820／1280／1440／1920，六頁無 pageerror、無橫向溢出，工具鈕開合正常。**未測**：iPhone Safari、iPad 實機。
 
