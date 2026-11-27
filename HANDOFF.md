@@ -35,8 +35,8 @@
 ## 東京封面露營車快捷票券（2026/11/27，sw v212）
 - `forest-v2.js` 東京封面（`fj2-cover` 裡、`.fj2-title` 後面）加 `<a class="fj2-camp" href="campervan.html">`，圖用總覽同款 `images/journal-v4/camper-ticket-cut.webp`；樣式在 `theme-forest-v2.css` 最後一段。`?theme=classic`／`v1` 不會出現。已測 390／820／1440 位置與點擊跳轉；iPhone 實機未測。
 
-## 露營車「行李」分頁（2026/11/27，sw v222）
-- 使用者要簡單版的行李收納提醒：衣物按天分包、上車先取出放櫃子、盥洗用品另外取出、行李箱收進車上存放空間。`campervan.html`：`ID` 在 `ov` 後加 `pk`、`U.tabs` 加「行李／荷物」、`PK` 文字（中日）＋`pack()`、`panel()` 加 `case 'pk'`、樣式 `.pk`／`.pk-s`。之後要加條目改 `PK.zh.s`／`PK.ja.s`（中日都要改）。只是說明，沒有勾選功能。
+## 露營車行李收納提醒（2026/11/27，sw v224）
+- 使用者要簡單版：衣物按天分包（三天份 DAY 1～3，露營車住三晚）、上車先取出放櫃子、盥洗用品另外取出、行李箱收進車上存放空間。一度做成獨立「行李」分頁，後依使用者要求改放在**總覽最後**（`panel()` 的 `case 'ov'` 結尾 `+pack()`），分頁已拿掉。`campervan.html`：`PK` 文字（中日）＋`pack()`、樣式 `.pk`／`.pk-s`。要加條目改 `PK.zh.s`／`PK.ja.s`（中日都要改）。只是說明，沒有勾選功能。
 
 ## 露營車封面＝北河口湖富士山即時影像（2026/11/27，sw v218；取代 v211 的 DAY 3 直播卡）
 - 使用者指定：直播換成 tw.live「北河口湖遠眺富士山」那一路（YouTube `Mak-Zg-fS2s`，北河口湖観光協会 camera1，頻道 `UCA9FCnkhxa54xP0jg4Tx42w`，已確認可嵌入），放在封面；DAY 3 的直播卡已整段刪除（`campervan.html` 的 `LIVE`／`liveCam`／`liveOn`／`.livecam`／`h3.i-fuji` 都拿掉）。
