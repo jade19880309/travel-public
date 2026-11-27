@@ -134,4 +134,6 @@
  // ===== 頁尾 foot3：韓式美食＋天際線＋手寫標語（文字取自行程資料） =====
  var ft=$('footer');
  if(ft)ft.insertAdjacentHTML('beforebegin','<div class="foot3">'+img(V3+'food-spread.png','ffood3',true)+img(V3+'snowman.png','fsnow3',true)+img(DEC+'plum-branch.png','fplum3',true)+'<div class="ftx3"><b>首爾冬日・新春旅行</b>'+((H.sub||[]).length?'<small>'+esc(H.sub.join('・'))+'</small>':'')+'</div></div>');
+ // ===== 互動水彩地圖與行程景點貼紙（seoul-map.js） =====
+ var smj=document.createElement('script');smj.src='seoul-map.js';document.body.appendChild(smj);
 })();
