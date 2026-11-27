@@ -23,6 +23,10 @@
 - 純改 `HANDOFF.md`（沒動網頁、JSON、`app.js`）時不需要加 `sw.js` 的 `VERSION`，那只在網頁內容變動時才有意義。
 - 京阪每日圖示：有 `choice` 的日子，選項若沒寫 `stk` 要退回當天的 `stk`（曾因此抓 `ic-undefined.svg`，9/9 圖示消失）。圖示出問題先查檔名，不要先怪快取。
 
+## 露營車 DAY 3 河口湖即時影像（2026/11/27，sw v211）
+- `campervan.html`：`LIVE`（影片 `1cnReFAU04k`，河口湖有線電視 KTV 頻道 `UCK9eHUAiJeNA2i_1TcgZcfw`）、`liveCam()`、`liveOn()`，只在 `day()` 的 `d3` 路線圖下方輸出；中日文跟著語言切換。先顯示縮圖＋播放鈕（不預先載入 iframe），點了才換成 `youtube-nocookie.com` 靜音自動播放。直播若換網址，改 `LIVE.id` 即可；卡片也附頻道 `/live` 連結。樣式在頁內 `<style>` 的 `.livecam`，標題圖示 `h3.i-fuji`。
+- 縮圖（i.ytimg.com）與播放在沙盒連不到，只驗證了版面與點擊後 iframe 產生；**線上實際播放、iPhone Safari 未測**。
+
 ## 電腦版加寬＋手機重疊修正（2026/11/27，sw v210）
 - **新檔**：`layout-fix.css`（總覽、首爾、港珠澳、東京、露營車在 `</head>` 前載入，放在各頁樣式最後）、`tools-menu.js`（只有首爾 `index.html`、港珠澳 `hk.html`，在 `upd.js` 前）。兩檔已加進 `sw.js` CORE。京阪 `keihan.html` 本來就 1160px，沒套 `layout-fix.css`。
 - **電腦版（≥1200px）**：總覽 1240、首爾 1320、港珠澳／東京 1280、露營車 1180（都再用 `calc(100vw - 48px)` 留邊）。港珠澳／東京每日行程、露營車 DAY 卡改兩欄；東京住宿卡兩欄、常用日語三欄、封面改「左圖右（快捷鍵＋倒數）」兩欄；首爾常用韓語四欄。頁面用 `:has()` 辨識（iOS 16.4+）；東京封面選擇器要用 `html.fj2.th-fuji.forest-journal` 開頭才蓋得過 `theme-forest-v2.css`。

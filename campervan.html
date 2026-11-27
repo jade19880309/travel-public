@@ -67,6 +67,7 @@ h3.i-city{--ic:url(images/tokyo-2027/ic-city.svg)}
 h3.i-van{--ic:url(images/tokyo-2027/ic-van.svg)}
 h3.i-forest{--ic:url(images/tokyo-2027/ic-forest.svg)}
 h3.i-port{--ic:url(images/tokyo-2027/ic-port.svg)}
+h3.i-fuji{--ic:url(images/tokyo-2027/ic-fuji.svg)}
 .pg{font-size:12.5px;font-weight:400;color:var(--sub);letter-spacing:.03em;margin-left:2px;white-space:nowrap}
 
 /* 每日標題：像東京展開後的藍色日期列，左邊放當天貼紙 */
@@ -206,6 +207,14 @@ ul{margin:0;padding:8px 0 8px 20px}li{margin:7px 0;font-size:15px}li::marker{col
  h3{font-size:18px}
 }
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.tabs button,.pn button,.lk a{transition:none}}
+.livecam{padding:10px}
+.livecam .lv-ph,.livecam .lv-f{position:relative;display:block;width:100%;aspect-ratio:16/9;border:0;border-radius:12px;overflow:hidden;background:#3d4a3a;padding:0;cursor:pointer}
+.livecam .lv-ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.livecam .lv-b{position:absolute;top:10px;left:10px;padding:3px 9px;border-radius:999px;background:#c8102e;color:#fff;font:700 12px/1.2 system-ui,sans-serif;letter-spacing:.08em}
+.livecam .lv-p{position:absolute;left:50%;top:50%;width:64px;height:64px;margin:-32px 0 0 -32px;border-radius:50%;background:rgba(0,0,0,.55);box-shadow:0 2px 10px rgba(0,0,0,.3)}
+.livecam .lv-p::after{content:"";position:absolute;left:26px;top:20px;border-style:solid;border-width:12px 0 12px 19px;border-color:transparent transparent transparent #fff}
+.livecam .lv-t{position:absolute;left:0;right:0;bottom:0;padding:18px 12px 9px;background:linear-gradient(transparent,rgba(0,0,0,.6));color:#fff;font-size:13px;text-align:left}
+.livecam .hint{margin:10px 2px 6px}
 </style><link id="theme-forest" rel="stylesheet" href="theme-forest-journal.css"><link id="theme-forest-v2" rel="stylesheet" href="theme-forest-v2.css">
 <script>/* 森林手帳：?theme=classic 恢復原版（v168 復原機制）、?theme=v1 森林手帳第一版（v168）、?theme=forest 改回 V2（記在這支手機） */try{var tq=new URLSearchParams(location.search).get("theme");if(tq==="classic"||tq==="forest"||tq==="v1")localStorage.setItem("theme",tq);var th=localStorage.getItem("theme");if(th==="classic"||th==="v1"){document.getElementById("theme-forest-v2").disabled=true;document.documentElement.classList.remove("fj2")}if(th==="classic"){document.getElementById("theme-forest").disabled=true;document.documentElement.classList.remove("forest-journal");document.head.insertAdjacentHTML("beforeend","<style>.forest-scene,.forest-footer{display:none}</style>")}}catch(e){}</script>
 <script>/* 森林手帳 V2.1：記下開頁當下使用的快取版本（版本提示用） */try{window.FJ2_CV=("caches" in window)&&navigator.serviceWorker&&navigator.serviceWorker.controller?caches.keys():null}catch(e){}</script>
@@ -251,8 +260,11 @@ d2:[
 function strip(n,t){return `<div class="osph">${Array.from({length:ONSEN_N[n]},(_,i)=>`<img src="images/campervan/onsen/o${n}-${i+1}.webp" alt="${t} ${i+1}" loading="lazy" onclick="zmOpen(this.src)">`).join('')}</div>`}
 function onsen(k){const list=ONSEN[k];if(!list)return '';const z=lang==='zh',lb=z?['時間','費用','停車','備註']:['時間','料金','駐車','備考'],g=q=>'https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(q+', Japan');
 return `<h3>${z?'日歸溫泉':'日帰り温泉'}</h3><p class="hint" style="margin-top:-6px">${ONSEN_HINT[k][z?0:1]}</p><p class="os-cap">${z?'📷 照片為參考圖，點擊可放大、左右滑動瀏覽':'📷 写真は参考画像です。タップで拡大、左右にスワイプ'}</p>`+list.map(o=>{const t=o[z?'zh':'ja'];return `<div class="card onsen"><div class="os-h"><b class="os-n">${o.n}</b><div><h4>${t.t}</h4><div class="os-m"><span>${t.a}</span>${t.c.map(([x,c])=>`<span class="${c}">${x}</span>`).join('')}</div></div></div>${strip(o.p||o.n,t.t)}${kv(lb.map((l,i)=>[l,t.r[i]]))}<div class="lk"><a class="gmb" aria-label="Google Maps" href="${g(o.q)}" target="_blank" rel="noopener"><span class="gm"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5a7.2 7.2 0 0 0-7.2 7.2c0 5.2 7.2 11.8 7.2 11.8s7.2-6.6 7.2-11.8A7.2 7.2 0 0 0 12 2.5z" fill="currentColor"/><circle cx="12" cy="9.7" r="2.7" fill="#fff"/></svg></span></a></div></div>`}).join('')}
+const LIVE={id:'1cnReFAU04k',ch:'UCK9eHUAiJeNA2i_1TcgZcfw'}; // 河口湖有線電視 KTV 富士山 24 小時直播（2026/11/27 確認可嵌入）
+function liveCam(){const z=lang==='zh';return `<h3 class="i-fuji">${z?'河口湖即時影像・富士山':'河口湖ライブカメラ・富士山'}</h3><div class="card livecam"><button type="button" class="lv-ph" onclick="liveOn(this)" aria-label="${z?'播放河口湖即時影像':'河口湖ライブカメラを再生'}"><img src="https://i.ytimg.com/vi/${LIVE.id}/hqdefault_live.jpg" alt="" loading="lazy" onerror="this.remove()"><span class="lv-b">LIVE</span><span class="lv-p" aria-hidden="true"></span><span class="lv-t">${z?'點一下播放（需網路）':'タップで再生（要通信）'}</span></button><p class="hint">${z?'河口湖有線電視（KTV）24 小時直播。出發前或當天早上先看富士山有沒有被雲遮住，再決定晨景、新倉山淺間公園的時間。':'ケーブルテレビ河口湖（KTV）の24時間ライブ配信。出発前や当日の朝に富士山の見え方を確認して、朝の湖畔・新倉山浅間公園の時間を決めます。'}</p><div class="lk"><a href="https://www.youtube.com/watch?v=${LIVE.id}" target="_blank" rel="noopener">${z?'在 YouTube 開啟':'YouTubeで開く'}</a><a href="https://www.youtube.com/channel/${LIVE.ch}/live" target="_blank" rel="noopener">${z?'直播換網址時：頻道直播頁':'配信URLが変わった場合：チャンネルのライブ'}</a></div></div>`}
+function liveOn(b){const f=document.createElement('iframe');f.src=`https://www.youtube-nocookie.com/embed/${LIVE.id}?autoplay=1&mute=1&playsinline=1&rel=0`;f.title='河口湖 富士山 Live';f.allow='autoplay; encrypted-media; picture-in-picture; fullscreen';f.allowFullscreen=true;f.className='lv-f';b.replaceWith(f)}
 function day(L,u,k){const[t,rows,inf,note]=L[k],a=t.split('｜')[0],b=t.split('｜').slice(1).join('｜'),n=rows.length;
-return `<div class="ph"><span class="tag">${a}</span><h2>${b}</h2></div>${routeMap(k)}
+return `<div class="ph"><span class="tag">${a}</span><h2>${b}</h2></div>${routeMap(k)}${k==='d3'?liveCam():''}
 <h3>${u.sch}<span class="pg" id="pg">${prog(k,n)}/${n} ${u.ok}</span></h3><div class="card">${rows.map((r,j)=>`<div class="tl ${done[k+j]?'ok':''}" data-k="${k+j}" data-n="${k}"><i></i><span class="t">${r[0]}</span><span class="x">${r[1]}</span></div>`).join('')}</div><p class="hint">${u.hint}</p>
 <h3>${u.route}</h3><div class="card">${kv(inf.slice(1))}</div>${note?`<div class="note"><b>※</b>${note}</div>`:''}${ONSEN_MAPS[k]?`<img class="map offline-map" src="${ONSEN_MAPS[k]}" alt="${k.toUpperCase().replace('D','DAY ')} ${lang==='zh'?'日歸溫泉與車泊地圖':'日帰り温泉と車中泊マップ'}"><p class="hint">${u.zoom}</p>`:''}${onsen(k)}${k==='d4'?'':`<h3>${u.stay}</h3><div class="stay">${stayLinks(k,inf[0][1])}<small>${L.stay0[k]}</small>${CLEAN_STAY_MAPS['s'+k.slice(1)]?`<img class="map offline-map" src="${CLEAN_STAY_MAPS['s'+k.slice(1)]}" alt="Accommodation map">`:''}</div>`}
 ${k=='d3'?`<h3>${L.ykh}</h3><div class="card"><ul>${L.yk.map(x=>`<li>${x}</li>`).join('')}</ul></div>`:''}${notes(L,u,L.notes[k])}`}
