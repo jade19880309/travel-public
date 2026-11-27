@@ -531,7 +531,7 @@ html.smap-open,html.smap-open body{overflow:hidden}
 #smap .smv{position:absolute;inset:0;overflow:hidden}
 #smap .sms{position:absolute;left:0;top:0;width:1339px;height:1174px;transform-origin:0 0;will-change:transform}
 #smap .sms.ease{transition:transform .55s cubic-bezier(.22,.8,.3,1)}
-#smap .smi{display:block;width:1339px;height:1174px;max-width:none;pointer-events:none;-webkit-user-drag:none;box-shadow:0 0 0 1px rgba(80,60,40,.08)}
+#smap .smi{display:block;width:1339px;height:1174px;max-width:none;pointer-events:none;-webkit-user-drag:none;border-radius:14px;box-shadow:0 0 0 10px #fffaf2,0 0 0 11px rgba(160,120,80,.25),0 18px 40px rgba(70,45,30,.28)}
 #smap .sml{position:absolute;inset:0}
 /* 熱區：看不見，只用來點 */
 #smap .smhit{position:absolute;width:56px;height:56px;margin:-34px 0 0 -28px;padding:0;border:0;border-radius:50%;background:transparent;cursor:pointer;transform:scale(var(--inv,1));-webkit-tap-highlight-color:transparent}

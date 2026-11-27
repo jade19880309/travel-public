@@ -102,11 +102,12 @@
   addEventListener('keydown',function(e){if(e.key==='Escape'&&V&&!V.hidden)close()});
  }
  function vw(){var v=$('.smv',V);return [v.clientWidth,v.clientHeight]}
- function apply(){var w=vw(),iw=MW*sc,ih=MH*sc,pad=40;
-  tx=iw<=w[0]?(w[0]-iw)/2:Math.min(pad,Math.max(w[0]-iw-pad,tx));ty=ih<=w[1]?(w[1]-ih)/2:Math.min(pad,Math.max(w[1]-ih-pad,ty));
+ // 四周留白：拖曳時地圖邊緣可以拉進畫面約 40%（左右 45%、上下 40%），靠邊的景點也能移到中間好點；全圖時四周留 28px
+ function apply(){var w=vw(),iw=MW*sc,ih=MH*sc,px=Math.max(80,w[0]*0.45),py=Math.max(80,w[1]*0.4);
+  tx=iw<=w[0]-2*px?(w[0]-iw)/2:Math.min(px,Math.max(w[0]-iw-px,tx));ty=ih<=w[1]-2*py?(w[1]-ih)/2:Math.min(py,Math.max(w[1]-ih-py,ty));
   stage.style.transform='translate('+tx+'px,'+ty+'px) scale('+sc+')';V.style.setProperty('--inv',(1/sc).toFixed(4))}
  function zoomAt(cx,cy,ns){ns=Math.min(fit*6,Math.max(fit,ns));var k=ns/sc;tx=cx-(cx-tx)*k;ty=cy-(cy-ty)*k;sc=ns;apply()}
- function reset(ease){var w=vw();fit=Math.min(w[0]/MW,w[1]/MH);sc=fit;tx=(w[0]-MW*sc)/2;ty=(w[1]-MH*sc)/2;stage.classList.toggle('ease',!!ease);apply()}
+ function reset(ease){var w=vw(),M=28;fit=Math.min((w[0]-2*M)/MW,(w[1]-2*M)/MH);sc=fit;tx=(w[0]-MW*sc)/2;ty=(w[1]-MH*sc)/2;stage.classList.toggle('ease',!!ease);apply()}
  function focus(id,ease){var p=PT[id],w=vw();if(!p)return;
   // 放大到看得清楚附近街區（手機約 2.4 倍全圖），把景點放在畫面中間偏上，下方留給名稱牌
   var z=Math.min(fit*6,Math.max(fit*2.4,Math.min(w[0],w[1])/520));sc=z;tx=w[0]/2-p[0]*sc;ty=w[1]*0.44-p[1]*sc;stage.classList.toggle('ease',!!ease);apply()}
