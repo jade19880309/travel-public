@@ -509,3 +509,6 @@ html.th-han.sv3 #hotel .hcn3{position:absolute;right:5px;top:5px;padding:1px 6px
 html.th-han.sv3 #hotel .hcd3{position:absolute;left:0;right:0;bottom:6px;display:flex;justify-content:center;gap:4px;pointer-events:none}
 html.th-han.sv3 #hotel .hcd3 i{width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,.6);box-shadow:0 0 2px rgba(0,0,0,.35)}
 html.th-han.sv3 #hotel .hcd3 i.on{background:#fff;width:12px;border-radius:3px}
+
+/* 飯店設施列：設施名稱加粗（2026/11/27） */
+html.th-han.sv3 #hotel .hbody .blk b{font-weight:700;color:var(--ink3,#34465B)}
