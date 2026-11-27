@@ -38,7 +38,7 @@
 - `theme-forest-v2.css` 最後一段：只在 `.fj2-bp` 時覆蓋上一段 v239 的 CSS 票券樣式（拿掉「FOREST JOURNAL · AIR TICKET」字樣、票孔圓點、卡片底框）；兩張票上下排（`.grid:has(.fj2-bp)` 單欄、最寬 880px）；圖 `width:100%;height:auto;object-fit:contain`，票外白邊用 `mix-blend-mode:multiply` 融入紙紋（容器不要加 z-index／isolation）。
 - `?theme=classic`／`?theme=v1` 沒有 fj2 → 不出現票券圖，維持原樣。
 - 使用者要求只留票券圖（2026/11/27 12:02）：`.fj2-bpinfo` 紙條改為視覺隱藏（sr-only，仍在 DOM、輔助科技可讀），theme-forest-v2.css 最末段。要恢復紙條＝刪那段。
-- 行李規定卡（2026/11/27，sw v244）：`trips/tokyo-2027.json` 的 `flights.bag`（`h` 標題、`li` 條列、`src` 來源）；`app.js` 在航班卡 grid 後面、`FL.note` 前面選擇性渲染 `.card.bag`（其他旅程沒有 `bag` 欄位，不受影響）；樣式在 `theme-forest-v2.css` 最末。內容依長榮官網（2026/11 查）：經濟艙 2 件×23 kg、輕省／基本／團體票 1 件 23 kg、單件三邊 158 cm、手提 1 件 7 kg（23×36×56／115 cm）＋隨身小物 40×30×10 cm、行動電源只能手提、預付超額 9 折（2026/9/29 起費率調漲）。使用者確認（Trip.com 訂單）：每人託運 1×23 kg、手提 1×7 kg、隨身小物 1 件 → 已改成小字提醒四行（不放姓名等個資）。
+- 行李規定卡（2026/11/27，sw v244）：`trips/tokyo-2027.json` 的 `flights.bag`（`h` 標題、`li` 條列、`src` 來源）；`app.js` 在航班卡 grid 後面、`FL.note` 前面選擇性渲染 `.card.bag`（其他旅程沒有 `bag` 欄位，不受影響）；樣式在 `theme-forest-v2.css` 最末。內容依長榮官網（2026/11 查）：經濟艙 2 件×23 kg、輕省／基本／團體票 1 件 23 kg、單件三邊 158 cm、手提 1 件 7 kg（23×36×56／115 cm）＋隨身小物 40×30×10 cm、行動電源只能手提、預付超額 9 折（2026/9/29 起費率調漲）。使用者確認（Trip.com 訂單）：每人託運 1×23 kg、手提 1×7 kg、隨身小物 1 件 → 最後依使用者要求改成跟時差提醒同款的一行小字：`flights.bag` 為字串時 app.js 渲染成 `p.rate`（物件時仍是 `.card.bag`）。
 - **資料差異（未改 JSON）**：票券圖寫回程 3h40m，`trips/tokyo-2027.json` 顯示「約 3.5 小時」（10:50 日本→13:30 台灣，換算時差實為 3h40m）；去程 3h30m 與 JSON「約 3.5 小時」一致。圖上文字與條碼是裝飾，網頁以下方 HTML 資料為準。要改 JSON 請使用者決定。
 - 已測（本機 Chrome）：375／390／430／1280 無橫向溢出、無 pageerror；圖寬 343／358／398／880px。iPhone 實機未測。
 
