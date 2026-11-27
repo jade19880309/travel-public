@@ -44,6 +44,7 @@
    setTimeout(function(){b.classList.remove('stick');busy=false},520);
   }
  }
+ addEventListener('scroll',function(){document.body.classList.toggle('cv-scrolled',scrollY>4)},{passive:true}); // 封面下緣的淡出只在捲動後出現
  // home.html 先用內建清單畫一次、抓到 trips/index.json 後會再畫一次，所以每次卡片換掉都重新整理
  if(up.querySelector('article.entry'))setup();
  new MutationObserver(function(){setup()}).observe(up,{childList:true});

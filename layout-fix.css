@@ -69,7 +69,11 @@ body.tm-open .tm-tool{opacity:1;visibility:visible;transform:none;pointer-events
 
 /* ---------- 4. 總覽：封面固定在頂端＋旅程卡「便條紙」切換（2026-11-27，搭配 home-deck.js） ---------- */
 html:has(.journal),body:has(.journal){overflow-x:clip} /* overflow-x:hidden 會讓 sticky 失效，改用 clip */
-body:has(.journal) > header.cover{position:sticky;top:0;z-index:5;background:#f1e2c6 url('images/journal-v4/paper-texture.webp') 0 0/350px 270px;padding-bottom:8px;box-shadow:0 10px 14px -12px rgba(74,53,33,.45)}
+body:has(.journal) > header.cover{position:sticky;top:0;z-index:5;background:#f1e2c6 url('images/journal-v4/paper-texture.webp') 0 0/350px 270px}
+/* 接縫：平常完全看不出（紙紋與 body 同一張、同起點、不加陰影）；往下捲時才在封面下緣淡出一段紙色，讓內容柔和地沒入 */
+body:has(.journal) > header.cover::after{content:"";position:absolute;left:0;right:0;top:100%;height:22px;pointer-events:none;background:linear-gradient(#f1e2c6,rgba(241,226,198,0));opacity:0;transition:opacity .25s}
+body.cv-scrolled > header.cover::after{opacity:1}
+body:has(.journal) > main.wrap,body:has(.journal) > footer{position:relative;z-index:1} /* 自成一層，卡片的 z-index 不會跑到固定封面上面 */
 /* 一疊便條紙：所有卡片疊在同一格，後面的往下錯開、微微轉角，只露出邊 */
 .journal.deck{display:grid;grid-template-columns:minmax(0,1fr);gap:0;padding-bottom:26px;margin-top:22px}
 .journal.deck > .entry{grid-area:1/1;align-self:stretch;display:flex;flex-direction:column;justify-content:center;z-index:calc(10 - var(--d,0));transform-origin:50% 0;
