@@ -90,7 +90,7 @@
   hero.classList.add('fj2-hero');
   var fig=document.createElement('div');fig.className='fj2-cover';
   if(bg)fig.append(bg);
-  fig.insertAdjacentHTML('beforeend','<div class="fj2-title"><h1>東京旅遊</h1><p><em lang="en">Tokyo</em><span class="fj2-seal" aria-hidden="true">東京</span></p></div>');
+  fig.insertAdjacentHTML('beforeend','<div class="fj2-title"><h1>東京旅遊</h1><p><em lang="en">Tokyo</em><span class="fj2-seal" aria-hidden="true">東京</span></p></div><a class="fj2-camp" href="campervan.html" aria-label="露營車旅行（東京子項目，7/2–7/5）"><img src="images/journal-v4/camper-ticket-cut.webp" alt="" width="549" height="251"><span>露營車旅行<small>7/2–7/5</small></span><b aria-hidden="true"></b></a>');
   hero.prepend(fig);
   var info=document.createElement('div');info.className='fj2-cdcard';
   $$(':scope>p,:scope>.cd,:scope>#cdnote,:scope>#gotoday',hero).forEach(function(e){info.append(e)});

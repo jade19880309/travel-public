@@ -23,6 +23,9 @@
 - 純改 `HANDOFF.md`（沒動網頁、JSON、`app.js`）時不需要加 `sw.js` 的 `VERSION`，那只在網頁內容變動時才有意義。
 - 京阪每日圖示：有 `choice` 的日子，選項若沒寫 `stk` 要退回當天的 `stk`（曾因此抓 `ic-undefined.svg`，9/9 圖示消失）。圖示出問題先查檔名，不要先怪快取。
 
+## 東京封面露營車快捷票券（2026/11/27，sw v212）
+- `forest-v2.js` 東京封面（`fj2-cover` 裡、`.fj2-title` 後面）加 `<a class="fj2-camp" href="campervan.html">`，圖用總覽同款 `images/journal-v4/camper-ticket-cut.webp`；樣式在 `theme-forest-v2.css` 最後一段。`?theme=classic`／`v1` 不會出現。已測 390／820／1440 位置與點擊跳轉；iPhone 實機未測。
+
 ## 露營車 DAY 3 河口湖即時影像（2026/11/27，sw v211）
 - `campervan.html`：`LIVE`（影片 `1cnReFAU04k`，河口湖有線電視 KTV 頻道 `UCK9eHUAiJeNA2i_1TcgZcfw`）、`liveCam()`、`liveOn()`，只在 `day()` 的 `d3` 路線圖下方輸出；中日文跟著語言切換。先顯示縮圖＋播放鈕（不預先載入 iframe），點了才換成 `youtube-nocookie.com` 靜音自動播放。直播若換網址，改 `LIVE.id` 即可；卡片也附頻道 `/live` 連結。樣式在頁內 `<style>` 的 `.livecam`，標題圖示 `h3.i-fuji`。
 - 縮圖（i.ytimg.com）與播放在沙盒連不到，只驗證了版面與點擊後 iframe 產生；**線上實際播放、iPhone Safari 未測**。

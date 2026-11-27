@@ -231,3 +231,12 @@ html.fj2 .fj2-title::before,html.fj2 .fj2-hero .fj2-cover::after{background-size
 html.fj2.th-fuji .fj2-title::before{inset:-14px -22px -10px -26px}
 html.fj2:not(.th-fuji) .fj2-hero .fj2-cover::after{top:3%;width:min(80%,440px);aspect-ratio:2.6}
 html.fj2:not(.th-fuji) .fj2-hero .fj2-cover::after{aspect-ratio:3.3;opacity:.45}
+
+/* 2026-11-27：東京封面右下角的露營車快捷票券（點了直接進 campervan.html） */
+html.fj2 .fj2-cover .fj2-camp{position:absolute;z-index:3;right:12px;bottom:12px;display:flex;align-items:center;gap:8px;padding:5px 12px 5px 5px;border:1.5px dashed rgba(78,104,64,.55);border-radius:14px;background:rgba(255,253,246,.94);box-shadow:0 4px 12px rgba(40,50,30,.22);color:var(--ink,#2f3a2a);text-decoration:none;-webkit-tap-highlight-color:transparent}
+html.fj2 .fj2-cover .fj2-camp img{width:78px;height:auto;display:block}
+html.fj2 .fj2-cover .fj2-camp span{display:flex;flex-direction:column;font-weight:700;font-size:14px;line-height:1.2;letter-spacing:.04em;white-space:nowrap}
+html.fj2 .fj2-cover .fj2-camp small{font-weight:500;font-size:11px;color:var(--sub,#6b6f5f);letter-spacing:.02em}
+html.fj2 .fj2-cover .fj2-camp b{position:relative;width:9px;height:9px;margin-left:2px;border:solid currentColor;border-width:2.5px 2.5px 0 0;transform:rotate(45deg)}
+html.fj2 .fj2-cover .fj2-camp:active{transform:scale(.96)}
+@media(min-width:760px){html.fj2 .fj2-cover .fj2-camp{right:18px;bottom:18px;padding:7px 16px 7px 7px}html.fj2 .fj2-cover .fj2-camp img{width:104px}html.fj2 .fj2-cover .fj2-camp span{font-size:16px}html.fj2 .fj2-cover .fj2-camp small{font-size:12px}}
