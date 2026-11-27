@@ -106,6 +106,13 @@
   $$('#plan .plans .pic,#days .dic').forEach(toWC);
   // 橫幅：富士山 → 湖畔露營車水彩、雷門 → 淺草雷門水彩（只換圖，圖說文字照舊）
   $$('.bnr img').forEach(function(b){var s=b.getAttribute('src')||'';if(/banner-fuji/.test(s)){swapImg(b,IMG+'campervan-hero-lavender.webp');b.alt='富士山、薰衣草花田與露營車水彩插畫'}else if(/banner-kaminarimon/.test(s)){swapImg(b,IMG+'asakusa-banner.webp');b.alt='淺草雷門水彩插畫'}else return;b.closest('.bnr').classList.add('fj2-bnr')});
+  // ---- 航班：長榮手繪登機證（eva-boarding-kit 素材，完整票券圖不裁切）；原本的 HTML 航班資訊收進票下方的紙條，仍可讀、可選取 ----
+  // 點票券或紙條都還是原本的航班動態查詢（app.js 綁在 #flight 的 .bp[data-fn]，這裡只在卡片內加圖、包一層，不動事件）
+  var BPI={BR184:['boarding-outbound.webp',439,'去程登機證插畫：輕井澤木屋、河口湖、薰衣草花田與夏季富士山'],BR189:['boarding-return.webp',443,'回程登機證插畫：橫濱港紅磚倉庫與摩天輪、淺草雷門與晴空塔']};
+  $$('#flight .bp[data-fn]').forEach(function(c){var m=BPI[c.dataset.fn];if(!m||c.querySelector('.fj2-bpimg'))return;
+   var inf=document.createElement('div');inf.className='fj2-bpinfo';[].slice.call(c.children).forEach(function(e){inf.append(e)});
+   var f=document.createElement('figure');f.className='fj2-bpimg';f.innerHTML='<img src="'+IMG+m[0]+'" alt="'+m[2]+'（裝飾插畫，非正式登機證）" width="1774" height="'+m[1]+'" decoding="async">';
+   c.append(f,inf);c.classList.add('fj2-bp')});
   var dbtn=$('#dbtn'),days=$('#days');
   if(dbtn&&days){
    var tabs=document.createElement('div');tabs.className='fj2-daytabs';tabs.setAttribute('role','tablist');tabs.setAttribute('aria-label','選擇日期');

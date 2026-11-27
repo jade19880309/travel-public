@@ -32,6 +32,14 @@
 - `home.html` 副標把「・」前後各包成 `.nb`＋`<wbr>`，手機只在「・」處換行。
 - 已測：390（觸控）／1440，切換、圓點、點卡片進行程、回上一頁保留位置，無 pageerror。iPhone Safari 實機（滑動手感、動畫流暢度）未測；iOS 16.4 以前不支援 `:has()`／`overflow:clip`。
 
+## 東京航班＝長榮手繪登機證（2026/11/27，sw v240；依 `eva-boarding-kit.zip` 的 CLAUDE-INTEGRATION.md）
+- 素材 `images/forest-journal-v2/boarding-outbound.webp`（去程：輕井澤、河口湖、薰衣草、夏季富士山）、`boarding-return.webp`（回程：橫濱港紅磚倉庫、淺草雷門），原檔照放（1774px 寬，未放大未裁切），已加進 `sw.js` CORE。`design-reference.png`、`flight-reference.json` 只供比對，沒放進 repo。
+- `forest-v2.js`（橫幅替換那行之後）：每張 `#flight .bp[data-fn]` 內最前面加 `figure.fj2-bpimg`（BR184→去程圖、BR189→回程圖），原本 `.bph`／`.fl`／`.ac`／`small` 包進 `.fj2-bpinfo` 紙條放在票下方；卡片加 `.fj2-bp`。`.bp` 的 `data-fn`、`role=link`、`tabindex`、aria-label 與 app.js 綁在 `#flight` 的點擊／Enter 查航班動態都沒動（實測點票券圖、鍵盤 Enter 都會開航班動態）。app.js、trips JSON 沒改。
+- `theme-forest-v2.css` 最後一段：只在 `.fj2-bp` 時覆蓋上一段 v239 的 CSS 票券樣式（拿掉「FOREST JOURNAL · AIR TICKET」字樣、票孔圓點、卡片底框）；兩張票上下排（`.grid:has(.fj2-bp)` 單欄、最寬 880px）；圖 `width:100%;height:auto;object-fit:contain`，票外白邊用 `mix-blend-mode:multiply` 融入紙紋（容器不要加 z-index／isolation）。
+- `?theme=classic`／`?theme=v1` 沒有 fj2 → 不出現票券圖，維持原樣。
+- **資料差異（未改 JSON）**：票券圖寫回程 3h40m，`trips/tokyo-2027.json` 顯示「約 3.5 小時」（10:50 日本→13:30 台灣，換算時差實為 3h40m）；去程 3h30m 與 JSON「約 3.5 小時」一致。圖上文字與條碼是裝飾，網頁以下方 HTML 資料為準。要改 JSON 請使用者決定。
+- 已測（本機 Chrome）：375／390／430／1280 無橫向溢出、無 pageerror；圖寬 343／358／398／880px。iPhone 實機未測。
+
 ## 東京封面露營車快捷票券（2026/11/27，sw v212）
 - `forest-v2.js` 東京封面（`fj2-cover` 裡、`.fj2-title` 後面）加 `<a class="fj2-camp" href="campervan.html">`，圖用總覽同款 `images/journal-v4/camper-ticket-cut.webp`；樣式在 `theme-forest-v2.css` 最後一段。`?theme=classic`／`v1` 不會出現。已測 390／820／1440 位置與點擊跳轉；iPhone 實機未測。
 

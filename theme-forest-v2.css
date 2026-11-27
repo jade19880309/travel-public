@@ -295,3 +295,25 @@ html.fj2.th-fuji #flight .bp small::before{left:-24px}
 html.fj2.th-fuji #flight .bp small::after{right:-24px}
 html.fj2.th-fuji #flight .bp[data-fn] small::after{pointer-events:none}
 html.fj2.th-fuji #flight .bp[data-fn]:focus-visible{outline:2px solid #536b49;outline-offset:3px}
+
+/* ===== 東京航班：長榮手繪登機證（2026/11/27，eva-boarding-kit）=====
+   取代上一段 v239 的 CSS 票券外觀（只在有 .fj2-bp 時生效）：票券圖完整顯示、上下排列；原 HTML 航班資訊在票下方紙條。 */
+html.fj2.th-fuji #flight .grid:has(.fj2-bp){grid-template-columns:minmax(0,1fr)!important;max-width:880px;margin-inline:auto;gap:22px}
+html.fj2.th-fuji #flight .bp.fj2-bp{background:none;border:0;border-radius:0;box-shadow:none;padding:0;overflow:visible;cursor:pointer}
+html.fj2.th-fuji #flight .bp.fj2-bp:focus-visible{outline:2px solid #536b49;outline-offset:4px;border-radius:12px}
+html.fj2.th-fuji #flight .fj2-bpimg{margin:0}
+html.fj2.th-fuji #flight .fj2-bpimg img{display:block;width:100%;height:auto;object-fit:contain;mix-blend-mode:multiply;filter:drop-shadow(0 4px 8px #46412d12)}
+html.fj2.th-fuji #flight .fj2-bpinfo{margin:6px 6px 0;background:#fffdf6;border:1px solid #ddd3bd;border-radius:14px;box-shadow:0 2px 8px #46412d10;padding:10px 12px 10px;color:#394638}
+html.fj2.th-fuji #flight .fj2-bp .bph{background:none;border:0;padding:0 0 6px;margin:0;font-size:14px;gap:8px;border-bottom:1px dashed #d6cdb4}
+html.fj2.th-fuji #flight .fj2-bp .bph::before,html.fj2.th-fuji #flight .fj2-bp .bph::after{content:none;display:none}
+html.fj2.th-fuji #flight .fj2-bp:nth-child(2) .bph{background:none}
+html.fj2.th-fuji #flight .fj2-bp .bph .al{font-size:13px;color:#536b49;font-weight:600}
+html.fj2.th-fuji #flight .fj2-bp .fl{margin:8px 0 4px;grid-template-columns:minmax(0,1fr) minmax(60px,.7fr) minmax(0,1fr);gap:6px}
+html.fj2.th-fuji #flight .fj2-bp .fl big{font-size:clamp(20px,5.6vw,26px)}
+html.fj2.th-fuji #flight .fj2-bp .fl b{font-size:clamp(17px,4.8vw,22px)}
+html.fj2.th-fuji #flight .fj2-bp .fl span{font-size:12.5px}
+html.fj2.th-fuji #flight .fj2-bp .fl .mid{font-size:12px}
+html.fj2.th-fuji #flight .fj2-bp .fl .mid::before{margin:4px 0 -13px}
+html.fj2.th-fuji #flight .fj2-bp .ac{margin:2px 0 6px;font-size:12.5px}
+html.fj2.th-fuji #flight .fj2-bp small{margin:0;padding:6px 0 0;border-top:1px dashed #d6cdb4;font-size:12.5px}
+html.fj2.th-fuji #flight .fj2-bp small::before,html.fj2.th-fuji #flight .fj2-bp small::after{content:none;display:none}
