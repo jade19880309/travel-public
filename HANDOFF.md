@@ -37,6 +37,7 @@
 
 ## 露營車介紹方塊加車內照片（2026/11/27，sw v226）
 - 使用者提供 zip（WOHN 13 張、MARS 5 張車內照）。轉成 WebP 放 `images/campervan/van/{wohn,mars}-NN.webp`（最長邊 ≤1200），`campervan.html` 的 `VAN_GAL` 接在原外觀照 `VEHICLE_PHOTOS` 後面；`vehicles()` 改成方塊內左右滑動（scroll-snap，`.vp`／`.vp-car`），右下「n / 總數」，電腦版滑鼠移上去有 ‹ › 鈕，點照片用既有的 `zmOpen()` 放大；`vpInit()` 在 `render()` 裡綁定。整頁左右滑換分頁的手勢已排除 `.vp-car`。
+- 友人實拍（v227）：WOHN 方塊下方「友人分享實拍照片（8）」可展開（`details.vpf`，裡面同樣是 `.vp` 左右滑，直式 3:4）；`VAN_FRIEND.WOHN` → `images/campervan/van/friend-01～08.webp`。臉部（含小孩）與路邊車牌已打馬賽克，原圖沒有進 repo。使用者另傳的機車照片不是這組，沒放。
 - WOHN 有 10 張原圖只有 300×200（使用者給的就這麼小），放大看會糊；有高解析度版可再替換同檔名。圖片沒加進 `sw.js` CORE（lazy 載入）。
 
 ## 露營車行李收納提醒（2026/11/27，sw v224）
