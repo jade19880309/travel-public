@@ -230,6 +230,12 @@ ul{margin:0;padding:8px 0 8px 20px}li{margin:7px 0;font-size:15px}li::marker{col
 .vpf[open] summary::after{transform:rotate(90deg)}
 .vpf .vp{margin:8px 0 0}
 .vp-tall .vehicle-photo{aspect-ratio:3/4}
+
+.tl,.tl:is(*){grid-template-columns:24px 62px 1fr}
+.tl .tl-l{display:flex;flex-direction:column;align-items:center;gap:6px;min-width:0}
+.tl .tl-l .t{align-self:stretch;font-variant-numeric:tabular-nums;line-height:1.5;padding:1px 2px}
+.tl .tl-m{display:flex;flex-direction:column;align-items:center;gap:8px}
+.tl .tl-m .stay-link .gm{margin:0;width:28px;height:28px;vertical-align:top}
 </style><link id="theme-forest" rel="stylesheet" href="theme-forest-journal.css"><link id="theme-forest-v2" rel="stylesheet" href="theme-forest-v2.css">
 <script>/* 森林手帳：?theme=classic 恢復原版（v168 復原機制）、?theme=v1 森林手帳第一版（v168）、?theme=forest 改回 V2（記在這支手機） */try{var tq=new URLSearchParams(location.search).get("theme");if(tq==="classic"||tq==="forest"||tq==="v1")localStorage.setItem("theme",tq);var th=localStorage.getItem("theme");if(th==="classic"||th==="v1"){document.getElementById("theme-forest-v2").disabled=true;document.documentElement.classList.remove("fj2")}if(th==="classic"){document.getElementById("theme-forest").disabled=true;document.documentElement.classList.remove("forest-journal");document.head.insertAdjacentHTML("beforeend","<style>.forest-scene,.forest-footer{display:none}</style>")}}catch(e){}</script>
 <script>/* 森林手帳 V2.1：記下開頁當下使用的快取版本（版本提示用） */try{window.FJ2_CV=("caches" in window)&&navigator.serviceWorker&&navigator.serviceWorker.controller?caches.keys():null}catch(e){}</script>
@@ -288,9 +294,11 @@ return `<h3>${z?'日歸溫泉':'日帰り温泉'}</h3><p class="hint" style="mar
 const PK={zh:{h:'行李收納提醒',lead:'車上空間有限，行李箱沒辦法每天完全攤開。出發前這樣整理，換洗會方便很多。',s:[['打包時','每天的衣物分開包好，一天一包（收納袋或夾鏈袋都可以），寫上 DAY 1～3（露營車住三晚，準備三天份換洗就好）。'],['上車後','先把每天的衣物包取出，放進露營車的櫃子裡。'],['盥洗用品','個人盥洗用品也另外取出，放在櫃子方便拿的地方。'],['行李箱','取出後行李箱收進車上的存放空間，露營車這幾天都不用再打開。'],['每天換洗','直接從櫃子拿當天那一包就好。']]},
  ja:{h:'荷物の収納について',lead:'車内は広くないため、スーツケースを毎日広げることはできません。出発前に次のように準備すると、着替えが楽になります。',s:[['荷造り','衣類は1日分ずつ分けて包み（収納袋やジッパー袋）、DAY 1～3と書いておきます（車中泊は3泊なので3日分で十分です）。'],['乗車後','まず各日の衣類の包みを取り出し、キャンピングカーの収納棚に入れます。'],['洗面用具','個人の洗面用具も別に取り出し、棚の取り出しやすい場所に置きます。'],['スーツケース','取り出したあとは車内の収納スペースにしまい、キャンピングカーの旅の間は開けずに済みます。'],['毎日の着替え','棚からその日の包みを取るだけです。']]}};
 function pack(){const p=PK[lang];return `<h3>${p.h}</h3><p class="hint" style="margin-top:0">${p.lead}</p><div class="card pk">${p.s.map(([k,v],i)=>`<div class="pk-s"><b class="pk-n">${i+1}</b><div><b>${k}</b><p>${v}</p></div></div>`).join('')}</div>`}
+/* 行程列：時間分上下兩排；地圖圖標從文字中抽出，放在時間下方 */
+function tlCells(r){const m=[],x=r[1].replace(/<a class="stay-link"[\s\S]*?<\/a>/g,a=>(m.push(a),''));return `<span class="tl-l"><span class="t">${r[0].replace('～','<br>～')}</span>${m.length?`<span class="tl-m">${m.join('')}</span>`:''}</span><span class="x">${x}</span>`}
 function day(L,u,k){const[t,rows,inf,note]=L[k],a=t.split('｜')[0],b=t.split('｜').slice(1).join('｜'),n=rows.length;
 return `<div class="ph"><span class="tag">${a}</span><h2>${b}</h2></div>${routeMap(k)}
-<h3>${u.sch}<span class="pg" id="pg">${prog(k,n)}/${n} ${u.ok}</span></h3><div class="card">${rows.map((r,j)=>`<div class="tl ${done[k+j]?'ok':''}" data-k="${k+j}" data-n="${k}"><i></i><span class="t">${r[0]}</span><span class="x">${r[1]}</span></div>`).join('')}</div><p class="hint">${u.hint}</p>
+<h3>${u.sch}<span class="pg" id="pg">${prog(k,n)}/${n} ${u.ok}</span></h3><div class="card">${rows.map((r,j)=>`<div class="tl ${done[k+j]?'ok':''}" data-k="${k+j}" data-n="${k}"><i></i>${tlCells(r)}</div>`).join('')}</div><p class="hint">${u.hint}</p>
 <h3>${u.route}</h3><div class="card">${kv(inf.slice(1))}</div>${note?`<div class="note"><b>※</b>${note}</div>`:''}${ONSEN_MAPS[k]?`<img class="map offline-map" src="${ONSEN_MAPS[k]}" alt="${k.toUpperCase().replace('D','DAY ')} ${lang==='zh'?'日歸溫泉與車泊地圖':'日帰り温泉と車中泊マップ'}"><p class="hint">${u.zoom}</p>`:''}${onsen(k)}${k==='d4'?'':`<h3>${u.stay}</h3><div class="stay">${stayLinks(k,inf[0][1])}<small>${L.stay0[k]}</small>${CLEAN_STAY_MAPS['s'+k.slice(1)]?`<img class="map offline-map" src="${CLEAN_STAY_MAPS['s'+k.slice(1)]}" alt="Accommodation map">`:''}</div>`}
 ${k=='d3'?`<h3>${L.ykh}</h3><div class="card"><ul>${L.yk.map(x=>`<li>${x}</li>`).join('')}</ul></div>`:''}${notes(L,u,L.notes[k])}`}
 function rv(L){let last='';return L.rv.map(r=>{const g=r.d!=last?(last=r.d,`<h3>${r.d}</h3>`):'';return g+`<details class="rv card"><summary><span class="tg">${r.tag}</span><h4>${r.name}</h4></summary>${kv(r.rows)}${r.links?`<div class="lk">${r.links.map(([a,h])=>`<a href="${h}" target="_blank" rel="noopener">${a}</a>`).join('')}</div>`:''}</details>`}).join('')+`<h3>${L.rvc}</h3><div class="card"><ul>${L.rvl.map(x=>`<li>${x}</li>`).join('')}</ul></div>`}
