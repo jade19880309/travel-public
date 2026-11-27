@@ -305,33 +305,43 @@ if('serviceWorker' in navigator&&/^https?:/.test(location.protocol))navigator.se
 // ===== 圖片檢視器：雙指縮放、拖曳、連點放大、滾輪縮放 =====
 (function(){
 const lb=$('#lb'),li=lb.querySelector('img'),P=new Map();
-let sc=1,fit=1,tx=0,ty=0,pd=0,pm=null,moved=0,lt=0;
+let sc=1,fit=1,tx=0,ty=0,pd=0,pm=null,moved=0,lt=0,sx=0,sy=0,pin=0;
+// 多張相簿（可省略）：openLB(src,[src1,src2…]) 時，沒放大的狀態下左右滑動或按 ‹ › 換張；只傳 src 的地方維持原樣
+let gl=null,gi=0;const lbh=lb.querySelector('.lbh'),lbh0=lbh?lbh.textContent:'';
+lb.insertAdjacentHTML('beforeend','<button class="lbp" aria-label="上一張" hidden>‹</button><button class="lbn" aria-label="下一張" hidden>›</button><span class="lbi" hidden></span>');
+const lbp=lb.querySelector('.lbp'),lbn=lb.querySelector('.lbn'),lbi=lb.querySelector('.lbi');
 const dm=()=>[li.naturalWidth||1,li.naturalHeight||1];
 function apply(){const W=lb.clientWidth,H=lb.clientHeight,[w,h]=dm(),iw=w*sc,ih=h*sc;
  tx=iw<=W?(W-iw)/2:Math.min(0,Math.max(W-iw,tx));ty=ih<=H?(H-ih)/2:Math.min(0,Math.max(H-ih,ty));
  li.style.transform='translate('+tx+'px,'+ty+'px) scale('+sc+')'}
 function reset(){const W=lb.clientWidth,H=lb.clientHeight,[w,h]=dm();fit=Math.min(W/w,H/h);sc=fit;tx=(W-w*sc)/2;ty=(H-h*sc)/2;apply()}
 function zoomAt(cx,cy,ns){ns=Math.min(fit*8,Math.max(fit,ns));const k=ns/sc;tx=cx-(cx-tx)*k;ty=cy-(cy-ty)*k;sc=ns;apply()}
-function open(src){li.onload=reset;li.src=src;lb.classList.add('on');if(li.complete&&li.naturalWidth)reset()}
-function close(){lb.classList.remove('on');P.clear()}
+function show(src){li.onload=reset;li.src=src;if(li.complete&&li.naturalWidth)reset();
+ const g=!!gl;lbp.hidden=lbn.hidden=lbi.hidden=!g;if(g){lbi.textContent=(gi+1)+' / '+gl.length;lbp.disabled=gi===0;lbn.disabled=gi===gl.length-1}
+ if(lbh)lbh.textContent=g?'左右滑動換張・雙指縮放・連點兩下放大':lbh0}
+function step(d){if(!gl)return;const n=gi+d;if(n<0||n>=gl.length)return;gi=n;show(gl[gi])}
+function open(src,list){gl=Array.isArray(list)&&list.length>1?list:null;gi=gl?Math.max(0,gl.indexOf(src)):0;lb.classList.add('on');show(src)}
+function close(){lb.classList.remove('on');P.clear();gl=null}
+lbp.onclick=()=>step(-1);lbn.onclick=()=>step(1);
 window.openLB=open;
 $('#lbx').onclick=close;
 $('#lbz1').onclick=()=>zoomAt(lb.clientWidth/2,lb.clientHeight/2,sc/1.5);
 $('#lbz2').onclick=()=>zoomAt(lb.clientWidth/2,lb.clientHeight/2,sc*1.5);
-lb.addEventListener('pointerdown',e=>{if(e.target.closest('.lbc'))return;try{lb.setPointerCapture(e.pointerId)}catch(_){}
- P.set(e.pointerId,[e.clientX,e.clientY]);if(P.size===1)moved=0;
- if(P.size===2){const[p,q]=[...P.values()];pd=Math.hypot(p[0]-q[0],p[1]-q[1])||1;pm=[(p[0]+q[0])/2,(p[1]+q[1])/2];moved=99}});
+lb.addEventListener('pointerdown',e=>{if(e.target.closest('.lbc,.lbp,.lbn'))return;try{lb.setPointerCapture(e.pointerId)}catch(_){}
+ P.set(e.pointerId,[e.clientX,e.clientY]);if(P.size===1){moved=0;pin=0;sx=e.clientX;sy=e.clientY}
+ if(P.size===2){const[p,q]=[...P.values()];pd=Math.hypot(p[0]-q[0],p[1]-q[1])||1;pm=[(p[0]+q[0])/2,(p[1]+q[1])/2];moved=99;pin=1}});
 lb.addEventListener('pointermove',e=>{const o=P.get(e.pointerId);if(!o)return;P.set(e.pointerId,[e.clientX,e.clientY]);
  if(P.size===1){tx+=e.clientX-o[0];ty+=e.clientY-o[1];moved+=Math.abs(e.clientX-o[0])+Math.abs(e.clientY-o[1]);apply()}
  else if(P.size===2){const[p,q]=[...P.values()],d=Math.hypot(p[0]-q[0],p[1]-q[1])||1,m=[(p[0]+q[0])/2,(p[1]+q[1])/2];
   tx+=m[0]-pm[0];ty+=m[1]-pm[1];zoomAt(m[0],m[1],sc*d/pd);pd=d;pm=m}});
 function up(e){if(!P.has(e.pointerId))return;P.delete(e.pointerId);
+ if(e.type==='pointerup'&&P.size===0&&gl&&!pin&&moved>=10&&sc<=fit*1.02){const dx=e.clientX-sx,dy=e.clientY-sy;if(Math.abs(dx)>50&&Math.abs(dx)>Math.abs(dy)*1.3){step(dx<0?1:-1);return}}
  if(e.type==='pointerup'&&P.size===0&&moved<10&&!e.target.closest('.lbc')){const t=Date.now();
   if(t-lt<320){lt=0;zoomAt(e.clientX,e.clientY,sc>fit*1.05?fit:Math.max(fit*2.5,fit))}else lt=t}}
 lb.addEventListener('pointerup',up);lb.addEventListener('pointercancel',up);
 lb.addEventListener('wheel',e=>{e.preventDefault();zoomAt(e.clientX,e.clientY,sc*Math.exp(-e.deltaY*.0015))},{passive:false});
 ['gesturestart','gesturechange'].forEach(n=>lb.addEventListener(n,e=>e.preventDefault()));
-addEventListener('keydown',e=>{if(e.key==='Escape')close()});
+addEventListener('keydown',e=>{if(e.key==='Escape')close();else if(lb.classList.contains('on')&&gl&&(e.key==='ArrowLeft'||e.key==='ArrowRight'))step(e.key==='ArrowLeft'?-1:1)});
 addEventListener('resize',()=>{if(lb.classList.contains('on'))reset()});
 })();
 

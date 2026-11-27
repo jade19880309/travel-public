@@ -94,7 +94,8 @@
 - 現況：首頁（11/26 皮革手帳版）、京阪（V2）、首爾、港珠澳、東京都已是新版；**露營車 `campervan.html` 沒有 manifest 和圖示**（使用者這次沒要求，未處理）；偏航 `detour/` 動態圖示不動。
 - 已加到主畫面的 App 要刪掉重加才會換圖示；iPhone 實機顯示未驗證。
 ## 首爾住宿卡相片左右滑動（2026/11/27，sw v228）
-- `seoul-winter.js` 住宿卡左欄 `.hpic3.hcar3`：圖片清單從 `TRIP.sheets[hotel.pic]`（首爾＝`hpic`）的 `<img>` 讀出，外觀照排第一張；scroll-snap 左右滑、右上「n/4」、下方圓點；點圖用 `openLB` 放大，不會展開／收合卡片。樣式在 `seoul-v3-site.css` 最後。JSON 沒改。未在 iPhone 實機測滑動手感。
+- `seoul-winter.js` 住宿卡左欄 `.hpic3.hcar3`：圖片清單從 `TRIP.sheets[hotel.pic]`（首爾＝`hpic`）的 `<img>` 讀出，外觀照排第一張；scroll-snap 左右滑、右上「n/4」、下方圓點；點圖用 `openLB` 放大，不會展開／收合卡片。樣式在 `seoul-v3-site.css` 最後。JSON 沒改。
+- v229：共用 `app.js` 圖片檢視器加多張相簿：`openLB(src,[清單])` 時沒放大狀態下左右滑動（>50px）或按 ‹ › 換張、左上顯示「n / N」、鍵盤左右鍵；只傳 `src` 的地方（其他旅程、行程圖）不變。目前只有首爾住宿卡傳清單。樣式在 `style.css` 最後（`.lbp/.lbn/.lbi`）。未在 iPhone 實機測滑動手感。
 
 ## 首爾 V3 底色（2026/11/26，sw v208）
 - 使用者要求底色偏白、接近概念圖。概念圖取色約 #fdf4ee～#fff6ee（暖白帶淡粉）。頁面底色改 #fdf8f3＋三處極淡粉色 radial 水彩暈；黏頂功能列與底部日期列同色。
