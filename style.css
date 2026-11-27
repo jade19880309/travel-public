@@ -495,3 +495,9 @@ a.xl:active{transform:scale(.97)}
 #lb .lbp[hidden],#lb .lbn[hidden],#lb .lbi[hidden]{display:none}
 #lb .lbp:disabled,#lb .lbn:disabled{opacity:.25;cursor:default}
 #lb .lbi{position:absolute;left:calc(env(safe-area-inset-left,0px) + 16px);top:calc(env(safe-area-inset-top,0px) + 24px);z-index:2;padding:3px 10px;border-radius:999px;background:rgba(255,255,255,.18);color:#fff;font-size:14px;font-variant-numeric:tabular-nums;pointer-events:none}
+
+/* 飯店設施依樓層列表（.hfl：左欄樓層、右欄內容；2026/11/27） */
+.hfl{display:grid;grid-template-columns:4.2em minmax(0,1fr);gap:10px;align-items:baseline;padding:7px 0;border-top:1px dashed var(--line)}
+.hfl:first-child{border-top:0;padding-top:2px}
+.hfl>b{font-weight:700;color:var(--red);white-space:nowrap}
+.hfl>span{line-height:1.55}

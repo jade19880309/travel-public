@@ -33,7 +33,7 @@
     {"ko":"트래블로지 명동 남산 호텔","zh":"首爾明洞南山彩鴻酒店","en":"Travelodge Myeongdong Namsan","tel":"+82264705000","telShow":"+82 2 6470 5000","mapQ":"트래블로지 명동 남산 호텔",
      "addr":["서울특별시 중구 수표로 16","中區水標路 16 號","16, Supyo-ro, Jung-gu, Seoul, South Korea"],
      "big":["트래블로지 명동 남산 호텔","Travelodge Myeongdong Namsan｜首爾明洞南山彩鴻酒店｜서울특별시 중구 수표로 16"],
-     "blocks":[["🕒 入住時間","入住 14:00　退房 12:00"],["🏨 飯店設施","<b>1F 櫃檯</b>　24 小時；入住、退房當天可免費寄放行李<br><b>B2 自助洗衣・烘衣</b>　各 ₩5,000<br><b>B1 餐廳</b>　早餐 07:00～10:00・午餐 11:00～13:30<br><b>各樓層 飲水機</b>　免費<br><b>1F 微波爐</b>　住客可用（住客回報）<br><b>Smart Mart 販售區</b>　依商品收費<br><b>客房</b>　免費 Wi-Fi"]],
+     "blocks":[["🕒 入住時間","入住 14:00　退房 12:00"],["🏨 飯店設施","<div class=\"hfl\"><b>1F</b><span>櫃檯 24 小時<br>入住、退房當天免費寄放行李<br>微波爐（住客回報）</span></div><div class=\"hfl\"><b>B1</b><span>餐廳：早餐 07:00～10:00<br>午餐 11:00～13:30</span></div><div class=\"hfl\"><b>B2</b><span>自助洗衣機、烘衣機　各 ₩5,000</span></div><div class=\"hfl\"><b>各樓層</b><span>飲水機（免費）</span></div><div class=\"hfl\"><b>客房</b><span>免費 Wi-Fi</span></div><div class=\"hfl\"><b>其他</b><span>Smart Mart 販售區（依商品收費，樓層未標）</span></div>"]],
      "pic":"hpic","sheets":[["bk","🍳 飯店早餐"],["map","🗺 周邊地圖"]]}
   ],
   "plan": {"sheets": [["seoul","🗺 首爾地圖"]]},
