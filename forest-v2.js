@@ -150,7 +150,7 @@
    var f=document.createElement('iframe');f.className='fj2-lvf';f.title='北河口湖 富士山即時影像';
    f.allow='autoplay; encrypted-media; picture-in-picture; fullscreen';f.allowFullscreen=true;f.setAttribute('referrerpolicy','strict-origin-when-cross-origin');
    f.src='https://www.youtube-nocookie.com/embed/'+LV.id+'?autoplay=1&mute=1&playsinline=1&rel=0&modestbranding=1';
-   cv.insertBefore(f,cv.querySelector('.fj2-lvb'))})();
+   cv.insertBefore(f,cv.querySelector('.fj2-lvb'));cv.classList.add('fj2-lvon')})(); // 有影片時藏起水彩底圖與雲朵裝飾
   var ti=$('#ti');ti.insertAdjacentHTML('afterend','<p class="fj2-en" lang="en">Campervan Trip</p>');
   // 功能圖示紙卡：只放頁面原本就有的分頁
   var KEYS=[['ov','schedule'],['mp','map'],['rv','camper','rv'],['rv','sake','brew']];

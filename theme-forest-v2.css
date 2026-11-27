@@ -252,3 +252,6 @@ html.fj2.forest-journal:not(.th-fuji) .fj2-hero .fj2-lvb i{width:7px;height:7px;
 @keyframes fj2Blink{50%{opacity:.25}}
 @media(min-width:760px){html.fj2.forest-journal:not(.th-fuji) .fj2-hero .fj2-lvf{border-radius:24px;-webkit-mask-image:none;mask-image:none}html.fj2.forest-journal:not(.th-fuji) .fj2-hero .fj2-lvb{left:16px;bottom:16px}}
 @media(prefers-reduced-motion:reduce){html.fj2 .fj2-lvb i{animation:none}}
+/* v219：有直播時（.fj2-lvon）水彩底圖只保留佔位不顯示、拿掉標題後面的雲朵，影片下緣直接淡入紙色 */
+html.fj2.forest-journal:not(.th-fuji) .fj2-hero .fj2-lvon .fj2-cimg{visibility:hidden}
+html.fj2:not(.th-fuji) .fj2-hero .fj2-cover.fj2-lvon::after{display:none}
