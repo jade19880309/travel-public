@@ -322,3 +322,9 @@ html.fj2.th-fuji #flight .fj2-bp small::before,html.fj2.th-fuji #flight .fj2-bp 
 html.fj2.th-fuji #flight .fj2-bpinfo{position:absolute!important;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap;border:0}
 html.fj2.th-fuji #flight .bp.fj2-bp{position:relative}
 html.fj2.th-fuji #flight .grid:has(.fj2-bp){gap:14px}
+
+/* 航班區行李規定卡（trips/tokyo-2027.json 的 flights.bag） */
+html.fj2.th-fuji #flight .card.bag{margin:16px 0 0;padding:14px 16px 12px;background:#fffdf6;border:1px solid #ddd3bd;border-radius:18px;box-shadow:0 3px 10px #46412d10}
+html.fj2.th-fuji #flight .card.bag h3{margin:0 0 6px;font-size:17px}
+html.fj2.th-fuji #flight .card.bag ul{margin:0;padding-left:1.1em}
+html.fj2.th-fuji #flight .card.bag li{margin:5px 0;font-size:14.5px;line-height:1.7}
