@@ -101,4 +101,16 @@ body:has(.journal) > main.wrap,body:has(.journal) > footer{position:relative;z-i
 .dk-dots button{width:10px;height:10px;border-radius:50%;border:0;padding:0;background:#cdbb9e;cursor:pointer;transition:width .25s,background .25s}
 .dk-dots button.on{width:26px;border-radius:6px;background:#8a6a45}
 @media(min-width:760px){body:has(.journal) .journal.deck{max-width:960px;margin-left:auto;margin-right:auto}} /* 一次一張，太寬反而空 */
+/* 電腦版（≥1024px）整頁塞進一個畫面不用捲：封面、頁尾森林依視窗高度縮小，旅程卡再由 home-deck.js fit() 用 zoom 縮到剛好（2026-11-27） */
+@media(min-width:1024px){
+ body:has(.journal.deck) .cover-art{height:calc(min(241px,24vh) + env(safe-area-inset-top))}
+ body:has(.journal.deck) .cover h1 img{width:min(560px,52vh)}
+ body:has(.journal.deck) .cover-copy{margin-top:calc(min(86px,8.5vh) * -1)}
+ body:has(.journal.deck) .script{top:calc(min(150px,15vh) * -1)}
+ body:has(.journal.deck) .journal.deck{margin-top:min(22px,2vh);padding-bottom:min(26px,2.4vh)}
+ body:has(.journal.deck) .forest{max-width:min(1100px,48vh)}
+ body:has(.journal.deck) .journal.deck .entry-main{grid-template-columns:minmax(0,min(400px,33vh)) minmax(0,1fr);min-height:0;gap:min(36px,3.5vh)} /* 明信片依視窗高度縮，文字維持原大小 */
+ body:has(.journal.deck) .foot{margin-top:-10px}
+ body:has(.journal.deck) footer{margin-top:0}
+}
 @media(prefers-reduced-motion:reduce){.journal.deck > .entry{transition:none}}

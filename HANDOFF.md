@@ -27,6 +27,7 @@
 - 使用者指定：封面整塊固定在頂端，旅程切換改成「撕便條紙」動畫。新檔 `home-deck.js`（`home.html` 在 `upd.js` 前載入，已進 `sw.js` CORE）；樣式在 `layout-fix.css` 第 4 段。
 - 做法：`#up.journal` 加 `deck`，所有 `.entry` 疊在同一格（`--d`＝第幾張，後面的往下錯開、轉角、內容隱藏，只露紙邊；高度一律拉成最高那張＝東京含露營車票券）。往左滑／`›`＝最上面那張 `tear` 動畫飛走後排到最底；往右滑／`‹`＝上一張 `stick` 貼回；圓點可直接跳。目前第幾張記在 `sessionStorage.deckI`（回上一頁會停在原本那張）。`home.html` render() 會畫兩次（內建清單→trips/index.json），所以用 MutationObserver 每次重新整理，事件只綁一次。
 - 接縫（v216）：封面紙紋與 body 同一張、同起點、不加陰影，靜止時看不出接縫；捲動後（`body.cv-scrolled`，home-deck.js 切換）封面下緣才淡出 22px 紙色。`main.wrap`／`footer` 要 `position:relative;z-index:1` 自成一層，否則卡片的 z-index 會蓋到固定封面上。
+- 電腦版一頁塞滿（v217）：≥1024px 封面插畫、標題、頁尾森林、明信片欄寬都用 `vh` 依視窗高度縮（`layout-fix.css` 第 4 段 @media(min-width:1024px)）；還放不下時 `home-deck.js` 的 `fit()` 對 `#up` 設 `zoom`（下限 .45），視窗縮放、圖片載入後重算。實測 1024×768 .72、1280×720 .66、1366×768 .72、1440×900 .87、1920×1080 以上 1，都不用捲。手機／平板不受影響。
 - `header.cover` sticky＋紙紋底；`html`／`body` 的 `overflow-x` 在總覽改 `clip`（hidden 會讓 sticky 失效）。電腦版一次一張，寬度限 960px。
 - `home.html` 副標把「・」前後各包成 `.nb`＋`<wbr>`，手機只在「・」處換行。
 - 已測：390（觸控）／1440，切換、圓點、點卡片進行程、回上一頁保留位置，無 pageerror。iPhone Safari 實機（滑動手感、動畫流暢度）未測；iOS 16.4 以前不支援 `:has()`／`overflow:clip`。

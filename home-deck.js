@@ -16,7 +16,7 @@
   nav.querySelector('.dk-prev').onclick=function(){go(cur-1,-1)};
   nav.querySelector('.dk-next').onclick=function(){go(cur+1,1)};
   [].forEach.call(nav.querySelectorAll('.dk-dots button'),function(b,i){b.onclick=function(){if(i!==cur)go(i,i>cur?1:-1)}});
-  paint();
+  paint();fitSoon();
   if(!first)return; // render() 重畫卡片時只重建導覽，事件只綁一次
   // 滑動：水平超過 50px 才算，滑過就擋掉這次點擊，避免誤開行程
   var sx=0,sy=0,moved=false;
@@ -44,6 +44,14 @@
    setTimeout(function(){b.classList.remove('stick');busy=false},520);
   }
  }
+ // 電腦版：把旅程卡縮放到整頁剛好一個畫面（手機、平板不動）
+ function fit(){var d=up;if(!d.classList.contains('deck'))return;d.style.zoom='';
+  if(innerWidth<1024)return;
+  var over=document.documentElement.scrollHeight-innerHeight;if(over<=0)return;
+  var h=d.getBoundingClientRect().height;d.style.zoom=Math.max(.45,Math.min(1,(h-over-2)/h)).toFixed(3)}
+ var ft=0;function fitSoon(){clearTimeout(ft);ft=setTimeout(fit,60)}
+ addEventListener('resize',fitSoon);addEventListener('load',fitSoon);
+ document.addEventListener('load',function(e){if(e.target.tagName==='IMG')fitSoon()},true);
  addEventListener('scroll',function(){document.body.classList.toggle('cv-scrolled',scrollY>4)},{passive:true}); // 封面下緣的淡出只在捲動後出現
  // home.html 先用內建清單畫一次、抓到 trips/index.json 後會再畫一次，所以每次卡片換掉都重新整理
  if(up.querySelector('article.entry'))setup();
