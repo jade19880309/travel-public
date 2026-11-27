@@ -69,16 +69,33 @@
   $('.sm-all',V).onclick=function(){reset(true)};
   // 「區域圖」：關掉互動地圖，開原本的地圖抽屜（首都圈區域圖＋市區圖、Google／Naver 連結）
   $('.sm-reg',V).onclick=function(){close();if(TRIP.sheets&&TRIP.sheets.seoul){$('#sbody').innerHTML=TRIP.sheets.seoul;$('#sheet').classList.add('on');$('#sheet .sp').scrollTop=0}};
-  layer.addEventListener('click',function(e){var h=e.target.closest('[data-pt]');if(h&&moved<10)mark(h.dataset.pt,false)});
+  // 點圖上景點：熱區在縮小時會互相重疊，所以改成找離手指最近的景點（螢幕距離 40px 內）
+  layer.addEventListener('click',function(e){if(moved>=10)return;var r=$('.smv',V).getBoundingClientRect(),mx=(e.clientX-r.left-tx)/sc,my=(e.clientY-r.top-ty)/sc,best=null,bd=1e9;
+   Object.keys(PT).forEach(function(id){var p=PT[id],d=Math.hypot(p[0]-mx,p[1]-my);if(d<bd){bd=d;best=id}});
+   if(best&&bd*sc<=40)mark(best,false)});
   var vp=$('.smv',V);
-  vp.addEventListener('pointerdown',function(e){if(e.target.closest('.smhit'))return;try{vp.setPointerCapture(e.pointerId)}catch(_){}P.set(e.pointerId,[e.clientX,e.clientY]);stage.classList.remove('ease');
+  // iPhone Safari：觸控改用 touch 事件處理（pointer 事件在部分 iOS 版本雙指時會被取消），pointer 只處理滑鼠／觸控筆
+  var TOUCH='ontouchstart' in window;
+  vp.addEventListener('pointerdown',function(e){if(TOUCH&&e.pointerType==='touch')return;if(e.target.closest('.smhit'))return;try{vp.setPointerCapture(e.pointerId)}catch(_){}P.set(e.pointerId,[e.clientX,e.clientY]);stage.classList.remove('ease');
    if(P.size===1)moved=0;if(P.size===2){var a=[].slice.call(P.values());pd=Math.hypot(a[0][0]-a[1][0],a[0][1]-a[1][1])||1;pm=[(a[0][0]+a[1][0])/2,(a[0][1]+a[1][1])/2];moved=99}});
-  vp.addEventListener('pointermove',function(e){var o=P.get(e.pointerId);if(!o)return;P.set(e.pointerId,[e.clientX,e.clientY]);
+  vp.addEventListener('pointermove',function(e){if(TOUCH&&e.pointerType==='touch')return;var o=P.get(e.pointerId);if(!o)return;P.set(e.pointerId,[e.clientX,e.clientY]);
    if(P.size===1){tx+=e.clientX-o[0];ty+=e.clientY-o[1];moved+=Math.abs(e.clientX-o[0])+Math.abs(e.clientY-o[1]);apply()}
    else if(P.size===2){var a=[].slice.call(P.values()),d=Math.hypot(a[0][0]-a[1][0],a[0][1]-a[1][1])||1,m=[(a[0][0]+a[1][0])/2,(a[0][1]+a[1][1])/2];tx+=m[0]-pm[0];ty+=m[1]-pm[1];zoomAt(m[0],m[1],sc*d/pd);pd=d;pm=m}});
-  var up=function(e){if(!P.has(e.pointerId))return;P.delete(e.pointerId);
+  var up=function(e){if(TOUCH&&e.pointerType==='touch')return;if(!P.has(e.pointerId))return;P.delete(e.pointerId);
    if(e.type==='pointerup'&&P.size===0&&moved<10){var t=Date.now();if(t-lt<320){lt=0;var r=vp.getBoundingClientRect();stage.classList.add('ease');zoomAt(e.clientX-r.left,e.clientY-r.top,sc>fit*1.6?fit:fit*2.6)}else lt=t}};
   vp.addEventListener('pointerup',up);vp.addEventListener('pointercancel',up);
+  var T={x:0,y:0,d:0,c:null,lt:0},dist=function(t){return Math.hypot(t[0].clientX-t[1].clientX,t[0].clientY-t[1].clientY)||1},mid=function(t){return [(t[0].clientX+t[1].clientX)/2,(t[0].clientY+t[1].clientY)/2]};
+  vp.addEventListener('touchstart',function(e){var t=e.touches;stage.classList.remove('ease');
+   if(t.length===1){T.x=t[0].clientX;T.y=t[0].clientY;moved=0}
+   else if(t.length>=2){e.preventDefault();T.d=dist(t);T.c=mid(t);moved=99}},{passive:false});
+  vp.addEventListener('touchmove',function(e){var t=e.touches;e.preventDefault();
+   if(t.length===1){var dx=t[0].clientX-T.x,dy=t[0].clientY-T.y;T.x=t[0].clientX;T.y=t[0].clientY;tx+=dx;ty+=dy;moved+=Math.abs(dx)+Math.abs(dy);apply()}
+   else if(t.length>=2){var d=dist(t),c=mid(t);tx+=c[0]-T.c[0];ty+=c[1]-T.c[1];zoomAt(c[0],c[1],sc*d/T.d);T.d=d;T.c=c}},{passive:false});
+  vp.addEventListener('touchend',function(e){var t=e.touches;
+   if(t.length===1){T.x=t[0].clientX;T.y=t[0].clientY;return} // 雙指放開一指：剩下那指接著拖曳
+   if(t.length===0&&moved<10){var now=Date.now(),ch=e.changedTouches[0];
+    if(now-T.lt<320){T.lt=0;e.preventDefault();stage.classList.add('ease');zoomAt(ch.clientX,ch.clientY,sc>fit*1.6?fit:fit*2.6)}else T.lt=now}},{passive:false});
+  vp.addEventListener('touchcancel',function(){moved=99});
   vp.addEventListener('wheel',function(e){e.preventDefault();var r=vp.getBoundingClientRect();stage.classList.remove('ease');zoomAt(e.clientX-r.left,e.clientY-r.top,sc*Math.exp(-e.deltaY*.0015))},{passive:false});
   ['gesturestart','gesturechange'].forEach(function(n){V.addEventListener(n,function(e){e.preventDefault()})});
   addEventListener('resize',function(){if(V&&!V.hidden){var c=cur;reset(false);if(c)focus(c,false)}});
