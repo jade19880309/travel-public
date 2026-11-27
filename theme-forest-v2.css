@@ -255,3 +255,16 @@ html.fj2.forest-journal:not(.th-fuji) .fj2-hero .fj2-lvb i{width:7px;height:7px;
 /* v219：有直播時（.fj2-lvon）水彩底圖只保留佔位不顯示、拿掉標題後面的雲朵，影片下緣直接淡入紙色 */
 html.fj2.forest-journal:not(.th-fuji) .fj2-hero .fj2-lvon .fj2-cimg{visibility:hidden}
 html.fj2:not(.th-fuji) .fj2-hero .fj2-cover.fj2-lvon::after{display:none}
+/* v220：直播固定在品牌列下方不動；分頁列接在直播下面 */
+html.fj2.forest-journal:not(.th-fuji) .fj2-lvhd{position:sticky;top:calc(52px + env(safe-area-inset-top,0px));z-index:4;text-align:center;background:linear-gradient(#f6f1e5d9,#f6f1e5d9),url(images/forest-journal-v2/washi-texture.webp) 0 0/512px 512px repeat,#f6f1e5}
+html.fj2.forest-journal:not(.th-fuji) .fj2-lvhd .fj2-cover{margin-top:0}
+html.fj2.forest-journal:not(.th-fuji) body:has(.fj2-lvhd) .fj2-tabsec{top:calc(52px + env(safe-area-inset-top,0px) + var(--lvh,0px))}
+@media(min-width:760px){
+ html.fj2.forest-journal:not(.th-fuji) .fj2-lvhd{padding-top:12px}
+ html.fj2.forest-journal:not(.th-fuji) body > .wrap .fj2-hero.fj2-lvhd .fj2-cover{max-width:min(920px,72vh);margin-left:auto;margin-right:auto} /* 電腦版固定時不要佔掉半個畫面 */
+}
+/* v220：直播上緣也淡入品牌列（拿掉品牌列底線與陰影，接縫不再是一條硬線）；只限手機（電腦版是圓角卡片） */
+@media(max-width:759.98px){
+ html.fj2.forest-journal:not(.th-fuji) .fj2-hero .fj2-lvon .fj2-lvf{-webkit-mask-image:linear-gradient(180deg,transparent,#000 14%,#000 82%,transparent);mask-image:linear-gradient(180deg,transparent,#000 14%,#000 82%,transparent)}
+ html.fj2.forest-journal:not(.th-fuji) body:has(.fj2-lvon) .bar.fj2-bar{border-bottom-color:transparent;box-shadow:none}
+}

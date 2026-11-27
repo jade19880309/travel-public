@@ -150,7 +150,14 @@
    var f=document.createElement('iframe');f.className='fj2-lvf';f.title='北河口湖 富士山即時影像';
    f.allow='autoplay; encrypted-media; picture-in-picture; fullscreen';f.allowFullscreen=true;f.setAttribute('referrerpolicy','strict-origin-when-cross-origin');
    f.src='https://www.youtube-nocookie.com/embed/'+LV.id+'?autoplay=1&mute=1&playsinline=1&rel=0&modestbranding=1';
-   cv.insertBefore(f,cv.querySelector('.fj2-lvb'));cv.classList.add('fj2-lvon')})(); // 有影片時藏起水彩底圖與雲朵裝飾
+   cv.insertBefore(f,cv.querySelector('.fj2-lvb'));cv.classList.add('fj2-lvon'); // 有影片時藏起水彩底圖與雲朵裝飾
+   // 直播固定在頂端（使用者 2026-11-27 指定）：封面連同標題搬到 header 外面的 .fj2-lvhd，sticky 在品牌列下方；
+   // 分頁列（.fj2-tabsec）的 sticky 位置用 --lvh（直播高度）往下推，才不會蓋到影片
+   var hd=document.createElement('div');hd.className='fj2-hero fj2-lvhd';hero.parentNode.insertBefore(hd,hero);hd.append(cv);
+   ['#ti','.fj2-en'].forEach(function(q){var e=$(q,hero);if(e)hd.append(e)});
+   var setH=function(){R.style.setProperty('--lvh',hd.offsetHeight+'px')};setH();
+   if(window.ResizeObserver)new ResizeObserver(setH).observe(hd);else addEventListener('resize',setH);
+  })();
   var ti=$('#ti');ti.insertAdjacentHTML('afterend','<p class="fj2-en" lang="en">Campervan Trip</p>');
   // 功能圖示紙卡：只放頁面原本就有的分頁
   var KEYS=[['ov','schedule'],['mp','map'],['rv','camper','rv'],['rv','sake','brew']];
@@ -159,7 +166,7 @@
   hero.after(grid);
   var sech=document.createElement('h2');sech.className='fj2-sech';var sec=document.createElement('div');sec.className='fj2-tabsec';
   grid.after(sech);sech.after(sec);sec.append(tabs);
-  var toContent=function(){requestAnimationFrame(function(){var y=sec.getBoundingClientRect().top+scrollY-($('.bar').offsetHeight||0)+2;scrollTo({top:y,behavior:'smooth'})})};
+  var toContent=function(){requestAnimationFrame(function(){var y=sec.getBoundingClientRect().top+scrollY-($('.bar').offsetHeight||0)-(($('.fj2-lvhd')||{}).offsetHeight||0)+2;scrollTo({top:y,behavior:'smooth'})})};
   grid.onclick=function(e){var b=e.target.closest('[data-fk]');if(!b)return;var k=KEYS[+b.dataset.fk];if(k[2]&&typeof rvSet==='function')rvSet(k[2]);go(k[0]);toContent()};
   var sc=$('.forest-scene');if(sc)sc.remove();
   var ff2=$('.forest-footer');if(ff2){swapImg(ff2,IMG+'footer-fuji.webp');ff2.removeAttribute('width');ff2.removeAttribute('height')}
