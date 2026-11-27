@@ -270,3 +270,5 @@ html.fj2.forest-journal:not(.th-fuji) body:has(.fj2-lvhd) .fj2-tabsec{top:calc(5
  html.fj2.forest-journal:not(.th-fuji) .fj2-hero .fj2-lvon .fj2-lvf{-webkit-mask-image:linear-gradient(180deg,transparent,#000 14%,#000 82%,transparent);mask-image:linear-gradient(180deg,transparent,#000 14%,#000 82%,transparent)}
  html.fj2.forest-journal:not(.th-fuji) body:has(.fj2-lvon) .bar.fj2-bar{border-bottom-color:transparent;box-shadow:none}
 }
+/* v225：車輛使用指南（.spec-grid）五張卡片底色統一，跟頁面其他卡片同色（原本三色輪替） */
+html.fj2 .spec-grid article,html.fj2 .spec-grid article:nth-child(n){background:#fffdf6}
