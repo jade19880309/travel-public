@@ -320,7 +320,10 @@ function show(src){li.onload=reset;li.src=src;if(li.complete&&li.naturalWidth)re
  const g=!!gl;lbp.hidden=lbn.hidden=lbi.hidden=!g;if(g){lbi.textContent=(gi+1)+' / '+gl.length;lbp.disabled=gi===0;lbn.disabled=gi===gl.length-1}
  if(lbh)lbh.textContent=g?'左右滑動換張・雙指縮放・連點兩下放大':lbh0}
 function step(d){if(!gl)return;const n=gi+d;if(n<0||n>=gl.length)return;gi=n;show(gl[gi])}
-function open(src,list){gl=Array.isArray(list)&&list.length>1?list:null;gi=gl?Math.max(0,gl.indexOf(src)):0;lb.classList.add('on');show(src)}
+function open(src,list){
+ // 沒給清單、但是從抽屜（#sheet）裡點圖：同一個抽屜裡可放大的圖自動當成相簿，可左右滑動換張
+ if(!list){const sh=$('#sheet');if(sh&&sh.classList.contains('on')){const L=[...sh.querySelectorAll('#sbody img[onclick*="openLB"]')].map(i=>i.src);if(L.includes(src))list=L}}
+ gl=Array.isArray(list)&&list.length>1?list:null;gi=gl?Math.max(0,gl.indexOf(src)):0;lb.classList.add('on');show(src)}
 function close(){lb.classList.remove('on');P.clear();gl=null}
 lbp.onclick=()=>step(-1);lbn.onclick=()=>step(1);
 window.openLB=open;
